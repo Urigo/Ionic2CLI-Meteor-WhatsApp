@@ -45,7 +45,7 @@ function meteorPack(request, callback) {
   var pack = match && match[1];
 
   if (pack) {
-    callback(null, 'Package["' + pack + '"]' );
+    callback(null, 'window.Package && Package["' + pack + '"]' );
     return true;
   }
 }
@@ -57,7 +57,7 @@ function cordovaPlugin(request, callback) {
   if (plugin) {
     plugin = camelCase(plugin);
     plugin = upperFirst(plugin);
-    callback(null, 'this.cordova && cordova.plugins && cordova.plugins.' + plugin);
+    callback(null, 'window.cordova && cordova.plugins && cordova.plugins.' + plugin);
     return true;
   }
 }
