@@ -1,5 +1,5 @@
 import {Page} from 'ionic-angular';
-import {ChatsPage} from '../chats/chats';
+import {ChatListPage} from '../chat-list/chat-list';
 import {ContactsPage} from '../contacts/contacts';
 import {FavoritesPage} from '../favorites/favorites';
 import {RecentsPage} from '../recents/recents';
@@ -13,7 +13,7 @@ export class TabsPage {
   constructor() {
     // this tells the tabs component which Pages
     // should be each tab's root Page
-    this.chatsTabRoot = ChatsPage;
+    this.chatListTabRoot = ChatListPage;
     this.contactsTabRoot = ContactsPage;
     this.favoritesTabRoot = FavoritesPage;
     this.recentsTabRoot = RecentsPage;

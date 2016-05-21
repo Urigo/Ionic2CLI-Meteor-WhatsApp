@@ -3,7 +3,7 @@ import 'meteor-client-side';
 import {App, Platform} from 'ionic-angular';
 import {METEOR_PROVIDERS} from 'angular2-meteor';
 import {StatusBar} from 'ionic-native';
-import {TabsPage} from './pages/tabs/tabs';
+import {LoginPage} from './pages/login/login';
 
 
 @App({
@@ -17,7 +17,7 @@ export class MyApp {
   }
 
   constructor(platform) {
-    this.rootPage = TabsPage;
+    this.rootPage = LoginPage;
 
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.

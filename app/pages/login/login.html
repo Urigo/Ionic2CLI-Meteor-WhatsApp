@@ -1,0 +1,18 @@
+
+<ion-navbar *navbar>
+  <ion-title>Your phone number</ion-title>
+
+  <ion-buttons end>
+    <button (click)="login()">
+      Done<ion-icon name="arrow-forward"></ion-icon>
+    </button>
+  </ion-buttons>
+</ion-navbar>
+
+<ion-content padding class="login">
+  <ion-title class="instructions">Please confirm your country code and enter your phone number</ion-title>
+
+  <ion-item class="phone">
+    <ion-input [(value)]="phone" (keypress)="onInputKeypress($event)" type="tel" placeholder="Your phone number"></ion-input>
+  </ion-item>
+</ion-content>
