@@ -3,12 +3,13 @@ import 'meteor-client-side';
 import {App, Platform} from 'ionic-angular';
 import {METEOR_PROVIDERS} from 'angular2-meteor';
 import {StatusBar} from 'ionic-native';
+import {UserData} from './providers/user-data'
 import {LoginPage} from './pages/login/login';
 
 
 @App({
   template: '<ion-nav [root]="rootPage"></ion-nav>',
-  providers: [METEOR_PROVIDERS],
+  providers: [METEOR_PROVIDERS, UserData],
   config: {} // http://ionicframework.com/docs/v2/api/config/Config/
 })
 export class MyApp {

@@ -13,6 +13,6 @@
   </div>
 
   <ion-item>
-    <ion-input [(value)]="phone" (keypress)="onInputKeypress($event)" type="tel" placeholder="Your phone number"></ion-input>
+    <ion-input [(ngModel)]="phone" (keypress)="onInputKeypress($event)" type="tel" placeholder="Your phone number"></ion-input>
   </ion-item>
 </ion-content>

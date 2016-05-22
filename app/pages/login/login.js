@@ -1,5 +1,6 @@
 import {Page, NavController} from 'ionic-angular';
 import {VerificationPage} from '../verification/verification';
+import {UserData} from '../../providers/user-data';
 
 
 @Page({
@@ -7,12 +8,12 @@ import {VerificationPage} from '../verification/verification';
 })
 export class LoginPage {
   static get parameters() {
-    return [[NavController]];
+    return [[NavController], [UserData]];
   }
 
-  constructor(nav) {
+  constructor(nav, user) {
     this.nav = nav;
-    this.phone = '';
+    this.user = user;
   }
 
   onInputKeypress({ keyCode }) {
@@ -22,6 +23,8 @@ export class LoginPage {
   }
 
   login() {
+    // TODO: handle case where phone is invalid
+    this.user.phone = this.phone;
     this.nav.push(VerificationPage);
   }
 }
