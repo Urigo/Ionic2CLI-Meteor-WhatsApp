@@ -20,3 +20,14 @@
 @import "../pages/settings/settings";
 
 @import "../pages/verification/verification";
+
+
+.toolbar {
+  .toolbar-title {
+    color: color($colors, light);
+  }
+
+  .toolbar-background {
+    background: color($colors, primary);
+  }
+}
