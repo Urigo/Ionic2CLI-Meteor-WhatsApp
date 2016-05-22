@@ -1,5 +1,5 @@
 import {Page, NavController} from 'ionic-angular';
-import {TabsPage} from '../tabs/tabs';
+import {VerificationPage} from '../verification/verification';
 
 
 @Page({
@@ -22,6 +22,6 @@ export class LoginPage {
   }
 
   login() {
-    this.nav.push(TabsPage);
+    this.nav.push(VerificationPage);
   }
 }
