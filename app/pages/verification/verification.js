@@ -1,4 +1,4 @@
-import {Page, NavController} from 'ionic-angular';
+import {Page, NavController, Alert} from 'ionic-angular';
 import {TabsPage} from '../tabs/tabs';
 import {UserData} from '../../providers/user-data';
 
@@ -23,6 +23,25 @@ export class VerificationPage {
   }
 
   verify() {
+    try {
+      this.user.verify(this.code);
+    }
+    catch (e) {
+      return this.handleError(e);
+    }
+
     this.nav.push(TabsPage);
+  }
+
+  handleError(e) {
+    console.error(e);
+
+    const alert = Alert.create({
+      title: 'Oops!',
+      message: e.message,
+      buttons: ['OK']
+    });
+
+    this.nav.present(alert);
   }
 }

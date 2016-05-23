@@ -1,6 +1,6 @@
 import 'meteor-client-side';
 
-import {App, Platform} from 'ionic-angular';
+import {App, Platform, Alert} from 'ionic-angular';
 import {METEOR_PROVIDERS} from 'angular2-meteor';
 import {StatusBar} from 'ionic-native';
 import {UserData} from './providers/user-data'

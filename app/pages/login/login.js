@@ -1,4 +1,4 @@
-import {Page, NavController} from 'ionic-angular';
+import {Page, NavController, Alert} from 'ionic-angular';
 import {VerificationPage} from '../verification/verification';
 import {UserData} from '../../providers/user-data';
 
@@ -23,8 +23,42 @@ export class LoginPage {
   }
 
   login() {
-    // TODO: handle case where phone is invalid
-    this.user.phone = this.phone;
-    this.nav.push(VerificationPage);
+    try {
+      this.user.phone = this.phone;
+    }
+    catch (e) {
+      return this.handleError(e);
+    }
+
+    const alert = Alert.create({
+      title: 'Confirm',
+      message: `Would you like to proceed with the phone number ${this.phone}?`,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.nav.push(VerificationPage);
+          }
+        }
+      ]
+    });
+
+    this.nav.present(alert);
+  }
+
+  handleError(e) {
+    console.error(e);
+
+    const alert = Alert.create({
+      title: 'Oops!',
+      message: e.message,
+      buttons: ['OK']
+    });
+
+    this.nav.present(alert);
   }
 }
