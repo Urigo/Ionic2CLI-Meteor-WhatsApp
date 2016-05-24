@@ -4,7 +4,33 @@ import {Injectable} from '@angular/core';
 @Injectable()
 export class UserData {
   constructor() {
+    this._name = '';
+    this._picture = '/ionicons/dist/svg/ios-contact.svg';
     this._phone = '';
+  }
+
+  set name(name) {
+    if (typeof name != 'string' || !name.length) {
+      throw Error('User name is invalid');
+    }
+
+    this._name = name;
+  }
+
+  get name() {
+    return this._name;
+  }
+
+  set picture(picture) {
+    if (typeof picture != 'string' || !picture.length) {
+      throw Error('Profile picture is invalid');
+    }
+
+    this._picture = picture;
+  }
+
+  get picture() {
+    return this._picture;
   }
 
   set phone(phone) {

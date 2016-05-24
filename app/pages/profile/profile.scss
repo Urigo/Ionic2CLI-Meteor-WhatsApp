@@ -1,0 +1,23 @@
+.profile {
+  $input-size: 30px;
+
+  .profile-picture {
+    max-width: 300px;
+    display: block;
+    margin: auto;
+
+    img {
+      // place the icon on top of the image
+      margin-bottom: -$input-size;
+    }
+
+    ion-icon {
+      float: right;
+      font-size: $input-size;
+      opacity: 0.5;
+      // draw a thin line at the left side of the icon
+      border-left: black solid 1px;
+      padding-left: 5px;
+    }
+  }
+}

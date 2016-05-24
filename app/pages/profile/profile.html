@@ -1,0 +1,20 @@
+
+<ion-navbar *navbar>
+  <ion-title>Profile</ion-title>
+
+  <ion-buttons end>
+    <button (click)="goToTabsPage()">Done</button>
+  </ion-buttons>
+</ion-navbar>
+
+<ion-content class="profile">
+  <div class="profile-picture">
+    <img [src]="user.picture">
+    <ion-icon name="create"></ion-icon>
+  </div>
+
+  <ion-item class="username">
+    <ion-label stacked>Name</ion-label>
+    <ion-input [(ngModel)]="username" placeholder="Your name"></ion-input>
+  </ion-item>
+</ion-content>

@@ -1,12 +1,12 @@
 import {Page, NavController, Alert} from 'ionic-angular';
-import {ProfilePage} from '../profile/profile';
 import {UserData} from '../../providers/user-data';
+import {TabsPage} from '../tabs/tabs';
 
 
 @Page({
-  templateUrl: 'build/pages/verification/verification.html'
+  templateUrl: 'build/pages/profile/profile.html'
 })
-export class VerificationPage {
+export class ProfilePage {
   static get parameters() {
     return [[NavController], [UserData]];
   }
@@ -14,30 +14,27 @@ export class VerificationPage {
   constructor(nav, user) {
     this.nav = nav;
     this.user = user;
+    this.name = user.name;
+    this.profilePic = user.picture;
   }
 
-  onInputKeypress({ keyCode }) {
-    if (keyCode == 13) {
-      this.verify();
-    }
-  }
-
-  verify() {
+  goToTabsPage() {
     try {
-      this.user.verify(this.code);
+      this.user.name = this.username;
+      this.user.picture = this.profilePic;
     }
     catch (e) {
       return this.handleError(e);
     }
 
-    this.nav.setRoot(ProfilePage);
+    this.nav.push(TabsPage);
   }
 
   handleError(e) {
     console.error(e);
 
     const alert = Alert.create({
-      title: 'Oops!',
+      title: 'Profiling failed',
       message: e.message,
       buttons: ['OK']
     });
