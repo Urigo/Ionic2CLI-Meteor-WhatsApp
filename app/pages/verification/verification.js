@@ -30,7 +30,7 @@ export class VerificationPage {
       return this.handleError(e);
     }
 
-    this.nav.setRoot(ProfilePage);
+    this.nav.setRoot(ProfilePage, null, {animate: true});
   }
 
   handleError(e) {
