@@ -11,5 +11,18 @@
 </ion-navbar>
 
 <ion-content padding class="chat-list">
+  <ion-list>
+    <ion-item-sliding *ngFor="let chat of chats" (click)="goToChatDetail(chat)">
+      <button ion-item>
+        <img class="chat-picture" [src]="chat.picture">
+        <h2 class="chat-title">{{chat.title}}</h2>
+        <p class="recent-message-text">{{chat.recentMessage.text}}</p>
+        <span class="last-message-timestamp">{{chat.recentMessage.timestamp | amCalendar}}</span>
+      </button>
 
+      <ion-item-options>
+        <button danger class="delete-chat-button" (click)="deleteChat(chat)">Delete</button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
 </ion-content>
