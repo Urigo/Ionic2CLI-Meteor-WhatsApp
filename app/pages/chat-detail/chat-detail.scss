@@ -1,8 +1,21 @@
+.chat-detail-navbar {
+  .chat-picture {
+    width: 50px;
+    border-radius: 50%;
+    float: left;
+  }
+
+  .chat-title {
+    line-height: 50px;
+    float: left;
+  }
+}
+
 .chat-detail {
 
 }
 
-.message-box {
+.chat-detail-message-box {
   $input-height: 30px;
   $input-margin: 10px;
 

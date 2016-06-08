@@ -1,5 +1,11 @@
-<ion-navbar *navbar>
-  <ion-title>{{chat.title}}</ion-title>
+<ion-navbar *navbar class="chat-detail-navbar">
+  <img class="chat-picture" [src]="chat.picture">
+  <ion-title class="chat-title">{{chat.title}}</ion-title>
+
+  <ion-buttons end>
+    <button class="attach-button" (click)="attachFile()"><ion-icon name="attach"></ion-icon></button>
+    <button class="options-button" (clickl)="showOptions()"><ion-icon name="more"></ion-icon></button>
+  </ion-buttons>
 </ion-navbar>
 
 <ion-content padding class="chat-detail">
@@ -11,7 +17,7 @@
   </div>
 </ion-content>
 
-<ion-toolbar class="message-box" position="bottom">
+<ion-toolbar class="chat-detail-message-box" position="bottom">
   <ion-input [(ngModel)]="message" class="message-input" placeholder="Your message"></ion-input>
 
   <button *ngIf="message" class="send-button">Send</button>
