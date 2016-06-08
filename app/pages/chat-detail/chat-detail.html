@@ -18,15 +18,20 @@
 </ion-content>
 
 <ion-toolbar class="chat-detail-message-box" position="bottom">
-  <ion-input [(ngModel)]="message" class="message-input" placeholder="Your message"></ion-input>
+  <!-- <ion-searchbar [(ngModel)]="message" class="message-input" placeholder="Write a message..." cancelButtonText="Send" hideCancelButton="true"></ion-searchbar> -->
 
-  <button *ngIf="message" class="send-button">Send</button>
+  <ion-input [(ngModel)]="message" class="message-input" placeholder="Write a message..."></ion-input>
 
-  <span *ngIf="!message">
+  <button class="send-button" (click)="sendMessage()">
+    <ion-icon *ngIf="message" name="send"></ion-icon>
+    <ion-icon *ngIf="!message" name="text"></ion-icon>
+  </button>
+
+  <!-- <span *ngIf="!message">
     <ion-icon name="camera"></ion-icon>
     <ion-icon name="mic"></ion-icon>
   </span>
-
+ -->
   <!-- <button class="button button-clear button-icon button-positive icon ion-ios-upload-outline"></button>
 
   <label class="item-input-wrapper">

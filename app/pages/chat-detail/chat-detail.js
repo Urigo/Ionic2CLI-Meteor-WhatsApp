@@ -16,4 +16,9 @@ export class ChatDetailPage {
     this.chat = params.get('chat');
     this.message = '';
   }
+
+  sendMessage() {
+    if (!this.message) return;
+    this.message = '';
+  }
 }

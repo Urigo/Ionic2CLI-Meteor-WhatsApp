@@ -16,20 +16,27 @@
 }
 
 .chat-detail-message-box {
+  // .message-input {
+  //   .searchbar-search-icon {
+  //     background-image: url('/ionicons/dist/svg/ios-text.svg');
+  //     opacity: 0.7;
+  //   }
+  // }
+
   $input-height: 30px;
-  $input-margin: 10px;
 
   .message-input {
     text-align: center;
     background: white;
-    width: calc(100% - 100px);
-    margin-left: $input-margin;
+    width: calc(100% - 20px);
+    margin-left: 10px;
     height: $input-height;
     border-radius: 4px;
     float: left;
 
     .text-input {
       margin-top: 7px;
+      padding-right: 50px;
     }
   }
 
@@ -38,6 +45,10 @@
     float: right;
     text-align: center;
     height: $input-height;
-    margin: 0 $input-margin;
+    margin: 0;
+    color: black;
+    background-color: white;
+    position: fixed;
+    right: 20px;
   }
 }
