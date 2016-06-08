@@ -2,7 +2,7 @@
   <ion-title>Chats</ion-title>
 
   <ion-buttons end>
-    <button class="create-button" (click)="createNewChat()"><ion-icon name="person-add"></ion-icon></button>
+    <button class="add-chat-button" (click)="addChat()"><ion-icon name="person-add"></ion-icon></button>
   </ion-buttons>
 
   <ion-buttons end>
@@ -12,16 +12,16 @@
 
 <ion-content padding class="chat-list">
   <ion-list>
-    <ion-item-sliding *ngFor="let chat of chats" (click)="goToChatDetail(chat)">
+    <ion-item-sliding *ngFor="let chat of chats._chats" (click)="goToChatDetail(chat)">
       <button ion-item>
         <img class="chat-picture" [src]="chat.picture">
         <h2 class="chat-title">{{chat.title}}</h2>
-        <p class="recent-message-text">{{chat.recentMessage.text}}</p>
+        <p class="recent-message-contents">{{chat.recentMessage.contents}}</p>
         <span class="last-message-timestamp">{{chat.recentMessage.timestamp | amCalendar}}</span>
       </button>
 
       <ion-item-options>
-        <button danger class="delete-chat-button" (click)="deleteChat(chat)">Delete</button>
+        <button danger class="remove-chat-button" (click)="removeChat(chat)">Remove</button>
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>

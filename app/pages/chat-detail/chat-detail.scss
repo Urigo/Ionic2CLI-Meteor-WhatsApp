@@ -1,0 +1,30 @@
+.chat-detail {
+
+}
+
+.message-box {
+  $input-height: 30px;
+  $input-margin: 10px;
+
+  .message-input {
+    text-align: center;
+    background: white;
+    width: calc(100% - 100px);
+    margin-left: $input-margin;
+    height: $input-height;
+    border-radius: 4px;
+    float: left;
+
+    .text-input {
+      margin-top: 7px;
+    }
+  }
+
+  .send-button {
+    box-shadow: none;
+    float: right;
+    text-align: center;
+    height: $input-height;
+    margin: 0 $input-margin;
+  }
+}
