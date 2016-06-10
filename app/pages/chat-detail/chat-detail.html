@@ -1,6 +1,6 @@
 <ion-navbar *navbar class="chat-detail-navbar">
-  <img class="chat-picture" [src]="chat.picture">
-  <ion-title class="chat-title">{{chat.title}}</ion-title>
+  <img class="chat-picture" [src]="currentChat.picture">
+  <ion-title class="chat-title">{{currentChat.title}}</ion-title>
 
   <ion-buttons end>
     <button class="attach-button" (click)="attachFile()"><ion-icon name="attach"></ion-icon></button>
@@ -10,8 +10,8 @@
 
 <ion-content padding class="chat-detail">
   <div class="messages-list">
-    <div *ngFor="let message of chat.messages" class="message-wrapper">
-      <div [class]="getMessageClass(message)">
+    <div *ngFor="let message of messages.models" class="message-wrapper">
+      <div [class]="'message message-' + message.ownership">
         <div class="message-contents">{{message.contents}}</div>
         <span class="message-timestamp">{{message.timestamp | amDateFormat: 'HH:MM'}}</span>
       </div>
@@ -26,6 +26,7 @@
     <button *ngIf="message" class="message-input-button" (click)="sendMessage(messageInput)">
       <ion-icon name="send"></ion-icon>
     </button>
+
     <button *ngIf="!message" class="message-input-button" (click)="recordVoiceMessage()">
       <ion-icon name="mic"></ion-icon>
     </button>

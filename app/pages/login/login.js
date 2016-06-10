@@ -1,22 +1,18 @@
 import {Page, NavController, Alert} from 'ionic-angular';
 import {VerificationPage} from '../verification/verification';
-import {UserData} from '../../providers/user-data';
 
 
 @Page({
   templateUrl: 'build/pages/login/login.html'
 })
 export class LoginPage {
-  static get parameters() {
-    return [[NavController], [UserData]];
-  }
+  static parameters = [[NavController]]
 
-  constructor(nav, user) {
+  constructor(nav) {
     this.nav = nav;
-    this.user = user;
   }
 
-  onInputKeypress({ keyCode }) {
+  onInputKeypress({keyCode}) {
     if (keyCode == 13) {
       this.login();
     }
@@ -24,7 +20,7 @@ export class LoginPage {
 
   login() {
     try {
-      this.user.phone = this.phone;
+      this.verifyPhone();
     }
     catch (e) {
       return this.handleError(e);
@@ -41,13 +37,21 @@ export class LoginPage {
         {
           text: 'Yes',
           handler: () => {
-            this.nav.push(VerificationPage);
+            this.nav.push(VerificationPage, {
+              phone: this.phone
+            });
           }
         }
       ]
     });
 
     this.nav.present(alert);
+  }
+
+  verifyPhone() {
+    if (!/^\+\d{10,12}$/.test(this.phone)) {
+      throw Error('Phone number is invalid');
+    }
   }
 
   handleError(e) {

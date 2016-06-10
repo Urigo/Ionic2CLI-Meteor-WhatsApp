@@ -1,5 +1,5 @@
 import {Page, NavController, Alert} from 'ionic-angular';
-import {UserData} from '../../providers/user-data';
+import {UsersProvider} from '../../providers/users-provider';
 import {TabsPage} from '../tabs/tabs';
 
 
@@ -7,27 +7,39 @@ import {TabsPage} from '../tabs/tabs';
   templateUrl: 'build/pages/profile/profile.html'
 })
 export class ProfilePage {
-  static get parameters() {
-    return [[NavController], [UserData]];
-  }
+  static parameters = [[NavController], [UsersProvider]]
 
-  constructor(nav, user) {
+  constructor(nav, users) {
     this.nav = nav;
-    this.user = user;
-    this.name = user.name;
-    this.profilePic = user.picture;
+    this.currentUser = users.current;
+    this.username = this.currentUser.name;
+    this.profilePic = this.currentUser.picture;
   }
 
   goToTabsPage() {
     try {
-      this.user.name = this.username;
-      this.user.picture = this.profilePic;
+      this.verifyUsername();
+      this.verifyProfilePic();
     }
     catch (e) {
       return this.handleError(e);
     }
 
+    this.currentUser.name = this.username;
+    this.currentUser.picture = this.profilePic;
     this.nav.push(TabsPage);
+  }
+
+  verifyUsername() {
+    if (typeof this.username != 'string' || !this.username.length) {
+      throw Error('User name is invalid');
+    }
+  }
+
+  verifyProfilePic() {
+    if (typeof this.profilePic != 'string' || !this.profilePic.length) {
+      throw Error('Profile picture is invalid');
+    }
   }
 
   handleError(e) {

@@ -1,6 +1,6 @@
 import {DateFormatPipe} from 'angular2-moment';
 import {Page, NavController, NavParams} from 'ionic-angular';
-import {UserData} from '../../providers/user-data';
+import {MessagesProvider} from '../../providers/messages-provider';
 
 
 @Page({
@@ -8,36 +8,25 @@ import {UserData} from '../../providers/user-data';
   pipes: [DateFormatPipe]
 })
 export class ChatDetailPage {
-  static get parameters() {
-    return [[NavController], [NavParams], [UserData]];
+  static parameters = [[NavController], [NavParams], [MessagesProvider]]
+
+  constructor(nav, params, messages) {
+    this.nav = nav;
+    this.messages = messages;
+    this.currentChat = messages.currentChat;
+    this.message = '';
   }
 
-  constructor(nav, params, user) {
-    this.nav = nav;
-    this.user = user;
-    this.message = '';
-    this.chat = params.get('chat');
+  onInputKeypress({keyCode}, messageInput) {
+    if (keyCode == 13) {
+      this.sendMessage(messageInput);
+    }
   }
 
   sendMessage(messageInput) {
-    this.chat.messages.push({
-      userId: this.user._id,
-      contents: this.message,
-      timestamp: new Date()
-    });
-
+    this.messages.add(this.message);
     this.message = '';
     messageInput.setFocus();
-  }
-
-  onInputKeypress(e, messageInput) {
-    if (e.keyCode != 13) return;
-    this.sendMessage(messageInput);
-  }
-
-  getMessageClass(message) {
-    const ownership = message.userId === this.user._id ? 'mine' : 'others';
-    return `message message-${ownership}`;
   }
 
   attachFile() {
@@ -52,4 +41,3 @@ export class ChatDetailPage {
 
   }
 }
-

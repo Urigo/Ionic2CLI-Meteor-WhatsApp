@@ -1,22 +1,21 @@
-import {Page, NavController, Alert} from 'ionic-angular';
+import {Page, NavController, NavParams, Alert} from 'ionic-angular';
 import {ProfilePage} from '../profile/profile';
-import {UserData} from '../../providers/user-data';
+import {UsersProvider} from '../../providers/users-provider';
 
 
 @Page({
   templateUrl: 'build/pages/verification/verification.html'
 })
 export class VerificationPage {
-  static get parameters() {
-    return [[NavController], [UserData]];
-  }
+  static parameters = [[NavController], [NavParams], [UsersProvider]]
 
-  constructor(nav, user) {
+  constructor(nav, params, users) {
     this.nav = nav;
-    this.user = user;
+    this.users = users;
+    this.phone = params.get('phone');
   }
 
-  onInputKeypress({ keyCode }) {
+  onInputKeypress({keyCode}) {
     if (keyCode == 13) {
       this.verify();
     }
@@ -24,13 +23,26 @@ export class VerificationPage {
 
   verify() {
     try {
-      this.user.verify(this.code);
+      this.verifyCode();
     }
     catch (e) {
       return this.handleError(e);
     }
 
-    this.nav.setRoot(ProfilePage, null, {animate: true});
+    this.users.current = this.users.add({
+      phone: this.phone,
+      picture: '/ionicons/dist/svg/ios-contact.svg'
+    });
+
+    this.nav.setRoot(ProfilePage, null, {
+      animate: true
+    });
+  }
+
+  verifyCode() {
+    if (!/^\d{4}$/.test(this.code)) {
+      throw Error('Verification code did not match');
+    }
   }
 
   handleError(e) {
