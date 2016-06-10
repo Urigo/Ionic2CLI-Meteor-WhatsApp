@@ -17,8 +17,22 @@ export class ChatDetailPage {
     this.message = '';
   }
 
-  sendMessage() {
-    if (!this.message) return;
+  sendMessage(messageInput) {
     this.message = '';
+    messageInput.setFocus();
+  }
+
+  onInputKeypress(e, messageInput) {
+    if (e.keyCode != 13) return;
+    this.sendMessage(messageInput);
+  }
+
+  attachFile() {
+
+  }
+
+  showOptions() {
+
   }
 }
+

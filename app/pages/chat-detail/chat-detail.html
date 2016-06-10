@@ -18,38 +18,14 @@
 </ion-content>
 
 <ion-toolbar class="chat-detail-message-box" position="bottom">
-  <!-- <ion-searchbar [(ngModel)]="message" class="message-input" placeholder="Write a message..." cancelButtonText="Send" hideCancelButton="true"></ion-searchbar> -->
+  <ion-input #messageInput [(ngModel)]="message" (keypress)="onInputKeypress($event, messageInput)" class="message-input" placeholder="Type a message"></ion-input>
 
-  <ion-input [(ngModel)]="message" class="message-input" placeholder="Write a message..."></ion-input>
-
-  <button class="send-button" (click)="sendMessage()">
-    <ion-icon *ngIf="message" name="send"></ion-icon>
-    <ion-icon *ngIf="!message" name="text"></ion-icon>
-  </button>
-
-  <!-- <span *ngIf="!message">
-    <ion-icon name="camera"></ion-icon>
-    <ion-icon name="mic"></ion-icon>
-  </span>
- -->
-  <!-- <button class="button button-clear button-icon button-positive icon ion-ios-upload-outline"></button>
-
-  <label class="item-input-wrapper">
-    <input [(ngModel)]="message"
-           dir="auto"
-           type="text"
-           (return)="sendMessage(); closeKeyboard()"
-           (focus)="inputUp()"
-           (blur)="inputDown()"/>
-  </label>
-
-  <span *ngIf="message.length">
-    <button (click)="sendMessage()" class="button button-clear button-positive">Send</button>
-  </span>
-
-  <span *ngIf="!message.length">
-    <button (click)="sendPicture()" class="button button-clear button-icon button-positive icon ion-ios-camera-outline"></button>
-    <i class="buttons-seperator icon ion-android-more-vertical"></i>
-    <button class="button button-clear button-icon button-positive icon ion-ios-mic-outline"></button>
-  </span> -->
+  <ion-buttons end>
+    <button *ngIf="message" class="message-input-button" (click)="sendMessage(messageInput)">
+      <ion-icon name="send"></ion-icon>
+    </button>
+    <button *ngIf="!message" class="message-input-button" (click)="recordVoiceMessage()">
+      <ion-icon name="mic"></ion-icon>
+    </button>
+  </ion-buttons>
 </ion-toolbar>
