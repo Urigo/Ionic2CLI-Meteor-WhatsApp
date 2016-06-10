@@ -4,6 +4,7 @@ import {Injectable} from '@angular/core';
 @Injectable()
 export class UserData {
   constructor() {
+    this._id = Object.freeze({});
     this._name = '';
     this._picture = '/ionicons/dist/svg/ios-contact.svg';
     this._phone = '';

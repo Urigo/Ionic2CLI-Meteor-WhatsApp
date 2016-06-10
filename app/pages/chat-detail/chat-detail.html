@@ -11,8 +11,10 @@
 <ion-content padding class="chat-detail">
   <div class="messages-list">
     <div *ngFor="let message of chat.messages" class="message-wrapper">
-      <div class="message-contents">{{message.contents}}</div>
-      <span class="message-timestamp">{{message.timestamp | amDateFormat: 'HH:MM'}}</span>
+      <div [class]="getMessageClass(message)">
+        <div class="message-contents">{{message.contents}}</div>
+        <span class="message-timestamp">{{message.timestamp | amDateFormat: 'HH:MM'}}</span>
+      </div>
     </div>
   </div>
 </ion-content>

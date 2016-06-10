@@ -1,5 +1,6 @@
 import {DateFormatPipe} from 'angular2-moment';
 import {Page, NavController, NavParams} from 'ionic-angular';
+import {UserData} from '../../providers/user-data';
 
 
 @Page({
@@ -8,16 +9,23 @@ import {Page, NavController, NavParams} from 'ionic-angular';
 })
 export class ChatDetailPage {
   static get parameters() {
-    return [[NavController], [NavParams]];
+    return [[NavController], [NavParams], [UserData]];
   }
 
-  constructor(nav, params) {
+  constructor(nav, params, user) {
     this.nav = nav;
-    this.chat = params.get('chat');
+    this.user = user;
     this.message = '';
+    this.chat = params.get('chat');
   }
 
   sendMessage(messageInput) {
+    this.chat.messages.push({
+      userId: this.user._id,
+      contents: this.message,
+      timestamp: new Date()
+    });
+
     this.message = '';
     messageInput.setFocus();
   }
@@ -27,11 +35,20 @@ export class ChatDetailPage {
     this.sendMessage(messageInput);
   }
 
+  getMessageClass(message) {
+    const ownership = message.userId === this.user._id ? 'mine' : 'others';
+    return `message message-${ownership}`;
+  }
+
   attachFile() {
 
   }
 
   showOptions() {
+
+  }
+
+  recordVoiceMessage() {
 
   }
 }
