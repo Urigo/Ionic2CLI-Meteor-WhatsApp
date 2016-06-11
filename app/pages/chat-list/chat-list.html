@@ -13,8 +13,11 @@
       <button ion-item>
         <img class="chat-picture" [src]="chat.picture">
         <h2 class="chat-title">{{chat.title}}</h2>
-        <p class="recent-message-contents">{{chat.messages.last.contents}}</p>
-        <span class="last-message-timestamp">{{chat.messages.last.createdAt | amCalendar}}</span>
+
+        <span *ngIf="chat.messages.last">
+          <p class="recent-message-contents">{{chat.messages.last.contents}}</p>
+          <span class="last-message-timestamp">{{chat.messages.last.createdAt | amCalendar}}</span>
+        </span>
       </button>
 
       <ion-item-options>

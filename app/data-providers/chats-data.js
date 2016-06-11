@@ -30,6 +30,14 @@ export class ChatsData extends DataProvider {
     return chat;
   }
 
+  getByRecipient(recipientId) {
+    return this.models.find(chat => chat.recipient._id == recipientId);
+  }
+
+  chattingWith(recipientId) {
+    return this.currentUser._id == recipientId || !!this.getByRecipient(recipientId);
+  }
+
   get currentUser() {
     return this.users.current;
   }

@@ -1,7 +1,5 @@
 <ion-toolbar>
-  <ion-title>
-    New Chat
-  </ion-title>
+  <ion-title>New Chat</ion-title>
 
   <ion-buttons end>
     <button class="dismiss-button" (click)="dismiss()"><ion-icon name="close"></ion-icon></button>
@@ -10,5 +8,12 @@
 
 
 <ion-content class="new-chat">
-
+  <ion-list>
+    <span *ngFor="let user of users.models">
+      <button ion-item *ngIf="!chats.chattingWith(user._id)" (click)="addChat(user)">
+        <img class="user-picture" [src]="user.picture">
+        <h2 class="user-name">{{user.name}}</h2>
+      </button>
+    </span>
+  </ion-list>
 </ion-content>
