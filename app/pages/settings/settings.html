@@ -4,5 +4,15 @@
 </ion-navbar>
 
 <ion-content class="settings">
+  <ion-list>
+    <button ion-item (click)="editProfile()">
+      <ion-icon name="create" class="setting-icon"></ion-icon>
+      <div class="setting-name">Edit profile</div>
+    </button>
 
+    <button ion-item (click)="logout()">
+      <ion-icon name="log-out" class="setting-icon"></ion-icon>
+      <div class="setting-name">Logout</div>
+    </button>
+  </ion-list>
 </ion-content>
