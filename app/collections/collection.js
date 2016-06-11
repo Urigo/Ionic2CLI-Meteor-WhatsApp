@@ -1,5 +1,3 @@
-import {UserModel, ChatModel, MessageModel} from './models';
-
 export class Collection {
   constructor() {
     this.model = this.constructor.model;
@@ -32,16 +30,4 @@ export class Collection {
   get last() {
     return this.models[this.models.length - 1];
   }
-}
-
-export class UsersCollection extends Collection {
-  static model = UserModel
-}
-
-export class ChatsCollection extends Collection {
-  static model = ChatModel
-}
-
-export class MessagesCollection extends Collection {
-  static model = MessageModel
 }

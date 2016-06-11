@@ -1,4 +1,4 @@
-export class Provider {
+export class DataProvider {
   add(modelData) {
     const model = this.collection.add(modelData);
     return this.get(model._id);

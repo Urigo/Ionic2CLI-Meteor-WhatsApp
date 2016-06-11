@@ -1,13 +1,13 @@
 import {Page, NavController, Alert} from 'ionic-angular';
-import {UsersProvider} from '../../providers/users-provider';
 import {TabsPage} from '../tabs/tabs';
+import {UsersData} from '../../data-providers/users-data';
 
 
 @Page({
   templateUrl: 'build/pages/profile/profile.html'
 })
 export class ProfilePage {
-  static parameters = [[NavController], [UsersProvider]]
+  static parameters = [[NavController], [UsersData]]
 
   constructor(nav, users) {
     this.nav = nav;

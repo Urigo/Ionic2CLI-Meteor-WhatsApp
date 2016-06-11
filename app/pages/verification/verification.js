@@ -1,13 +1,13 @@
 import {Page, NavController, NavParams, Alert} from 'ionic-angular';
 import {ProfilePage} from '../profile/profile';
-import {UsersProvider} from '../../providers/users-provider';
+import {UsersData} from '../../data-providers/users-data';
 
 
 @Page({
   templateUrl: 'build/pages/verification/verification.html'
 })
 export class VerificationPage {
-  static parameters = [[NavController], [NavParams], [UsersProvider]]
+  static parameters = [[NavController], [NavParams], [UsersData]]
 
   constructor(nav, params, users) {
     this.nav = nav;

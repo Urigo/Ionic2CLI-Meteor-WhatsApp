@@ -3,8 +3,8 @@ import {CalendarPipe} from 'angular2-moment';
 import {Page, NavController, Modal} from 'ionic-angular';
 import {ChatDetailPage} from '../chat-detail/chat-detail';
 import {NewChatPage} from '../new-chat/new-chat';
-import {UsersProvider} from '../../providers/users-provider';
-import {ChatsProvider} from '../../providers/chats-provider';
+import {UsersData} from '../../data-providers/users-data';
+import {ChatsData} from '../../data-providers/chats-data';
 
 
 @Page({
@@ -12,7 +12,7 @@ import {ChatsProvider} from '../../providers/chats-provider';
   pipes: [CalendarPipe]
 })
 export class ChatListPage {
-  static parameters = [[NavController], [UsersProvider], [ChatsProvider]]
+  static parameters = [[NavController], [UsersData], [ChatsData]]
 
   constructor(nav, users, chats) {
     let user;

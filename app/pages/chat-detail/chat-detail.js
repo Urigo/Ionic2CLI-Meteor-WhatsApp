@@ -1,6 +1,6 @@
 import {DateFormatPipe} from 'angular2-moment';
 import {Page, NavController, NavParams} from 'ionic-angular';
-import {MessagesProvider} from '../../providers/messages-provider';
+import {MessagesData} from '../../data-providers/messages-data';
 
 
 @Page({
@@ -8,7 +8,7 @@ import {MessagesProvider} from '../../providers/messages-provider';
   pipes: [DateFormatPipe]
 })
 export class ChatDetailPage {
-  static parameters = [[NavController], [NavParams], [MessagesProvider]]
+  static parameters = [[NavController], [NavParams], [MessagesData]]
 
   constructor(nav, params, messages) {
     this.nav = nav;

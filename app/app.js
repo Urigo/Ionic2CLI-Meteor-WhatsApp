@@ -3,21 +3,19 @@ import 'meteor-client-side';
 import {App, Platform, Alert} from 'ionic-angular';
 import {METEOR_PROVIDERS} from 'angular2-meteor';
 import {StatusBar} from 'ionic-native';
-import {UsersProvider} from './providers/users-provider';
-import {ChatsProvider} from './providers/chats-provider';
-import {MessagesProvider} from './providers/messages-provider';
 import {LoginPage} from './pages/login/login';
+import {UsersData} from './data-providers/users-data';
+import {ChatsData} from './data-providers/chats-data';
+import {MessagesData} from './data-providers/messages-data';
 
 
 @App({
   template: '<ion-nav [root]="rootPage"></ion-nav>',
-  providers: [METEOR_PROVIDERS, UsersProvider, ChatsProvider, MessagesProvider],
+  providers: [METEOR_PROVIDERS, UsersData, ChatsData, MessagesData],
   config: {} // http://ionicframework.com/docs/v2/api/config/Config/
 })
 export class MyApp {
-  static get parameters() {
-    return [[Platform]];
-  }
+  static parameters = [[Platform]]
 
   constructor(platform) {
     this.rootPage = LoginPage;

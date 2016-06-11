@@ -13,7 +13,7 @@
     <div *ngFor="let message of messages.models" class="message-wrapper">
       <div [class]="'message message-' + message.ownership">
         <div class="message-contents">{{message.contents}}</div>
-        <span class="message-timestamp">{{message.timestamp | amDateFormat: 'HH:MM'}}</span>
+        <span class="message-timestamp">{{message.createdAt | amDateFormat: 'HH:MM'}}</span>
       </div>
     </div>
   </div>
