@@ -64,8 +64,4 @@ export class ChatListPage {
   removeChat(chat) {
     this.chats.remove(chat._id);
   }
-
-  showOptions() {
-
-  }
 }

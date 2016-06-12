@@ -42,18 +42,6 @@ export class ChatDetailPage {
     this.scroller.scrollTop = this.scroller.scrollHeight;
   }
 
-  attachFile() {
-
-  }
-
-  showOptions() {
-
-  }
-
-  recordVoiceMessage() {
-
-  }
-
   get chatDetail() {
     return document.querySelector('.chat-detail');
   }
