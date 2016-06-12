@@ -12,12 +12,15 @@
     <ion-item-sliding *ngFor="let chat of chats.models" (click)="goToChatDetail(chat)">
       <button ion-item>
         <img class="chat-picture" [src]="chat.picture">
-        <h2 class="chat-title">{{chat.title}}</h2>
 
-        <span *ngIf="chat.messages.last">
-          <p class="recent-message-contents">{{chat.messages.last.contents}}</p>
-          <span class="last-message-timestamp">{{chat.messages.last.createdAt | amCalendar}}</span>
-        </span>
+        <div class="chat-info">
+          <h2 class="chat-title">{{chat.title}}</h2>
+
+          <span *ngIf="chat.messages.last">
+            <p class="recent-message-contents">{{chat.messages.last.contents}}</p>
+            <span class="last-message-timestamp">{{chat.messages.last.createdAt | amCalendar}}</span>
+          </span>
+        </div>
       </button>
 
       <ion-item-options>

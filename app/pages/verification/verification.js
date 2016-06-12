@@ -35,7 +35,7 @@ export class VerificationPage {
       picture: '/ionicons/dist/svg/ios-contact.svg'
     });
 
-    this.nav.setRoot(ProfilePage, null, {
+    this.nav.setRoot(ProfilePage, {}, {
       animate: true
     });
   }
