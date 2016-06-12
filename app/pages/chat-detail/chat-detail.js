@@ -28,13 +28,13 @@ export class ChatDetailPage {
     this.sendingMessage = true;
     this.messages.add(this.message);
     this.message = '';
-    this.messageInput.focus();
   }
 
   ngAfterViewChecked() {
     if (this.sendingMessage) {
       this.sendingMessage = false;
       this.scrollDown();
+      this.messageInput.focus();
     }
   }
 

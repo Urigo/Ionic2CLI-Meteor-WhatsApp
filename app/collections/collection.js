@@ -30,4 +30,8 @@ export class Collection {
   get last() {
     return this.models[this.models.length - 1];
   }
+
+  get length() {
+    return this.models.length;
+  }
 }

@@ -25,6 +25,8 @@ export class ChatListPage {
     this.currentUser = users.current;
     this.chats = chats;
 
+    if (this.chats.length) return this;
+
     user = users.models[userIndex++];
     chat = this.currentUser.addChat(user._id);
     message = chat.addMessage(user._id, 'You on your way?');

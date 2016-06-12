@@ -17,4 +17,18 @@ export class DataProvider {
   get models() {
     return this.collection.models.map(model => this.get(model._id));
   }
+
+  get first() {
+    const model = this.collection.first;
+    return model && this.get(model._id);
+  }
+
+  get last() {
+    const model = this.collection.last;
+    return model && this.get(model._id);
+  }
+
+  get length() {
+    return this.collection.length;
+  }
 }
