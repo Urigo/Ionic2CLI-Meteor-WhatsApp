@@ -1,10 +1,13 @@
 .settings {
-  .setting-icon {
-    float: left;
+  .settings-list {
+    margin: 0;
   }
 
   .setting-name {
-    margin-left: 10px;
     float: left;
+  }
+
+  .setting-icon {
+    float: right;
   }
 }

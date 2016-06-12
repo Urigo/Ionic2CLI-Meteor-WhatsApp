@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, Alert} from 'ionic-angular';
+import {NavController, ViewController, Alert} from 'ionic-angular';
 import {ProfilePage} from '../profile/profile';
 import {LoginPage} from '../login/login';
 import {UsersData} from '../../data-providers/users-data';
@@ -9,15 +9,16 @@ import {UsersData} from '../../data-providers/users-data';
   templateUrl: 'build/pages/settings/settings.html'
 })
 export class SettingsPage {
-  static parameters = [[NavController], [UsersData]]
+  static parameters = [[NavController], [ViewController], [UsersData]]
 
-  constructor(nav, users) {
+  constructor(nav, view, users) {
     this.nav = nav;
+    this.view = view;
     this.users = users;
   }
 
   editProfile() {
-    this.nav.push(ProfilePage);
+    this.nav.push(ProfilePage).then(this::this.dismiss);
   }
 
   logout() {
@@ -42,6 +43,10 @@ export class SettingsPage {
       ]
     });
 
-    this.nav.present(alert);
+    this.nav.present(alert).then(this::this.dismiss);
+  }
+
+  dismiss() {
+    this.view.dismiss();
   }
 }

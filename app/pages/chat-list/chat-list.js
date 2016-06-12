@@ -1,9 +1,10 @@
-import {Component} from '@angular/core';
 import Moment from 'moment';
+import {Component} from '@angular/core';
 import {CalendarPipe} from 'angular2-moment';
-import {NavController, Modal} from 'ionic-angular';
+import {NavController, Modal, Popover} from 'ionic-angular';
 import {ChatDetailPage} from '../chat-detail/chat-detail';
 import {NewChatPage} from '../new-chat/new-chat';
+import {SettingsPage} from '../settings/settings';
 import {UsersData} from '../../data-providers/users-data';
 import {ChatsData} from '../../data-providers/chats-data';
 
@@ -65,5 +66,13 @@ export class ChatListPage {
 
   removeChat(chat) {
     this.chats.remove(chat._id);
+  }
+
+  showSettings() {
+    const popover = Popover.create(SettingsPage, {}, {
+      cssClass: 'settings-popover'
+    });
+
+    this.nav.present(popover);
   }
 }
