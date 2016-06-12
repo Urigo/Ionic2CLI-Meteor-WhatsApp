@@ -9,14 +9,14 @@
 </ion-navbar>
 
 <ion-content padding class="chat-detail">
-  <div class="messages-list">
+  <ion-scroll scrollY="true" class="messages-list">
     <div *ngFor="let message of messages.models" class="message-wrapper">
       <div [class]="'message message-' + message.ownership">
         <div class="message-contents">{{message.contents}}</div>
         <span class="message-timestamp">{{message.createdAt | amDateFormat: 'HH:MM'}}</span>
       </div>
     </div>
-  </div>
+  </ion-scroll>
 </ion-content>
 
 <ion-toolbar class="chat-detail-message-box" position="bottom">

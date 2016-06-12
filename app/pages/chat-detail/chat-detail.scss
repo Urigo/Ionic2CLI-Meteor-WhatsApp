@@ -12,9 +12,12 @@
 }
 
 .chat-detail {
-  .message-list {
-    margin-top: 12px;
-    padding: 0 5%;
+  > scroll-content {
+    padding: 0;
+  }
+
+  .messages-list {
+    height: 100%;
   }
 
   .message-wrapper {
