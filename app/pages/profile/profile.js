@@ -1,9 +1,10 @@
-import {Page, NavController, Alert} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {NavController, Alert} from 'ionic-angular';
 import {TabsPage} from '../tabs/tabs';
 import {UsersData} from '../../data-providers/users-data';
 
 
-@Page({
+@Component({
   templateUrl: 'build/pages/profile/profile.html'
 })
 export class ProfilePage {

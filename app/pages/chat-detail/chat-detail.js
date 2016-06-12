@@ -1,9 +1,10 @@
+import {Component} from '@angular/core';
 import {DateFormatPipe} from 'angular2-moment';
-import {Page, NavController, NavParams} from 'ionic-angular';
+import {NavController, NavParams} from 'ionic-angular';
 import {MessagesData} from '../../data-providers/messages-data';
 
 
-@Page({
+@Component({
   templateUrl: 'build/pages/chat-detail/chat-detail.html',
   pipes: [DateFormatPipe]
 })

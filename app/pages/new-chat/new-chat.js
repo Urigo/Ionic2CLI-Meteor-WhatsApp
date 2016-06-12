@@ -1,9 +1,10 @@
-import {Page, ViewController} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {ViewController} from 'ionic-angular';
 import {UsersData} from '../../data-providers/users-data';
 import {ChatsData} from '../../data-providers/chats-data';
 
 
-@Page({
+@Component({
   templateUrl: 'build/pages/new-chat/new-chat.html'
 })
 export class NewChatPage {

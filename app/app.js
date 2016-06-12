@@ -1,6 +1,7 @@
 import 'meteor-client-side';
 
-import {App, Platform, Alert} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {ionicBootstrap, Platform, Alert} from 'ionic-angular';
 import {METEOR_PROVIDERS} from 'angular2-meteor';
 import {StatusBar} from 'ionic-native';
 import {LoginPage} from './pages/login/login';
@@ -9,12 +10,10 @@ import {ChatsData} from './data-providers/chats-data';
 import {MessagesData} from './data-providers/messages-data';
 
 
-@App({
-  template: '<ion-nav [root]="rootPage"></ion-nav>',
-  providers: [METEOR_PROVIDERS, UsersData, ChatsData, MessagesData],
-  config: {} // http://ionicframework.com/docs/v2/api/config/Config/
+@Component({
+  template: '<ion-nav [root]="rootPage"></ion-nav>'
 })
-export class MyApp {
+export class ChatApp {
   static parameters = [[Platform]]
 
   constructor(platform) {
@@ -27,3 +26,7 @@ export class MyApp {
     });
   }
 }
+
+ionicBootstrap(ChatApp, [METEOR_PROVIDERS, UsersData, ChatsData, MessagesData], {
+  // http://ionicframework.com/docs/v2/api/config/Config/
+});

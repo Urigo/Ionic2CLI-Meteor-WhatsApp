@@ -1,9 +1,10 @@
-import {Page, NavController, NavParams, Alert} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {NavController, NavParams, Alert} from 'ionic-angular';
 import {ProfilePage} from '../profile/profile';
 import {UsersData} from '../../data-providers/users-data';
 
 
-@Page({
+@Component({
   templateUrl: 'build/pages/verification/verification.html'
 })
 export class VerificationPage {

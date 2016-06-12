@@ -1,13 +1,14 @@
+import {Component} from '@angular/core';
 import Moment from 'moment';
 import {CalendarPipe} from 'angular2-moment';
-import {Page, NavController, Modal} from 'ionic-angular';
+import {NavController, Modal} from 'ionic-angular';
 import {ChatDetailPage} from '../chat-detail/chat-detail';
 import {NewChatPage} from '../new-chat/new-chat';
 import {UsersData} from '../../data-providers/users-data';
 import {ChatsData} from '../../data-providers/chats-data';
 
 
-@Page({
+@Component({
   templateUrl: 'build/pages/chat-list/chat-list.html',
   pipes: [CalendarPipe]
 })

@@ -1,8 +1,9 @@
-import {Page, NavController, Alert} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {NavController, Alert} from 'ionic-angular';
 import {VerificationPage} from '../verification/verification';
 
 
-@Page({
+@Component({
   templateUrl: 'build/pages/login/login.html'
 })
 export class LoginPage {

@@ -1,4 +1,4 @@
-import {Page} from 'ionic-angular';
+import {Component} from '@angular/core';
 import {ChatListPage} from '../chat-list/chat-list';
 import {ContactsPage} from '../contacts/contacts';
 import {FavoritesPage} from '../favorites/favorites';
@@ -6,7 +6,7 @@ import {RecentsPage} from '../recents/recents';
 import {SettingsPage} from '../settings/settings';
 
 
-@Page({
+@Component({
   templateUrl: 'build/pages/tabs/tabs.html'
 })
 export class TabsPage {
