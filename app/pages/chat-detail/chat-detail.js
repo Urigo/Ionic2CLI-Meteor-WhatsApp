@@ -18,16 +18,28 @@ export class ChatDetailPage {
     this.message = '';
   }
 
-  onInputKeypress({keyCode}, messageInput) {
+  onInputKeypress({keyCode}) {
     if (keyCode == 13) {
-      this.sendMessage(messageInput);
+      this.sendMessage();
     }
   }
 
-  sendMessage(messageInput) {
+  sendMessage() {
+    this.sendingMessage = true;
     this.messages.add(this.message);
     this.message = '';
-    messageInput.setFocus();
+    this.messageInput.focus();
+  }
+
+  ngAfterViewChecked() {
+    if (this.sendingMessage) {
+      this.sendingMessage = false;
+      this.scrollDown();
+    }
+  }
+
+  scrollDown() {
+    this.scroller.scrollTop = this.scroller.scrollHeight;
   }
 
   attachFile() {
@@ -40,5 +52,25 @@ export class ChatDetailPage {
 
   recordVoiceMessage() {
 
+  }
+
+  get chatDetail() {
+    return document.querySelector('.chat-detail');
+  }
+
+  get messageBox() {
+    return document.querySelector('.chat-detail-message-box');
+  }
+
+  get messagesList() {
+    return this.chatDetail.querySelector('.messages-list');
+  }
+
+  get messageInput() {
+    return this.messageBox.querySelector('.message-input');
+  }
+
+  get scroller() {
+    return this.messagesList.querySelector('scroll-content');
   }
 }

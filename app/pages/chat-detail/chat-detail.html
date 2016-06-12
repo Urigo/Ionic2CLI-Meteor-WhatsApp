@@ -20,10 +20,10 @@
 </ion-content>
 
 <ion-toolbar class="chat-detail-message-box" position="bottom">
-  <ion-input #messageInput [(ngModel)]="message" (keypress)="onInputKeypress($event, messageInput)" class="message-input" placeholder="Type a message"></ion-input>
+  <ion-input [(ngModel)]="message" (keypress)="onInputKeypress($event)" class="message-input" placeholder="Type a message"></ion-input>
 
   <ion-buttons end>
-    <button *ngIf="message" class="message-input-button" (click)="sendMessage(messageInput)">
+    <button *ngIf="message" class="message-input-button" (click)="sendMessage()">
       <ion-icon name="send"></ion-icon>
     </button>
 
