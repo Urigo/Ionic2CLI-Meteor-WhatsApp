@@ -13,8 +13,8 @@ export class MessagesData extends DataProvider {
     this.chats = chats;
   }
 
-  add(contents) {
-    const message = this.currentChat.addMessage(this.currentUser._id, contents);
+  add(content) {
+    const message = this.currentChat.addMessage(this.currentUser._id, content);
     return this.get(message._id);
   }
 

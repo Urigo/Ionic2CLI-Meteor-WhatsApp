@@ -5,10 +5,10 @@ import {MessagesData} from '../../data-providers/messages-data';
 
 
 @Component({
-  templateUrl: 'build/pages/chat-detail/chat-detail.html',
+  templateUrl: 'build/pages/messages/messages.html',
   pipes: [DateFormatPipe]
 })
-export class ChatDetailPage {
+export class MessagesPage {
   static parameters = [[NavController], [NavParams], [MessagesData]]
 
   constructor(nav, params, messages) {
@@ -42,20 +42,20 @@ export class ChatDetailPage {
     this.scroller.scrollTop = this.scroller.scrollHeight;
   }
 
-  get chatDetail() {
-    return document.querySelector('.chat-detail');
+  get messagesPageContent() {
+    return document.querySelector('.messages-page-content');
   }
 
-  get messageBox() {
-    return document.querySelector('.chat-detail-message-box');
+  get messagesPageFooter() {
+    return document.querySelector('.messages-page-footer');
   }
 
   get messagesList() {
-    return this.chatDetail.querySelector('.messages-list');
+    return this.messagesPageContent.querySelector('.messages');
   }
 
   get messageInput() {
-    return this.messageBox.querySelector('.message-input');
+    return this.messagesPageFooter.querySelector('.message-input');
   }
 
   get scroller() {

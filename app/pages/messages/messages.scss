@@ -1,4 +1,4 @@
-.chat-detail-navbar {
+.messages-page-navbar {
   .chat-picture {
     width: 50px;
     border-radius: 50%;
@@ -11,12 +11,12 @@
   }
 }
 
-.chat-detail {
+.messages-page-content {
   > scroll-content {
     padding: 0;
   }
 
-  .messages-list {
+  .messages {
     height: 100%;
   }
 
@@ -66,7 +66,7 @@
       background-size: contain;
     }
 
-    .message-contents {
+    .message-content {
       padding: 5px 7px;
       word-wrap: break-word;
 
@@ -85,7 +85,7 @@
   }
 }
 
-.chat-detail-message-box {
+.messages-page-footer {
   .message-input {
     background: white;
     border-radius: 4px;

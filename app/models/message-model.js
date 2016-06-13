@@ -2,10 +2,10 @@ import {Model} from './model';
 
 
 export class MessageModel extends Model {
-  constructor({ chatId, addresseeId, contents }) {
+  constructor({ chatId, addresseeId, content }) {
     super();
     this.chatId = chatId;
     this.addresseeId = addresseeId;
-    this.contents = contents;
+    this.content = content;
   }
 }

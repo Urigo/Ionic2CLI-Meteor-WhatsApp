@@ -3,21 +3,21 @@
 
   <ion-buttons end>
     <button class="add-chat-button" (click)="addChat()"><ion-icon name="person-add"></ion-icon></button>
-    <button class="settings-button" (click)="showSettings()"><ion-icon name="more"></ion-icon></button>
+    <button class="settings-button" (click)="showOptions()"><ion-icon name="more"></ion-icon></button>
   </ion-buttons>
 </ion-navbar>
 
-<ion-content padding class="chat-list">
-  <ion-list>
-    <ion-item-sliding *ngFor="let chat of chats.models" (click)="goToChatDetail(chat)">
-      <button ion-item>
+<ion-content padding class="chats-page-content">
+  <ion-list class="chats">
+    <ion-item-sliding *ngFor="let chat of chats.models" (click)="showMessages(chat)">
+      <button ion-item class="chat">
         <img class="chat-picture" [src]="chat.picture">
 
         <div class="chat-info">
           <h2 class="chat-title">{{chat.title}}</h2>
 
-          <span *ngIf="chat.messages.last">
-            <p class="recent-message-contents">{{chat.messages.last.contents}}</p>
+          <span *ngIf="chat.messages.last" class="last-message">
+            <p class="last-message-content">{{chat.messages.last.content}}</p>
             <span class="last-message-timestamp">{{chat.messages.last.createdAt | amCalendar}}</span>
           </span>
         </div>

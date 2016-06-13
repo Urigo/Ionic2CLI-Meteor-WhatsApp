@@ -9,11 +9,11 @@ export class ChatModel extends Model {
     this.memberIds = memberIds;
   }
 
-  addMessage(addresseeId, contents) {
+  addMessage(addresseeId, content) {
     return this.messages.add({
       chatId: this._id,
       addresseeId: addresseeId,
-      contents: contents
+      content: content
     });
   }
 }

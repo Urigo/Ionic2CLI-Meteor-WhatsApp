@@ -2,18 +2,18 @@ import Moment from 'moment';
 import {Component} from '@angular/core';
 import {CalendarPipe} from 'angular2-moment';
 import {NavController, Modal, Popover} from 'ionic-angular';
-import {ChatDetailPage} from '../chat-detail/chat-detail';
+import {MessagesPage} from '../messages/messages';
 import {NewChatPage} from '../new-chat/new-chat';
-import {SettingsPage} from '../settings/settings';
+import {ChatsOptionsPage} from '../chats-options/chats-options';
 import {UsersData} from '../../data-providers/users-data';
 import {ChatsData} from '../../data-providers/chats-data';
 
 
 @Component({
-  templateUrl: 'build/pages/chat-list/chat-list.html',
+  templateUrl: 'build/pages/chats/chats.html',
   pipes: [CalendarPipe]
 })
-export class ChatListPage {
+export class ChatsPage {
   static parameters = [[NavController], [UsersData], [ChatsData]]
 
   constructor(nav, users, chats) {
@@ -54,11 +54,6 @@ export class ChatListPage {
     message.timestamp = Moment().subtract(2, 'weeks').toDate();
   }
 
-  goToChatDetail(chat) {
-    this.chats.current = chat;
-    this.nav.push(ChatDetailPage);
-  }
-
   addChat() {
     const modal = Modal.create(NewChatPage);
     this.nav.present(modal);
@@ -68,9 +63,14 @@ export class ChatListPage {
     this.chats.remove(chat._id);
   }
 
-  showSettings() {
-    const popover = Popover.create(SettingsPage, {}, {
-      cssClass: 'settings-popover'
+  showMessages(chat) {
+    this.chats.current = chat;
+    this.nav.push(MessagesPage);
+  }
+
+  showOptions() {
+    const popover = Popover.create(ChatsOptionsPage, {}, {
+      cssClass: 'options-popover'
     });
 
     this.nav.present(popover);

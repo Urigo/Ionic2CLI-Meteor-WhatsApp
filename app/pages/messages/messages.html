@@ -1,4 +1,4 @@
-<ion-navbar *navbar class="chat-detail-navbar">
+<ion-navbar *navbar class="messages-page-navbar">
   <img class="chat-picture" [src]="currentChat.picture">
   <ion-title class="chat-title">{{currentChat.title}}</ion-title>
 
@@ -8,18 +8,18 @@
   </ion-buttons>
 </ion-navbar>
 
-<ion-content padding class="chat-detail">
-  <ion-scroll scrollY="true" class="messages-list">
+<ion-content padding class="messages-page-content">
+  <ion-scroll scrollY="true" class="messages">
     <div *ngFor="let message of messages.models" class="message-wrapper">
       <div [class]="'message message-' + message.ownership">
-        <div class="message-contents">{{message.contents}}</div>
+        <div class="message-content">{{message.content}}</div>
         <span class="message-timestamp">{{message.createdAt | amDateFormat: 'HH:MM'}}</span>
       </div>
     </div>
   </ion-scroll>
 </ion-content>
 
-<ion-toolbar class="chat-detail-message-box" position="bottom">
+<ion-toolbar class="messages-page-footer" position="bottom">
   <ion-input [(ngModel)]="message" (keypress)="onInputKeypress($event)" class="message-input" placeholder="Type a message"></ion-input>
 
   <ion-buttons end>

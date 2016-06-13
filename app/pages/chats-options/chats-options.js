@@ -6,9 +6,9 @@ import {UsersData} from '../../data-providers/users-data';
 
 
 @Component({
-  templateUrl: 'build/pages/settings/settings.html'
+  templateUrl: 'build/pages/chats-options/chats-options.html'
 })
-export class SettingsPage {
+export class ChatsOptionsPage {
   static parameters = [[NavController], [ViewController], [UsersData]]
 
   constructor(nav, view, users) {
