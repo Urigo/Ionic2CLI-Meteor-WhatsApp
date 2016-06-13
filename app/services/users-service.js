@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {DataProvider} from './data-provider';
+import {CollectionService} from './collection-service';
 import {UsersCollection} from '../collections/users-collection';
 
 
 @Injectable()
-export class UsersData extends DataProvider {
+export class UsersService extends CollectionService {
   constructor() {
     super();
     this.collection = new UsersCollection();

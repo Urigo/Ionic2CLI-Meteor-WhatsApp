@@ -1,4 +1,4 @@
-export class DataProvider {
+export class CollectionService {
   add(modelData) {
     const model = this.collection.add(modelData);
     return this.get(model._id);

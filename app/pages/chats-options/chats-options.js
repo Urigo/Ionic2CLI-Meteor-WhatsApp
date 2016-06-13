@@ -2,14 +2,14 @@ import {Component} from '@angular/core';
 import {NavController, ViewController, Alert} from 'ionic-angular';
 import {ProfilePage} from '../profile/profile';
 import {LoginPage} from '../login/login';
-import {UsersData} from '../../data-providers/users-data';
+import {UsersService} from '../../services/users-service';
 
 
 @Component({
   templateUrl: 'build/pages/chats-options/chats-options.html'
 })
 export class ChatsOptionsPage {
-  static parameters = [[NavController], [ViewController], [UsersData]]
+  static parameters = [[NavController], [ViewController], [UsersService]]
 
   constructor(nav, view, users) {
     this.nav = nav;

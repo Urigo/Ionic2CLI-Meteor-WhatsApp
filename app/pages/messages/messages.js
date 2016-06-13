@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {DateFormatPipe} from 'angular2-moment';
 import {NavController, NavParams} from 'ionic-angular';
-import {MessagesData} from '../../data-providers/messages-data';
+import {MessagesService} from '../../services/messages-service';
 
 
 @Component({
@@ -9,7 +9,7 @@ import {MessagesData} from '../../data-providers/messages-data';
   pipes: [DateFormatPipe]
 })
 export class MessagesPage {
-  static parameters = [[NavController], [NavParams], [MessagesData]]
+  static parameters = [[NavController], [NavParams], [MessagesService]]
 
   constructor(nav, params, messages) {
     this.nav = nav;

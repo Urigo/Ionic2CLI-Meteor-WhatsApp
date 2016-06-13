@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
-import {DataProvider} from './data-provider';
-import {UsersData} from './users-data';
+import {CollectionService} from './collection-service';
+import {UsersService} from './users-service';
 
 
 @Injectable()
-export class ChatsData extends DataProvider {
-  static parameters = [[UsersData]]
+export class ChatsService extends CollectionService {
+  static parameters = [[UsersService]]
 
   constructor(users) {
     super();

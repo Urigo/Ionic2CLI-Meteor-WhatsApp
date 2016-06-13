@@ -5,8 +5,8 @@ import {NavController, Modal, Popover} from 'ionic-angular';
 import {MessagesPage} from '../messages/messages';
 import {NewChatPage} from '../new-chat/new-chat';
 import {ChatsOptionsPage} from '../chats-options/chats-options';
-import {UsersData} from '../../data-providers/users-data';
-import {ChatsData} from '../../data-providers/chats-data';
+import {UsersService} from '../../services/users-service';
+import {ChatsService} from '../../services/chats-service';
 
 
 @Component({
@@ -14,7 +14,7 @@ import {ChatsData} from '../../data-providers/chats-data';
   pipes: [CalendarPipe]
 })
 export class ChatsPage {
-  static parameters = [[NavController], [UsersData], [ChatsData]]
+  static parameters = [[NavController], [UsersService], [ChatsService]]
 
   constructor(nav, users, chats) {
     let user;

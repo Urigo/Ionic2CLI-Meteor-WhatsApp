@@ -1,14 +1,14 @@
 import {Component} from '@angular/core';
 import {ViewController} from 'ionic-angular';
-import {UsersData} from '../../data-providers/users-data';
-import {ChatsData} from '../../data-providers/chats-data';
+import {UsersService} from '../../services/users-service';
+import {ChatsService} from '../../services/chats-service';
 
 
 @Component({
   templateUrl: 'build/pages/new-chat/new-chat.html'
 })
 export class NewChatPage {
-  static parameters = [[ViewController], [UsersData], [ChatsData]]
+  static parameters = [[ViewController], [UsersService], [ChatsService]]
 
   constructor(view, users, chats) {
     this.view = view;

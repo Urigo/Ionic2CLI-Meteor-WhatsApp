@@ -1,14 +1,14 @@
 import {Component} from '@angular/core';
 import {NavController, Alert} from 'ionic-angular';
 import {TabsPage} from '../tabs/tabs';
-import {UsersData} from '../../data-providers/users-data';
+import {UsersService} from '../../services/users-service';
 
 
 @Component({
   templateUrl: 'build/pages/profile/profile.html'
 })
 export class ProfilePage {
-  static parameters = [[NavController], [UsersData]]
+  static parameters = [[NavController], [UsersService]]
 
   constructor(nav, users) {
     this.nav = nav;
