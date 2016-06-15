@@ -7,6 +7,7 @@ import {UsersCollection} from '../collections/users-collection';
 export class UsersService extends CollectionService {
   constructor() {
     super();
+
     this.collection = new UsersCollection();
 
     this.collection.add({

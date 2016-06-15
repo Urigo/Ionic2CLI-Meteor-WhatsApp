@@ -14,33 +14,33 @@ export class MessagesService extends CollectionService {
   }
 
   add(content) {
-    const message = this.currentChat.addMessage(this.currentUser._id, content);
+    const message = this.activeChat.addMessage(this.activeUser._id, content);
     return this.get(message._id);
   }
 
   get(messageId) {
     const message = super.get(messageId);
     const addressee = this.users.get(message.addresseeId);
-    const recipientId = this.currentChat.memberIds.find(memberId => memberId != addressee._id);
+    const recipientId = this.activeChat.memberIds.find(memberId => memberId != addressee._id);
     const recipient = this.users.get(recipientId);
 
-    message.chat = this.currentChat;
+    message.chat = this.activeChat;
     message.addressee = addressee;
     message.recipient = recipient;
-    message.ownership = this.currentUser._id == message.addressee._id ? 'mine' : 'others';
+    message.ownership = this.activeUser._id == message.addressee._id ? 'mine' : 'others';
 
     return message;
   }
 
-  get currentUser() {
-    return this.users.current;
+  get activeUser() {
+    return this.users.active;
   }
 
-  get currentChat() {
-    return this.chats.current;
+  get activeChat() {
+    return this.chats.active;
   }
 
   get collection() {
-    return this.currentChat.messages;
+    return this.activeChat.messages;
   }
 }

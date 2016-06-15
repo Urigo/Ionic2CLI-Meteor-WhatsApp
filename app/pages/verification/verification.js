@@ -30,10 +30,12 @@ export class VerificationPage {
       return this.handleError(e);
     }
 
-    this.users.current = this.users.add({
+    const user = this.users.add({
       phone: this.phone,
       picture: '/ionicons/dist/svg/ios-contact.svg'
     });
+
+    this.users.setActive(user._id).store();
 
     this.nav.setRoot(ProfilePage, {}, {
       animate: true

@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {DateFormatPipe} from 'angular2-moment';
 import {NavController, NavParams} from 'ionic-angular';
+import {ChatsService} from '../../services/chats-service';
 import {MessagesService} from '../../services/messages-service';
 
 
@@ -9,12 +10,13 @@ import {MessagesService} from '../../services/messages-service';
   pipes: [DateFormatPipe]
 })
 export class MessagesPage {
-  static parameters = [[NavController], [NavParams], [MessagesService]]
+  static parameters = [[NavController], [NavParams], [ChatsService], [MessagesService]]
 
-  constructor(nav, params, messages) {
+  constructor(nav, params, chats, messages) {
     this.nav = nav;
+    this.chats = chats;
     this.messages = messages;
-    this.currentChat = messages.currentChat;
+    this.activeChat = messages.activeChat;
     this.message = '';
   }
 
@@ -36,6 +38,10 @@ export class MessagesPage {
       this.scrollDown();
       this.messageInput.focus();
     }
+  }
+
+  ngOnDestroy() {
+    this.chats.unsetActive().dispose();
   }
 
   scrollDown() {

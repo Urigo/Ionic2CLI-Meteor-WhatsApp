@@ -33,7 +33,7 @@ export class ChatsOptionsPage {
         {
           text: 'Yes',
           handler: () => {
-            delete this.users.current;
+            this.users.unsetActive().dispose();
 
             this.nav.rootNav.setRoot(LoginPage, null, {
               animate: true

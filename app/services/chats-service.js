@@ -13,16 +13,16 @@ export class ChatsService extends CollectionService {
   }
 
   add(recipientId) {
-    const chat = this.currentUser.addChat(recipientId);
+    const chat = this.activeUser.addChat(recipientId);
     return this.get(chat._id);
   }
 
   get(chatId) {
     const chat = super.get(chatId);
-    const recipientId = chat.memberIds.find(memberId => memberId != this.currentUser._id);
+    const recipientId = chat.memberIds.find(memberId => memberId != this.activeUser._id);
     const recipient = this.users.get(recipientId);
 
-    chat.addressee = this.currentUser;
+    chat.addressee = this.activeUser;
     chat.recipient = recipient;
     chat.title = recipient.name;
     chat.picture = recipient.picture;
@@ -35,14 +35,14 @@ export class ChatsService extends CollectionService {
   }
 
   chattingWith(recipientId) {
-    return this.currentUser._id == recipientId || !!this.getByRecipient(recipientId);
+    return this.activeUser._id == recipientId || !!this.getByRecipient(recipientId);
   }
 
-  get currentUser() {
-    return this.users.current;
+  get activeUser() {
+    return this.users.active;
   }
 
   get collection() {
-    return this.currentUser.chats;
+    return this.activeUser.chats;
   }
 }

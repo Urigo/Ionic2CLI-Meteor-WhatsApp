@@ -17,41 +17,45 @@ export class ChatsPage {
   static parameters = [[NavController], [UsersService], [ChatsService]]
 
   constructor(nav, users, chats) {
-    let user;
-    let chat;
-    let message;
-    let userIndex = 0;
-
     this.nav = nav;
-    this.currentUser = users.current;
+    this.activeUser = users.active;
     this.chats = chats;
 
-    if (this.chats.length) return this;
+    if (!this.chats.length) {
+      let user;
+      let chat;
+      let message;
+      let userIndex = 0;
 
-    user = users.models[userIndex++];
-    chat = this.currentUser.addChat(user._id);
-    message = chat.addMessage(user._id, 'You on your way?');
-    message.timestamp = Moment().subtract(1, 'hours').toDate();
+      user = users.models[userIndex++];
+      chat = this.activeUser.addChat(user._id);
+      message = chat.addMessage(user._id, 'You on your way?');
+      message.timestamp = Moment().subtract(1, 'hours').toDate();
 
-    user = users.models[userIndex++];
-    chat = this.currentUser.addChat(user._id);
-    message = chat.addMessage(user._id, 'Hey, it\'s me');
-    message.timestamp = Moment().subtract(2, 'hours').toDate();
+      user = users.models[userIndex++];
+      chat = this.activeUser.addChat(user._id);
+      message = chat.addMessage(user._id, 'Hey, it\'s me');
+      message.timestamp = Moment().subtract(2, 'hours').toDate();
 
-    user = users.models[userIndex++];
-    chat = this.currentUser.addChat(user._id);
-    message = chat.addMessage(user._id, 'I should buy a boat');
-    message.timestamp = Moment().subtract(1, 'days').toDate();
+      user = users.models[userIndex++];
+      chat = this.activeUser.addChat(user._id);
+      message = chat.addMessage(user._id, 'I should buy a boat');
+      message.timestamp = Moment().subtract(1, 'days').toDate();
 
-    user = users.models[userIndex++];
-    chat = this.currentUser.addChat(user._id);
-    message = chat.addMessage(user._id, 'Look at my mukluks!');
-    message.timestamp = Moment().subtract(4, 'days').toDate();
+      user = users.models[userIndex++];
+      chat = this.activeUser.addChat(user._id);
+      message = chat.addMessage(user._id, 'Look at my mukluks!');
+      message.timestamp = Moment().subtract(4, 'days').toDate();
 
-    user = users.models[userIndex++];
-    chat = this.currentUser.addChat(user._id);
-    message = chat.addMessage(user._id, 'This is wicked good ice cream.');
-    message.timestamp = Moment().subtract(2, 'weeks').toDate();
+      user = users.models[userIndex++];
+      chat = this.activeUser.addChat(user._id);
+      message = chat.addMessage(user._id, 'This is wicked good ice cream.');
+      message.timestamp = Moment().subtract(2, 'weeks').toDate();
+    }
+
+    if (chats.active) {
+      this.nav.push(MessagesPage);
+    }
   }
 
   addChat() {
@@ -64,7 +68,7 @@ export class ChatsPage {
   }
 
   showMessages(chat) {
-    this.chats.current = chat;
+    this.chats.setActive(chat._id).store();
     this.nav.push(MessagesPage);
   }
 

@@ -12,9 +12,9 @@ export class ProfilePage {
 
   constructor(nav, users) {
     this.nav = nav;
-    this.currentUser = users.current;
-    this.username = this.currentUser.name;
-    this.profilePic = this.currentUser.picture;
+    this.activeUser = users.active;
+    this.username = this.activeUser.name;
+    this.profilePic = this.activeUser.picture;
   }
 
   goToTabsPage() {
@@ -26,8 +26,8 @@ export class ProfilePage {
       return this.handleError(e);
     }
 
-    this.currentUser.name = this.username;
-    this.currentUser.picture = this.profilePic;
+    this.activeUser.name = this.username;
+    this.activeUser.picture = this.profilePic;
     this.nav.push(TabsPage);
   }
 
