@@ -1,8 +1,11 @@
-import { Meteor } from 'meteor/meteor';
-import { Chats, Messages } from './collections';
+import {Meteor} from 'meteor/meteor';
+import {Chats, Messages} from './collections';
+
 
 Meteor.publish('users', function() {
-  return Meteor.users.find({}, { fields: { profile: 1 } });
+  return Meteor.users.find({}, {
+    fields: {profile: 1}
+  });
 });
 
 Meteor.publishComposite('chats', function() {
@@ -10,18 +13,24 @@ Meteor.publishComposite('chats', function() {
 
   return {
     find() {
-      return Chats.find({ userIds: this.userId });
+      return Chats.find({memberIds: this.userId});
     },
+
     children: [
       {
         find(chat) {
-          return Messages.find({ chatId: chat._id });
+          return Messages.find({chatId: chat._id});
         }
       },
       {
         find(chat) {
-          const query = { _id: { $in: chat.userIds } };
-          const options = { fields: { profile: 1 } };
+          const query = {
+            _id: {$in: chat.memberIds}
+          };
+
+          const options = {
+            fields: {profile: 1}
+          };
 
           return Meteor.users.find(query, options);
         }

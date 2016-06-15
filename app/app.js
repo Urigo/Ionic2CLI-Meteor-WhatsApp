@@ -1,9 +1,14 @@
 import 'meteor-client-side';
+import 'accounts-base-client-side';
+import 'accounts-phone';
+import 'server/methods.js';
+import 'server/collections';
+import 'server/methods';
 
 import {Component} from '@angular/core';
 import {ionicBootstrap, Platform, Alert} from 'ionic-angular';
-import {METEOR_PROVIDERS} from 'angular2-meteor';
 import {StatusBar} from 'ionic-native';
+import {METEOR_PROVIDERS} from 'angular2-meteor';
 import {ChatsPage} from './pages/chats/chats'
 import {LoginPage} from './pages/login/login';
 import {UsersService} from './services/users-service';
@@ -14,7 +19,7 @@ import {MessagesService} from './services/messages-service';
 @Component({
   template: '<ion-nav [root]="rootPage"></ion-nav>'
 })
-export class ChatApp {
+export class MessengerApp {
   static parameters = [[Platform], [UsersService]]
 
   constructor(platform, users) {
@@ -28,6 +33,6 @@ export class ChatApp {
   }
 }
 
-ionicBootstrap(ChatApp, [METEOR_PROVIDERS, UsersService, ChatsService, MessagesService], {
+ionicBootstrap(MessengerApp, [METEOR_PROVIDERS, UsersService, ChatsService, MessagesService], {
   // http://ionicframework.com/docs/v2/api/config/Config/
 });

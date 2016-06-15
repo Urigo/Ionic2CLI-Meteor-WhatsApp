@@ -1,84 +1,69 @@
-import { Meteor } from 'meteor/meteor';
-import { check } from 'meteor/check';
-import { Chats, Messages } from './collections';
+import {Meteor} from 'meteor/meteor';
+import {check} from 'meteor/check';
+import {Chats, Messages} from './collections';
+
 
 Meteor.methods({
-  newMessage(message) {
-    if (!this.userId) {
-      throw new Meteor.Error('not-logged-in',
-        'Must be logged in to send message.');
-    }
-
-    check(message, {
-      text: String,
-      chatId: String
-    });
-
-    message.timestamp = new Date();
-    message.userId = this.userId;
-
-    const messageId = Messages.insert(message);
-    Chats.update(message.chatId, { $set: { lastMessage: message } });
-
-    return messageId;
-  },
-
-  updateName(name) {
-    if (!this.userId) {
-      throw new Meteor.Error('not-logged-in',
-        'Must be logged in to update his name.');
-    }
+  updateUsername(name) {
+    if (!this.userId) throw new Meteor.Error('not-logged-in',
+      'User must be logged-in to update its name');
 
     check(name, String);
 
-    if (name.length === 0) {
-      throw Meteor.Error('name-required', 'Must provide a user name');
-    }
+    if (name.length) throw Meteor.Error('name-required',
+      'A name must be provided');
 
-    return Meteor.users.update(this.userId, { $set: { 'profile.name': name } });
+    return Meteor.users.update(this.userId, {
+      $set: {'profile.name': name}
+    });
   },
 
-  newChat(otherId) {
-    if (!this.userId) {
-      throw new Meteor.Error('not-logged-in',
-        'Must be logged to create a chat.');
-    }
+  newChat(recipientId) {
+    if (!this.userId) throw new Meteor.Error('not-logged-in',
+      'User must be logged-in to create a new chat');
 
-    check(otherId, String);
-    const otherUser = Meteor.users.findOne(otherId);
+    check(recipientId, String);
+    const recipient = Meteor.users.findOne(recipientId);
 
-    if (!otherUser) {
-      throw new Meteor.Error('user-not-exists',
-        'Chat\'s user not exists');
-    }
+    if (!recipient) throw new Meteor.Error('recipient-not-exist',
+      'Recipient doesn\'t exist');
 
     const chat = {
-      userIds: [this.userId, otherId],
+      memberIds: [this.userId, recipientId],
       createdAt: new Date()
     };
 
-    const chatId = Chats.insert(chat);
-
-    return chatId;
+    return Chats.insert(chat);
   },
 
   removeChat(chatId) {
-    if (!this.userId) {
-      throw new Meteor.Error('not-logged-in',
-        'Must be logged to create a chat.');
-    }
+    if (!this.userId) throw new Meteor.Error('not-logged-in',
+      'User must be logged-in to remove chat');
 
     check(chatId, String);
 
     const chat = Chats.findOne(chatId);
+    const chatExists = chat && _.include(chat.memberIds, this.userId);
 
-    if (!chat || !_.include(chat.userIds, this.userId)) {
-      throw new Meteor.Error('chat-not-exists',
-        'Chat not exists');
-    }
+    if (!chatExists) throw new Meteor.Error('chat-not-exist',
+      'Chat doesn\'t exist');
 
-    Messages.remove({ chatId: chatId });
+    Messages.remove({chatId: chatId});
+    return Chats.remove({_id: chatId});
+  },
 
-    return Chats.remove({ _id: chatId });
+  newMessage(message) {
+    if (!this.userId) throw new Meteor.Error('not-logged-in',
+      'User must be logged-in to create a new message');
+
+    check(message, {
+      chatId: String,
+      content: String
+    });
+
+    message.addresseeId = this.userId;
+    message.createdAt = new Date();
+
+    return Messages.insert(message);
   }
 });
