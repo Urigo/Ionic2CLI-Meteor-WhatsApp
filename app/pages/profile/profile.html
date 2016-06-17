@@ -3,18 +3,18 @@
   <ion-title>Profile</ion-title>
 
   <ion-buttons end>
-    <button class="done-button" (click)="goToTabsPage()">Done</button>
+    <button class="done-button" (click)="done()">Done</button>
   </ion-buttons>
 </ion-navbar>
 
 <ion-content class="profile-page-content">
   <div class="profile-picture">
-    <img [src]="profilePic">
+    <img [src]="profile.picture">
     <ion-icon name="create"></ion-icon>
   </div>
 
-  <ion-item class="username">
+  <ion-item class="profile-name">
     <ion-label stacked>Name</ion-label>
-    <ion-input [(ngModel)]="username" placeholder="Your name"></ion-input>
+    <ion-input [(ngModel)]="profile.name" placeholder="Your name"></ion-input>
   </ion-item>
 </ion-content>

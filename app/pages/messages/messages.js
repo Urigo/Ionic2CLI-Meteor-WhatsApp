@@ -1,23 +1,34 @@
 import {Component} from '@angular/core';
+import {MeteorComponent} from 'angular2-meteor';
 import {DateFormatPipe} from 'angular2-moment';
 import {NavController, NavParams} from 'ionic-angular';
-import {ChatsService} from '../../services/chats-service';
-import {MessagesService} from '../../services/messages-service';
+import {Messages} from 'service/collections';
 
 
 @Component({
   templateUrl: 'build/pages/messages/messages.html',
   pipes: [DateFormatPipe]
 })
-export class MessagesPage {
-  static parameters = [[NavController], [NavParams], [ChatsService], [MessagesService]]
+export class MessagesPage extends MeteorComponent {
+  static parameters = [[NavController], [NavParams]]
 
-  constructor(nav, params, chats, messages) {
+  constructor(nav, params) {
+    super();
+
     this.nav = nav;
-    this.chats = chats;
-    this.messages = messages;
-    this.activeChat = messages.activeChat;
+    this.activeChat = params.get('chat');
     this.message = '';
+
+    this.messages = Messages.find({
+      chatId: this.activeChat._id
+    });
+
+    this.messages.find().observe({
+      added() {
+        this.scrollDown();
+        this.messageInput.focus();
+      }
+    });
   }
 
   onInputKeypress({keyCode}) {
@@ -27,25 +38,16 @@ export class MessagesPage {
   }
 
   sendMessage() {
-    this.sendingMessage = true;
-    this.messages.add(this.message);
+    this.call('addMessage', this.activeChat._id, this.message);
     this.message = '';
-  }
-
-  ngAfterViewChecked() {
-    if (this.sendingMessage) {
-      this.sendingMessage = false;
-      this.scrollDown();
-      this.messageInput.focus();
-    }
-  }
-
-  ngOnDestroy() {
-    this.chats.unsetActive().dispose();
   }
 
   scrollDown() {
     this.scroller.scrollTop = this.scroller.scrollHeight;
+  }
+
+  ngOnDestroy() {
+    localStorage.removeItem('activeChat');
   }
 
   get messagesPageContent() {

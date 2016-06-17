@@ -1,23 +1,27 @@
 import {Component} from '@angular/core';
+import {MeteorComponent} from 'angular2-meteor';
 import {ViewController} from 'ionic-angular';
-import {UsersService} from '../../services/users-service';
-import {ChatsService} from '../../services/chats-service';
+import {Meteor} from 'meteor/meteor';
 
 
 @Component({
   templateUrl: 'build/pages/new-chat/new-chat.html'
 })
-export class NewChatPage {
-  static parameters = [[ViewController], [UsersService], [ChatsService]]
+export class NewChatPage extends MeteorComponent {
+  static parameters = [[ViewController]]
 
-  constructor(view, users, chats) {
+  constructor(view) {
+    super();
+
     this.view = view;
-    this.users = users;
-    this.chats = chats;
+
+    this.subscribe('potentialRecipients', () => {
+      this.users = Meteor.users.find();
+    });
   }
 
   addChat(user) {
-    this.chats.add(user._id);
+    this.call('addChat', user._id);
     this.dismiss();
   }
 

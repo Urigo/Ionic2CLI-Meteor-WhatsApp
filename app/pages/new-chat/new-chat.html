@@ -8,12 +8,10 @@
 
 
 <ion-content class="new-chat">
-  <ion-list>
-    <span *ngFor="let user of users.models">
-      <button ion-item *ngIf="!chats.chattingWith(user._id)" (click)="addChat(user)">
-        <img class="user-picture" [src]="user.picture">
-        <h2 class="user-name">{{user.name}}</h2>
-      </button>
-    </span>
+  <ion-list class="users">
+    <button ion-item *ngFor="let user of users" class="user" (click)="addChat(user)">
+      <img class="user-picture" [src]="user.picture">
+      <h2 class="user-name">{{user.name}}</h2>
+    </button>
   </ion-list>
 </ion-content>

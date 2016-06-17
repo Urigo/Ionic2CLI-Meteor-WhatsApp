@@ -1,18 +1,17 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams, Alert} from 'ionic-angular';
+import {Accounts} from 'meteor/accounts-base';
 import {ProfilePage} from '../profile/profile';
-import {UsersService} from '../../services/users-service';
 
 
 @Component({
   templateUrl: 'build/pages/verification/verification.html'
 })
 export class VerificationPage {
-  static parameters = [[NavController], [NavParams], [UsersService]]
+  static parameters = [[NavController], [NavParams]]
 
-  constructor(nav, params, users) {
+  constructor(nav, params) {
     this.nav = nav;
-    this.users = users;
     this.phone = params.get('phone');
   }
 
@@ -23,29 +22,22 @@ export class VerificationPage {
   }
 
   verify() {
-    try {
-      this.verifyCode();
-    }
-    catch (e) {
-      return this.handleError(e);
-    }
+    Accounts.verifyPhone(this.phone, this.code, (e) => {
+      if (e) return this.handleError(e);
 
-    const user = this.users.add({
-      phone: this.phone,
-      picture: '/ionicons/dist/svg/ios-contact.svg'
+      const profile = {
+        name: '',
+        picture: '/ionicons/dist/svg/ios-contact.svg'
+      };
+
+      Meteor.users.update(Meteor.userId(), {
+        $set({profile})
+      });
+
+      this.nav.setRoot(ProfilePage, {}, {
+        animate: true
+      });
     });
-
-    this.users.setActive(user._id).store();
-
-    this.nav.setRoot(ProfilePage, {}, {
-      animate: true
-    });
-  }
-
-  verifyCode() {
-    if (!/^\d{4}$/.test(this.code)) {
-      throw Error('Verification code did not match');
-    }
   }
 
   handleError(e) {

@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController, Alert} from 'ionic-angular';
+import {Accounts} from 'meteor/accounts-base';
 import {VerificationPage} from '../verification/verification';
 
 
@@ -20,13 +21,6 @@ export class LoginPage {
   }
 
   login() {
-    try {
-      this.verifyPhone();
-    }
-    catch (e) {
-      return this.handleError(e);
-    }
-
     const alert = Alert.create({
       title: 'Confirm',
       message: `Would you like to proceed with the phone number ${this.phone}?`,
@@ -37,11 +31,7 @@ export class LoginPage {
         },
         {
           text: 'Yes',
-          handler: () => {
-            this.nav.push(VerificationPage, {
-              phone: this.phone
-            });
-          }
+          handler: this::this.handleLogin
         }
       ]
     });
@@ -49,10 +39,14 @@ export class LoginPage {
     this.nav.present(alert);
   }
 
-  verifyPhone() {
-    if (!/^\+\d{10,12}$/.test(this.phone)) {
-      throw Error('Phone number is invalid');
-    }
+  handleLogin() {
+    Accounts.requestPhoneVerification(this.phone, (e) => {
+      if (e) return this.handleError(e);
+
+      this.nav.push(VerificationPage, {
+        phone: this.phone
+      });
+    });
   }
 
   handleError(e) {

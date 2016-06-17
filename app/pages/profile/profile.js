@@ -1,44 +1,44 @@
 import {Component} from '@angular/core';
 import {NavController, Alert} from 'ionic-angular';
+import {Meteor} from 'meteor/meteor';
 import {TabsPage} from '../tabs/tabs';
-import {UsersService} from '../../services/users-service';
 
 
 @Component({
   templateUrl: 'build/pages/profile/profile.html'
 })
 export class ProfilePage {
-  static parameters = [[NavController], [UsersService]]
+  static parameters = [[NavController]]
 
-  constructor(nav, users) {
+  constructor(nav) {
     this.nav = nav;
-    this.activeUser = users.active;
-    this.username = this.activeUser.name;
-    this.profilePic = this.activeUser.picture;
+    this.profile = Meteor.user().profile;
   }
 
-  goToTabsPage() {
+  done() {
     try {
-      this.verifyUsername();
-      this.verifyProfilePic();
+      this.checkName();
+      this.checkPicture();
     }
     catch (e) {
       return this.handleError(e);
     }
 
-    this.activeUser.name = this.username;
-    this.activeUser.picture = this.profilePic;
+    Meteor.users.update(Meteor.userId(), {
+      $set: {profile: this.profile}
+    });
+
     this.nav.push(TabsPage);
   }
 
-  verifyUsername() {
-    if (typeof this.username != 'string' || !this.username.length) {
-      throw Error('User name is invalid');
+  checkName() {
+    if (!this.profile.name.length) {
+      throw Error('Profile name is invalid');
     }
   }
 
-  verifyProfilePic() {
-    if (typeof this.profilePic != 'string' || !this.profilePic.length) {
+  checkPicture() {
+    if (!this.profile.picture.length) {
       throw Error('Profile picture is invalid');
     }
   }
@@ -47,7 +47,7 @@ export class ProfilePage {
     console.error(e);
 
     const alert = Alert.create({
-      title: 'Profiling failed',
+      title: 'Oops!',
       message: e.message,
       buttons: ['OK']
     });

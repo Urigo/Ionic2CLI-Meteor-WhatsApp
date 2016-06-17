@@ -1,20 +1,20 @@
-import {Component} from '@angular/core';
+import {Component, NgZone} from '@angular/core';
 import {NavController, ViewController, Alert} from 'ionic-angular';
+import {Meteor} from 'meteor/meteor';
 import {ProfilePage} from '../profile/profile';
 import {LoginPage} from '../login/login';
-import {UsersService} from '../../services/users-service';
 
 
 @Component({
   templateUrl: 'build/pages/chats-options/chats-options.html'
 })
 export class ChatsOptionsPage {
-  static parameters = [[NavController], [ViewController], [UsersService]]
+  static parameters = [[NavController], [ViewController], [NgZone]]
 
-  constructor(nav, view, users) {
+  constructor(nav, view, zone) {
     this.nav = nav;
     this.view = view;
-    this.users = users;
+    this.zone = zone;
   }
 
   editProfile() {
@@ -24,7 +24,7 @@ export class ChatsOptionsPage {
   logout() {
     const alert = Alert.create({
       title: 'Logout',
-      message: `Are you sure you would like to proceed?`,
+      message: 'Are you sure you would like to proceed?',
       buttons: [
         {
           text: 'Cancel',
@@ -32,13 +32,7 @@ export class ChatsOptionsPage {
         },
         {
           text: 'Yes',
-          handler: () => {
-            this.users.unsetActive().dispose();
-
-            this.nav.rootNav.setRoot(LoginPage, null, {
-              animate: true
-            });
-          }
+          handler: this::this.handleLogout
         }
       ]
     });
@@ -48,5 +42,29 @@ export class ChatsOptionsPage {
 
   dismiss() {
     this.view.dismiss();
+  }
+
+  handleLogout() {
+    Meteor.logout((e) => {
+      this.zone.run(() => {
+        if (e) return this.handleError(e);
+
+        this.nav.rootNav.setRoot(LoginPage, {}, {
+          animate: true
+        });
+      });
+    });
+  }
+
+  handleError(e) {
+    console.error(e);
+
+    const alert = Alert.create({
+      title: 'Oops!',
+      message: e.message,
+      buttons: ['OK']
+    });
+
+    this.nav.present(alert);
   }
 }

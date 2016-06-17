@@ -9,16 +9,16 @@
 
 <ion-content padding class="chats-page-content">
   <ion-list class="chats">
-    <ion-item-sliding *ngFor="let chat of chats.models" (click)="showMessages(chat)">
+    <ion-item-sliding *ngFor="let chat of chats" (click)="showMessages(chat)">
       <button ion-item class="chat">
         <img class="chat-picture" [src]="chat.picture">
 
         <div class="chat-info">
           <h2 class="chat-title">{{chat.title}}</h2>
 
-          <span *ngIf="chat.messages.last" class="last-message">
-            <p class="last-message-content">{{chat.messages.last.content}}</p>
-            <span class="last-message-timestamp">{{chat.messages.last.createdAt | amCalendar}}</span>
+          <span *ngIf="chat.lastMessage" class="last-message">
+            <p class="last-message-content">{{chat.lastMessage.content}}</p>
+            <span class="last-message-timestamp">{{chat.lastMessage.createdAt | amCalendar}}</span>
           </span>
         </div>
       </button>

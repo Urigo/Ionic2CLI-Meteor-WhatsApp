@@ -1,11 +1,40 @@
+import {_} from 'meteor/underscore';
 import {Meteor} from 'meteor/meteor';
 import {Chats, Messages} from './collections';
 
 
-Meteor.publish('users', function() {
-  return Meteor.users.find({}, {
-    fields: {profile: 1}
+Meteor.publish('potentialRecipients', function() {
+  if (!this.userId) return;
+
+  let query;
+  let options;
+
+  query = {
+    memberIds: this.userId
+  };
+
+  options = {
+    fields: {memberIds: 1}
+  };
+
+  let recipientIds = Chats.find(query, options).map(({memberIds}) => {
+    return memberIds;
   });
+
+  recipientIds = _.chain(recipientIds)
+    .flatten()
+    .uniq()
+    .value()
+
+  query = {
+    _id: {$nin: recipientIds}
+  };
+
+  options = {
+    fields: {profile: 1}
+  };
+
+  return Meteor.users.find(query, options);
 });
 
 Meteor.publishComposite('chats', function() {

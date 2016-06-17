@@ -4,28 +4,15 @@ import {Chats, Messages} from './collections';
 
 
 Meteor.methods({
-  updateUsername(name) {
-    if (!this.userId) throw new Meteor.Error('not-logged-in',
-      'User must be logged-in to update its name');
-
-    check(name, String);
-
-    if (name.length) throw Meteor.Error('name-required',
-      'A name must be provided');
-
-    return Meteor.users.update(this.userId, {
-      $set: {'profile.name': name}
-    });
-  },
-
-  newChat(recipientId) {
+  addChat(recipientId) {
     if (!this.userId) throw new Meteor.Error('not-logged-in',
       'User must be logged-in to create a new chat');
 
     check(recipientId, String);
-    const recipient = Meteor.users.findOne(recipientId);
 
-    if (!recipient) throw new Meteor.Error('recipient-not-exist',
+    const recipientExists = !!Chats.find(recipientId).count();
+
+    if (!recipientExists) throw new Meteor.Error('recipient-not-exist',
       'Recipient doesn\'t exist');
 
     const chat = {
@@ -42,8 +29,8 @@ Meteor.methods({
 
     check(chatId, String);
 
-    const chat = Chats.findOne(chatId);
-    const chatExists = chat && _.include(chat.memberIds, this.userId);
+    const chatExists = !!Chats.find(chatId).count() &&
+      chat.memberIds.includes(this.userId);
 
     if (!chatExists) throw new Meteor.Error('chat-not-exist',
       'Chat doesn\'t exist');
@@ -52,18 +39,24 @@ Meteor.methods({
     return Chats.remove({_id: chatId});
   },
 
-  newMessage(message) {
+  addMessage(chatId, content) {
     if (!this.userId) throw new Meteor.Error('not-logged-in',
       'User must be logged-in to create a new message');
 
-    check(message, {
-      chatId: String,
-      content: String
+    check(chatId, String);
+    check(content, String);
+
+    const chatExists = !!Chats.find(chatId).count() &&
+      chat.memberIds.includes(this.userId);
+
+    if (!chatExists) throw new Meteor.Error('chat-not-exist',
+      'Chat doesn\'t exist');
+
+    return Messages.insert({
+      addresseeId: this.userId,
+      chatId: chatId,
+      content: content,
+      createdAt: new Date()
     });
-
-    message.addresseeId = this.userId;
-    message.createdAt = new Date();
-
-    return Messages.insert(message);
   }
 });

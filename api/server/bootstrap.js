@@ -4,7 +4,7 @@ import {Chats, Messages} from './collections';
 
 
 Meteor.startup(function() {
-  if (Meteor.users.find().count() != 0) return;
+  if (Meteor.users.find().count()) return;
 
   Accounts.createUserWithPhone({
     phone: '+9725400000',
