@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, NgZone} from '@angular/core';
 import {NavController, Alert} from 'ionic-angular';
 import {Accounts} from 'meteor/accounts-base';
 import {VerificationPage} from '../verification/verification';
@@ -8,10 +8,11 @@ import {VerificationPage} from '../verification/verification';
   templateUrl: 'build/pages/login/login.html'
 })
 export class LoginPage {
-  static parameters = [[NavController]]
+  static parameters = [[NavController], [NgZone]]
 
-  constructor(nav) {
+  constructor(nav, zone) {
     this.nav = nav;
+    this.zone = zone;
   }
 
   onInputKeypress({keyCode}) {
@@ -41,10 +42,12 @@ export class LoginPage {
 
   handleLogin() {
     Accounts.requestPhoneVerification(this.phone, (e) => {
-      if (e) return this.handleError(e);
+      this.zone.run(() => {
+        if (e) return this.handleError(e);
 
-      this.nav.push(VerificationPage, {
-        phone: this.phone
+        this.nav.push(VerificationPage, {
+          phone: this.phone
+        });
       });
     });
   }

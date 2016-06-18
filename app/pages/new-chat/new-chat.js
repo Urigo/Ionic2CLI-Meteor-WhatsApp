@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {MeteorComponent} from 'angular2-meteor';
 import {ViewController} from 'ionic-angular';
 import {Meteor} from 'meteor/meteor';
+import {Chats} from 'api/collections';
 
 
 @Component({
@@ -14,9 +15,31 @@ export class NewChatPage extends MeteorComponent {
     super();
 
     this.view = view;
+    this.addresseeId = Meteor.userId();
 
-    this.subscribe('potentialRecipients', () => {
-      this.users = Meteor.users.find();
+    this.subscribe('users', () => {
+      this.autorun(() => {
+        this.users = this.findUsers();
+      }, true);
+    });
+  }
+
+  findUsers() {
+    let recipientIds = Chats.find({
+      memberIds: this.addresseeId
+    }, {
+      fields: {
+        memberIds: 1
+      }
+    });
+
+    recipientIds = recipientIds
+      .map(({memberIds}) => memberIds)
+      .reduce((result, memberIds) => result.concat(memberIds), [])
+      .concat(this.addresseeId);
+
+    return Meteor.users.find({
+      _id: {$nin: recipientIds}
     });
   }
 

@@ -3,7 +3,8 @@ import {Component} from '@angular/core';
 import {MeteorComponent} from 'angular2-meteor';
 import {CalendarPipe} from 'angular2-moment';
 import {NavController, Modal, Popover} from 'ionic-angular';
-import {Chats} from 'server/collections';
+import {Meteor} from 'meteor/meteor';
+import {Chats, Messages} from 'api/collections';
 import {MessagesPage} from '../messages/messages';
 import {NewChatPage} from '../new-chat/new-chat';
 import {ChatsOptionsPage} from '../chats-options/chats-options';
@@ -20,10 +21,46 @@ export class ChatsPage extends MeteorComponent {
     super();
 
     this.nav = nav;
+    this.addresseeId = Meteor.userId();
 
     this.subscribe('chats', () => {
-      this.chats = Chats.find();
-      this.activateChat();
+      this.autorun(() => {
+        this.chats = this.findChats();
+        this.activateChat();
+      }, true);
+    });
+
+  }
+
+  findChats() {
+    return Chats.find({}, {
+      transform: this::this.transformChat
+    });
+  }
+
+  transformChat(chat) {
+    if (!Meteor.user()) return chat;
+
+    const recipientId = chat.memberIds.find(memberId => memberId != this.addresseeId);
+    const recipient = Meteor.users.findOne(recipientId);
+
+    chat.title = recipient.profile.name;
+    chat.picture = recipient.profile.picture;
+
+    setTimeout(() => {
+      this.autorun(() => {
+        chat.lastMessage = this.findLastMessage(chat);
+      }, true);
+    });
+
+    return chat;
+  }
+
+  findLastMessage(chat) {
+    return Messages.findOne({
+      chatId: chat._id
+    }, {
+      sort: {createdAt: -1}
     });
   }
 

@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController, Alert} from 'ionic-angular';
+import {MeteorComponent} from 'angular2-meteor';
 import {Meteor} from 'meteor/meteor';
 import {TabsPage} from '../tabs/tabs';
 
@@ -7,10 +8,12 @@ import {TabsPage} from '../tabs/tabs';
 @Component({
   templateUrl: 'build/pages/profile/profile.html'
 })
-export class ProfilePage {
+export class ProfilePage extends MeteorComponent {
   static parameters = [[NavController]]
 
   constructor(nav) {
+    super();
+
     this.nav = nav;
     this.profile = Meteor.user().profile;
   }
@@ -24,10 +27,7 @@ export class ProfilePage {
       return this.handleError(e);
     }
 
-    Meteor.users.update(Meteor.userId(), {
-      $set: {profile: this.profile}
-    });
-
+    this.call('updateProfile', this.profile);
     this.nav.push(TabsPage);
   }
 

@@ -1,15 +1,14 @@
 import 'meteor-client-side';
 import 'accounts-base-client-side';
 import 'accounts-phone';
-import 'server/methods.js';
-import 'server/collections';
-import 'server/methods';
+import 'api/collections';
+import 'api/methods';
 
 import {Component} from '@angular/core';
 import {ionicBootstrap, Platform, Alert} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
-import {Meteor} from 'meteor';
-import {METEOR_PROVIDERS} from 'angular2-meteor';
+import {METEOR_PROVIDERS, MeteorComponent} from 'angular2-meteor';
+import {Meteor} from 'meteor/meteor';
 import {ChatsPage} from './pages/chats/chats'
 import {LoginPage} from './pages/login/login';
 
@@ -17,11 +16,19 @@ import {LoginPage} from './pages/login/login';
 @Component({
   template: '<ion-nav [root]="rootPage"></ion-nav>'
 })
-export class MessengerApp {
-  static parameters = [[Platform], [UsersService]]
+export class MessengerApp extends MeteorComponent {
+  static parameters = [[Platform]]
 
   constructor(platform, users) {
-    this.rootPage = Meteor.user() ? ChatsPage : LoginPage;
+    super();
+
+    this.autorun(([computation]) => {
+      if (Meteor.loggingIn()) return;
+
+      computation.stop();
+      this.rootPage = Meteor.user() ? ChatsPage : LoginPage;
+    }, true);
+
 
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.

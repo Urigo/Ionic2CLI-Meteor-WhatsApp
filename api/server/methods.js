@@ -4,16 +4,32 @@ import {Chats, Messages} from './collections';
 
 
 Meteor.methods({
+  updateProfile(profile) {
+    if (!this.userId) throw new Meteor.Error('not-logged-in',
+      'User must be logged-in to create a new chat');
+
+    check(profile, Object);
+
+    return Meteor.users.update(this.userId, {
+      $set: {profile}
+    });
+  },
+
   addChat(recipientId) {
     if (!this.userId) throw new Meteor.Error('not-logged-in',
       'User must be logged-in to create a new chat');
 
     check(recipientId, String);
 
-    const recipientExists = !!Chats.find(recipientId).count();
+    if (recipientId == this.userId) throw new Meteor.Error('illegal-recipient',
+      'Recipient must be different than the current logged in user');
 
-    if (!recipientExists) throw new Meteor.Error('recipient-not-exist',
-      'Recipient doesn\'t exist');
+    const chatExists = !!Chats.find({
+      memberIds: {$all: [this.userId, recipientId]}
+    }).count();
+
+    if (chatExists) throw new Meteor.Error('chat-already-exist',
+      'Chat already exists');
 
     const chat = {
       memberIds: [this.userId, recipientId],
@@ -29,8 +45,7 @@ Meteor.methods({
 
     check(chatId, String);
 
-    const chatExists = !!Chats.find(chatId).count() &&
-      chat.memberIds.includes(this.userId);
+    const chatExists = !!Chats.find(chatId).count();
 
     if (!chatExists) throw new Meteor.Error('chat-not-exist',
       'Chat doesn\'t exist');
@@ -46,8 +61,7 @@ Meteor.methods({
     check(chatId, String);
     check(content, String);
 
-    const chatExists = !!Chats.find(chatId).count() &&
-      chat.memberIds.includes(this.userId);
+    const chatExists = !!Chats.find(chatId).count();
 
     if (!chatExists) throw new Meteor.Error('chat-not-exist',
       'Chat doesn\'t exist');

@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, NgZone} from '@angular/core';
 import {NavController, NavParams, Alert} from 'ionic-angular';
+import {MeteorComponent} from 'angular2-meteor';
 import {Accounts} from 'meteor/accounts-base';
 import {ProfilePage} from '../profile/profile';
 
@@ -7,11 +8,14 @@ import {ProfilePage} from '../profile/profile';
 @Component({
   templateUrl: 'build/pages/verification/verification.html'
 })
-export class VerificationPage {
-  static parameters = [[NavController], [NavParams]]
+export class VerificationPage extends MeteorComponent {
+  static parameters = [[NavController], [NavParams], [NgZone]]
 
-  constructor(nav, params) {
+  constructor(nav, params, zone) {
+    super();
+
     this.nav = nav;
+    this.zone = zone;
     this.phone = params.get('phone');
   }
 
@@ -23,19 +27,17 @@ export class VerificationPage {
 
   verify() {
     Accounts.verifyPhone(this.phone, this.code, (e) => {
-      if (e) return this.handleError(e);
+      this.zone.run(() => {
+        if (e) return this.handleError(e);
 
-      const profile = {
-        name: '',
-        picture: '/ionicons/dist/svg/ios-contact.svg'
-      };
+        if (!Meteor.user().profile) this.call('updateProfile', {
+          name: '',
+          picture: '/ionicons/dist/svg/ios-contact.svg'
+        });
 
-      Meteor.users.update(Meteor.userId(), {
-        $set({profile})
-      });
-
-      this.nav.setRoot(ProfilePage, {}, {
-        animate: true
+        this.nav.setRoot(ProfilePage, {}, {
+          animate: true
+        });
       });
     });
   }

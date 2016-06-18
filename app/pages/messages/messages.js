@@ -1,8 +1,9 @@
 import {Component} from '@angular/core';
 import {MeteorComponent} from 'angular2-meteor';
 import {DateFormatPipe} from 'angular2-moment';
+import {Meteor} from 'meteor/meteor';
 import {NavController, NavParams} from 'ionic-angular';
-import {Messages} from 'service/collections';
+import {Messages} from 'api/collections';
 
 
 @Component({
@@ -17,16 +18,53 @@ export class MessagesPage extends MeteorComponent {
 
     this.nav = nav;
     this.activeChat = params.get('chat');
+    this.addresseeId = Meteor.userId();
     this.message = '';
 
-    this.messages = Messages.find({
-      chatId: this.activeChat._id
-    });
+    const recipientId = this.activeChat.memberIds.find(memberId => memberId != this.addresseeId);
+    const recipient = Meteor.users.findOne(recipientId);
 
-    this.messages.find().observe({
-      added() {
-        this.scrollDown();
-        this.messageInput.focus();
+    this.title = recipient.profile.name;
+    this.picture = recipient.profile.picture;
+
+    this.subscribe('messages', this.activeChat._id, () => {
+      this.autorun(() => {
+        this.messages = this.findMessages();
+        this.observeMessages();
+      }, true);
+    });
+  }
+
+  ngAfterViewChecked() {
+    if (!this.messageSent) return;
+    this.messageSent = false;
+    this.scrollDown();
+  }
+
+  ngOnDestroy() {
+    localStorage.removeItem('activeChat');
+    this.messageObserver.stop();
+  }
+
+  findMessages() {
+    return Messages.find({
+      chatId: this.activeChat._id
+    }, {
+      sort: {createdAt: 1},
+      transform: this::this.transformMessage
+    });
+  }
+
+  transformMessage(message) {
+    if (!Meteor.user()) return message;
+    message.ownership = this.addresseeId == message.addresseeId ? 'mine' : 'others';
+    return message;
+  }
+
+  observeMessages() {
+    this.messageObserver = this.messages.observe({
+      added: () => {
+        this.messageSent = true;
       }
     });
   }
@@ -44,10 +82,7 @@ export class MessagesPage extends MeteorComponent {
 
   scrollDown() {
     this.scroller.scrollTop = this.scroller.scrollHeight;
-  }
-
-  ngOnDestroy() {
-    localStorage.removeItem('activeChat');
+    this.messageInput.focus();
   }
 
   get messagesPageContent() {
