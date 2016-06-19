@@ -37,7 +37,7 @@ var webpack = require('webpack');
 var webpackConfig = require('./webpack.config');
 var isRelease = argv.indexOf('--release') > -1;
 
-gulp.task('watch', ['clean'], function(done){
+gulp.task('watch', ['clean'], function(){
   runSequence(
     ['sass', 'html', 'fonts', 'scripts'],
     function(){
@@ -45,7 +45,7 @@ gulp.task('watch', ['clean'], function(done){
       gulpWatch('app/**/*.html', function(){ gulp.start('html'); });
 
       var compiler = webpack(webpackConfig);
-      compiler.watch({ pole: true }, webpackCallback(done));
+      compiler.watch({ pole: true }, webpackCallback());
     }
   );
 });
@@ -68,16 +68,15 @@ gulp.task('clean', function(){
 });
 
 function webpackCallback(done) {
-  var invoked = false;
-
   return function(err, stats) {
     if (err) {
       throw new gutil.PluginError('webpack', err);
     }
 
-    if (!invoked) {
-      invoked = true;
-      done();
-    }
+    gutil.log('[webpack]', stats.toString({
+      colors: true
+    }));
+
+    return done && done();
   }
 }
