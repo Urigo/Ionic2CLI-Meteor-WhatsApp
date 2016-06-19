@@ -29,7 +29,6 @@ export class ChatsPage extends MeteorComponent {
         this.activateChat();
       }, true);
     });
-
   }
 
   findChats() {

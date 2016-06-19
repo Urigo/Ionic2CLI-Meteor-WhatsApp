@@ -15,32 +15,18 @@ export class ProfilePage extends MeteorComponent {
     super();
 
     this.nav = nav;
-    this.profile = Meteor.user().profile;
+
+    this.profile = Meteor.user().profile || {
+      name: '',
+      picture: '/ionicons/dist/svg/ios-contact.svg'
+    };
   }
 
   done() {
-    try {
-      this.checkName();
-      this.checkPicture();
-    }
-    catch (e) {
-      return this.handleError(e);
-    }
-
-    this.call('updateProfile', this.profile);
-    this.nav.push(TabsPage);
-  }
-
-  checkName() {
-    if (!this.profile.name.length) {
-      throw Error('Profile name is invalid');
-    }
-  }
-
-  checkPicture() {
-    if (!this.profile.picture.length) {
-      throw Error('Profile picture is invalid');
-    }
+    this.call('updateProfile', this.profile, ([e]) => {
+      if (e) return this.handleError(e);
+      this.nav.push(TabsPage);
+    }, true);
   }
 
   handleError(e) {

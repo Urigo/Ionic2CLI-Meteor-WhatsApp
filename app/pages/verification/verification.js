@@ -30,11 +30,6 @@ export class VerificationPage extends MeteorComponent {
       this.zone.run(() => {
         if (e) return this.handleError(e);
 
-        if (!Meteor.user().profile) this.call('updateProfile', {
-          name: '',
-          picture: '/ionicons/dist/svg/ios-contact.svg'
-        });
-
         this.nav.setRoot(ProfilePage, {}, {
           animate: true
         });

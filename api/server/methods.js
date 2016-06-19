@@ -5,18 +5,18 @@ import {Chats, Messages} from './collections';
 
 Meteor.methods({
   updateProfile(profile) {
-    if (!this.userId) throw new Meteor.Error('not-logged-in',
+    if (!this.userId) throw new Meteor.Error('logged-out',
       'User must be logged-in to create a new chat');
 
     check(profile, Object);
 
-    return Meteor.users.update(this.userId, {
+    Meteor.users.update(this.userId, {
       $set: {profile}
     });
   },
 
   addChat(recipientId) {
-    if (!this.userId) throw new Meteor.Error('not-logged-in',
+    if (!this.userId) throw new Meteor.Error('logged-out',
       'User must be logged-in to create a new chat');
 
     check(recipientId, String);
@@ -28,7 +28,7 @@ Meteor.methods({
       memberIds: {$all: [this.userId, recipientId]}
     }).count();
 
-    if (chatExists) throw new Meteor.Error('chat-already-exist',
+    if (chatExists) throw new Meteor.Error('chat-exists',
       'Chat already exists');
 
     const chat = {
@@ -36,26 +36,26 @@ Meteor.methods({
       createdAt: new Date()
     };
 
-    return Chats.insert(chat);
+    Chats.insert(chat);
   },
 
   removeChat(chatId) {
-    if (!this.userId) throw new Meteor.Error('not-logged-in',
+    if (!this.userId) throw new Meteor.Error('logged-out',
       'User must be logged-in to remove chat');
 
     check(chatId, String);
 
     const chatExists = !!Chats.find(chatId).count();
 
-    if (!chatExists) throw new Meteor.Error('chat-not-exist',
+    if (!chatExists) throw new Meteor.Error('chat-not-exists',
       'Chat doesn\'t exist');
 
     Messages.remove({chatId: chatId});
-    return Chats.remove({_id: chatId});
+    Chats.remove({_id: chatId});
   },
 
   addMessage(chatId, content) {
-    if (!this.userId) throw new Meteor.Error('not-logged-in',
+    if (!this.userId) throw new Meteor.Error('logged-out',
       'User must be logged-in to create a new message');
 
     check(chatId, String);
@@ -63,10 +63,10 @@ Meteor.methods({
 
     const chatExists = !!Chats.find(chatId).count();
 
-    if (!chatExists) throw new Meteor.Error('chat-not-exist',
+    if (!chatExists) throw new Meteor.Error('chat-not-exists',
       'Chat doesn\'t exist');
 
-    return Messages.insert({
+    Messages.insert({
       addresseeId: this.userId,
       chatId: chatId,
       content: content,
