@@ -32,8 +32,7 @@ Meteor.methods({
       'Chat already exists');
 
     const chat = {
-      memberIds: [this.userId, recipientId],
-      createdAt: new Date()
+      memberIds: [this.userId, recipientId]
     };
 
     Chats.insert(chat);

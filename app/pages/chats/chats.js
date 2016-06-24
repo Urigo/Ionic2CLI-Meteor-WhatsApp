@@ -32,22 +32,37 @@ export class ChatsPage extends MeteorComponent {
   }
 
   findChats() {
-    return Chats.find({}, {
+    const chats = Chats.find({}, {
       transform: this::this.transformChat
     });
+
+    chats.observe({
+      removed: this::this.onChatRemoved
+    });
+
+    return chats;
   }
 
   transformChat(chat) {
     if (!Meteor.user()) return chat;
 
-    const recipientId = chat.memberIds.find(memberId => memberId != this.addresseeId);
-    const recipient = Meteor.users.findOne(recipientId);
-
-    chat.title = recipient.profile.name;
-    chat.picture = recipient.profile.picture;
+    chat.title = '';
+    chat.picture = '';
+    chat.lastMessage = '';
 
     setTimeout(() => {
-      this.autorun(() => {
+      chat.recipientComputation = this.autorun(() => {
+        const recipientId = chat.memberIds.find(memberId => memberId != this.addresseeId);
+        const recipient = Meteor.users.findOne(recipientId);
+        if (!recipient) return;
+
+        chat.title = recipient.profile.name;
+        chat.picture = recipient.profile.picture;
+      }, true);
+    });
+
+    setTimeout(() => {
+      chat.lastMessageComputation = this.autorun(() => {
         chat.lastMessage = this.findLastMessage(chat);
       }, true);
     });
@@ -60,6 +75,13 @@ export class ChatsPage extends MeteorComponent {
       chatId: chat._id
     }, {
       sort: {createdAt: -1}
+    });
+  }
+
+  onChatRemoved(chat) {
+    setTimeout(() => {
+      chat.recipientComputation.stop();
+      chat.lastMessageComputation.stop();
     });
   }
 

@@ -30,7 +30,6 @@ export class MessagesPage extends MeteorComponent {
     this.subscribe('messages', this.activeChat._id, () => {
       this.autorun(() => {
         this.messages = this.findMessages();
-        this.observeMessages();
       }, true);
     });
   }
@@ -43,16 +42,21 @@ export class MessagesPage extends MeteorComponent {
 
   ngOnDestroy() {
     localStorage.removeItem('activeChat');
-    this.messageObserver.stop();
   }
 
   findMessages() {
-    return Messages.find({
+    const messages = Messages.find({
       chatId: this.activeChat._id
     }, {
       sort: {createdAt: 1},
       transform: this::this.transformMessage
     });
+
+    messages.observe({
+      added: this::this.onMessageAdded
+    });
+
+    return messages;
   }
 
   transformMessage(message) {
@@ -61,12 +65,8 @@ export class MessagesPage extends MeteorComponent {
     return message;
   }
 
-  observeMessages() {
-    this.messageObserver = this.messages.observe({
-      added: () => {
-        this.messageSent = true;
-      }
-    });
+  onMessageAdded(message) {
+    this.messageSent = true;
   }
 
   onInputKeypress({keyCode}) {

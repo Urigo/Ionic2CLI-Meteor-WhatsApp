@@ -9,7 +9,7 @@ import {ionicBootstrap, Platform, Alert} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {METEOR_PROVIDERS, MeteorComponent} from 'angular2-meteor';
 import {Meteor} from 'meteor/meteor';
-import {ChatsPage} from './pages/chats/chats'
+import {TabsPage} from './pages/tabs/tabs'
 import {LoginPage} from './pages/login/login';
 
 
@@ -26,7 +26,7 @@ export class MessengerApp extends MeteorComponent {
       if (Meteor.loggingIn()) return;
 
       computation.stop();
-      this.rootPage = Meteor.user() ? ChatsPage : LoginPage;
+      this.rootPage = Meteor.user() ? TabsPage : LoginPage;
     }, true);
 
 
