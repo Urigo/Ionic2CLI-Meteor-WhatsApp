@@ -5,12 +5,12 @@ import 'api/collections';
 import 'api/methods';
 
 import {Component} from '@angular/core';
-import {ionicBootstrap, Platform, Alert} from 'ionic-angular';
+import {ionicBootstrap, Platform} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {METEOR_PROVIDERS, MeteorComponent} from 'angular2-meteor';
 import {Meteor} from 'meteor/meteor';
-import {TabsPage} from './pages/tabs/tabs'
 import {LoginPage} from './pages/login/login';
+import {TabsPage} from './pages/tabs/tabs'
 
 
 @Component({
@@ -19,7 +19,7 @@ import {LoginPage} from './pages/login/login';
 export class MessengerApp extends MeteorComponent {
   static parameters = [[Platform]]
 
-  constructor(platform, users) {
+  constructor(platform) {
     super();
 
     this.autorun(([computation]) => {

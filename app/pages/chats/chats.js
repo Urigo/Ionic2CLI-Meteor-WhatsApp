@@ -26,7 +26,6 @@ export class ChatsPage extends MeteorComponent {
     this.subscribe('chats', () => {
       this.autorun(() => {
         this.chats = this.findChats();
-        this.activateChat();
       }, true);
     });
   }
@@ -85,16 +84,6 @@ export class ChatsPage extends MeteorComponent {
     });
   }
 
-  activateChat() {
-    const activeChatId = localStorage.getItem('activeChat');
-    if (!activeChatId) return;
-
-    const chat = Chats.findOne(activeChatId);
-    if (!chat) return localStorage.removeItem('activeChat');
-
-    this.showMessages(chat);
-  }
-
   addChat() {
     const modal = Modal.create(NewChatPage);
     this.nav.present(modal);
@@ -105,7 +94,6 @@ export class ChatsPage extends MeteorComponent {
   }
 
   showMessages(chat) {
-    localStorage.setItem('activeChat', chat._id);
     this.nav.push(MessagesPage, {chat});
   }
 
