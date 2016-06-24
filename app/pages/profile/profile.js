@@ -18,7 +18,7 @@ export class ProfilePage extends MeteorComponent {
 
     this.profile = Meteor.user().profile || {
       name: '',
-      picture: '/ionicons/dist/svg/ios-contact.svg'
+      picture: '/profile-pics/ios-contact.svg'
     };
   }
 

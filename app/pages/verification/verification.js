@@ -17,6 +17,7 @@ export class VerificationPage extends MeteorComponent {
     this.nav = nav;
     this.zone = zone;
     this.phone = params.get('phone');
+    this.code = '';
   }
 
   onInputKeypress({keyCode}) {

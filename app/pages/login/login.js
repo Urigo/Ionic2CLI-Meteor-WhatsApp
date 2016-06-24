@@ -13,6 +13,7 @@ export class LoginPage {
   constructor(nav, zone) {
     this.nav = nav;
     this.zone = zone;
+    this.phone = '';
   }
 
   onInputKeypress({keyCode}) {

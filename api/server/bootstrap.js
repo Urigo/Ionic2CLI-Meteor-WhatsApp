@@ -10,7 +10,7 @@ Meteor.startup(function() {
     phone: '+972540000001',
     profile: {
       name: 'Ethan Gonzalez',
-      picture: 'https://randomuser.me/api/portraits/thumb/men/1.jpg'
+      picture: '/profile-pics/man1.jpg'
     }
   });
 
@@ -18,7 +18,7 @@ Meteor.startup(function() {
     phone: '+972540000002',
     profile: {
       name: 'Bryan Wallace',
-      picture: 'https://randomuser.me/api/portraits/thumb/lego/1.jpg'
+      picture: '/profile-pics/lego1.jpg'
     }
   });
 
@@ -26,7 +26,7 @@ Meteor.startup(function() {
     phone: '+972540000003',
     profile: {
       name: 'Avery Stewart',
-      picture: 'https://randomuser.me/api/portraits/thumb/women/1.jpg'
+      picture: '/profile-pics/woman1.jpg'
     }
   });
 
@@ -34,7 +34,7 @@ Meteor.startup(function() {
     phone: '+972540000004',
     profile: {
       name: 'Katie Peterson',
-      picture: 'https://randomuser.me/api/portraits/thumb/women/2.jpg'
+      picture: '/profile-pics/woman2.jpg'
     }
   });
 
@@ -42,7 +42,7 @@ Meteor.startup(function() {
     phone: '+972540000005',
     profile: {
       name: 'Ray Edwards',
-      picture: 'https://randomuser.me/api/portraits/thumb/men/2.jpg'
+      picture: '/profile-pics/man2.jpg'
     }
   });
 });
