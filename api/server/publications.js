@@ -44,4 +44,4 @@ Meteor.publish('messages', function(chatId) {
   if (!this.userId) return;
 
   return Messages.find({chatId});
-})
+});

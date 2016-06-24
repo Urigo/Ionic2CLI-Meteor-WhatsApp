@@ -24,8 +24,8 @@ export class MessengerApp extends MeteorComponent {
 
     this.autorun(([computation]) => {
       if (Meteor.loggingIn()) return;
-
       computation.stop();
+
       this.rootPage = Meteor.user() ? TabsPage : LoginPage;
     }, true);
 
@@ -38,6 +38,4 @@ export class MessengerApp extends MeteorComponent {
   }
 }
 
-ionicBootstrap(MessengerApp, [METEOR_PROVIDERS], {
-  // http://ionicframework.com/docs/v2/api/config/Config/
-});
+ionicBootstrap(MessengerApp, [METEOR_PROVIDERS]);

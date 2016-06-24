@@ -43,8 +43,8 @@
     "run-sequence": "1.1.5",
     "webpack": "^1.13.1"
   },
-  "name": "ionic2-meteor-chat",
-  "description": "ionic2-meteor-chat: An Ionic project",
+  "name": "ionic2-meteor-messenger",
+  "description": "ionic2-meteor-messenger: An Ionic project",
   "cordovaPlugins": [
     "cordova-plugin-device",
     "cordova-plugin-console",
