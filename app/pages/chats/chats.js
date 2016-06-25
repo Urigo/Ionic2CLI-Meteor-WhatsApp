@@ -1,4 +1,3 @@
-import Moment from 'moment';
 import {Component} from '@angular/core';
 import {MeteorComponent} from 'angular2-meteor';
 import {CalendarPipe} from 'angular2-moment';
@@ -21,10 +20,10 @@ export class ChatsPage extends MeteorComponent {
     super();
 
     this.nav = nav;
-    this.addresseeId = Meteor.userId();
 
     this.subscribe('chats', () => {
       this.autorun(() => {
+        this.addresseeId = Meteor.userId();
         this.chats = this.findChats();
       }, true);
     });
@@ -36,14 +35,15 @@ export class ChatsPage extends MeteorComponent {
     });
 
     chats.observe({
-      removed: this::this.onChatRemoved
+      changed: (newChat, oldChat) => this.disposeChat(oldChat),
+      removed: (chat) => this.disposeChat(chat)
     });
 
     return chats;
   }
 
   transformChat(chat) {
-    if (!Meteor.user()) return chat;
+    if (!this.addresseeId) return chat;
 
     chat.title = '';
     chat.picture = '';
@@ -77,10 +77,10 @@ export class ChatsPage extends MeteorComponent {
     });
   }
 
-  onChatRemoved(chat) {
+  disposeChat(chat) {
     setTimeout(() => {
-      chat.recipientComputation.stop();
-      chat.lastMessageComputation.stop();
+      if (chat.recipientComputation) chat.recipientComputation.stop();
+      if (chat.lastMessageComputation) chat.lastMessageComputation.stop();
     });
   }
 
