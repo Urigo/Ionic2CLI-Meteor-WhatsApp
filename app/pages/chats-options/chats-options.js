@@ -18,7 +18,9 @@ export class ChatsOptionsPage {
   }
 
   editProfile() {
-    this.nav.push(ProfilePage).then(this::this.dismiss);
+    this.dismiss().then(() => {
+      this.nav.push(ProfilePage);
+    });
   }
 
   logout() {
@@ -37,11 +39,15 @@ export class ChatsOptionsPage {
       ]
     });
 
-    this.nav.present(alert).then(this::this.dismiss);
+    this.dismiss().then(() => {
+      this.nav.present(alert);
+    });
   }
 
   dismiss() {
-    this.view.dismiss();
+    return this.view.dismiss({}, {}, {
+      animate: false
+    });
   }
 
   handleLogout() {

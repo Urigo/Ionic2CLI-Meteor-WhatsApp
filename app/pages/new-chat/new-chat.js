@@ -52,7 +52,7 @@ export class NewChatPage extends MeteorComponent {
   }
 
   dismiss() {
-    this.view.dismiss();
+    return this.view.dismiss();
   }
 
   handleError(e) {
