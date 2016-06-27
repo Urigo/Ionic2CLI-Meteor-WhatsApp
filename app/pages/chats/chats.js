@@ -23,7 +23,7 @@ export class ChatsPage extends MeteorComponent {
 
     this.subscribe('chats', () => {
       this.autorun(() => {
-        this.addresseeId = Meteor.userId();
+        this.senderId = Meteor.userId();
         this.chats = this.findChats();
       }, true);
     });
@@ -43,20 +43,20 @@ export class ChatsPage extends MeteorComponent {
   }
 
   transformChat(chat) {
-    if (!this.addresseeId) return chat;
+    if (!this.senderId) return chat;
 
     chat.title = '';
     chat.picture = '';
     chat.lastMessage = '';
 
     setTimeout(() => {
-      chat.recipientComputation = this.autorun(() => {
-        const recipientId = chat.memberIds.find(memberId => memberId != this.addresseeId);
-        const recipient = Meteor.users.findOne(recipientId);
-        if (!recipient) return;
+      chat.recieverComputation = this.autorun(() => {
+        const recieverId = chat.memberIds.find(memberId => memberId != this.senderId);
+        const reciever = Meteor.users.findOne(recieverId);
+        if (!reciever) return;
 
-        chat.title = recipient.profile.name;
-        chat.picture = recipient.profile.picture;
+        chat.title = reciever.profile.name;
+        chat.picture = reciever.profile.picture;
       }, true);
     });
 
@@ -79,7 +79,7 @@ export class ChatsPage extends MeteorComponent {
 
   disposeChat(chat) {
     setTimeout(() => {
-      if (chat.recipientComputation) chat.recipientComputation.stop();
+      if (chat.recieverComputation) chat.recieverComputation.stop();
       if (chat.lastMessageComputation) chat.lastMessageComputation.stop();
     });
   }

@@ -18,14 +18,14 @@ export class MessagesPage extends MeteorComponent {
 
     this.nav = nav;
     this.activeChat = params.get('chat');
-    this.addresseeId = Meteor.userId();
+    this.senderId = Meteor.userId();
     this.message = '';
 
-    const recipientId = this.activeChat.memberIds.find(memberId => memberId != this.addresseeId);
-    const recipient = Meteor.users.findOne(recipientId);
+    const recieverId = this.activeChat.memberIds.find(memberId => memberId != this.senderId);
+    const reciever = Meteor.users.findOne(recieverId);
 
-    this.title = recipient.profile.name;
-    this.picture = recipient.profile.picture;
+    this.title = reciever.profile.name;
+    this.picture = reciever.profile.picture;
 
     this.subscribe('messages', this.activeChat._id, () => {
       this.autorun(() => {
@@ -61,7 +61,7 @@ export class MessagesPage extends MeteorComponent {
 
   transformMessage(message) {
     if (!Meteor.user()) return message;
-    message.ownership = this.addresseeId == message.addresseeId ? 'mine' : 'others';
+    message.ownership = this.senderId == message.senderId ? 'mine' : 'others';
     return message;
   }
 

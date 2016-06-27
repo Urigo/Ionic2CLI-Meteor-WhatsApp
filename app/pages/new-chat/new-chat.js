@@ -16,7 +16,7 @@ export class NewChatPage extends MeteorComponent {
 
     this.nav = nav;
     this.view = view;
-    this.addresseeId = Meteor.userId();
+    this.senderId = Meteor.userId();
 
     this.subscribe('users', () => {
       this.autorun(() => {
@@ -26,21 +26,21 @@ export class NewChatPage extends MeteorComponent {
   }
 
   findUsers() {
-    let recipientIds = Chats.find({
-      memberIds: this.addresseeId
+    let recieverIds = Chats.find({
+      memberIds: this.senderId
     }, {
       fields: {
         memberIds: 1
       }
     });
 
-    recipientIds = recipientIds
+    recieverIds = recieverIds
       .map(({memberIds}) => memberIds)
       .reduce((result, memberIds) => result.concat(memberIds), [])
-      .concat(this.addresseeId);
+      .concat(this.senderId);
 
     return Meteor.users.find({
-      _id: {$nin: recipientIds}
+      _id: {$nin: recieverIds}
     });
   }
 
