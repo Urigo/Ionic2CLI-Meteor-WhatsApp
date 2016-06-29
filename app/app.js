@@ -7,8 +7,9 @@ import 'api/methods';
 import {Component} from '@angular/core';
 import {ionicBootstrap, Platform} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
-import {METEOR_PROVIDERS, MeteorComponent} from 'angular2-meteor';
+import {METEOR_PROVIDERS} from 'angular2-meteor';
 import {Meteor} from 'meteor/meteor';
+import {Tracker} from 'meteor/tracker';
 import {LoginPage} from './pages/login/login';
 import {TabsPage} from './pages/tabs/tabs'
 
@@ -16,19 +17,11 @@ import {TabsPage} from './pages/tabs/tabs'
 @Component({
   template: '<ion-nav [root]="rootPage"></ion-nav>'
 })
-export class MessengerApp extends MeteorComponent {
+export class MessengerApp {
   static parameters = [[Platform]]
 
   constructor(platform) {
-    super();
-
-    this.autorun(([computation]) => {
-      if (Meteor.loggingIn()) return;
-      computation.stop();
-
-      this.rootPage = Meteor.user() ? TabsPage : LoginPage;
-    }, true);
-
+    this.rootPage = Meteor.user() ? TabsPage : LoginPage;
 
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -38,4 +31,9 @@ export class MessengerApp extends MeteorComponent {
   }
 }
 
-ionicBootstrap(MessengerApp, [METEOR_PROVIDERS]);
+Tracker.autorun((computation) => {
+  if (Meteor.loggingIn()) return;
+  computation.stop();
+
+  ionicBootstrap(MessengerApp, [METEOR_PROVIDERS]);
+});
