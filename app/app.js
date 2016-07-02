@@ -11,7 +11,7 @@ import {METEOR_PROVIDERS} from 'angular2-meteor';
 import {Meteor} from 'meteor/meteor';
 import {Tracker} from 'meteor/tracker';
 import {LoginPage} from './pages/login/login';
-import {TabsPage} from './pages/tabs/tabs'
+import {TabsPage} from './pages/tabs/tabs';
 
 
 @Component({

@@ -18,12 +18,13 @@ export class NewChatPage extends MeteorComponent {
     this.viewCtrl = viewCtrl;
 
     this.senderId = Meteor.userId();
+    this.usersSub = this.subscribe('users');
+  }
 
-    this.subscribe('users', () => {
-      this.autorun(() => {
-        this.users = this.findUsers();
-      }, true);
-    });
+  ngOnInit() {
+    this.autorun(() => {
+      this.users = this.findUsers();
+    }, true);
   }
 
   findUsers() {

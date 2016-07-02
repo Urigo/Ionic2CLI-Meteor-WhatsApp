@@ -21,12 +21,15 @@ export class ChatsPage extends MeteorComponent {
 
     this.navCtrl = navCtrl;
 
-    this.subscribe('chats', () => {
-      this.autorun(() => {
-        this.senderId = Meteor.userId();
-        this.chats = this.findChats();
-      }, true);
-    });
+    this.senderId = Meteor.userId();
+    this.chatsSub = this.subscribe('chats');
+  }
+
+  ngOnInit() {
+    this.autorun(() => {
+      if (!this.chatsSub.ready()) return;
+      this.chats = this.findChats();
+    }, true);
   }
 
   findChats() {
@@ -47,10 +50,10 @@ export class ChatsPage extends MeteorComponent {
 
     chat.title = '';
     chat.picture = '';
-    chat.lastMessage = '';
+    chat.lastMessage = {};
 
     setTimeout(() => {
-      chat.recieverComputation = this.autorun(() => {
+      chat.recieverComp = this.autorun(() => {
         const recieverId = chat.memberIds.find(memberId => memberId != this.senderId);
         const reciever = Meteor.users.findOne(recieverId);
         if (!reciever) return;
@@ -61,7 +64,7 @@ export class ChatsPage extends MeteorComponent {
     });
 
     setTimeout(() => {
-      chat.lastMessageComputation = this.autorun(() => {
+      chat.lastMessageComp = this.autorun(() => {
         chat.lastMessage = this.findLastMessage(chat);
       }, true);
     });
@@ -79,8 +82,8 @@ export class ChatsPage extends MeteorComponent {
 
   disposeChat(chat) {
     setTimeout(() => {
-      if (chat.recieverComputation) chat.recieverComputation.stop();
-      if (chat.lastMessageComputation) chat.lastMessageComputation.stop();
+      if (chat.recieverComp) chat.recieverComp.stop();
+      if (chat.lastMessageComp) chat.lastMessageComp.stop();
     });
   }
 

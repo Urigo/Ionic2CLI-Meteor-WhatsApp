@@ -46,7 +46,7 @@
       }
     }
 
-    &.message-others {
+    &.message-other {
       float: left;
       background-color: rgb(230, 230, 230);
 
@@ -55,7 +55,7 @@
       }
     }
 
-    &.message-others::before, &.message-mine::before {
+    &.message-other::before, &.message-mine::before {
       content: "";
       position: absolute;
       bottom: 3px;

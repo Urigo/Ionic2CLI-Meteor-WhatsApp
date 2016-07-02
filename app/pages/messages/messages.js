@@ -25,25 +25,31 @@ export class MessagesPage extends MeteorComponent {
 
     this.title = reciever.profile.name;
     this.picture = reciever.profile.picture;
-
-    this.subscribe('messages', this.activeChat._id, () => {
-      this.autorun(() => {
-        this.messages = this.findMessages();
-      }, true);
-    });
+    this.messagesSub = this.subscribe('messages', this.activeChat._id);
   }
 
-  ngAfterViewInit() {
-    this.autoScroller = new MutationObserver(this::this.scrollDown);
+  ngOnInit() {
+    this.autoScroller = this.autoScroll();
 
-    this.autoScroller.observe(this.messagesList, {
-      childList: true,
-      subtree: true
-    });
+    this.autorun(() => {
+      if (!this.messagesSub.ready()) return;
+      this.messages = this.findMessages();
+    }, true);
   }
 
   ngOnDestroy() {
     this.autoScroller.disconnect();
+  }
+
+  autoScroll() {
+    const autoScroller = new MutationObserver(this::this.scrollDown);
+
+    autoScroller.observe(this.messagesList, {
+      childList: true,
+      subtree: true
+    });
+
+    return autoScroller;
   }
 
   findMessages() {
@@ -56,8 +62,8 @@ export class MessagesPage extends MeteorComponent {
   }
 
   transformMessage(message) {
-    if (!Meteor.user()) return message;
-    message.ownership = this.senderId == message.senderId ? 'mine' : 'others';
+    if (!this.senderId) return message;
+    message.ownership = this.senderId == message.senderId ? 'mine' : 'other';
     return message;
   }
 
