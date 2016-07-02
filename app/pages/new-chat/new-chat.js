@@ -11,11 +11,12 @@ import {Chats} from 'api/collections';
 export class NewChatPage extends MeteorComponent {
   static parameters = [[NavController], [ViewController]]
 
-  constructor(nav, view) {
+  constructor(navCtrl, viewCtrl) {
     super();
 
-    this.nav = nav;
-    this.view = view;
+    this.navCtrl = navCtrl;
+    this.viewCtrl = viewCtrl;
+
     this.senderId = Meteor.userId();
 
     this.subscribe('users', () => {
@@ -46,13 +47,10 @@ export class NewChatPage extends MeteorComponent {
 
   addChat(user) {
     this.call('addChat', user._id, ([e]) => {
-      if (e) return this.handleError(e);
-      this.dismiss();
+      this.viewCtrl.dismiss().then(() => {
+        if (e) return this.handleError(e);
+      });
     }, true);
-  }
-
-  dismiss() {
-    return this.view.dismiss();
   }
 
   handleError(e) {
@@ -64,6 +62,6 @@ export class NewChatPage extends MeteorComponent {
       buttons: ['OK']
     });
 
-    this.nav.present(alert);
+    this.navCtrl.present(alert);
   }
 }

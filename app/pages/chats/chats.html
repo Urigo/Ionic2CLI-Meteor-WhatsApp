@@ -1,16 +1,18 @@
-<ion-navbar *navbar>
-  <ion-title>Chats</ion-title>
+<ion-header>
+  <ion-navbar>
+    <ion-title>Chats</ion-title>
 
-  <ion-buttons end>
-    <button class="add-chat-button" (click)="addChat()"><ion-icon name="person-add"></ion-icon></button>
-    <button class="settings-button" (click)="showOptions()"><ion-icon name="more"></ion-icon></button>
-  </ion-buttons>
-</ion-navbar>
+    <ion-buttons end>
+      <button class="add-chat-button" (click)="addChat()"><ion-icon name="person-add"></ion-icon></button>
+      <button class="settings-button" (click)="showOptions()"><ion-icon name="more"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
 
 <ion-content padding class="chats-page-content">
   <ion-list class="chats">
-    <ion-item-sliding *ngFor="let chat of chats" (click)="showMessages(chat)">
-      <button ion-item class="chat">
+    <ion-item-sliding *ngFor="let chat of chats">
+      <button ion-item class="chat" (click)="showMessages(chat)">
         <img class="chat-picture" [src]="chat.picture">
 
         <div class="chat-info">
@@ -23,8 +25,8 @@
         </div>
       </button>
 
-      <ion-item-options>
-        <button danger class="remove-chat-button" (click)="removeChat(chat)">Remove</button>
+      <ion-item-options class="chat-options">
+        <button danger class="option option-remove" (click)="removeChat(chat)">Remove</button>
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>

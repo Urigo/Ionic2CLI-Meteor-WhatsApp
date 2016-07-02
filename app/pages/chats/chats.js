@@ -16,10 +16,10 @@ import {ChatsOptionsPage} from '../chats-options/chats-options';
 export class ChatsPage extends MeteorComponent {
   static parameters = [[NavController]]
 
-  constructor(nav) {
+  constructor(navCtrl) {
     super();
 
-    this.nav = nav;
+    this.navCtrl = navCtrl;
 
     this.subscribe('chats', () => {
       this.autorun(() => {
@@ -86,7 +86,7 @@ export class ChatsPage extends MeteorComponent {
 
   addChat() {
     const modal = Modal.create(NewChatPage);
-    this.nav.present(modal);
+    this.navCtrl.present(modal);
   }
 
   removeChat(chat) {
@@ -94,7 +94,7 @@ export class ChatsPage extends MeteorComponent {
   }
 
   showMessages(chat) {
-    this.nav.push(MessagesPage, {chat});
+    this.navCtrl.push(MessagesPage, {chat});
   }
 
   showOptions() {
@@ -102,6 +102,6 @@ export class ChatsPage extends MeteorComponent {
       cssClass: 'options-popover'
     });
 
-    this.nav.present(popover);
+    this.navCtrl.present(popover);
   }
 }

@@ -1,4 +1,4 @@
-import {Component, NgZone} from '@angular/core';
+import {Component} from '@angular/core';
 import {NavController, Alert} from 'ionic-angular';
 import {Accounts} from 'meteor/accounts-base';
 import {VerificationPage} from '../verification/verification';
@@ -8,11 +8,11 @@ import {VerificationPage} from '../verification/verification';
   templateUrl: 'build/pages/login/login.html'
 })
 export class LoginPage {
-  static parameters = [[NavController], [NgZone]]
+  static parameters = [[NavController]]
 
-  constructor(nav, zone) {
-    this.nav = nav;
-    this.zone = zone;
+  constructor(navCtrl) {
+    this.navCtrl = navCtrl;
+
     this.phone = '';
   }
 
@@ -33,20 +33,23 @@ export class LoginPage {
         },
         {
           text: 'Yes',
-          handler: this::this.handleLogin
+          handler: () => {
+            this.handleLogin(alert);
+            return false;
+          }
         }
       ]
     });
 
-    this.nav.present(alert);
+    this.navCtrl.present(alert);
   }
 
-  handleLogin() {
+  handleLogin(alert) {
     Accounts.requestPhoneVerification(this.phone, (e) => {
-      this.zone.run(() => {
+      alert.dismiss().then(() => {
         if (e) return this.handleError(e);
 
-        this.nav.push(VerificationPage, {
+        this.navCtrl.push(VerificationPage, {
           phone: this.phone
         });
       });
@@ -62,6 +65,6 @@ export class LoginPage {
       buttons: ['OK']
     });
 
-    this.nav.present(alert);
+    this.navCtrl.present(alert);
   }
 }

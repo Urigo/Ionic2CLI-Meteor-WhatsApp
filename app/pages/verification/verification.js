@@ -9,14 +9,15 @@ import {ProfilePage} from '../profile/profile';
   templateUrl: 'build/pages/verification/verification.html'
 })
 export class VerificationPage extends MeteorComponent {
-  static parameters = [[NavController], [NavParams], [NgZone]]
+  static parameters = [[NavController], [NgZone], [NavParams]]
 
-  constructor(nav, params, zone) {
+  constructor(navCtrl, zone, navParams) {
     super();
 
-    this.nav = nav;
+    this.navCtrl = navCtrl;
     this.zone = zone;
-    this.phone = params.get('phone');
+
+    this.phone = navParams.get('phone');
     this.code = '';
   }
 
@@ -31,7 +32,7 @@ export class VerificationPage extends MeteorComponent {
       this.zone.run(() => {
         if (e) return this.handleError(e);
 
-        this.nav.setRoot(ProfilePage, {}, {
+        this.navCtrl.setRoot(ProfilePage, {}, {
           animate: true
         });
       });
@@ -47,6 +48,6 @@ export class VerificationPage extends MeteorComponent {
       buttons: ['OK']
     });
 
-    this.nav.present(alert);
+    this.navCtrl.present(alert);
   }
 }

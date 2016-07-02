@@ -11,10 +11,10 @@ import {TabsPage} from '../tabs/tabs';
 export class ProfilePage extends MeteorComponent {
   static parameters = [[NavController]]
 
-  constructor(nav) {
+  constructor(navCtrl) {
     super();
 
-    this.nav = nav;
+    this.navCtrl = navCtrl;
 
     this.profile = Meteor.user().profile || {
       name: '',
@@ -25,7 +25,7 @@ export class ProfilePage extends MeteorComponent {
   done() {
     this.call('updateProfile', this.profile, ([e]) => {
       if (e) return this.handleError(e);
-      this.nav.push(TabsPage);
+      this.navCtrl.push(TabsPage);
     }, true);
   }
 
@@ -38,6 +38,6 @@ export class ProfilePage extends MeteorComponent {
       buttons: ['OK']
     });
 
-    this.nav.present(alert);
+    this.navCtrl.present(alert);
   }
 }

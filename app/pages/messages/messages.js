@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
+import {NavParams} from 'ionic-angular';
 import {MeteorComponent} from 'angular2-meteor';
 import {DateFormatPipe} from 'angular2-moment';
 import {Meteor} from 'meteor/meteor';
-import {NavController, NavParams} from 'ionic-angular';
 import {Messages} from 'api/collections';
 
 
@@ -11,13 +11,12 @@ import {Messages} from 'api/collections';
   pipes: [DateFormatPipe]
 })
 export class MessagesPage extends MeteorComponent {
-  static parameters = [[NavController], [NavParams]]
+  static parameters = [[NavParams]]
 
-  constructor(nav, params) {
+  constructor(navParams) {
     super();
 
-    this.nav = nav;
-    this.activeChat = params.get('chat');
+    this.activeChat = navParams.get('chat');
     this.senderId = Meteor.userId();
     this.message = '';
 
@@ -34,14 +33,14 @@ export class MessagesPage extends MeteorComponent {
     });
   }
 
+  ionViewDidEnter() {
+    this.scrollDown();
+  }
+
   ngAfterViewChecked() {
     if (!this.messageSent) return;
     this.messageSent = false;
     this.scrollDown();
-  }
-
-  ngOnDestroy() {
-    localStorage.removeItem('activeChat');
   }
 
   findMessages() {

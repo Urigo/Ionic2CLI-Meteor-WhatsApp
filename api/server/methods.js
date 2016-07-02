@@ -5,10 +5,13 @@ import {Chats, Messages} from './collections';
 
 Meteor.methods({
   updateProfile(profile) {
-    if (!this.userId) throw new Meteor.Error('logged-out',
+    if (!this.userId) throw new Meteor.Error('unauthorized',
       'User must be logged-in to create a new chat');
 
-    check(profile, Object);
+    check(profile, {
+      name: String,
+      picture: String
+    });
 
     Meteor.users.update(this.userId, {
       $set: {profile}
@@ -16,7 +19,7 @@ Meteor.methods({
   },
 
   addChat(recieverId) {
-    if (!this.userId) throw new Meteor.Error('logged-out',
+    if (!this.userId) throw new Meteor.Error('unauthorized',
       'User must be logged-in to create a new chat');
 
     check(recieverId, String);
@@ -39,7 +42,7 @@ Meteor.methods({
   },
 
   removeChat(chatId) {
-    if (!this.userId) throw new Meteor.Error('logged-out',
+    if (!this.userId) throw new Meteor.Error('unauthorized',
       'User must be logged-in to remove chat');
 
     check(chatId, String);
@@ -49,12 +52,12 @@ Meteor.methods({
     if (!chatExists) throw new Meteor.Error('chat-not-exists',
       'Chat doesn\'t exist');
 
-    Messages.remove({chatId: chatId});
-    Chats.remove({_id: chatId});
+    Messages.remove({chatId});
+    Chats.remove(chatId);
   },
 
   addMessage(chatId, content) {
-    if (!this.userId) throw new Meteor.Error('logged-out',
+    if (!this.userId) throw new Meteor.Error('unauthorized',
       'User must be logged-in to create a new message');
 
     check(chatId, String);

@@ -1,4 +1,4 @@
-import {Component, NgZone} from '@angular/core';
+import {Component} from '@angular/core';
 import {NavController, ViewController, Alert} from 'ionic-angular';
 import {Meteor} from 'meteor/meteor';
 import {ProfilePage} from '../profile/profile';
@@ -9,17 +9,16 @@ import {LoginPage} from '../login/login';
   templateUrl: 'build/pages/chats-options/chats-options.html'
 })
 export class ChatsOptionsPage {
-  static parameters = [[NavController], [ViewController], [NgZone]]
+  static parameters = [[NavController], [ViewController]]
 
-  constructor(nav, view, zone) {
-    this.nav = nav;
-    this.view = view;
-    this.zone = zone;
+  constructor(navCtrl, viewCtrl) {
+    this.navCtrl = navCtrl;
+    this.viewCtrl = viewCtrl;
   }
 
   editProfile() {
-    this.dismiss().then(() => {
-      this.nav.push(ProfilePage);
+    this.viewCtrl.dismiss().then(() => {
+      this.navCtrl.push(ProfilePage);
     });
   }
 
@@ -34,28 +33,25 @@ export class ChatsOptionsPage {
         },
         {
           text: 'Yes',
-          handler: this::this.handleLogout
+          handler: () => {
+            this.handleLogout(alert);
+            return false;
+          }
         }
       ]
     });
 
-    this.dismiss().then(() => {
-      this.nav.present(alert);
+    this.viewCtrl.dismiss().then(() => {
+      this.navCtrl.present(alert);
     });
   }
 
-  dismiss() {
-    return this.view.dismiss({}, {}, {
-      animate: false
-    });
-  }
-
-  handleLogout() {
+  handleLogout(alert) {
     Meteor.logout((e) => {
-      this.zone.run(() => {
+      alert.dismiss().then(() => {
         if (e) return this.handleError(e);
 
-        this.nav.rootNav.setRoot(LoginPage, {}, {
+        this.navCtrl.rootNav.setRoot(LoginPage, {}, {
           animate: true
         });
       });
@@ -71,6 +67,6 @@ export class ChatsOptionsPage {
       buttons: ['OK']
     });
 
-    this.nav.present(alert);
+    this.navCtrl.present(alert);
   }
 }
