@@ -33,39 +33,32 @@ export class MessagesPage extends MeteorComponent {
     });
   }
 
-  ionViewDidEnter() {
-    this.scrollDown();
+  ngAfterViewInit() {
+    this.autoScroller = new MutationObserver(this::this.scrollDown);
+
+    this.autoScroller.observe(this.messagesList, {
+      childList: true,
+      subtree: true
+    });
   }
 
-  ngAfterViewChecked() {
-    if (!this.messageSent) return;
-    this.messageSent = false;
-    this.scrollDown();
+  ngOnDestroy() {
+    this.autoScroller.disconnect();
   }
 
   findMessages() {
-    const messages = Messages.find({
+    return Messages.find({
       chatId: this.activeChat._id
     }, {
       sort: {createdAt: 1},
       transform: this::this.transformMessage
     });
-
-    messages.observe({
-      added: this::this.onMessageAdded
-    });
-
-    return messages;
   }
 
   transformMessage(message) {
     if (!Meteor.user()) return message;
     message.ownership = this.senderId == message.senderId ? 'mine' : 'others';
     return message;
-  }
-
-  onMessageAdded(message) {
-    this.messageSent = true;
   }
 
   onInputKeypress({keyCode}) {
