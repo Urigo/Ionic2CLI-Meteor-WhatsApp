@@ -70,15 +70,18 @@ And now since we want it to run on the client as well we need to import it so it
 
 {{> DiffBox tutorialName="ionic2-tutorial" step="5.12"}}
 
-We would also like to validate some data sent to methods we define. For this we gonna install a utility package for validating schemas, called `joi`:
+We would also like to validate some data sent to methods we define. For this we gonna use a utility package provided to us by `Meteor` and it's called `check`. Let's add it to the server:
 
-    $ npm install joi --save
+    $ cd api
+    $ meteor add check
 
 And we gonna use it in our method:
 
 {{> DiffBox tutorialName="ionic2-tutorial" step="5.14"}}
 
-And now that our method handler is finally ready, we can go ahead and use it in our messages component:
+This package is already included with the `meteor-client-side` package therefore there's no need in installing it again.
+
+Now that our method handler is finally ready, we can go ahead and use it in our messages component:
 
 {{> DiffBox tutorialName="ionic2-tutorial" step="5.15"}}
 

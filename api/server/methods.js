@@ -3,7 +3,7 @@ import {check, Match} from 'meteor/check';
 import {Chats, Messages} from './collections';
 
 
-const isFullString = Match.Where((str) => {
+const nonEmptyString = Match.Where((str) => {
   check(str, String);
   return str.length > 0;
 });
@@ -14,8 +14,8 @@ Meteor.methods({
       'User must be logged-in to create a new chat');
 
     check(profile, {
-      name: isFullString,
-      picture: isFullString
+      name: nonEmptyString,
+      picture: nonEmptyString
     });
 
     Meteor.users.update(this.userId, {
@@ -27,7 +27,7 @@ Meteor.methods({
     if (!this.userId) throw new Meteor.Error('unauthorized',
       'User must be logged-in to create a new chat');
 
-    check(recieverId, isFullString);
+    check(recieverId, nonEmptyString);
 
     if (recieverId == this.userId) throw new Meteor.Error('illegal-reciever',
       'Reciever must be different than the current logged in user');
@@ -50,7 +50,7 @@ Meteor.methods({
     if (!this.userId) throw new Meteor.Error('unauthorized',
       'User must be logged-in to remove chat');
 
-    check(chatId, isFullString);
+    check(chatId, nonEmptyString);
 
     const chatExists = !!Chats.find(chatId).count();
 
@@ -65,8 +65,8 @@ Meteor.methods({
     if (!this.userId) throw new Meteor.Error('unauthorized',
       'User must be logged-in to create a new message');
 
-    check(chatId, isFullString);
-    check(content, isFullString);
+    check(chatId, nonEmptyString);
+    check(content, nonEmptyString);
 
     const chatExists = !!Chats.find(chatId).count();
 

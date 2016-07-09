@@ -42,6 +42,7 @@ Meteor.publishComposite('chats', function() {
 
 Meteor.publish('messages', function(chatId) {
   if (!this.userId) return;
+  if (!chatId) return;
 
   return Messages.find({chatId});
 });
