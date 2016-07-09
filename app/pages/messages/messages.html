@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar class="messages-page-navbar">
+  <ion-navbar primary class="messages-page-navbar">
     <img class="chat-picture" [src]="picture">
     <ion-title class="chat-title">{{title}}</ion-title>
 
@@ -22,7 +22,7 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar class="messages-page-footer" position="bottom">
+  <ion-toolbar primary class="messages-page-footer" position="bottom">
     <ion-input [(ngModel)]="message" (keypress)="onInputKeypress($event)" class="message-input" placeholder="Type a message"></ion-input>
 
     <ion-buttons end>

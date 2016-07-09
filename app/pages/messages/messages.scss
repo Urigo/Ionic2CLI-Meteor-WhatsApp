@@ -86,14 +86,16 @@
 }
 
 .messages-page-footer {
+  padding-right: 0;
+
   .message-input {
+    margin-left: 2px;
     background: white;
-    border-radius: 4px;
+    border-radius: 3px;
   }
 
   .message-input-button {
     box-shadow: none;
     width: 50px;
-    color: black;
   }
 }

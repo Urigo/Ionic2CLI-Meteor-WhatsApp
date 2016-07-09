@@ -15,6 +15,6 @@ You can safely start with those solutions knowing that you won't have to switch 
 Next steps:
 
 * Check out [https://www.meteor.com/](https://www.meteor.com/) for many more resources.
-* Go to [http://angular-meteor.com/](http://angular-meteor.com/) and check out a more [advanced tutorial](http://www.angular-meteor.com/tutorials/socially/angular2/bootstrapping).
+* Go to [http://angular-meteor.com/](http://angular-meteor.com/) and check out the [socially-app tutorial](http://www.angular-meteor.com/tutorials/socially/angular2/bootstrapping).
 
 {{/template}}
