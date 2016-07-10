@@ -26,7 +26,7 @@ Note that we replaced `Ionic`'s build module with a `Webpack` compiler. Eventual
 
 > *NOTE*: Again, we would like to focus on building our app rather than expalining about 3rd party libraties. For more information about tasks in `Gulp` see [reference](https://github.com/gulpjs/gulp/blob/master/docs/API.md).
 
-And last but not least, let's install the necessary dependencies inorder to make our setup work:
+Let's install the necessary dependencies inorder to make our setup work:
 
     $ npm uninstall ionic-gulp-browserify-typescript --save-dev
     $ npm install ionic-gulp-webpack --save-dev
@@ -55,12 +55,14 @@ As for now, non of the default pages is necessary for us. Let's delete them:
     $ rm -rf contact
     $ rm -rf home
 
-And let's delete the pages' correlated [SASS](http://sass-lang.com/) (A css pre-processor) files importations.
+We also need to delete the pages' correlated [SASS](http://sass-lang.com/) (A css pre-processor) files importations:
 
 {{> DiffBox tutorialName="ionic2-tutorial" step="2.5"}}
 
-And let's transform our `app.js` file, which is our app's entry point, into es6 and make the necessary changes:
+And lastly, let's transform the remaining `typescript` files into `javascript`:
 
 {{> DiffBox tutorialName="ionic2-tutorial" step="2.6"}}
+
+{{> DiffBox tutorialName="ionic2-tutorial" step="2.7"}}
 
 {{/template}}

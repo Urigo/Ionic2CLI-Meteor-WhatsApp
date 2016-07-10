@@ -26,7 +26,7 @@ Now that `Moment` is lock and loaded, we will create our chats component and we 
 
 The data stubs are just a temporary fabricated data which will be used to test our application to see how it reacts with it. You can also look at the documents' scheme and figure out how our application is gonna look like.
 
-Each should have a template. Our chats should be presented in a list (`ion-list`), and once we click on one of the chat items (`ion-item`), we will be promoted into it's messages page. The chats data set can be iterated in the view using a special directive called `*ngFor` provided to us by `AngularJS2`.
+Now that we have the component with the data, we need a view to present it. Our chats should be presented in a list (`ion-list`), and once we click on one of the chat items (`ion-item`), we will be promoted into it's messages page. The chats data set can be iterated in the view using a special directive called `*ngFor` provided to us by `AngularJS2`.
 
 If we put it all together it should look like so:
 
