@@ -1,5 +1,4 @@
 var gulp = require('gulp'),
-    gutil = require('gulp-util'),
     gulpWatch = require('gulp-watch'),
     del = require('del'),
     runSequence = require('run-sequence'),
@@ -29,23 +28,26 @@ gulp.task('run:before', [shouldWatch ? 'watch' : 'build']);
  * build however you see fit.
  */
 var buildSass = require('ionic-gulp-sass-build');
+var buildWebpack = require('ionic-gulp-webpack');
 var copyHTML = require('ionic-gulp-html-copy');
 var copyFonts = require('ionic-gulp-fonts-copy');
 var copyScripts = require('ionic-gulp-scripts-copy');
-var webpack = require('webpack');
 
 var webpackConfig = require('./webpack.config');
+
 var isRelease = argv.indexOf('--release') > -1;
 
-gulp.task('watch', ['clean'], function(){
+gulp.task('watch', ['clean'], function(done){
   runSequence(
     ['sass', 'html', 'fonts', 'scripts'],
     function(){
       gulpWatch('app/**/*.scss', function(){ gulp.start('sass'); });
       gulpWatch('app/**/*.html', function(){ gulp.start('html'); });
 
-      var compiler = webpack(webpackConfig);
-      compiler.watch({ pole: true }, webpackCallback());
+      buildWebpack({
+        config: webpackConfig,
+        watch: true
+      }).then(done);
     }
   );
 });
@@ -54,7 +56,9 @@ gulp.task('build', ['clean'], function(done){
   runSequence(
     ['sass', 'html', 'fonts', 'scripts'],
     function(){
-      webpack(webpackConfig, webpackCallback(done));
+      buildWebpack({
+        config: webpackConfig
+      }).then(done);
     }
   );
 });
@@ -66,17 +70,3 @@ gulp.task('scripts', copyScripts);
 gulp.task('clean', function(){
   return del('www/build');
 });
-
-function webpackCallback(done) {
-  return function(err, stats) {
-    if (err) {
-      throw new gutil.PluginError('webpack', err);
-    }
-
-    gutil.log('[webpack]', stats.toString({
-      colors: true
-    }));
-
-    return done && done();
-  }
-}

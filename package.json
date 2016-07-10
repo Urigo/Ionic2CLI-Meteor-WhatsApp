@@ -31,16 +31,15 @@
     "babel-preset-stage-0": "^6.5.0",
     "del": "2.2.0",
     "gulp": "3.9.1",
-    "gulp-util": "^3.0.7",
     "gulp-watch": "4.3.5",
     "ionic-gulp-fonts-copy": "^1.0.0",
     "ionic-gulp-html-copy": "^1.0.0",
     "ionic-gulp-sass-build": "^1.0.0",
     "ionic-gulp-scripts-copy": "^2.0.0",
+    "ionic-gulp-webpack": "^2.0.0",
     "lodash.camelcase": "^4.1.1",
     "lodash.upperfirst": "^4.2.0",
-    "run-sequence": "1.1.5",
-    "webpack": "^1.13.1"
+    "run-sequence": "1.1.5"
   },
   "name": "ionic2-meteor-messenger",
   "description": "ionic2-meteor-messenger: An Ionic project",

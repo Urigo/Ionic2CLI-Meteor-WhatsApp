@@ -28,16 +28,17 @@ Note that we replaced `Ionic`'s build module with a `Webpack` compiler. Eventual
 
 And last but not least, let's install the necessary dependencies inorder to make our setup work:
 
-    $ npm install babel --save
-    $ npm install babel-core --save
-    $ npm install babel-loader --save
-    $ npm install babel-plugin-add-module-exports --save
-    $ npm install babel-plugin-transform-decorators-legacy --save
-    $ npm install babel-preset-es2015 --save
-    $ npm install babel-preset-stage-0 --save
-    $ npm install lodash.camelcase --save
-    $ npm install lodash.upperfirst --save
-    $ npm install webpack --save
+    $ npm uninstall ionic-gulp-browserify-typescript --save-dev
+    $ npm install ionic-gulp-webpack --save-dev
+    $ npm install babel --save-dev
+    $ npm install babel-core --save-dev
+    $ npm install babel-loader --save-dev
+    $ npm install babel-plugin-add-module-exports --save-dev
+    $ npm install babel-plugin-transform-decorators-legacy --save-dev
+    $ npm install babel-preset-es2015 --save-dev
+    $ npm install babel-preset-stage-0 --save-dev
+    $ npm install lodash.camelcase --save-dev
+    $ npm install lodash.upperfirst --save-dev
 
 > *TIP*: You can also write it as a single line using `npm i <package1> <package2> ... --save`.
 
