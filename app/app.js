@@ -13,6 +13,14 @@ import {Tracker} from 'meteor/tracker';
 import {LoginPage} from './pages/login/login';
 import {TabsPage} from './pages/tabs/tabs';
 
+import checkPack from 'meteor/check';
+import ejsonPack from 'meteor/ejson';
+
+Object.assign(window,
+  checkPack,
+  ejsonPack
+);
+
 
 @Component({
   template: '<ion-nav [root]="rootPage"></ion-nav>'

@@ -8,7 +8,7 @@
     "@angular/platform-browser-dynamic": "^2.0.0-rc.3",
     "accounts-base-client-side": "^0.1.1",
     "accounts-phone": "^0.0.21",
-    "angular2-meteor": "^0.5.5",
+    "angular2-meteor": "^0.6.0",
     "angular2-moment": "^0.8.0",
     "es6-shim": "^0.35.0",
     "ionic-angular": "^2.0.0-beta.10",

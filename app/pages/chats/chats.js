@@ -52,22 +52,18 @@ export class ChatsPage extends MeteorComponent {
     chat.picture = '';
     chat.lastMessage = {};
 
-    setTimeout(() => {
-      chat.recieverComp = this.autorun(() => {
-        const recieverId = chat.memberIds.find(memberId => memberId != this.senderId);
-        const reciever = Meteor.users.findOne(recieverId);
-        if (!reciever) return;
+    chat.recieverComp = this.autorun(() => {
+      const recieverId = chat.memberIds.find(memberId => memberId != this.senderId);
+      const reciever = Meteor.users.findOne(recieverId);
+      if (!reciever) return;
 
-        chat.title = reciever.profile.name;
-        chat.picture = reciever.profile.picture;
-      }, true);
-    });
+      chat.title = reciever.profile.name;
+      chat.picture = reciever.profile.picture;
+    }, true);
 
-    setTimeout(() => {
-      chat.lastMessageComp = this.autorun(() => {
-        chat.lastMessage = this.findLastMessage(chat);
-      }, true);
-    });
+    chat.lastMessageComp = this.autorun(() => {
+      chat.lastMessage = this.findLastMessage(chat);
+    }, true);
 
     return chat;
   }
@@ -81,10 +77,8 @@ export class ChatsPage extends MeteorComponent {
   }
 
   disposeChat(chat) {
-    setTimeout(() => {
-      if (chat.recieverComp) chat.recieverComp.stop();
-      if (chat.lastMessageComp) chat.lastMessageComp.stop();
-    });
+    if (chat.recieverComp) chat.recieverComp.stop();
+    if (chat.lastMessageComp) chat.lastMessageComp.stop();
   }
 
   addChat() {

@@ -78,9 +78,15 @@ Now we also gonna install a package called `angular2-meteor`:
 
 `angular2-meteor` is a utility library which lets us use `Meteor`'s powerful API along with `AngularJS2` as the layer view. For more information about `angular2-meteor`, visit its website [here](angular-meteor.com).
 
-Now instead of mocking some static data in the controller, we can mock it in the server:
+As for now, the current version of `angular2-meteor` (version 0.6.0) relies on `Meteor` packages called `check` and `ejson` to be global, otherwise a runtime error might be thrown by this library. So before we use it we gotta expose this packages:
 
 {{> DiffBox tutorialName="ionic2-tutorial" step="4.12"}}
+
+> *NOTE*: This is a temporary workaround that shouldn't exist once this issue is solved.
+
+Now instead of mocking some static data in the controller, we can mock it in the server:
+
+{{> DiffBox tutorialName="ionic2-tutorial" step="4.13"}}
 
 The code is pretty easy and self explanatory.
 
@@ -88,7 +94,7 @@ Now we can simply import the chats collection and define a cursor on the chats c
 
 This is how our component should look like:
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="4.13"}}
+{{> DiffBox tutorialName="ionic2-tutorial" step="4.14"}}
 
 > *NOTE*: `meteor-client-side` will try to connect to `localhost:3000` by default. To change it, simply set a global object named `__meteor_runtime_config__` with a property called `DDP_DEFAULT_CONNECTION_URL` and set whatever server url you'd like to connect to.
 

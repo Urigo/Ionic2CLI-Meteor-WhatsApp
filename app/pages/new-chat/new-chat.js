@@ -47,7 +47,7 @@ export class NewChatPage extends MeteorComponent {
   }
 
   addChat(user) {
-    this.call('addChat', user._id, ([e]) => {
+    this.call('addChat', user._id, (e) => {
       this.viewCtrl.dismiss().then(() => {
         if (e) return this.handleError(e);
       });

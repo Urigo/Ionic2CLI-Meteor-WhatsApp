@@ -23,7 +23,7 @@ export class ProfilePage extends MeteorComponent {
   }
 
   done() {
-    this.call('updateProfile', this.profile, ([e]) => {
+    this.call('updateProfile', this.profile, (e) => {
       if (e) return this.handleError(e);
       this.navCtrl.push(TabsPage);
     }, true);
