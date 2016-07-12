@@ -123,21 +123,23 @@ Now we wanna add the abilities to log-out and edit our profile as well, which ar
 
 {{> DiffBox tutorialName="ionic2-tutorial" step="6.23"}}
 
-Now let's implement the component for the chats options which will handle the profile editing and logging-out:
-
 {{> DiffBox tutorialName="ionic2-tutorial" step="6.24"}}
 
-And let's implement the view as well:
+Now let's implement the component for the chats options which will handle the profile editing and logging-out:
 
 {{> DiffBox tutorialName="ionic2-tutorial" step="6.25"}}
 
-And ofcourse it needs some style re-adjustments:
+And let's implement the view as well:
 
 {{> DiffBox tutorialName="ionic2-tutorial" step="6.26"}}
 
-As for now, once you click on the options icon in the chats view, the popover should appear in the middle of the screen. To fix it, we simply gonna edit the `scss` file of the chats page:
+And ofcourse it needs some style re-adjustments:
 
 {{> DiffBox tutorialName="ionic2-tutorial" step="6.27"}}
+
+As for now, once you click on the options icon in the chats view, the popover should appear in the middle of the screen. To fix it, we simply gonna edit the `scss` file of the chats page:
+
+{{> DiffBox tutorialName="ionic2-tutorial" step="6.28"}}
 
 This should be the final result of the popover:
 
