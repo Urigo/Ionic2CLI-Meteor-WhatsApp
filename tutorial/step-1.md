@@ -1,4 +1,4 @@
-{{#template name="tutorials.messenger.ionic2.step_1.md"}}
+{{#template name="tutorials.messenger.ionic2.step_01.md"}}
 
 Both `Meteor` and `Ionic` took their platform to the next level in tooling.
 Both provide CLI interface instead of bringing bunch of dependencies and configure build tools.

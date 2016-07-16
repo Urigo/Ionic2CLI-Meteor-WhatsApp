@@ -30,15 +30,27 @@ And finally we gonna add the stylesheet:
 
 {{> DiffBox tutorialName="ionic2-tutorial" step="7.6"}}
 
+{{> DiffBox tutorialName="ionic2-tutorial" step="7.7"}}
+
 Now we want to get rid of the current data we have, which is just a static data.
 
-So let's stop our `Meteor`'s server and reset the whole app by running:
+So let's stop our `Meteor`'s server and reset the app by running:
 
     $ meteor reset
 
 Let's add some users to the server instead of the old static data:
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="7.7"}}
+{{> DiffBox tutorialName="ionic2-tutorial" step="7.8"}}
+
+Since we changed the data fabrication method, the chat's title and picture are not hardcoded anymore therefore they should be calculated in the components themselves.
+
+Let's calculate those fields in the chats component:
+
+{{> DiffBox tutorialName="ionic2-tutorial" step="7.9"}}
+
+And in the messages component as well for the active chat:
+
+{{> DiffBox tutorialName="ionic2-tutorial" step="7.10"}}
 
 And now once you enter the new chat dialog you should see all the users we created during the server's initialization:
 

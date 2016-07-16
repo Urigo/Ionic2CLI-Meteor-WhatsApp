@@ -1,4 +1,4 @@
-{{#template name="tutorials.messenger.ionic2.step_2.md"}}
+{{#template name="tutorials.messenger.ionic2.step_02.md"}}
 
 In this tutorial we will write our app using `ecmascript6` javascript, which is the latest version of javascript updated with the new ecmascript standards (From now on we will refer it as 'es6'). So before we dive into building our app, we need to make an initial setup inorder to achieve that.
 

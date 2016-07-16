@@ -1,8 +1,8 @@
-{{#template name="tutorials.messenger.ionic2.step_3.md"}}
+{{#template name="tutorials.messenger.ionic2.step_03.md"}}
 
 Now that we've finished making our initial setup, let's dive into the code of our app.
 
-In our app we gonna have 4 tabs, 'Chats', 'Contacts', 'Favorites', 'History', but since we don't want this tutorial to be an overkill we only gonna focus on the chats tab. The rest of the tabs are just for the layout.
+In our app we gonna have 4 tabs, 'Chats', 'Contacts', 'Favorites' and 'History', but since we don't want this tutorial to be an overkill we only gonna focus on the chats tab. The rest of the tabs are just for the layout.
 
 Let's edit the tabs template accordingly:
 
@@ -22,7 +22,7 @@ Before we go ahead and implement the chats page for the chats tab, let's first i
 
 Now that `Moment` is lock and loaded, we will create our chats component and we will use it to create some data stubs:
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="3.3"}}
+{{> DiffBox tutorialName="ionic2-tutorial" step="3.4"}}
 
 The data stubs are just a temporary fabricated data which will be used to test our application to see how it reacts with it. You can also look at the documents' scheme and figure out how our application is gonna look like.
 
@@ -30,7 +30,7 @@ Now that we have the component with the data, we need a view to present it. Our 
 
 If we put it all together it should look like so:
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="3.4"}}
+{{> DiffBox tutorialName="ionic2-tutorial" step="3.5"}}
 
 As for now, our chats' dates are presented in a very messy format which is not very informative for the every-day user. We wanna present it in a calendar format. Therefore we gotta use a calendar pipe, which is provided to us by a library called `angular2-moment`. This library takes some of `Moment`'s date filters and makes them available as pipes.
 
@@ -40,27 +40,27 @@ Let's install it:
 
 And now that we have it, let's import the `CalendarPipe` and provide it:
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="3.6"}}
+{{> DiffBox tutorialName="ionic2-tutorial" step="3.7"}}
 
 Now that it is provided we can use it in the template as well:
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="3.7"}}
+{{> DiffBox tutorialName="ionic2-tutorial" step="3.8"}}
 
-We would also like to be able to remove a chat by adding a remove button that will appear anytime we slide the item to the left. For this we gonna replace the `ion-item` element inside a element called `ion-item-sliding` and the remove button is gonna be placed inside an `ion-item-options` element.
+We would also like to be able to remove a chat by adding a remove button that will appear anytime we slide the item to the left. For this we gonna place the `ion-item` element inside an element called `ion-item-sliding` and the remove button is gonna be placed inside an element called `ion-item-options`.
 
 It should look like so:
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="3.8"}}
+{{> DiffBox tutorialName="ionic2-tutorial" step="3.9"}}
 
 Let's add the `removeChat()` method into our component:
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="3.9"}}
+{{> DiffBox tutorialName="ionic2-tutorial" step="3.10"}}
 
 And now let's add some style into it:
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="3.10"}}
-
 {{> DiffBox tutorialName="ionic2-tutorial" step="3.11"}}
+
+{{> DiffBox tutorialName="ionic2-tutorial" step="3.12"}}
 
 By now, this is how the chats view should look like:
 

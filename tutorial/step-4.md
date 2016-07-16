@@ -34,7 +34,7 @@ Don't forget to reinstall `Meteor`'s node dependencies after we deleted the `nod
 
     $ npm install meteor-node-stubs --save
 
-Now that we finished setting up our server, let's define two `Mongo` collections, `Chats` and `Messages`:
+Now that we finished setting up our server, let's define two `Mongo` collections - 'chats' and 'messages':
 
 {{> DiffBox tutorialName="ionic2-tutorial" step="4.6"}}
 

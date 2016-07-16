@@ -16,7 +16,7 @@ Notice how we used we used a controller called `NavController`. The `NavControll
 
 Let's implement the messages component.
 
-we need to have some data about the messages, and iterate through it. We will define a cursor on the component, but instead of fetching the entire data in the collection, we only gonna find the messages correlated with the current chat using a simple query. Also we need to determine whenever a message is our's or the reciever's. As for now we gonna do it based on the message's pairity. If it's even, it's gonna be our's, else, it's gonna be the receiver's.
+We need to have some data about the messages, and iterate through it. We will define a cursor on the component, but instead of fetching the entire data in the collection, we only gonna find the messages correlated with the current chat using a simple query. Also we need to determine whenever a message is our's or the reciever's. As for now we gonna do it based on the message's pairity. If it's even, it's gonna be our's, else, it's gonna be the receiver's.
 
 The basic component should look like so:
 
@@ -34,7 +34,7 @@ Let's add a basic stylesheet to our messages view:
 
 {{> DiffBox tutorialName="ionic2-tutorial" step="5.6"}}
 
-Now we just need to take care of the message timestamp and format it.
+Now we just need to take care of the message's timestamp and format it.
 
 Then again we gonna use `angular2-moment` only this time we gonna use a different format using the `DateFormat` pipe:
 
@@ -66,7 +66,6 @@ And now since we want it to run on the client as well we need to import it so it
 
 We would also like to validate some data sent to methods we define. For this we gonna use a utility package provided to us by `Meteor` and it's called `check`. Let's add it to the server:
 
-    $ cd api
     $ meteor add check
 
 And we gonna use it in our method:

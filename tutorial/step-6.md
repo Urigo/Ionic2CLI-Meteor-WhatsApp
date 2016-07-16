@@ -60,7 +60,7 @@ This is how the login view should look like:
 
 Up next, would be the verification view.
 
-e will use `accounts` API again to verify the user and in case of successful authentication we will transition to the profile view.
+We will use `accounts` API again to verify the user and in case of successful authentication we will transition to the profile view.
 
 Let's implement the component:
 
@@ -111,35 +111,43 @@ This is how the profile view should look like:
 
 Our authentication flow is complete! However there are some few adjustments we need to make before we proceed to the next step.
 
-Now that we have an authentication system, each message should have an owner. Let's add a validation to see if any user is logged in, if so the message document will be inserted with an additional `senderId` field:
+First we wanna skip the chat's transformation in the chats component unless the user is logged-in:
 
 {{> DiffBox tutorialName="ionic2-tutorial" step="6.21"}}
 
-And in the messages component instead of determining whenever the message is mine or not by it's parity, we can do that whenever the sender id is the same as the id of the current user logged in:
+This will come in handy in the future since some of the transformation fields will be calculated based on the current user's id.
+
+And second, each message should have an owner. If a user is logged-in a message document should be inserted with an additional `senderId` field:
 
 {{> DiffBox tutorialName="ionic2-tutorial" step="6.22"}}
 
-Now we wanna add the abilities to log-out and edit our profile as well, which are gonna be presented to us using a popover. Let's show a popover any time we press on the options icon in the top right corner of the chats view:
+And in the messages component instead of determining whenever the message is mine or not by it's parity, we can do that whenever the sender id is the same as the id of the current user logged in:
 
 {{> DiffBox tutorialName="ionic2-tutorial" step="6.23"}}
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.24"}}
+Now we wanna add the abilities to log-out and edit our profile as well, which are gonna be presented to us using a popover. Let's show a popover any time we press on the options icon in the top right corner of the chats view:
 
-Now let's implement the component for the chats options which will handle the profile editing and logging-out:
+{{> DiffBox tutorialName="ionic2-tutorial" step="6.24"}}
 
 {{> DiffBox tutorialName="ionic2-tutorial" step="6.25"}}
 
-And let's implement the view as well:
+Now let's implement the component for the chats options which will handle the profile editing and logging-out:
 
 {{> DiffBox tutorialName="ionic2-tutorial" step="6.26"}}
 
-And ofcourse it needs some style re-adjustments:
+Let's implement the view:
 
 {{> DiffBox tutorialName="ionic2-tutorial" step="6.27"}}
 
-As for now, once you click on the options icon in the chats view, the popover should appear in the middle of the screen. To fix it, we simply gonna edit the `scss` file of the chats page:
+And the stylesheet as well:
 
 {{> DiffBox tutorialName="ionic2-tutorial" step="6.28"}}
+
+{{> DiffBox tutorialName="ionic2-tutorial" step="6.29"}}
+
+As for now, once you click on the options icon in the chats view, the popover should appear in the middle of the screen. To fix it, we simply gonna edit the `scss` file of the chats page:
+
+{{> DiffBox tutorialName="ionic2-tutorial" step="6.30"}}
 
 This should be the final result of the popover:
 
