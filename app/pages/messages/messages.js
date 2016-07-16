@@ -20,36 +20,25 @@ export class MessagesPage extends MeteorComponent {
     this.senderId = Meteor.userId();
     this.message = '';
 
-    const recieverId = this.activeChat.memberIds.find(memberId => memberId != this.senderId);
-    const reciever = Meteor.users.findOne(recieverId);
+    const receiverId = this.activeChat.memberIds.find(memberId => memberId != this.senderId);
+    const receiver = Meteor.users.findOne(receiverId);
 
-    this.title = reciever.profile.name;
-    this.picture = reciever.profile.picture;
-    this.messagesSub = this.subscribe('messages', this.activeChat._id);
+    this.title = receiver.profile.name;
+    this.picture = receiver.profile.picture;
+
+    this.subscribe('messages', this.activeChat._id, () => {
+      this.autorun(() => {
+        this.messages = this.findMessages();
+      }, true);
+    });
   }
 
   ngOnInit() {
     this.autoScroller = this.autoScroll();
-
-    this.autorun(() => {
-      if (!this.messagesSub.ready()) return;
-      this.messages = this.findMessages();
-    }, true);
   }
 
   ngOnDestroy() {
     this.autoScroller.disconnect();
-  }
-
-  autoScroll() {
-    const autoScroller = new MutationObserver(this::this.scrollDown);
-
-    autoScroller.observe(this.messagesList, {
-      childList: true,
-      subtree: true
-    });
-
-    return autoScroller;
   }
 
   findMessages() {
@@ -76,6 +65,17 @@ export class MessagesPage extends MeteorComponent {
   sendMessage() {
     this.call('addMessage', this.activeChat._id, this.message);
     this.message = '';
+  }
+
+  autoScroll() {
+    const autoScroller = new MutationObserver(this::this.scrollDown);
+
+    autoScroller.observe(this.messagesList, {
+      childList: true,
+      subtree: true
+    });
+
+    return autoScroller;
   }
 
   scrollDown() {

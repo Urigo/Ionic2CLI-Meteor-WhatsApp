@@ -1,11 +1,10 @@
 import 'meteor-client-side';
 import 'accounts-base-client-side';
 import 'accounts-phone';
-import 'api/collections';
 import 'api/methods';
 
 import {Component} from '@angular/core';
-import {ionicBootstrap, Platform} from 'ionic-angular';
+import {Platform, ionicBootstrap} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {METEOR_PROVIDERS} from 'angular2-meteor';
 import {Meteor} from 'meteor/meteor';

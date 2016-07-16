@@ -1,12 +1,12 @@
 import {Component} from '@angular/core';
+import {NavController, Modal, Popover} from 'ionic-angular';
 import {MeteorComponent} from 'angular2-meteor';
 import {CalendarPipe} from 'angular2-moment';
-import {NavController, Modal, Popover} from 'ionic-angular';
 import {Meteor} from 'meteor/meteor';
 import {Chats, Messages} from 'api/collections';
 import {MessagesPage} from '../messages/messages';
-import {NewChatPage} from '../new-chat/new-chat';
 import {ChatsOptionsPage} from '../chats-options/chats-options';
+import {NewChatPage} from '../new-chat/new-chat';
 
 
 @Component({
@@ -22,14 +22,12 @@ export class ChatsPage extends MeteorComponent {
     this.navCtrl = navCtrl;
 
     this.senderId = Meteor.userId();
-    this.chatsSub = this.subscribe('chats');
-  }
 
-  ngOnInit() {
-    this.autorun(() => {
-      if (!this.chatsSub.ready()) return;
-      this.chats = this.findChats();
-    }, true);
+    this.subscribe('chats', () => {
+      this.autorun(() => {
+        this.chats = this.findChats();
+      }, true);
+    });
   }
 
   findChats() {
@@ -45,6 +43,11 @@ export class ChatsPage extends MeteorComponent {
     return chats;
   }
 
+  disposeChat(chat) {
+    if (chat.receiverComp) chat.receiverComp.stop();
+    if (chat.lastMessageComp) chat.lastMessageComp.stop();
+  }
+
   transformChat(chat) {
     if (!this.senderId) return chat;
 
@@ -52,13 +55,13 @@ export class ChatsPage extends MeteorComponent {
     chat.picture = '';
     chat.lastMessage = {};
 
-    chat.recieverComp = this.autorun(() => {
-      const recieverId = chat.memberIds.find(memberId => memberId != this.senderId);
-      const reciever = Meteor.users.findOne(recieverId);
-      if (!reciever) return;
+    chat.receiverComp = this.autorun(() => {
+      const receiverId = chat.memberIds.find(memberId => memberId != this.senderId);
+      const receiver = Meteor.users.findOne(receiverId);
+      if (!receiver) return;
 
-      chat.title = reciever.profile.name;
-      chat.picture = reciever.profile.picture;
+      chat.title = receiver.profile.name;
+      chat.picture = receiver.profile.picture;
     }, true);
 
     chat.lastMessageComp = this.autorun(() => {
@@ -74,11 +77,6 @@ export class ChatsPage extends MeteorComponent {
     }, {
       sort: {createdAt: -1}
     });
-  }
-
-  disposeChat(chat) {
-    if (chat.recieverComp) chat.recieverComp.stop();
-    if (chat.lastMessageComp) chat.lastMessageComp.stop();
   }
 
   addChat() {
