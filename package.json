@@ -41,8 +41,8 @@
     "lodash.upperfirst": "^4.2.0",
     "run-sequence": "1.1.5"
   },
-  "name": "ionic2-meteor-messenger",
-  "description": "ionic2-meteor-messenger: An Ionic project",
+  "name": "Whatsapp",
+  "description": "Whatsapp: An Ionic project",
   "scripts": {
     "format-patch": "git format-patch step-by-step --root --stdout > tutorial/step-by-step.patch && git add tutorial/step-by-step.patch && git commit -m \"Format patch file for step-by-step branch\""
   },

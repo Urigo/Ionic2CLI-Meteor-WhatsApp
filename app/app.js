@@ -24,7 +24,7 @@ Object.assign(window,
 @Component({
   template: '<ion-nav [root]="rootPage"></ion-nav>'
 })
-export class MessengerApp {
+export class Whatsapp {
   static parameters = [[Platform]]
 
   constructor(platform) {
@@ -42,5 +42,5 @@ Tracker.autorun((computation) => {
   if (Meteor.loggingIn()) return;
   computation.stop();
 
-  ionicBootstrap(MessengerApp, [METEOR_PROVIDERS]);
+  ionicBootstrap(Whatsapp, [METEOR_PROVIDERS]);
 });

@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar primary class="messages-page-navbar">
+  <ion-navbar whatsapp class="messages-page-navbar">
     <ion-buttons>
       <img class="chat-picture" [src]="picture">
     </ion-buttons>
@@ -25,7 +25,7 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar primary class="messages-page-footer" position="bottom">
+  <ion-toolbar whatsapp class="messages-page-footer" position="bottom">
     <ion-input [(ngModel)]="message" (keypress)="onInputKeypress($event)" class="message-input" placeholder="Type a message"></ion-input>
 
     <ion-buttons end>

@@ -18,6 +18,10 @@
 
   .messages {
     height: 100%;
+    background-image: url(/assets/chat-background.jpg);
+    background-color: #E0DAD6;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   .message-wrapper {
@@ -39,19 +43,21 @@
 
     &.message-mine {
       float: right;
-      background-color: rgb(100, 180, 255);
+      background-color: #DCF8C6;
 
-      .message-timestamp {
-        color: rgb(15, 95, 170);
+      &::before {
+        right: -11px;
+        background-image: url(/assets/message-mine.png)
       }
     }
 
     &.message-other {
       float: left;
-      background-color: rgb(230, 230, 230);
+      background-color: #FFF;
 
-      .message-timestamp {
-        color: grey;
+      &::before {
+        left: -11px;
+        background-image: url(/assets/message-other.png)
       }
     }
 
@@ -81,6 +87,7 @@
       bottom: 2px;
       right: 7px;
       font-size: 12px;
+      color: gray;
     }
   }
 }
@@ -96,6 +103,7 @@
   }
 
   .message-input-button {
+    background: color($colors, whatsapp);
     box-shadow: none;
     width: 50px;
     height: 50px;
