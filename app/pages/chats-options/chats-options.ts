@@ -9,20 +9,15 @@ import {LoginPage} from '../login/login';
   templateUrl: 'build/pages/chats-options/chats-options.html'
 })
 export class ChatsOptionsPage {
-  static parameters = [[NavController], [ViewController]]
+  constructor(private navCtrl: NavController, private viewCtrl: ViewController) {}
 
-  constructor(navCtrl, viewCtrl) {
-    this.navCtrl = navCtrl;
-    this.viewCtrl = viewCtrl;
-  }
-
-  editProfile() {
+  editProfile(): void {
     this.viewCtrl.dismiss().then(() => {
       this.navCtrl.push(ProfilePage);
     });
   }
 
-  logout() {
+  logout(): void {
     const alert = Alert.create({
       title: 'Logout',
       message: 'Are you sure you would like to proceed?',
@@ -46,8 +41,8 @@ export class ChatsOptionsPage {
     });
   }
 
-  handleLogout(alert) {
-    Meteor.logout((e) => {
+  private handleLogout(alert): void {
+    Meteor.logout((e: Error) => {
       alert.dismiss().then(() => {
         if (e) return this.handleError(e);
 
@@ -58,7 +53,7 @@ export class ChatsOptionsPage {
     });
   }
 
-  handleError(e) {
+  private handleError(e: Error): void {
     console.error(e);
 
     const alert = Alert.create({

@@ -32,6 +32,7 @@ var buildWebpack = require('ionic-gulp-webpack');
 var copyHTML = require('ionic-gulp-html-copy');
 var copyFonts = require('ionic-gulp-fonts-copy');
 var copyScripts = require('ionic-gulp-scripts-copy');
+var tslint = require('ionic-gulp-tslint');
 
 var webpackConfig = require('./webpack.config');
 
@@ -70,3 +71,4 @@ gulp.task('scripts', copyScripts);
 gulp.task('clean', function(){
   return del('www/build');
 });
+gulp.task('lint', tslint);

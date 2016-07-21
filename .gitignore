@@ -20,6 +20,8 @@ tmp/
 temp/
 www/build/
 $RECYCLE.BIN/
+typings/globals/
+typings/modules/
 
 .DS_Store
 Thumbs.db

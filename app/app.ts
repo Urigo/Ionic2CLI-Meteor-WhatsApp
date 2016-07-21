@@ -12,12 +12,10 @@ import {Tracker} from 'meteor/tracker';
 import {LoginPage} from './pages/login/login';
 import {TabsPage} from './pages/tabs/tabs';
 
-import checkPack from 'meteor/check';
-import ejsonPack from 'meteor/ejson';
 
 Object.assign(window,
-  checkPack,
-  ejsonPack
+  require('meteor/check'),
+  require('meteor/ejson')
 );
 
 
@@ -25,18 +23,17 @@ Object.assign(window,
   template: '<ion-nav [root]="rootPage"></ion-nav>'
 })
 export class Whatsapp {
-  static parameters = [[Platform]]
+  rootPage: any;
 
-  constructor(platform) {
+  constructor(platform: Platform) {
     this.rootPage = Meteor.user() ? TabsPage : LoginPage;
 
     platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
     });
   }
 }
+
 
 Tracker.autorun((computation) => {
   if (Meteor.loggingIn()) return;

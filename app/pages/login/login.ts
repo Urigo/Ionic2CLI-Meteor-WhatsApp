@@ -8,21 +8,17 @@ import {VerificationPage} from '../verification/verification';
   templateUrl: 'build/pages/login/login.html'
 })
 export class LoginPage {
-  static parameters = [[NavController]]
+  phone = '';
 
-  constructor(navCtrl) {
-    this.navCtrl = navCtrl;
+  constructor(private navCtrl: NavController) {}
 
-    this.phone = '';
-  }
-
-  onInputKeypress({keyCode}) {
+  onInputKeypress({keyCode}: KeyboardEvent): void {
     if (keyCode == 13) {
       this.login();
     }
   }
 
-  login() {
+  login(): void {
     const alert = Alert.create({
       title: 'Confirm',
       message: `Would you like to proceed with the phone number ${this.phone}?`,
@@ -44,8 +40,8 @@ export class LoginPage {
     this.navCtrl.present(alert);
   }
 
-  handleLogin(alert) {
-    Accounts.requestPhoneVerification(this.phone, (e) => {
+  private handleLogin(alert): void {
+    Accounts.requestPhoneVerification(this.phone, (e: Error) => {
       alert.dismiss().then(() => {
         if (e) return this.handleError(e);
 
@@ -56,7 +52,7 @@ export class LoginPage {
     });
   }
 
-  handleError(e) {
+  private handleError(e: Error): void {
     console.error(e);
 
     const alert = Alert.create({

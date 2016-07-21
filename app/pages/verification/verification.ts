@@ -9,26 +9,23 @@ import {ProfilePage} from '../profile/profile';
   templateUrl: 'build/pages/verification/verification.html'
 })
 export class VerificationPage extends MeteorComponent {
-  static parameters = [[NavController], [NgZone], [NavParams]]
+  phone: string;
+  code = '';
 
-  constructor(navCtrl, zone, navParams) {
+  constructor(private navCtrl: NavController, private zone: NgZone, navParams: NavParams) {
     super();
 
-    this.navCtrl = navCtrl;
-    this.zone = zone;
-
-    this.phone = navParams.get('phone');
-    this.code = '';
+    this.phone = <string>navParams.get('phone');
   }
 
-  onInputKeypress({keyCode}) {
+  onInputKeypress({keyCode}: KeyboardEvent): void {
     if (keyCode == 13) {
       this.verify();
     }
   }
 
-  verify() {
-    Accounts.verifyPhone(this.phone, this.code, (e) => {
+  verify(): void {
+    Accounts.verifyPhone(this.phone, this.code, (e: Error) => {
       this.zone.run(() => {
         if (e) return this.handleError(e);
 
@@ -39,7 +36,7 @@ export class VerificationPage extends MeteorComponent {
     });
   }
 
-  handleError(e) {
+  private handleError(e: Error): void {
     console.error(e);
 
     const alert = Alert.create({

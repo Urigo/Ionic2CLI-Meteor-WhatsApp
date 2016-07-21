@@ -6,6 +6,8 @@ import {ChatsPage} from '../chats/chats';
   templateUrl: 'build/pages/tabs/tabs.html'
 })
 export class TabsPage {
+  chatsTabRoot: any;
+
   constructor() {
     // this tells the tabs component which Pages
     // should be each tab's root Page

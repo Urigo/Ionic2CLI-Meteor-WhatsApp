@@ -2,9 +2,7 @@ var camelCase = require('lodash.camelcase');
 var upperFirst = require('lodash.upperfirst');
 
 module.exports = {
-  entry: [
-    './app/app.js'
-  ],
+  entry: './app/app.ts',
   output: {
     path: __dirname + '/www/build/js',
     filename: 'app.bundle.js'
@@ -13,24 +11,17 @@ module.exports = {
     'cordova',
     resolveExternals
   ],
-  target: 'web',
   devtool: 'source-map',
-  babel: {
-    presets: ['es2015', 'stage-0'],
-    plugins: ['transform-decorators-legacy', 'add-module-exports']
-  },
-  module: {
-    loaders: [{
-      test: /\.js$/,
-      exclude: /(node_modules|www)/,
-      loader: 'babel'
-    }]
-  },
   resolve: {
-    extensions: ['', '.js'],
+    extensions: ['', '.webpack.js', '.web.js', '.ts', '.js'],
     alias: {
       api: __dirname + '/api/server'
     }
+  },
+  module: {
+    loaders: [
+      {test: /\.ts$/, loader: 'ts-loader'}
+    ]
   }
 };
 
@@ -45,7 +36,7 @@ function meteorPack(request, callback) {
   var pack = match && match[1];
 
   if (pack) {
-    callback(null, 'window.Package && Package["' + pack + '"]' );
+    callback(null, 'window.Package && Package["' + pack + '"]');
     return true;
   }
 }

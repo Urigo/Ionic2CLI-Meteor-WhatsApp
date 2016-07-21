@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {MeteorComponent} from 'angular2-meteor';
 import {NavController, ViewController, Alert} from 'ionic-angular';
 import {Meteor} from 'meteor/meteor';
+import {Mongo} from 'meteor/mongo';
 import {Chats} from 'api/collections';
 
 
@@ -9,25 +10,31 @@ import {Chats} from 'api/collections';
   templateUrl: 'build/pages/new-chat/new-chat.html'
 })
 export class NewChatPage extends MeteorComponent {
-  static parameters = [[NavController], [ViewController]]
+  users: Mongo.Cursor<Meteor.User>;
+  private senderId: string;
 
-  constructor(navCtrl, viewCtrl) {
+  constructor(private navCtrl: NavController, private viewCtrl: ViewController) {
     super();
-
-    this.navCtrl = navCtrl;
-    this.viewCtrl = viewCtrl;
 
     this.senderId = Meteor.userId();
 
     this.subscribe('users', () => {
       this.autorun(() => {
         this.users = this.findUsers();
-      }, true);
+      });
     });
   }
 
-  findUsers() {
-    let recieverIds = Chats.find({
+  addChat(user): void {
+    this.call('addChat', user._id, (e: Error) => {
+      this.viewCtrl.dismiss().then(() => {
+        if (e) return this.handleError(e);
+      });
+    });
+  }
+
+  private findUsers(): Mongo.Cursor<Meteor.User> {
+    const chats = Chats.find({
       memberIds: this.senderId
     }, {
       fields: {
@@ -35,7 +42,7 @@ export class NewChatPage extends MeteorComponent {
       }
     });
 
-    recieverIds = recieverIds
+    const recieverIds = chats
       .map(({memberIds}) => memberIds)
       .reduce((result, memberIds) => result.concat(memberIds), [])
       .concat(this.senderId);
@@ -45,15 +52,7 @@ export class NewChatPage extends MeteorComponent {
     });
   }
 
-  addChat(user) {
-    this.call('addChat', user._id, (e) => {
-      this.viewCtrl.dismiss().then(() => {
-        if (e) return this.handleError(e);
-      });
-    }, true);
-  }
-
-  handleError(e) {
+  private handleError(e: Error): void {
     console.error(e);
 
     const alert = Alert.create({

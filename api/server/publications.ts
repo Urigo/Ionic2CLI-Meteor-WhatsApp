@@ -1,8 +1,10 @@
 import {Meteor} from 'meteor/meteor';
+import {Mongo} from 'meteor/mongo';
+import {Chat, Message} from 'api/models';
 import {Chats, Messages} from './collections';
 
 
-Meteor.publish('users', function() {
+Meteor.publish('users', function(): Mongo.Cursor<Meteor.User> {
   if (!this.userId) return;
 
   return Meteor.users.find({}, {
@@ -10,25 +12,25 @@ Meteor.publish('users', function() {
   });
 });
 
-Meteor.publishComposite('chats', function() {
+Meteor.publishComposite('chats', function(): PublishCompositeConfig<Chat> {
   if (!this.userId) return;
 
   return {
-    find() {
+    find: () => {
       return Chats.find({memberIds: this.userId});
     },
 
     children: [
-      {
-        find(chat) {
+      <PublishCompositeConfig1<Chat, Message>> {
+        find: (chat) => {
           return Messages.find({chatId: chat._id}, {
             sort: {createdAt: -1},
             limit: 1
           });
         }
       },
-      {
-        find(chat) {
+      <PublishCompositeConfig1<Chat, Meteor.User>> {
+        find: (chat) => {
           return Meteor.users.find({
             _id: {$in: chat.memberIds}
           }, {
@@ -40,7 +42,7 @@ Meteor.publishComposite('chats', function() {
   };
 });
 
-Meteor.publish('messages', function(chatId) {
+Meteor.publish('messages', function(chatId: string): Mongo.Cursor<Message> {
   if (!this.userId) return;
   if (!chatId) return;
 
