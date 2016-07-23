@@ -7,7 +7,7 @@ Ionic2-Meteor-Messenger
 - [meteor](https://www.meteor.com/)
 - [angular2](https://angular.io/)
 - [angular2-meteor](https://www.angular-meteor.com/angular2)
-- [webpack](https://www.webpac.com/)
+- [webpack](https://webpack.github.io/)
 
 The messenger app was created using `ionic`'s CLI. The same result could be achieved using `meteor`'s CLI, but I also wanted to go through the bundling process using `webpack`, therefore `meteor`'s build system would have prevented me from doing so. A `meteor` CLI version of this tutorial might be implemented in the future.
 
