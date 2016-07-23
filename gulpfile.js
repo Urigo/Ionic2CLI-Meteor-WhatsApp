@@ -27,8 +27,8 @@ gulp.task('run:before', [shouldWatch ? 'watch' : 'build']);
  * changes, but you are of course welcome (and encouraged) to customize your
  * build however you see fit.
  */
-var buildSass = require('ionic-gulp-sass-build');
 var buildWebpack = require('ionic-gulp-webpack');
+var buildSass = require('ionic-gulp-sass-build');
 var copyHTML = require('ionic-gulp-html-copy');
 var copyFonts = require('ionic-gulp-fonts-copy');
 var copyScripts = require('ionic-gulp-scripts-copy');
@@ -36,15 +36,12 @@ var tslint = require('ionic-gulp-tslint');
 
 var webpackConfig = require('./webpack.config');
 
-var isRelease = argv.indexOf('--release') > -1;
-
 gulp.task('watch', ['clean'], function(done){
   runSequence(
     ['sass', 'html', 'fonts', 'scripts'],
     function(){
       gulpWatch('app/**/*.scss', function(){ gulp.start('sass'); });
       gulpWatch('app/**/*.html', function(){ gulp.start('html'); });
-
       buildWebpack({
         config: webpackConfig,
         watch: true

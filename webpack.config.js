@@ -1,7 +1,10 @@
 var camelCase = require('lodash.camelcase');
 var upperFirst = require('lodash.upperfirst');
+var webpack = require('webpack');
 
-module.exports = {
+var isRelease = process.argv.indexOf('--release') > -1;
+
+var config = module.exports = {
   entry: './app/app.ts',
   output: {
     path: __dirname + '/www/build/js',
@@ -11,7 +14,6 @@ module.exports = {
     'cordova',
     resolveExternals
   ],
-  devtool: 'source-map',
   resolve: {
     extensions: ['', '.webpack.js', '.web.js', '.ts', '.js'],
     alias: {
@@ -24,6 +26,15 @@ module.exports = {
     ]
   }
 };
+
+if (isRelease) {
+  config.devtool = 'source-map';
+  config.plugins = [
+    new webpack.optimize.UglifyJsPlugin({
+      compress: { warnings: false }
+    })
+  ];
+}
 
 function resolveExternals(context, request, callback) {
   return meteorPack(request, callback) ||
