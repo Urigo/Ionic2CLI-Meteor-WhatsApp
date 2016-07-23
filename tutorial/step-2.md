@@ -1,68 +1,38 @@
-{{#template name="tutorials.messenger.ionic2.step_02.md"}}
+{{# template name="tutorials.whatsapp2.ionic.step_02.md"}}
 
-In this tutorial we will write our app using `ecmascript6` javascript, which is the latest version of javascript updated with the new ecmascript standards (From now on we will refer it as 'es6'). So before we dive into building our app, we need to make an initial setup inorder to achieve that.
+Ionic2 apps are written using [Angular2](angular.io). Although Angular2 apps can be created using Javascript, it is recommended to write them using [Typescript](typescriptlang.org), for 2 reasons:
 
-> *NOTE*: By default an `Ionic` app is written using [typescript](typescriptlang.org), but since lots of people are not yet familiar with it, I wanted to keep this tutorial simple. A `typescript` version might be implemented in the future.
+- It prevents runtime errors.
+- Dependency injection are done automatically based on the provided data-types.
 
-Iorder to write some es6 code we will need a pre-processor. [babel](https://babeljs.io/) plays a perfect roll for that. But that's not all. One of the most powerful tools in es6 is the module system. It uses relative paths inorder to load different modules we implement. `babel` can't do that alone because it can't load relative modules using sytax only. We will need some sort of a module bundler.
+Inorder to apply Typescript, Ionic's build system is built on top of a module bundler called [Browserify](browserify.org). In this tutorial we gonna use a custom build-config using [Webpack](webpack.github.io), hence we gonna re-define our build system. Both module-bundlers are great solutions for building our app, but Webpack provides us with some extra features like aliases, which are missing in Browserify.
 
-That's where [Webpack](https://webpack.github.io/) kicks in. `Webpack` is just a module bundler, but it can also use pre-processors on the way and it can be easily configured by whatever rules we specify, and is a very powerful tool and it is being used very commonly.
+Let's create our initial Webpack config:
 
-`Meteor` also uses the same techniques to implement es6, and load `NPM` modules into client side code, but since we're using `Ionic` CLI and not `Meteor`, we will implement our own `Webpack` configuration, using our own rules.
+{{> DiffBox tutorialName="ionic-tutorial" step="2.1"}}
 
-Now that we have the idea of what `Webpack` is all about, let's setup our initial config:
+Now we gonna make some adjustments in our Typescript config so the 2 configs can co-operate and won't have any conflicts:
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="2.1"}}
+{{> DiffBox tutorialName="ionic-tutorial" step="2.2"}}
 
-> *NOTE*: Since we don't want to digress from this tutorial's subject, we won't go into details about `Webpack`'s config. For more information, see [reference](https://webpack.github.io/docs/configuration.html).
+Ionic apps are created with tasks like linting and building which can be run whenever we want. These tasks are defined in a file called `gulpfile.js` and are performed by a toolkit called [Gulp](gulpjs.com).
 
-We would also like to initiate `Webpack` once we build our app. All our tasks are defined in one file called `gulpfile.js`, which uses [gulp](http://gulpjs.com/)'s API to perform and chain them.
+The 2 tasks which are responsible for building are app are:
 
-Let's edit our `gulpfile.js` accordingly:
+- `build` - Builds our app once. Mostly used for production.
+- `watch` - Builds our app whenever a change has been detected. Mostly used for development.
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="2.2"}}
+As we said, by default our app is built using Browserify. Let's re-write the build tasks and replace Browserify with Webpack:
 
-Note that we replaced `Ionic`'s build module with a `Webpack` compiler. Eventually they gonna achieve the same result, only now we can apply whatever rules we're intrested in the build process like aliases and references to external libraries, which will come in handy in the next steps.
+{{> DiffBox tutorialName="ionic-tutorial" step="2.3"}}
 
-> *NOTE*: Again, we would like to focus on building our app rather than expalining about 3rd party libraties. For more information about tasks in `Gulp` see [reference](https://github.com/gulpjs/gulp/blob/master/docs/API.md).
-
-Let's install the necessary dependencies inorder to make our setup work:
+Our configurations are ready. Let's install the necessary npm packages so they can function properly:
 
     $ npm uninstall ionic-gulp-browserify-typescript --save-dev
-    $ npm install ionic-gulp-webpack --save-dev
-    $ npm install babel --save-dev
-    $ npm install babel-core --save-dev
-    $ npm install babel-loader --save-dev
-    $ npm install babel-plugin-add-module-exports --save-dev
-    $ npm install babel-plugin-transform-decorators-legacy --save-dev
-    $ npm install babel-preset-es2015 --save-dev
-    $ npm install babel-preset-stage-0 --save-dev
+    $ npm install webpack --save-dev
+    $ npm install ts-loader --save-dev
     $ npm install lodash.camelcase --save-dev
+    $ npm install ionic-gulp-webpack --save-dev
     $ npm install lodash.upperfirst --save-dev
-
-> *TIP*: You can also write it as a single line using `npm i <package1> <package2> ... --save`.
-
-Our `package.json` should look like this:
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="2.3"}}
-
-Our app is written in the `app` dir, and if you go ahead and look at it you can see that `Ionic` has a very clear stracture. Our app is made out of pages, each page has a component, a template and a stylesheet.
-
-As for now, non of the default pages is necessary for us. Let's delete them:
-
-    $ cd app/pages
-    $ rm -rf about
-    $ rm -rf contact
-    $ rm -rf home
-
-We also need to delete the pages' correlated [SASS](http://sass-lang.com/) (A css pre-processor) files importations:
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="2.5"}}
-
-And lastly, let's transform the remaining `typescript` files into `javascript`:
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="2.6"}}
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="2.7"}}
 
 {{/template}}
