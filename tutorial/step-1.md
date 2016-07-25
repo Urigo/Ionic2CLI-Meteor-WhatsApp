@@ -1,10 +1,10 @@
-{{# template name="tutorials.whatsapp2.ionic.step_01.md"}}
+{{#template name="tutorials.whatsapp2.ionic.step_01.md"}}
 
 Both [Meteor](meteor.com) and [Ionic](ionicframework.com) took their platform to the next level in tooling.
 Both provide CLI interface instead of bringing bunch of dependencies and configure build tools.
 There are also differences between those tools. in this post we will focus on the Ionic CLI.
 
-To begin with, we need to install Ionic using npm:
+To begin with, we need to install Ionic using NPM:
 
     $ npm install -g ionic@beta
 
@@ -16,7 +16,7 @@ To start our app, simply type:
 
     $ ionic serve
 
-> *Note*: Ionic framework is built on top of [Cordova](cordova.apache.org) which let's you build your app for mobile devices. For more information on how to run our app on a mobile device see the following [link](ionicframework.com/docs/v2/getting-started/installation/).
+> **NOTE:** Ionic framework is built on top of [Cordova](cordova.apache.org) which let's you build your app for mobile devices. For more information on how to run our app on a mobile device see the following [link](ionicframework.com/docs/v2/getting-started/installation/).
 
 Ionic2 apps are written using [Angular2](angular.io). Although Angular2 apps can be created using Javascript, it is recommended to write them using [Typescript](typescriptlang.org), for 2 reasons:
 
@@ -44,7 +44,7 @@ As we said, by default our app is built using Browserify. Let's re-write the bui
 
 {{> DiffBox tutorialName="ionic-tutorial" step="1.4"}}
 
-Our configurations are ready. Let's install the necessary npm packages so they can function properly:
+Our configurations are ready. Let's install the necessary NPM packages so they can function properly:
 
     $ npm uninstall ionic-gulp-browserify-typescript --save-dev
     $ npm install webpack --save-dev
