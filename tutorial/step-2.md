@@ -70,7 +70,15 @@ Once creating an Ionic page it's recommended to use the following layout:
 - <ion-content> - The content of the page. Will usually contain it's actual content like text.
 - <ion-footer> - The footer of the page. Will usutally contain content that should be bounded to the bottom like toolbars.
 
-The current view template contains an <ion-header> with a navigation bar containing the tab's title and an <ion-content> containing the list of the chats. The `*ngFor` attribute is used for iteration and is equivalent to Angular1's `ng-for` attribute. The '*' sign just tells us that this is a template directive we're dealing with (A directive that should eventually be rendered in the view).
+The current view template contains an <ion-header> with a navigation bar containing the tab's title and an <ion-content> containing the list of the chats. The `*ngFor` attribute is used for iteration and is equivalent to Angular1's `ng-for` attribute. The '*' sign just tells us that this is a template directive we're dealing with (A directive that should eventually be rendered in the view). To prevent any misunderstandings, let's have a quick example for some of the notations in Angular2's template syntax that we gonna use in this tutorial:
+
+| Template syntax                                                |                                                                                                                                     |
+| -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| <input [value]="firstName">                                    | Binds property `value` to the result of expression `firstName`.                                                                     |
+| <button (click)="readRainbow($event)">                         | Calls method `readRainbow` when a click event is triggered on this button element (or its children) and passes in the event object. |
+| <div title="Hello {{ponyName}}">                               | Binds a property to an interpolated string, e.g. "Hello Seabiscuit". Equivalent to: <div [title]="'Hello ' + ponyName">             |
+| <my-cmp [(title)]="name">                                      | Sets up two-way data binding. Equivalent to: <my-cmp [title]="name" (titleChange)="name=$event">                                    |
+| <p>Card No.: {{cardNumber \| myCreditCardNumberFormatter}}</p> | Transforms the current value of expression `cardNumber` via the pipe called `myCreditCardNumberFormatter`.                          |
 
 > **NOTE:** Ionic elements will always have a prefix of `ion` and are self explanatory. Further information about Ionic's HTML elements can be found [here](ionicframework.com/docs/v2/component). It's very important to use these elemnts since they are the ones who provides us with the mobile-app look.
 
