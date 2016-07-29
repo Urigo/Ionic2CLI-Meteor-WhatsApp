@@ -1,4 +1,4 @@
-{{#template name="tutorials.messenger.ionic2.step_04.md"}}
+{{#template name="tutorials.whatsapp2.ionic.step_04.md"}}
 
 In this step we will add the messages view and the ability to send messages.
 

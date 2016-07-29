@@ -1,89 +1,166 @@
-{{#template name="tutorials.messenger.ionic2.step_05.md"}}
+{{#template name="tutorials.whatsapp2.ionic.step_05.md"}}
 
-In this step we will add the chat view and the ability to send messages. We still don't have an identity for each user, we will add it later, but we can still send messages to existing chats.
+In this step we will authenticate and identify users in our app.
 
-Before we implement anything related to the messages pages, we first have to make sure that once we click on a chat item in the chats page, we will be promoted into its corresponding messages view.
+Before we go ahead and start extending our app, we will add a few packages which will make our lives a bit less complex when it comes to authentication and users management.
 
-Let's first implement the `showMessages()` method in the chats component
+Firt we will update our Meteor server and add few Meteor packages called `accounts-base` and `accounts-phone` which will give us the ability to verify a user using an SMS code:
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="5.1"}}
+    $ meteor add accounts-base
+    $ meteor add okland:accounts-phone
 
-And let's register the click event on the view:
+And second, we will update the client, and add the corresponding authentication packages to it as well:
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="5.2"}}
+    $ npm install accounts-base-client-side --save
+    $ npm install accounts-phone --save
 
-Notice how we used we used a controller called `NavController`. The `NavController` is `Ionic`'s new method to navigate in our app, we can also use a traditional router, but since in a mobile app we have no access to the url bar, this might come more in handy. You can read more about the `NavController` [here](ionicframework.com/docs/v2/api/components/nav/NavController/).
+We will also need to install their decleration files so Typescript know how to handle them:
 
-Let's implement the messages component.
+    $ typings install dt~meteor-accounts-phone --save --global
 
-We need to have some data about the messages, and iterate through it. We will define a cursor on the component, but instead of fetching the entire data in the collection, we only gonna find the messages correlated with the current chat using a simple query. Also we need to determine whenever a message is our's or the reciever's. As for now we gonna do it based on the message's pairity. If it's even, it's gonna be our's, else, it's gonna be the receiver's.
+Let's import these packages in the app's main component so they can be a part of our bundle:
 
-The basic component should look like so:
+{{> DiffBox tutorialName="ionic-tutorial" step="5.4"}}
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="5.3"}}
+For the sake of debugging we gonna write an authentication settings file which might make our life easier, but once your'e in production mode you *shouldn't* use this configuration:
 
-As you can see, inorder to get the chat's id we just forwarded we used the `NavParams` service. This is a simple service which let's you get all the parameters you passed using the `NavController`. For more information about the `NavParams` service, see the following [link](ionicframework.com/docs/v2/api/components/nav/NavParams/).
+{{> DiffBox tutorialName="ionic-tutorial" step="5.5"}}
 
-Now that we have a messages cursor on our component, we can go ahead and iterate it through the view, and present each message:
+Now anytime we run our app we should provide it with a `settings.json`:
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="5.4"}}
+    $ meteor run --settings settings.json
 
-Let's add a basic stylesheet to our messages view:
+> *NOTE*: If you would like to test the verification with a real phone number, `accouts-phone` provides an easy access for [twilio's API](https://www.twilio.com/), for more information see [accounts-phone's repo](https://github.com/okland/accounts-phone).
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="5.5"}}
+We will now apply the settings file we've just created so it can actually take effect:
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="5.6"}}
+{{> DiffBox tutorialName="ionic-tutorial" step="5.6"}}
 
-Now we just need to take care of the message's timestamp and format it.
+For authentication we gonna create the following flow in our app:
 
-Then again we gonna use `angular2-moment` only this time we gonna use a different format using the `DateFormat` pipe:
+- login - The initial page. Ask for the user's phone number.
+- verification - Verify a user's phone number by an SMS authentication.
+- profile - Ask a user to pickup its name. Afterwards he will be promoted to the tabs page.
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="5.7"}}
+Before we implement these page, we need to identify if a user is currently logged in. If so, he will be automatically promoted to the chats view, if not, he is gonna be promoted to the login view and enter a phone number.
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="5.8"}}
+Let's apply this feature to our app's main component:
 
-> *Note*: The current pipe can be provided with the layout we're intrested in, therefore we provided it with the `HH:MM` parameter ('H' stands for 'hour' and 'M' stands for 'minute'). More information about date formats can be found in [`Moment`'s official website](momentjs.com/).
+{{> DiffBox tutorialName="ionic-tutorial" step="5.7"}}
 
-Our messages are set, but there is one really important feature missing and that's sending messages. Let's implement our message editor.
+Cool, now that we're set, let's start implementing the views we mentioned earlier. We will start with the login page.
 
-We will start with the view itself. We will add an input for editing our messages, a `send` button, and a `record` button whos logic won't be implemented in this tutorial since we only wanna focus on the text messaging system.
+In this page we will request an SMS verification right after a phone number has been entered:
 
-To fulfill this layout we gonna use a tool-bar (`ion-toolbar`) inside a footer (`ion-footer`) and place in underneath the content of the view:
+{{> DiffBox tutorialName="ionic-tutorial" step="5.8"}}
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="5.9"}}
+{{> DiffBox tutorialName="ionic-tutorial" step="5.9"}}
 
-And ofcourse we need to design the layout:
+{{> DiffBox tutorialName="ionic-tutorial" step="5.10"}}
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="5.10"}}
+{{> DiffBox tutorialName="ionic-tutorial" step="5.11"}}
 
-Before we go ahead and implement the logic in the component, we need to implement a method which will add messages to our messages collection and run on both client's local cache and server. Therefore we gonna create a `methods.js` file in our server and implement the `addMessage()` method:
+This is how the login view should look like:
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="5.11"}}
+> *android* {{tutorialImage 'ionic' 'screenshot-4-md.png' 500}}
 
-And now since we want it to run on the client as well we need to import it so it can be a part of our bundle:
+> *ios* {{tutorialImage 'ionic' 'screenshot-4-ios.png' 500}}
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="5.12"}}
+Up next, would be the verification view.
 
-We would also like to validate some data sent to methods we define. For this we gonna use a utility package provided to us by `Meteor` and it's called `check`. Let's add it to the server:
+In this page we will be verifying the SMS code and in case of successful authentication we will transition to the profile view.
 
-    $ meteor add check
+{{> DiffBox tutorialName="ionic-tutorial" step="5.12"}}
 
-And we gonna use it in our method:
+{{> DiffBox tutorialName="ionic-tutorial" step="5.13"}}
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="5.14"}}
+{{> DiffBox tutorialName="ionic-tutorial" step="5.14"}}
 
-This package is already included with the `meteor-client-side` package therefore there's no need in installing it again.
+{{> DiffBox tutorialName="ionic-tutorial" step="5.15"}}
 
-Now that our method handler is finally ready, we can go ahead and update our messages component:
+This is how the verification view should look like:
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="5.15"}}
+> *android* {{tutorialImage 'ionic' 'screenshot-5-md.png' 500}}
 
-In addition, we would like the view to auto-scroll down whenever a new message is added. For this we gonna use the [MutationObserver](developer.mozilla.org/en/docs/Web/API/MutationObserver), which lets us detect changes in the DOM whenever a new message item was appended:
+> *ios* {{tutorialImage 'ionic' 'screenshot-5-ios.png' 500}}
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="5.16"}}
+The last stage in the authentication flow would be profiling.
 
-This is how the messages view should like:
+The profile view provides the ability to enter the user's nickname and profile picture.
 
-{{tutorialImage 'ionic2' '3.png' 500}}
+Since the profile view is responsible for updating the profile we need to implement its corresponding Meteor method:
+
+{{> DiffBox tutorialName="ionic-tutorial" step="5.16"}}
+
+We also need to add a decleration for the profile model:
+
+{{> DiffBox tutorialName="ionic-tutorial" step="5.17"}}
+
+And here's the component:
+
+{{> DiffBox tutorialName="ionic-tutorial" step="5.18"}}
+
+Notice how we referenced an icon provided to us by `Ionic` as the default profile picture. We need this path to be available to us. Everyting that is placed under the `www` dir will be served as is, therefore we can just add a symbolic link which will make all the icons available to be served as public assets:
+
+    $ cd www
+    $ ln -s ../node_modules/ionicons/dist
+
+Now let's implement the template:
+
+{{> DiffBox tutorialName="ionic-tutorial" step="5.20"}}
+
+And the stylesheet:
+
+{{> DiffBox tutorialName="ionic-tutorial" step="5.21"}}
+
+{{> DiffBox tutorialName="ionic-tutorial" step="5.22"}}
+
+This is how the profile view should look like:
+
+> *android* {{tutorialImage 'ionic' 'screenshot-6-md.png' 500}}
+
+> *ios* {{tutorialImage 'ionic' 'screenshot-6-ios.png' 500}}
+
+Our authentication flow is complete! However there are some few adjustments we need to make before we proceed to the next step.
+
+For the messaging system, each message should have an owner. If a user is logged-in a message document should be inserted with an additional `senderId` field:
+
+{{> DiffBox tutorialName="ionic-tutorial" step="5.23"}}
+
+{{> DiffBox tutorialName="ionic-tutorial" step="5.24"}}
+
+And in the messages component instead of determining whenever the message is mine or not by it's parity, we can do that whenever the sender id is the same as the id of the current user logged in:
+
+{{> DiffBox tutorialName="ionic-tutorial" step="5.25"}}
+
+Now we wanna add the abilities to log-out and edit our profile as well, which are gonna be presented to us using a popover. Let's show a popover any time we press on the options icon in the top right corner of the chats view:
+
+{{> DiffBox tutorialName="ionic-tutorial" step="5.26"}}
+
+{{> DiffBox tutorialName="ionic-tutorial" step="5.27"}}
+
+Now let's implement the component for the chats options which will handle the profile editing and logging-out:
+
+{{> DiffBox tutorialName="ionic-tutorial" step="5.28"}}
+
+Let's implement the view:
+
+{{> DiffBox tutorialName="ionic-tutorial" step="5.29"}}
+
+And the stylesheet as well:
+
+{{> DiffBox tutorialName="ionic-tutorial" step="5.30"}}
+
+{{> DiffBox tutorialName="ionic-tutorial" step="5.31"}}
+
+As for now, once you click on the options icon in the chats view, the popover should appear in the middle of the screen. To fix it, we simply gonna edit the `scss` file of the chats page:
+
+{{> DiffBox tutorialName="ionic-tutorial" step="5.32"}}
+
+This should be the final result of the popover:
+
+> *android* {{tutorialImage 'ionic' 'screenshot-7-md.png' 500}}
+
+> *ios* {{tutorialImage 'ionic' 'screenshot-7-ios.png' 500}}
 
 {{/template}}
