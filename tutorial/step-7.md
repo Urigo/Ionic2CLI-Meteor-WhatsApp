@@ -1,59 +1,65 @@
-{{#template name="tutorials.messenger.ionic2.step_07.md"}}
+{{#template name="tutorials.whatsapp2.ionic.step_07.md"}}
 
-Our next step is about adding the ability to create new chats. So far we had the chats list and the users feature, we just need to connect them.
+In this step we gonna take care of the app's security and encapsulation, since we don't want the users to do whatever they want, and we don't want them to be able to see content which is unrelevant for them.
 
-We will open the new chat view using `Ionic`'s modal dialog. The dialog is gonna pop up from the chats view once we click on the icon at the top right corner of the view.
+We gonna start by removing a Meteor package named `insecure`.
 
-Let's implement the handler first:
+This package provides the client with the ability to run collection mutation methods. This is a behavior we are not intrested in since removing data and creating data should be done in the server and only after certain validations.
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="7.1"}}
+Meteor includes this package by default only for development purposes and it should be removed once our app is ready for production.
 
-And let's bind the event to the view:
+So let's remove this package by running this command:
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="7.2"}}
+    $ meteor remove insecure
 
-The dialog should contain a list of all the users whom chat does not exist yet. Once we click on one of these users we should be demoted to the chats view with the new chat we've just created.
+Now that we don't have the ability to remove whatever document we want anymore, we need to update the logic for the `removeChat()` method in our chats component.
 
-Since we wanna insert a new chat we need to create the corresponding method in the `methods.js` file:
+First we need to implement the corresponding method in our server:
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="7.3"}}
+{{> DiffBox tutorialName="ionic-tutorial" step="7.2"}}
 
-Now that we have the method ready we can go ahead and implement the component for the new chat dialog:
+And now we need to call this method from the component:
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="7.4"}}
+{{> DiffBox tutorialName="ionic-tutorial" step="7.3"}}
 
-After, we will implement the view template:
+Right now all the chats are published to all the clients which is not very good for privacy. Let's fix that.
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="7.5"}}
+First thing we need to do inorder to stop all the automatic publication of information is to remove the `autopublish` package from the Meteor server:
 
-And finally we gonna add the stylesheet:
+    $ meteor remove autopublish
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="7.6"}}
+We will now add the [publish-composite](https://atmospherejs.com/reywood/publish-composite) package which will help us implement joined collection pubications.
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="7.7"}}
+    $ meteor add reywood:publish-composite
 
-Now we want to get rid of the current data we have, which is just a static data.
+And we will install its belonging typings as well
 
-So let's stop our `Meteor`'s server and reset the app by running:
+    $ typings install dt~meteor-publish-composite --save --global
 
-    $ meteor reset
+Now we need to explicitly define our publications. Let's start by sending the users' information.
 
-Let's add some users to the server instead of the old static data:
+Create a file named `publications.ts` under the `api/server` dir with the following contents:
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="7.8"}}
+{{> DiffBox tutorialName="ionic-tutorial" step="7.7"}}
 
-Since we changed the data fabrication method, the chat's title and picture are not hardcoded anymore therefore they should be calculated in the components themselves.
+Let's have a brief overview for each of the publications and update the corresponding components to subscribe to them.
 
-Let's calculate those fields in the chats component:
+The chats publication is a composite publication which is made of several nodes. First we gonna find all the relevant chats for the current user logged in. After we have the chats, we gonna return the following cursor for each chat document we found. First we gonna return all the last messages, and second we gonna return all the users we're currently chatting with.
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="7.9"}}
+Let's add the subscription for the chats publication in the chats component:
 
-And in the messages component as well for the active chat:
+{{> DiffBox tutorialName="ionic-tutorial" step="7.8"}}
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="7.10"}}
+The users publication publishes all the users' profiles, and we need to use it in the new chat dialog whenever we wanna create a new chat.
 
-And now once you enter the new chat dialog you should see all the users we created during the server's initialization:
+Let's subscribe to the users publication in the new chat component:
 
-{{tutorialImage 'ionic2' '8.png' 500}}
+{{> DiffBox tutorialName="ionic-tutorial" step="7.9"}}
+
+The messages publication is responsible for biringing all the relevant messages for a certain chat. This publication is actually parameterized and it requires us to pass a chat id during subscription.
+
+Let's subscribe to the messages publication in the messages component, and pass the current active chat id provided to us by the nav params:
+
+{{> DiffBox tutorialName="ionic-tutorial" step="7.10"}}
 
 {{/template}}
