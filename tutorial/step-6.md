@@ -1,158 +1,59 @@
-{{#template name="tutorials.messenger.ionic2.step_06.md"}}
+{{#template name="tutorials.whatsapp2.ionic.step_06.md"}}
 
-On this step we will authenticate and identify users in our app.
+Our next step is about adding the ability to create new chats. So far we had the chats list and the users feature, we just need to connect them.
 
-Before we go ahead and start extending our app, we will add a few packages which will make our lives a bit less complex when it comes to authentication and users management.
+We will open the new chat view using Ionic's modal dialog. The dialog is gonna pop up from the chats view once we click on the icon at the top right corner of the view. Let's implement the handler in the chats component first:
 
-Firt we will update our `api` and add a meteor package called `accounts-phone` which gives us the ability to verify a user using an SMS code:
+{{> DiffBox tutorialName="ionic-tutorial" step="7.1"}}
 
-    $ meteor add okland:accounts-phone
+And let's bind the event to the view:
 
-And second, we will update the client, and add authentication packages to it. We will add `accounts-phone` which is the same package we installed in our `api`, only this time it's for the client:
+{{> DiffBox tutorialName="ionic-tutorial" step="7.2"}}
 
-    $ npm install accounts-phone --save
+The dialog should contain a list of all the users whom chat does not exist yet. Once we click on one of these users we should be demoted to the chats view with the new chat we've just created.
 
-Inorder to make the SMS verification work we will need to create a file locaed in `api/server/sms.js` with the following contents:
+Since we wanna insert a new chat we need to create the corresponding method in the `methods.ts` file:
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.3"}}
+{{> DiffBox tutorialName="ionic-tutorial" step="7.3"}}
 
-Note how we use the `Meteor.settings` object, this means that whenever we run our server we can provide it with a `settings.json` file like so:
+As you can see, a chat is inserted with an additional `memberIds` feild. Let's update the chat model accordingly:
 
-    $ meteor run --settings settings.json
+{{> DiffBox tutorialName="ionic-tutorial" step="7.4"}}
 
-For the sake of debugging we gonna write a settings file which might make our life easier, but once your'e in production mode you *shouldn't* use this configuration:
+Now that we have the method ready we can go ahead and implement the new chat dialog:
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.5"}}
+{{> DiffBox tutorialName="ionic-tutorial" step="7.5"}}
 
-> *NOTE*: If you would like to test the verification with a real phone number, `accouts-phone` provides an easy access for [twilio's API](https://www.twilio.com/), for more information see [accounts-phone's repo](https://github.com/okland/accounts-phone).
+{{> DiffBox tutorialName="ionic-tutorial" step="7.6"}}
 
-For authentication we gonna create the following flow:
+{{> DiffBox tutorialName="ionic-tutorial" step="7.7"}}
 
-- login - Ask for the user's phone number.
-- verification - Verify a user's phone number by an SMS authentication.
-- profile - Ask a user to pickup its name.
+{{> DiffBox tutorialName="ionic-tutorial" step="7.8"}}
 
-Before we implement the corresponding, we need to identify if a current user is logged in. If so, he is gonna be promoted into the chats view automatically, if not, he is gonna be promoted to the login view and enter a phone number.
+Thanks to our new-chat dialog, we can create chats dynamically with no need in initial fabrication. Let's replace the chats fabrication with users fabrication in the Meteor server:
 
-Let's apply this feature to our app's main component:
+{{> DiffBox tutorialName="ionic-tutorial" step="7.9"}}
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.6"}}
+Since we changed the data fabrication method, the chat's title and picture are not hardcoded anymore, therefore they should be calculated in the components themselves. Let's calculate those fields in the chats component:
 
-Cool, now that we're set, let's start implementing the views we mentioned earlier. We will start with the login view.
+{{> DiffBox tutorialName="ionic-tutorial" step="7.10"}}
 
-The login view contains an input and a save button, and after the save button has been saved, we should be forwarded to the verification view, right after an SMS has been sent to the entered phone number:
+{{> DiffBox tutorialName="ionic-tutorial" step="7.11"}}
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.7"}}
+And in the messages component as well for the active chat:
 
-And for the component - the logic is simple. We ask the user to check again his phone number, and then we will use `accounts` API in order to ask for SMS verification:
+{{> DiffBox tutorialName="ionic-tutorial" step="7.12"}}
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.8"}}
+Now we want our changes to take effect. We want to get rid of the fabricated chats in the database, and replace them with users. To do so we need to reset our database. To do so, we need to stop the Meteor server, and type the followin command:
 
-Now all is left is adding a stylesheet and the login view is ready:
+    $ meteor reset
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.9"}}
+And once we start our server again it should go through the initialization method and fabricate the users.
 
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.10"}}
+The fabricated users should appear in the new-chat dialog like so:
 
-This is how the login view should look like:
+> *android* {{tutorialImage 'ionic' 'screenshot-8-md.png' 500}}
 
-{{tutorialImage 'ionic2' '4.png' 500}}
-
-Up next, would be the verification view.
-
-We will use `accounts` API again to verify the user and in case of successful authentication we will transition to the profile view.
-
-Let's implement the component:
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.11"}}
-
-The view template:
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.12"}}
-
-And the stylesheet:
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.13"}}
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.14"}}
-
-This is how the verification view should look like:
-
-{{tutorialImage 'ionic2' '5.png' 500}}
-
-The last stage in the authentication flow would be profiling. The profile view provides the ability to enter the user's nickname and profile picture (Which, unfortunately, is not yet implemented in this tutorial).
-
-Since the profile view is responsible for updating the profile we need to implement the corresponding `Meteor` method:
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.15"}}
-
-Here's the component:
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.16"}}
-
-Notice how we referenced an icon provided to us by `Ionic` as the default profile picture. We need path to be available to us. Everyting that is placed under the `www` dir will be served as is, therefore we can just add a symbolic link which will make all the icons available to be served as public assets:
-
-    $ cd www
-    $ ln -s ../node_modules/ionicons/dist/svg
-
-Now let's implement the template:
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.18"}}
-
-And the stylesheet:
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.19"}}
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.20"}}
-
-This is how the profile view should look like:
-
-{{tutorialImage 'ionic2' '6.png' 500}}
-
-Our authentication flow is complete! However there are some few adjustments we need to make before we proceed to the next step.
-
-First we wanna skip the chat's transformation in the chats component unless the user is logged-in:
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.21"}}
-
-This will come in handy in the future since some of the transformation fields will be calculated based on the current user's id.
-
-And second, each message should have an owner. If a user is logged-in a message document should be inserted with an additional `senderId` field:
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.22"}}
-
-And in the messages component instead of determining whenever the message is mine or not by it's parity, we can do that whenever the sender id is the same as the id of the current user logged in:
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.23"}}
-
-Now we wanna add the abilities to log-out and edit our profile as well, which are gonna be presented to us using a popover. Let's show a popover any time we press on the options icon in the top right corner of the chats view:
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.24"}}
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.25"}}
-
-Now let's implement the component for the chats options which will handle the profile editing and logging-out:
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.26"}}
-
-Let's implement the view:
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.27"}}
-
-And the stylesheet as well:
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.28"}}
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.29"}}
-
-As for now, once you click on the options icon in the chats view, the popover should appear in the middle of the screen. To fix it, we simply gonna edit the `scss` file of the chats page:
-
-{{> DiffBox tutorialName="ionic2-tutorial" step="6.30"}}
-
-This should be the final result of the popover:
-
-{{tutorialImage 'ionic2' '7.png' 500}}
-
-We're not gonna implement the `about` option in this tutorial since its unrelevant. If you want you can go ahead and do so using the techniques we learned so far.
+> *ios* {{tutorialImage 'ionic' 'screenshot-8-ios.png' 500}}
 
 {{/template}}

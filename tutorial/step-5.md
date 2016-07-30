@@ -103,7 +103,7 @@ And here's the component:
 Notice how we referenced an icon provided to us by `Ionic` as the default profile picture. We need this path to be available to us. Everyting that is placed under the `www` dir will be served as is, therefore we can just add a symbolic link which will make all the icons available to be served as public assets:
 
     $ cd www
-    $ ln -s ../node_modules/ionicons/dist
+    $ ln -s ../node_modules/ionicons/dist ionicons
 
 Now let's implement the template:
 
