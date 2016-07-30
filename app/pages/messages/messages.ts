@@ -68,8 +68,7 @@ export class MessagesPage extends MeteorComponent implements OnInit, OnDestroy {
     });
   }
 
-  private transformMessage(message: Message): Message {
-    if (!this.senderId) return message;
+  private transformMessage(message): Message {
     message.ownership = this.senderId == message.senderId ? 'mine' : 'other';
     return message;
   }
@@ -87,7 +86,7 @@ export class MessagesPage extends MeteorComponent implements OnInit, OnDestroy {
 
   private scrollDown(): void {
     this.scroller.scrollTop = this.scroller.scrollHeight;
-    this.messageInput.focus();
+    this.messageEditor.focus();
   }
 
   private get messagesPageContent(): Element {
@@ -102,8 +101,8 @@ export class MessagesPage extends MeteorComponent implements OnInit, OnDestroy {
     return this.messagesPageContent.querySelector('.messages');
   }
 
-  private get messageInput(): HTMLInputElement {
-    return <HTMLInputElement>this.messagesPageFooter.querySelector('.message-input');
+  private get messageEditor(): HTMLInputElement {
+    return <HTMLInputElement>this.messagesPageFooter.querySelector('.message-editor');
   }
 
   private get scroller(): Element {

@@ -9,13 +9,14 @@ import {StatusBar} from 'ionic-native';
 import {METEOR_PROVIDERS} from 'angular2-meteor';
 import {Meteor} from 'meteor/meteor';
 import {Tracker} from 'meteor/tracker';
+import * as Check from 'meteor/check';
+import * as EJSON from 'meteor/ejson';
 import {LoginPage} from './pages/login/login';
 import {TabsPage} from './pages/tabs/tabs';
 
-
 Object.assign(window,
-  require('meteor/check'),
-  require('meteor/ejson')
+  Check,
+  EJSON
 );
 
 

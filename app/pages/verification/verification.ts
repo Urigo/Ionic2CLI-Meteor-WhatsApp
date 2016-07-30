@@ -9,8 +9,8 @@ import {ProfilePage} from '../profile/profile';
   templateUrl: 'build/pages/verification/verification.html'
 })
 export class VerificationPage extends MeteorComponent {
-  phone: string;
   code = '';
+  phone: string;
 
   constructor(private navCtrl: NavController, private zone: NgZone, navParams: NavParams) {
     super();

@@ -36,11 +36,11 @@ export class ChatsPage extends MeteorComponent {
     this.navCtrl.present(modal);
   }
 
-  removeChat(chat: Chat): void {
+  removeChat(chat): void {
     this.call('removeChat', chat._id);
   }
 
-  showMessages(chat: Chat): void {
+  showMessages(chat): void {
     this.navCtrl.push(MessagesPage, {chat});
   }
 
@@ -52,7 +52,7 @@ export class ChatsPage extends MeteorComponent {
     this.navCtrl.present(popover);
   }
 
-  private findChats(): Mongo.Cursor<Chat> {
+  private findChats(): Mongo.Cursor<Chat>{
     const chats = Chats.find({}, {
       transform: this.transformChat.bind(this)
     });
@@ -65,20 +65,10 @@ export class ChatsPage extends MeteorComponent {
     return chats;
   }
 
-  private disposeChat(chat: Chat): void {
-    if (chat.receiverComp) chat.receiverComp.stop();
-    if (chat.lastMessageComp) chat.lastMessageComp.stop();
-  }
-
-  private transformChat(chat: Chat): Chat {
-    if (!this.senderId) return chat;
-
-    chat.title = '';
-    chat.picture = '';
-
+  private transformChat(chat): Chat {
     chat.receiverComp = this.autorun(() => {
       const receiverId = chat.memberIds.find(memberId => memberId != this.senderId);
-      const receiver = <Meteor.User>Meteor.users.findOne(receiverId);
+      const receiver = Meteor.users.findOne(receiverId);
       if (!receiver) return;
 
       chat.title = receiver.profile.name;
@@ -92,11 +82,16 @@ export class ChatsPage extends MeteorComponent {
     return chat;
   }
 
-  private findLastMessage(chat: Chat): Message {
+  private findLastMessage(chat): Message {
     return Messages.findOne({
       chatId: chat._id
     }, {
       sort: {createdAt: -1}
     });
+  }
+
+  private disposeChat(chat: Chat): void {
+    if (chat.receiverComp) chat.receiverComp.stop();
+    if (chat.lastMessageComp) chat.lastMessageComp.stop();
   }
 }

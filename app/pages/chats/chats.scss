@@ -1,15 +1,3 @@
-.options-popover {
-  $popover-width: 200px;
-  $popover-margin: 5px;
-
-  .popover-content {
-    width: $popover-width;
-    transform-origin: right top 0px !important;
-    left: calc(100% - #{$popover-width} - #{$popover-margin}) !important;
-    top: $popover-margin !important;
-  }
-}
-
 .chats-page-content {
   .chat-picture {
     border-radius: 50%;
@@ -29,5 +17,16 @@
       color: #9A9898;
     }
   }
+}
 
+.options-popover {
+  $popover-width: 200px;
+  $popover-margin: 5px;
+
+  .popover-content {
+    width: $popover-width;
+    transform-origin: right top 0px !important;
+    left: calc(100% - #{$popover-width} - #{$popover-margin}) !important;
+    top: $popover-margin !important;
+  }
 }

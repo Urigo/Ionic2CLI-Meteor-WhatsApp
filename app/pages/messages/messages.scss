@@ -95,14 +95,14 @@
 .messages-page-footer {
   padding-right: 0;
 
-  .message-input {
+  .message-editor {
     margin-left: 2px;
     padding-left: 5px;
     background: white;
     border-radius: 3px;
   }
 
-  .message-input-button {
+  .message-editor-button {
     background: color($colors, whatsapp);
     box-shadow: none;
     width: 50px;
