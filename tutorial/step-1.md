@@ -6,7 +6,7 @@ There are also differences between those tools. in this post we will focus on th
 
 To begin with, we need to install Ionic using NPM:
 
-    $ npm install -g ionic@beta
+    $ npm install -g ionic@2.0.0-beta.32
 
 We will create our Whatsapp app using the following command:
 
@@ -27,11 +27,11 @@ Inorder to apply Typescript, Ionic's build system is built on top of a module bu
 
 Let's create our initial Webpack config:
 
-{{> DiffBox tutorialName="ionic-tutorial" step="1.2"}}
+{{> DiffBox tutorialName="whatsapp2-ionic-tutorial" step="1.2"}}
 
 Now we gonna make some adjustments in our Typescript config so the 2 configs can co-operate and won't have any conflicts:
 
-{{> DiffBox tutorialName="ionic-tutorial" step="1.3"}}
+{{> DiffBox tutorialName="whatsapp2-ionic-tutorial" step="1.3"}}
 
 Ionic apps are created with tasks like linting and building which can be run whenever we want. These tasks are defined in a file called `gulpfile.js` and are performed by a toolkit called [Gulp](gulpjs.com).
 
@@ -42,7 +42,7 @@ The 2 tasks which are responsible for building are app are:
 
 As we said, by default our app is built using Browserify. Let's re-write the build tasks and replace Browserify with Webpack:
 
-{{> DiffBox tutorialName="ionic-tutorial" step="1.4"}}
+{{> DiffBox tutorialName="whatsapp2-ionic-tutorial" step="1.4"}}
 
 Our configurations are ready. Let's install the necessary NPM packages so they can function properly:
 

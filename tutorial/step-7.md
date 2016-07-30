@@ -16,11 +16,11 @@ Now that we don't have the ability to remove whatever document we want anymore, 
 
 First we need to implement the corresponding method in our server:
 
-{{> DiffBox tutorialName="ionic-tutorial" step="7.2"}}
+{{> DiffBox tutorialName="whatsapp2-ionic-tutorial" step="7.2"}}
 
 And now we need to call this method from the component:
 
-{{> DiffBox tutorialName="ionic-tutorial" step="7.3"}}
+{{> DiffBox tutorialName="whatsapp2-ionic-tutorial" step="7.3"}}
 
 Right now all the chats are published to all the clients which is not very good for privacy. Let's fix that.
 
@@ -40,7 +40,7 @@ Now we need to explicitly define our publications. Let's start by sending the us
 
 Create a file named `publications.ts` under the `api/server` dir with the following contents:
 
-{{> DiffBox tutorialName="ionic-tutorial" step="7.7"}}
+{{> DiffBox tutorialName="whatsapp2-ionic-tutorial" step="7.7"}}
 
 Let's have a brief overview for each of the publications and update the corresponding components to subscribe to them.
 
@@ -48,18 +48,18 @@ The chats publication is a composite publication which is made of several nodes.
 
 Let's add the subscription for the chats publication in the chats component:
 
-{{> DiffBox tutorialName="ionic-tutorial" step="7.8"}}
+{{> DiffBox tutorialName="whatsapp2-ionic-tutorial" step="7.8"}}
 
 The users publication publishes all the users' profiles, and we need to use it in the new chat dialog whenever we wanna create a new chat.
 
 Let's subscribe to the users publication in the new chat component:
 
-{{> DiffBox tutorialName="ionic-tutorial" step="7.9"}}
+{{> DiffBox tutorialName="whatsapp2-ionic-tutorial" step="7.9"}}
 
 The messages publication is responsible for biringing all the relevant messages for a certain chat. This publication is actually parameterized and it requires us to pass a chat id during subscription.
 
 Let's subscribe to the messages publication in the messages component, and pass the current active chat id provided to us by the nav params:
 
-{{> DiffBox tutorialName="ionic-tutorial" step="7.10"}}
+{{> DiffBox tutorialName="whatsapp2-ionic-tutorial" step="7.10"}}
 
 {{/template}}
