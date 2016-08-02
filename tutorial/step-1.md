@@ -29,9 +29,42 @@ Let's create our initial Webpack config:
 
 {{> DiffBox tutorialName="whatsapp2-ionic-tutorial" step="1.2"}}
 
+Here is a brief overview for each of the properties defined by our config:
+
+- `entry` - Start bundling from `app/app.ts`.
+- `output` - Place bundling result at `www/app.bundle.js`.
+- `externals` - `cordova` is an external module, which means that
+  ```js
+  import Cordova from `cordova`;
+  ```
+  should compile to
+  ```js
+  var Cordova = window.cordova;
+  ```
+  In addition, cordova plugins can be imported like
+  ```js
+  import Keyboard from 'cordova/keyboard';
+  ```
+  instead of defining a reference explicitly like
+  ```js
+  const Keyboard = window.cordova.plugins.keyboard;
+  ```
+  which is done thanks to the `cordovaPlugin` handler.
+- `resolve.extensions` - Bundle files which have an extension of `.webpack.js`, `.web.js`, `.js` or `.ts`.
+- `module.loaders` - Files which have an extension of `.ts` should be compiled by Typescript.
+
+Once we specify the `--release` option an additional extension should be added to our config:
+
+- `devtool` - Generate source-maps for the bundle.
+- `plugins` - Minify the generated undle.
+
+This option is used mostly for production. For full specifications of the Webpack config, see the following [reference](webpack.github.io/docs/configuration.html).
+
 Now we gonna make some adjustments in our Typescript config so the 2 configs can co-operate and won't have any conflicts:
 
 {{> DiffBox tutorialName="whatsapp2-ionic-tutorial" step="1.3"}}
+
+We simply added more entry points for our Typescript compiler so it can be provided with decleration files (Which is explained in step 2.8) and excluded folders whom scripts shouldn't be compiled like `node_modules` and `www`.
 
 Ionic apps are created with tasks like linting and building which can be run whenever we want. These tasks are defined in a file called `gulpfile.js` and are performed by a toolkit called [Gulp](gulpjs.com).
 
