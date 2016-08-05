@@ -24,11 +24,11 @@ var config = module.exports = {
     loaders: [
       {test: /\.ts$/, loader: 'ts-loader'}
     ]
-  }
+  },
+  devtool: 'source-map'
 };
 
 if (isRelease) {
-  config.devtool = 'source-map';
   config.plugins = [
     new webpack.optimize.UglifyJsPlugin({
       compress: { warnings: false }
