@@ -4,7 +4,17 @@ import 'accounts-base-client-side';
 import 'accounts-phone';
 
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-
 import { AppModule } from './app.module';
+import { MeteorObservable } from 'meteor-rxjs';
 
-platformBrowserDynamic().bootstrapModule(AppModule);
+Meteor.startup(() => {
+  const sub = MeteorObservable.autorun().subscribe(() => {
+    if (Meteor.loggingIn()) return;
+
+    setTimeout(() => {
+      sub.unsubscribe();
+    });
+
+    platformBrowserDynamic().bootstrapModule(AppModule);
+  });
+});
