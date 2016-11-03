@@ -1,5 +1,6 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { ProfileComponent } from "../profile/profile";
 
 declare let Accounts;
 
@@ -32,9 +33,9 @@ export class VerificationComponent implements OnInit {
       this.zone.run(() => {
         if (e) return this.handleError(e);
 
-        // this.navCtrl.setRoot(ProfileComponent, {}, {
-        //   animate: true
-        // });
+        this.navCtrl.setRoot(ProfileComponent, {}, {
+          animate: true
+        });
       });
     });
   }
