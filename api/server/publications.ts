@@ -14,4 +14,11 @@ export function initPublications() {
     });
   });
 
+  Meteor.publish('messages', function(chatId: string): Mongo.Cursor<Message> {
+    if (!this.userId) return;
+    if (!chatId) return;
+
+    return Messages.collection.find({chatId});
+  });
+
 }
