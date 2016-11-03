@@ -5,6 +5,7 @@ import { Chats, Messages } from "api/collections/whatsapp-collections";
 import { NavController, PopoverController, ModalController } from "ionic-angular";
 import { MessagesPage } from "../messages/messages";
 import { ChatsOptionsComponent } from "../chat-options/chat-options";
+import { NewChatComponent } from "../new-chat/new-chat";
 
 @Component({
   templateUrl: 'chats.html'
