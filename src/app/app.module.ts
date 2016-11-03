@@ -6,6 +6,7 @@ import { ChatsPage } from "../pages/chats/chats";
 import { MomentModule } from "angular2-moment";
 import { MessagesPage } from "../pages/messages/messages";
 import { LoginComponent } from "../pages/auth/login";
+import { VerificationComponent } from "../pages/verification/verification";
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { LoginComponent } from "../pages/auth/login";
     ChatsPage,
     TabsPage,
     MessagesPage,
-    LoginComponent
+    LoginComponent,
+    VerificationComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -25,7 +27,8 @@ import { LoginComponent } from "../pages/auth/login";
     ChatsPage,
     TabsPage,
     MessagesPage,
-    LoginComponent
+    LoginComponent,
+    VerificationComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
