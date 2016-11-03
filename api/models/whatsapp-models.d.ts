@@ -9,6 +9,7 @@ declare module 'api/models/whatsapp-models' {
     title?: string;
     picture?: string;
     lastMessage?: Message;
+    memberIds?: string[];
   }
 
   interface Message {
