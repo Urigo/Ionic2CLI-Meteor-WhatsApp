@@ -1,9 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
 
-
-
-
 // for prod builds, we have already done AoT and AoT writes to disk
 // so read the JS file from disk
 // for dev buids, we actually want to pass in .ts files since we
@@ -26,7 +23,11 @@ function getPlugins() {
       //new DedupePlugin()
     ];
   }
-  return [];
+  return [
+    new webpack.ProvidePlugin({
+      __extends: 'typescript-extends'
+    })
+  ];
 }
 
 module.exports = {
@@ -37,7 +38,10 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['.js', '.json']
+    extensions: ['.js', '.json', '.ts'],
+    alias: {
+      'api': path.resolve(__dirname, '../api')
+    }
   },
 
   module: {
@@ -56,6 +60,7 @@ module.exports = {
   node: {
     fs: 'empty',
     net: 'empty',
-    tls: 'empty'
+    tls: 'empty',
+    __dirname: true
   }
 };
