@@ -57,15 +57,19 @@ export class MessagesPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.messages = Messages.find(
-      {chatId: this.selectedChat._id},
-      {sort: {createdAt: 1}}
-    ).map((messages: Message[]) => {
-      messages.forEach((message: Message) => {
-        message.ownership = this.senderId == message.senderId ? 'mine' : 'other';
-      });
+    MeteorObservable.subscribe('messages', this.selectedChat._id).subscribe(() => {
+      MeteorObservable.autorun().subscribe(() => {
+        this.messages = Messages.find(
+          {chatId: this.selectedChat._id},
+          {sort: {createdAt: 1}}
+        ).map((messages: Message[]) => {
+          messages.forEach((message: Message) => {
+            message.ownership = this.senderId == message.senderId ? 'mine' : 'other';
+          });
 
-      return messages;
+          return messages;
+        });
+      });
     });
 
     this.autoScroller = this.autoScroll();
