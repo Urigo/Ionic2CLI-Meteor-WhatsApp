@@ -1,10 +1,16 @@
 import * as moment from "moment";
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 import { initMethods } from "./methods";
 import { Chats, Messages } from "../collections/whatsapp-collections";
 
 Meteor.startup(() => {
   initMethods();
+
+  if (Meteor.settings) {
+    Object.assign(Accounts._options, Meteor.settings['accounts-phone']);
+    SMS.twilio = Meteor.settings['twilio'];
+  }
 
   if (Chats.find({}).cursor.count() === 0) {
     let chatId;
