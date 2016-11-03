@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import 'meteor-client-side';
 
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
