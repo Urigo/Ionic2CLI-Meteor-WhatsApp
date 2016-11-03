@@ -21,4 +21,33 @@ export function initPublications() {
     return Messages.collection.find({chatId});
   });
 
+  Meteor.publishComposite('chats', function() {
+    if (!this.userId) return;
+
+    return {
+      find: () => {
+        return Chats.collection.find({memberIds: this.userId});
+      },
+
+      children: [
+        {
+          find: (chat) => {
+            return Messages.collection.find({chatId: chat._id}, {
+              sort: {createdAt: -1},
+              limit: 1
+            });
+          }
+        },
+        {
+          find: (chat) => {
+            return Users.collection.find({
+              _id: {$in: chat.memberIds}
+            }, {
+              fields: {profile: 1}
+            });
+          }
+        }
+      ]
+    };
+  });
 }
