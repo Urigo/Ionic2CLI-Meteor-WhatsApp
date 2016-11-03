@@ -7,6 +7,7 @@ import { MomentModule } from "angular2-moment";
 import { MessagesPage } from "../pages/messages/messages";
 import { LoginComponent } from "../pages/auth/login";
 import { VerificationComponent } from "../pages/verification/verification";
+import { ProfileComponent } from "../pages/profile/profile";
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { VerificationComponent } from "../pages/verification/verification";
     TabsPage,
     MessagesPage,
     LoginComponent,
-    VerificationComponent
+    VerificationComponent,
+    ProfileComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -28,7 +30,8 @@ import { VerificationComponent } from "../pages/verification/verification";
     TabsPage,
     MessagesPage,
     LoginComponent,
-    VerificationComponent
+    VerificationComponent,
+    ProfileComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
