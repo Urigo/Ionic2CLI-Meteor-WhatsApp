@@ -2,7 +2,7 @@
   "name": "api",
   "private": true,
   "scripts": {
-    "start": "meteor run"
+    "start": "meteor run --settings private/settings.json"
   },
   "dependencies": {
     "@types/moment": "^2.13.0",
