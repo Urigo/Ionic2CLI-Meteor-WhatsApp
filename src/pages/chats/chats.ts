@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from "rxjs";
 import { Chat } from "api/models/whatsapp-models";
 import { Chats, Messages } from "api/collections/whatsapp-collections";
-import { NavController } from "ionic-angular";
+import { NavController, PopoverController } from "ionic-angular";
 import { MessagesPage } from "../messages/messages";
+import { ChatsOptionsComponent } from "../chat-options/chat-options";
 
 @Component({
   templateUrl: 'chats.html'
@@ -11,7 +12,7 @@ import { MessagesPage } from "../messages/messages";
 export class ChatsPage implements OnInit {
   chats;
 
-  constructor(private navCtrl: NavController) {
+  constructor(public navCtrl: NavController, public popoverCtrl: PopoverController) {
 
   }
 
@@ -31,6 +32,14 @@ export class ChatsPage implements OnInit {
           )
         )
       ).zone();
+  }
+
+  showOptions(): void {
+    const popover = this.popoverCtrl.create(ChatsOptionsComponent, {}, {
+      cssClass: 'options-popover'
+    });
+
+    popover.present();
   }
 
   showMessages(chat): void {
