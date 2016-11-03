@@ -8,6 +8,7 @@ import { MessagesPage } from "../pages/messages/messages";
 import { LoginComponent } from "../pages/auth/login";
 import { VerificationComponent } from "../pages/verification/verification";
 import { ProfileComponent } from "../pages/profile/profile";
+import { ChatsOptionsComponent } from "../pages/chat-options/chat-options";
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { ProfileComponent } from "../pages/profile/profile";
     MessagesPage,
     LoginComponent,
     VerificationComponent,
-    ProfileComponent
+    ProfileComponent,
+    ChatsOptionsComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -31,7 +33,8 @@ import { ProfileComponent } from "../pages/profile/profile";
     MessagesPage,
     LoginComponent,
     VerificationComponent,
-    ProfileComponent
+    ProfileComponent,
+    ChatsOptionsComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
