@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar color="whatsapp" class="messages-page-navbar">
+    <ion-buttons>
+      <img class="chat-picture" [src]="picture">
+    </ion-buttons>
+
+    <ion-title class="chat-title">{{title}}</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only class="attach-button"><ion-icon name="attach"></ion-icon></button>
+      <button ion-button icon-only class="settings-button"><ion-icon name="more"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="messages-page-content">
+  <ion-scroll scrollY="true" class="messages">
+    <div *ngFor="let message of messages | async" class="message-wrapper">
+      <div [class]="'message message-' + message.ownership">
+        <div class="message-content">{{message.content}}</div>
+        <span class="message-timestamp">{{message.createdAt}}</span>
+      </div>
+    </div>
+  </ion-scroll>
+</ion-content>
