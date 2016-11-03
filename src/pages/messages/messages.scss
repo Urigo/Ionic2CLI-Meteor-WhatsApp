@@ -91,3 +91,22 @@
     }
   }
 }
+
+.messages-page-footer {
+  padding-right: 0;
+
+  .message-editor {
+    margin-left: 2px;
+    padding-left: 5px;
+    background: white;
+    border-radius: 3px;
+  }
+
+  .message-editor-button {
+    box-shadow: none;
+    width: 50px;
+    height: 50px;
+    font-size: 17px;
+    margin: auto;
+  }
+}
