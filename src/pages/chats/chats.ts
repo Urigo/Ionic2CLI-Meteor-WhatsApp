@@ -62,4 +62,8 @@ export class ChatsPage {
       }
     ]);
   }
+
+  removeChat(chat: Chat): void {
+    // TODO: Implement it later
+  }
 }
