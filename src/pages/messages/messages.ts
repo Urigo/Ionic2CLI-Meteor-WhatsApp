@@ -1,25 +1,53 @@
-import { Component, OnInit } from "@angular/core";
+import {Component, OnInit, OnDestroy, ElementRef} from "@angular/core";
 import { NavParams } from "ionic-angular";
 import { Chat, Message } from "api/models/whatsapp-models";
 import { Messages } from "api/collections/whatsapp-collections";
-import { Observable} from "rxjs";
+import { Observable, Subscription } from "rxjs";
 import { MeteorObservable } from "meteor-rxjs";
 
 @Component({
   selector: "messages-page",
   templateUrl: "messages.html"
 })
-export class MessagesPage implements OnInit {
+export class MessagesPage implements OnInit, OnDestroy {
   private selectedChat: Chat;
   private title: string;
   private picture: string;
   private messages: Observable<Message[]>;
   private message: string = "";
+  private autoScroller: Subscription;
 
-  constructor(navParams: NavParams) {
+  constructor(navParams: NavParams, element: ElementRef) {
     this.selectedChat = <Chat>navParams.get('chat');
     this.title = this.selectedChat.title;
     this.picture = this.selectedChat.picture;
+  }
+
+  private get messagesPageContent(): Element {
+    return document.querySelector('.messages-page-content');
+  }
+
+  private get messagesPageFooter(): Element {
+    return document.querySelector('.messages-page-footer');
+  }
+
+  private get messagesList(): Element {
+    return this.messagesPageContent.querySelector('.messages');
+  }
+
+  private get messageEditor(): HTMLInputElement {
+    return <HTMLInputElement>this.messagesPageFooter.querySelector('.message-editor');
+  }
+
+  private get scroller(): Element {
+    return this.messagesList.querySelector('.scroll-content');
+  }
+
+  ngOnDestroy() {
+    if (this.autoScroller) {
+      this.autoScroller.unsubscribe();
+      this.autoScroller = undefined;
+    }
   }
 
   ngOnInit() {
@@ -35,6 +63,11 @@ export class MessagesPage implements OnInit {
       });
 
       return messages;
+    });
+
+    this.autoScroller = MeteorObservable.autorun().subscribe(() => {
+      this.scroller.scrollTop = this.scroller.scrollHeight;
+      this.messageEditor.focus();
     });
   }
 
