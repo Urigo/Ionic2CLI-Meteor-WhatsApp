@@ -1,9 +1,10 @@
-import {Component, OnInit, OnDestroy, ElementRef} from "@angular/core";
-import { NavParams } from "ionic-angular";
+import { Component, OnInit, OnDestroy, ElementRef } from "@angular/core";
+import { NavParams, PopoverController } from "ionic-angular";
 import { Chat, Message } from "api/models/whatsapp-models";
 import { Messages } from "api/collections/whatsapp-collections";
 import { Observable } from "rxjs";
 import { MeteorObservable } from "meteor-rxjs";
+import { MessagesOptionsComponent } from "../messages-options/messages-options";
 
 @Component({
   selector: "messages-page",
@@ -18,12 +19,21 @@ export class MessagesPage implements OnInit, OnDestroy {
   autoScroller: MutationObserver;
   senderId: string;
 
-  constructor(navParams: NavParams, element: ElementRef) {
+  constructor(navParams: NavParams, element: ElementRef, public popoverCtrl: PopoverController) {
     this.selectedChat = <Chat>navParams.get('chat');
     this.title = this.selectedChat.title;
     this.picture = this.selectedChat.picture;
     this.senderId = Meteor.userId();
+  }
 
+  showOptions(): void {
+    const popover = this.popoverCtrl.create(MessagesOptionsComponent, {
+      chat: this.selectedChat
+    }, {
+      cssClass: 'options-popover'
+    });
+
+    popover.present();
   }
 
   private get messagesPageContent(): Element {
