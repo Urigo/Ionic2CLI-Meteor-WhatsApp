@@ -21,8 +21,10 @@ export class NewChatComponent implements OnInit {
   }
 
   ngOnInit() {
-    MeteorObservable.autorun().zone().subscribe(() => {
-      this.users = this.findUsers().zone();
+    MeteorObservable.subscribe('users').subscribe(() => {
+      MeteorObservable.autorun().subscribe(() => {
+        this.users = this.findUsers().zone();
+      });
     });
   }
 
