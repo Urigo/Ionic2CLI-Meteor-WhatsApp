@@ -1,8 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import { Chats, Messages } from "../collections/whatsapp-collections";
 import * as moment from "moment";
+import { initMethods } from "./methods";
 
 Meteor.startup(() => {
+  initMethods();
+
   if (Chats.find({}).cursor.count() === 0) {
     let chatId;
 
