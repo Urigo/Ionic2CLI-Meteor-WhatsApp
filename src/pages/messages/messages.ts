@@ -1,25 +1,46 @@
-import { Component, OnInit } from "@angular/core";
+import {Component, OnInit, OnDestroy, ElementRef} from "@angular/core";
 import { NavParams } from "ionic-angular";
 import { Chat, Message } from "api/models/whatsapp-models";
 import { Messages } from "api/collections/whatsapp-collections";
-import { Observable} from "rxjs";
+import { Observable } from "rxjs";
 import { MeteorObservable } from "meteor-rxjs";
 
 @Component({
   selector: "messages-page",
   templateUrl: "messages.html"
 })
-export class MessagesPage implements OnInit {
+export class MessagesPage implements OnInit, OnDestroy {
   selectedChat: Chat;
   title: string;
   picture: string;
   messages: Observable<Message[]>;
   message: string = "";
+  autoScroller: MutationObserver;
 
-  constructor(navParams: NavParams) {
+  constructor(navParams: NavParams, element: ElementRef) {
     this.selectedChat = <Chat>navParams.get('chat');
     this.title = this.selectedChat.title;
     this.picture = this.selectedChat.picture;
+  }
+
+  private get messagesPageContent(): Element {
+    return document.querySelector('.messages-page-content');
+  }
+
+  private get messagesPageFooter(): Element {
+    return document.querySelector('.messages-page-footer');
+  }
+
+  private get messagesList(): Element {
+    return this.messagesPageContent.querySelector('.messages');
+  }
+
+  private get messageEditor(): HTMLInputElement {
+    return <HTMLInputElement>this.messagesPageFooter.querySelector('.message-editor');
+  }
+
+  private get scroller(): Element {
+    return this.messagesList.querySelector('.scroll-content');
   }
 
   ngOnInit() {
@@ -36,6 +57,12 @@ export class MessagesPage implements OnInit {
 
       return messages;
     });
+
+    this.autoScroller = this.autoScroll();
+  }
+
+  ngOnDestroy() {
+    this.autoScroller.disconnect();
   }
 
   onInputKeypress({keyCode}: KeyboardEvent): void {
@@ -48,6 +75,22 @@ export class MessagesPage implements OnInit {
     MeteorObservable.call('addMessage', this.selectedChat._id, this.message).zone().subscribe(() => {
       this.message = '';
     });
+  }
+
+  autoScroll(): MutationObserver {
+    const autoScroller = new MutationObserver(this.scrollDown.bind(this));
+
+    autoScroller.observe(this.messagesList, {
+      childList: true,
+      subtree: true
+    });
+
+    return autoScroller;
+  }
+
+  scrollDown(): void {
+    this.scroller.scrollTop = this.scroller.scrollHeight;
+    this.messageEditor.focus();
   }
 }
 
