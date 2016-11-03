@@ -16,17 +16,22 @@
 
 <ion-content padding class="chats-page-content">
   <ion-list class="chats">
-    <button ion-item *ngFor="let chat of chats | async" class="chat">
-      <img class="chat-picture" [src]="chat.picture">
+    <ion-item-sliding *ngFor="let chat of chats | async">
+      <button ion-item class="chat">
+        <img class="chat-picture" [src]="chat.picture">
 
-      <div class="chat-info">
-        <h2 class="chat-title">{{chat.title}}</h2>
+        <div class="chat-info">
+          <h2 class="chat-title">{{chat.title}}</h2>
 
-        <span *ngIf="chat.lastMessage" class="last-message">
-          <p class="last-message-content">{{chat.lastMessage.content}}</p>
-          <span class="last-message-timestamp">{{chat.lastMessage.createdAt | amCalendar }}</span>
-        </span>
-      </div>
-    </button>
+          <span *ngIf="chat.lastMessage" class="last-message">
+            <p class="last-message-content">{{chat.lastMessage.content}}</p>
+            <span class="last-message-timestamp">{{chat.lastMessage.createdAt | amCalendar }}</span>
+          </span>
+        </div>
+      </button>
+      <ion-item-options class="chat-options">
+        <button ion-button color="danger" class="option option-remove" (click)="removeChat(chat)">Remove</button>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
 </ion-content>
