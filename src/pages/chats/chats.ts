@@ -1,18 +1,19 @@
 import * as moment from 'moment';
 import { Component } from '@angular/core';
 import { Observable } from "rxjs";
+import { Chat } from "api/models/whatsapp-models";
 
 @Component({
   templateUrl: 'chats.html'
 })
 export class ChatsPage {
-  chats: Observable<any[]>;
+  chats: Observable<Chat[]>;
 
   constructor() {
     this.chats = this.findChats();
   }
 
-  private findChats(): Observable<any[]> {
+  private findChats(): Observable<Chat[]> {
     return Observable.of([
       {
         _id: '0',
