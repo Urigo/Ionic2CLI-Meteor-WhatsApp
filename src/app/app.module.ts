@@ -10,6 +10,7 @@ import { VerificationComponent } from "../pages/verification/verification";
 import { ProfileComponent } from "../pages/profile/profile";
 import { ChatsOptionsComponent } from "../pages/chat-options/chat-options";
 import { NewChatComponent } from "../pages/new-chat/new-chat";
+import { MessagesOptionsComponent } from "../pages/messages-options/messages-options";
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { NewChatComponent } from "../pages/new-chat/new-chat";
     ProfileComponent,
     ChatsOptionsComponent,
     NewChatComponent,
+    MessagesOptionsComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -37,7 +39,8 @@ import { NewChatComponent } from "../pages/new-chat/new-chat";
     VerificationComponent,
     ProfileComponent,
     ChatsOptionsComponent,
-    NewChatComponent
+    NewChatComponent,
+    MessagesOptionsComponent
   ],
   providers: []
 })
