@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
+import { VerificationComponent } from "../verification/verification";
 
 @Component({
   selector: 'login',
@@ -46,9 +47,9 @@ export class LoginComponent {
       alert.dismiss().then(() => {
         if (e) return this.handleError(e);
 
-        // this.navCtrl.push(VerificationComponent, {
-        //   phone: this.phone
-        // });
+        this.navCtrl.push(VerificationComponent, {
+          phone: this.phone
+        });
       });
     });
   }
