@@ -3,6 +3,7 @@ import { NavParams } from "ionic-angular";
 import { Chat, Message } from "api/models/whatsapp-models";
 import { Messages } from "api/collections/whatsapp-collections";
 import { Observable} from "rxjs";
+import { MeteorObservable } from "meteor-rxjs";
 
 @Component({
   selector: "messages-page",
@@ -13,6 +14,7 @@ export class MessagesPage implements OnInit {
   private title: string;
   private picture: string;
   private messages: Observable<Message[]>;
+  private message: string = "";
 
   constructor(navParams: NavParams) {
     this.selectedChat = <Chat>navParams.get('chat');
@@ -33,6 +35,18 @@ export class MessagesPage implements OnInit {
       });
 
       return messages;
+    });
+  }
+
+  onInputKeypress({keyCode}: KeyboardEvent): void {
+    if (keyCode == 13) {
+      this.sendMessage();
+    }
+  }
+
+  sendMessage(): void {
+    MeteorObservable.call('addMessage', this.selectedChat._id, this.message).zone().subscribe(() => {
+      this.message = '';
     });
   }
 }
