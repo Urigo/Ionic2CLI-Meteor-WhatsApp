@@ -18,7 +18,7 @@
     <div *ngFor="let message of messages | async" class="message-wrapper">
       <div [class]="'message message-' + message.ownership">
         <div class="message-content">{{message.content}}</div>
-        <span class="message-timestamp">{{message.createdAt}}</span>
+        <span class="message-timestamp">{{message.createdAt | amDateFormat: 'HH:MM'}}</span>
       </div>
     </div>
   </ion-scroll>
