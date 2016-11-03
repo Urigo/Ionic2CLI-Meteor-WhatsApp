@@ -6,6 +6,7 @@ import { NavController, PopoverController, ModalController } from "ionic-angular
 import { MessagesPage } from "../messages/messages";
 import { ChatsOptionsComponent } from "../chat-options/chat-options";
 import { NewChatComponent } from "../new-chat/new-chat";
+import { MeteorObservable } from 'meteor-rxjs';
 
 declare let Meteor;
 
@@ -23,30 +24,39 @@ export class ChatsPage implements OnInit {
   ngOnInit() {
     this.senderId = Meteor.userId();
 
-    this.chats = Chats
-      .find({})
-      .mergeMap((chats: Chat[]) =>
-        Observable.combineLatest(
-          ...chats.map((chat: Chat) =>
-            Messages
-              .find({chatId: chat._id})
-              .startWith(null)
-              .map(messages => {
-                if (messages) chat.lastMessage = messages[0];
-                return chat;
-              })
-          )
-        )
-      ).map(chats => {
-        chats.forEach(chat => {
-          const receiver = Users.findOne(chat.memberIds.find(memberId => memberId !== this.senderId));
+    MeteorObservable.subscribe('chats').subscribe(() => {
+      MeteorObservable.autorun().subscribe(() => {
+        if (this.chats) {
+          this.chats.unsubscribe();
+          this.chats = undefined;
+        }
 
-          chat.title = receiver.profile.name;
-          chat.picture = receiver.profile.picture;
-        });
+        this.chats = Chats
+          .find({})
+          .mergeMap((chats: Chat[]) =>
+            Observable.combineLatest(
+              ...chats.map((chat: Chat) =>
+                Messages
+                  .find({chatId: chat._id})
+                  .startWith(null)
+                  .map(messages => {
+                    if (messages) chat.lastMessage = messages[0];
+                    return chat;
+                  })
+              )
+            )
+          ).map(chats => {
+            chats.forEach(chat => {
+              const receiver = Users.findOne(chat.memberIds.find(memberId => memberId !== this.senderId));
 
-        return chats;
-      }).zone();
+              chat.title = receiver.profile.name;
+              chat.picture = receiver.profile.picture;
+            });
+
+            return chats;
+          }).zone();
+      });
+    });
   }
 
   addChat(): void {
