@@ -17,5 +17,6 @@ declare module 'api/models/whatsapp-models' {
     content?: string;
     createdAt?: Date;
     ownership?: string;
+    senderId?: string;
   }
 }
