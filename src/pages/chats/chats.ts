@@ -1,23 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from "rxjs";
 import { Chat } from "api/models/whatsapp-models";
-import { Chats, Messages } from "api/collections/whatsapp-collections";
+import { Chats, Messages, Users } from "api/collections/whatsapp-collections";
 import { NavController, PopoverController, ModalController } from "ionic-angular";
 import { MessagesPage } from "../messages/messages";
 import { ChatsOptionsComponent } from "../chat-options/chat-options";
 import { NewChatComponent } from "../new-chat/new-chat";
+
+declare let Meteor;
 
 @Component({
   templateUrl: 'chats.html'
 })
 export class ChatsPage implements OnInit {
   private chats;
+  private senderId: string;
 
   constructor(private navCtrl: NavController, private popoverCtrl: PopoverController, private modalCtrl: ModalController) {
 
   }
 
   ngOnInit() {
+    this.senderId = Meteor.userId();
+
     this.chats = Chats
       .find({})
       .mergeMap((chats: Chat[]) =>
@@ -32,7 +37,16 @@ export class ChatsPage implements OnInit {
               })
           )
         )
-      ).zone();
+      ).map(chats => {
+        chats.forEach(chat => {
+          const receiver = Users.findOne(chat.memberIds.find(memberId => memberId !== this.senderId));
+
+          chat.title = receiver.profile.name;
+          chat.picture = receiver.profile.picture;
+        });
+
+        return chats;
+      }).zone();
   }
 
   addChat(): void {
