@@ -16,11 +16,14 @@ export class MessagesPage implements OnInit, OnDestroy {
   private messages: Observable<Message[]>;
   private message: string = "";
   private autoScroller: Subscription;
+  private senderId: string;
 
   constructor(navParams: NavParams, element: ElementRef) {
     this.selectedChat = <Chat>navParams.get('chat');
     this.title = this.selectedChat.title;
     this.picture = this.selectedChat.picture;
+    this.senderId = Meteor.userId();
+
   }
 
   private get messagesPageContent(): Element {
@@ -51,15 +54,12 @@ export class MessagesPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    let isEven = false;
-
     this.messages = Messages.find(
       {chatId: this.selectedChat._id},
       {sort: {createdAt: 1}}
     ).map((messages: Message[]) => {
       messages.forEach((message: Message) => {
-        message.ownership = isEven ? 'mine' : 'other';
-        isEven = !isEven;
+        message.ownership = this.senderId == message.senderId ? 'mine' : 'other';
       });
 
       return messages;
