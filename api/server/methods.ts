@@ -24,6 +24,9 @@ export function initMethods() {
       });
     },
     addMessage(chatId: string, content: string) {
+      if (!this.userId) throw new Meteor.Error('unauthorized',
+        'User must be logged-in to create a new chat');
+
       check(chatId, nonEmptyString);
       check(content, nonEmptyString);
 
@@ -34,6 +37,7 @@ export function initMethods() {
 
       return {
         messageId: Messages.collection.insert({
+          senderId: this.userId,
           chatId: chatId,
           content: content,
           createdAt: new Date()
