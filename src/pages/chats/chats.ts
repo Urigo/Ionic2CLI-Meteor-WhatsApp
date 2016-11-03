@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from "rxjs";
 import { Chat } from "api/models/whatsapp-models";
 import { Chats, Messages } from "api/collections/whatsapp-collections";
+import { NavController } from "ionic-angular";
 
 @Component({
   templateUrl: 'chats.html'
@@ -9,7 +10,7 @@ import { Chats, Messages } from "api/collections/whatsapp-collections";
 export class ChatsPage implements OnInit {
   chats;
 
-  constructor() {
+  constructor(private navCtrl: NavController) {
 
   }
 
@@ -29,6 +30,10 @@ export class ChatsPage implements OnInit {
           )
         )
       ).zone();
+  }
+
+  showMessages(chat): void {
+    this.navCtrl.push(MessagesPage, {chat});
   }
 
   removeChat(chat: Chat): void {
