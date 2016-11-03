@@ -16,7 +16,7 @@
     "stripInternal": true
   },
   "include": [
-    "models/whatsapp-models.d.ts",
+    "api/models/whatsapp-models.d.ts",
     "src/**/*.ts"
   ],
   "exclude": [
