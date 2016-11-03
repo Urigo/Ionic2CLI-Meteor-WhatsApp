@@ -20,4 +20,8 @@ declare module 'api/models/whatsapp-models' {
     ownership?: string;
     senderId?: string;
   }
+
+  interface User extends Meteor.User {
+    profile?: Profile;
+  }
 }
