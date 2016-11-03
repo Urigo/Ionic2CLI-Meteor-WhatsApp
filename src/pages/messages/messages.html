@@ -23,3 +23,19 @@
     </div>
   </ion-scroll>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar color="whatsapp" class="messages-page-footer" position="bottom">
+    <ion-input [(ngModel)]="message" (keypress)="onInputKeypress($event)" class="message-editor" placeholder="Type a message"></ion-input>
+
+    <ion-buttons end>
+      <button ion-button icon-only *ngIf="message" class="message-editor-button" (click)="sendMessage()">
+        <ion-icon name="send"></ion-icon>
+      </button>
+
+      <button ion-button icon-only *ngIf="!message" class="message-editor-button">
+        <ion-icon name="mic"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
