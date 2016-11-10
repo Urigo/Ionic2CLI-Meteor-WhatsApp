@@ -13,6 +13,6 @@
 */
 /// <reference types="meteor-typings" />
 /// <reference types="@types/underscore" />
-/// <reference path="../models/whatsapp-models.d.ts" />
+/// <reference path="../api/models/whatsapp-models.d.ts" />
 declare module '*';
 
