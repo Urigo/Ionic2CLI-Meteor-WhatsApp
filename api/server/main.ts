@@ -2,11 +2,13 @@ import { Meteor } from 'meteor/meteor';
 import { Users } from "../collections/whatsapp-collections";
 import { initMethods } from "./methods";
 import { Accounts } from 'meteor/accounts-base';
+import { initPublications } from "./publications";
 
 declare let SMS, Object;
 
 Meteor.startup(() => {
   initMethods();
+  initPublications();
 
   if (Meteor.settings) {
     Object.assign(Accounts._options, Meteor.settings['accounts-phone']);
