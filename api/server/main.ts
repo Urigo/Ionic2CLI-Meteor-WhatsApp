@@ -2,10 +2,12 @@ import * as moment from "moment";
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { initMethods } from "./methods";
+import { initPublications } from "./publications";
 import { Users } from "../collections/whatsapp-collections";
 
 Meteor.startup(() => {
   initMethods();
+  initPublications();
 
   if (Meteor.settings) {
     Object.assign(Accounts._options, Meteor.settings['accounts-phone']);
