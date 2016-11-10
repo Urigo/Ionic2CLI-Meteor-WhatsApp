@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from "rxjs";
 import { Chat } from "api/models/whatsapp-models";
 import { Chats, Messages, Users } from "api/collections/whatsapp-collections";
-import { NavController, PopoverController, ModalController } from "ionic-angular";
+import { NavController, PopoverController, ModalController, AlertController } from "ionic-angular";
 import { MessagesPage } from "../messages/messages";
 import { ChatsOptionsComponent } from "../chat-options/chat-options";
 import { NewChatComponent } from "../new-chat/new-chat";
@@ -19,7 +19,8 @@ export class ChatsPage implements OnInit {
   constructor(
     public navCtrl: NavController,
     public popoverCtrl: PopoverController,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    public alertCtrl: AlertController
   ) {}
 
   ngOnInit() {
@@ -73,6 +74,22 @@ export class ChatsPage implements OnInit {
   }
 
   removeChat(chat: Chat): void {
-    // TODO: Implement it later
+    MeteorObservable.call('removeChat', chat._id).subscribe({
+      error: (e: Error) => {
+        if (e) this.handleError(e);
+      }
+    });
+  }
+
+  private handleError(e: Error): void {
+    console.error(e);
+
+    const alert = this.alertCtrl.create({
+      title: 'Oops!',
+      message: e.message,
+      buttons: ['OK']
+    });
+
+    alert.present();
   }
 }
