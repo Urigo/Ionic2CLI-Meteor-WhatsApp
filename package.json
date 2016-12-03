@@ -45,6 +45,7 @@
     "@ionic/app-scripts": "0.0.37-5",
     "@types/chai": "^3.4.34",
     "@types/meteor-accounts-phone": "0.0.5",
+    "@types/meteor-publish-composite": "0.0.32",
     "awesome-typescript-loader": "^2.2.4",
     "typescript": "2.0.8",
     "typescript-extends": "^1.0.1"
