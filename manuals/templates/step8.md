@@ -2,7 +2,7 @@ Congratulations!
 
 You’ve created a Whatsapp clone using Meteor and Ionic CLI!
 
-You are welcome to add more features and extend this tutorial by pull requesting [this repository](github.com/Urigo/Ionic2CLI-Meteor-WhatsApp).
+You are welcome to add more features and extend this tutorial by pull requesting [this repository](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp).
 
 Creating a full stack real time mobile app has never been so fast and easy.
 
@@ -12,5 +12,7 @@ You can safely start with those solutions knowing that you won't have to switch 
 
 Next steps:
 
-* Check out [meteor.com](meteor.com) for many more resources.
-* Go to [angular-meteor.com](angular-meteor.com) and check out the [socially-app tutorial](angular-meteor.com/tutorials/socially/angular2/bootstrapping).
+* Check out [meteor.com](https://meteor.com) for many more resources.
+* Go to [angular-meteor.com](https://angular-meteor.com) and check out the [socially-app tutorial](https://angular-meteor.com/tutorials/socially/angular2/bootstrap).
+
+
