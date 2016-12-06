@@ -1,4 +1,4 @@
-Both [Meteor](meteor.com) and [Ionic](ionicframework.com) took their platform to the next level in tooling.
+Both [Meteor](https://meteor.com) and [Ionic](http://ionicframework.com) took their platform to the next level in tooling.
 Both provide CLI interface instead of bringing a bunch of dependencies and configure build tools.
 There are also differences between those tools. 
 
@@ -19,16 +19,16 @@ To start our app, simply type:
 
     $ ionic serve
 
-> **NOTE:** Ionic framework is built on top of [Cordova](cordova.apache.org) which let's you build your app for mobile devices. For more information on how to run our app on a mobile device see the following [link](ionicframework.com/docs/v2/getting-started/installation/).
+> **NOTE:** Ionic framework is built on top of [Cordova](http://cordova.apache.org) which let's you build your app for mobile devices. For more information on how to run our app on a mobile device see the following [link](http://ionicframework.com/docs/v2/getting-started/installation/).
 
-Ionic2 apps are written using [Angular2](angular.io). Although Angular2 apps can be created using Javascript, it is recommended to write them using [Typescript](typescriptlang.org), for 2 reasons:
+Ionic2 apps are written using [Angular2](https://angular.io). Although Angular2 apps can be created using Javascript, it is recommended to write them using [Typescript](http://typescriptlang.org), for 2 reasons:
 
 - It prevents runtime errors.
 - Dependency injection is done automatically based on the provided data-types.
 
 In order to apply TypeScript, Ionic's build system is built on top of a module bundler and modules loader called [Rollup](http://rollupjs.org/). 
 
-In this tutorial we will use a custom build-config using [Webpack](webpack.github.io), hence we're gonna re-define our build system. Both module-bundlers are great solutions for building our app, but Webpack provides us with some extra features like aliases, which are missing in Rollup.
+In this tutorial we will use a custom build-config using [Webpack](http://webpack.github.io), hence we're gonna re-define our build system. Both module-bundlers are great solutions for building our app, but Webpack provides us with some extra features like aliases, which are missing in Rollup.
 
 Also, in order to load Meteor as external dependency without it's CLI, we need to use CommonJS modules loader (using Webpack) instead of ES2016 modules (using Rollup).
  

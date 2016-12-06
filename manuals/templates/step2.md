@@ -4,8 +4,8 @@ Now that we're finished with the initial setup, we can start building our app.
 
 An application created by Ionic's CLI will have a very clear methodology. The app is made out of pages, each page is made out of 3 files:
 
-- `.html` - A view template file written in HTML based on Angular2's new [template engine](angular.io/docs/ts/latest/guide/template-syntax.html).
-- `.scss` - A stylesheet file written in a CSS pre-process language called [SASS](sass-lang.com).
+- `.html` - A view template file written in HTML based on Angular2's new [template engine](http://angular.io/docs/ts/latest/guide/template-syntax.html).
+- `.scss` - A stylesheet file written in a CSS pre-process language called [SASS](http://sass-lang.com).
 - `.ts` - A script file written in Typescript.
 
 By default, the application will be created with 3 pages - `about`, `home` and `contact`. Since our app's flow doesn't contain any of them, we first gonna clean them up by running the following commands:
