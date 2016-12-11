@@ -244,10 +244,10 @@ And let's change the actual tabs to show the tabs we want:
 -┊2┊ ┊  <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab>
 -┊3┊ ┊  <ion-tab [root]="tab2Root" tabTitle="About" tabIcon="information-circle"></ion-tab>
 -┊4┊ ┊  <ion-tab [root]="tab3Root" tabTitle="Contact" tabIcon="contacts"></ion-tab>
-+┊ ┊2┊  <ion-tab tabIcon="chatboxes"></ion-tab>
-+┊ ┊3┊  <ion-tab tabIcon="contacts"></ion-tab>
-+┊ ┊4┊  <ion-tab tabIcon="star"></ion-tab>
-+┊ ┊5┊  <ion-tab tabIcon="clock"></ion-tab>
++┊ ┊2┊  <ion-tab [root]="tab1Root" tabIcon="chatboxes"></ion-tab>
++┊ ┊3┊  <ion-tab [root]="tab2Root" tabIcon="contacts"></ion-tab>
++┊ ┊4┊  <ion-tab [root]="tab3Root" tabIcon="star"></ion-tab>
++┊ ┊5┊  <ion-tab [root]="tab4Root" tabIcon="clock"></ion-tab>
  ┊5┊6┊</ion-tabs>
 ```
 [}]: #
