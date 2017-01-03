@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MeteorObservable, ObservableCursor } from 'meteor-rxjs';
 import { NavController, ViewController, AlertController } from 'ionic-angular';
+import { Contacts, Contact } from 'ionic-native';
+import { MeteorObservable, ObservableCursor } from 'meteor-rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { _ } from 'meteor/underscore';
 import { Chats, Users } from 'api/collections/whatsapp-collections';
 import { User } from 'api/models/whatsapp-models';
 
@@ -9,22 +12,27 @@ import { User } from 'api/models/whatsapp-models';
   templateUrl: 'new-chat.html'
 })
 export class NewChatComponent implements OnInit {
-  users;
   senderId: string;
+  users: Observable<User[]>;
 
   constructor(
-    public navCtrl: NavController,
-    public viewCtrl: ViewController,
-    public alertCtrl: AlertController
+    private navCtrl: NavController,
+    private viewCtrl: ViewController,
+    private alertCtrl: AlertController
   ) {
     this.senderId = Meteor.userId();
   }
 
   ngOnInit() {
-    MeteorObservable.subscribe('users').subscribe(() => {
-      MeteorObservable.autorun().subscribe(() => {
-        this.users = this.findUsers().zone();
-      });
+    this.findContacts().then((contacts) => {
+      contacts = contacts && _.chain(contacts)
+        .pluck('phoneNumbers')
+        .flatten()
+        .pluck('value')
+        .uniq()
+        .value();
+
+      this.subscribeUsers(contacts);
     });
   }
 
@@ -41,7 +49,24 @@ export class NewChatComponent implements OnInit {
     });
   }
 
-  private findUsers(): ObservableCursor<User> {
+  findContacts(): Promise<Contact[]> {
+    if (!navigator.hasOwnProperty('contacts')) return Promise.resolve();
+
+    return Contacts.find(['phoneNumbers'], {
+      hasPhoneNumber: true,
+      multiple: true
+    });
+  }
+
+  subscribeUsers(contacts?: any[]): Subscription {
+    return MeteorObservable.subscribe('users', contacts).subscribe(() => {
+      MeteorObservable.autorun().subscribe(() => {
+        this.users = this.findUsers().zone();
+      });
+    });
+  }
+
+  findUsers(): ObservableCursor<User> {
     return Chats.find({
       memberIds: this.senderId
     }, {
@@ -49,20 +74,20 @@ export class NewChatComponent implements OnInit {
         memberIds: 1
       }
     })
-      .startWith([]) // empty result
-      .mergeMap((chats) => {
-        const recieverIds = chats
-          .map(({memberIds}) => memberIds)
-          .reduce((result, memberIds) => result.concat(memberIds), [])
-          .concat(this.senderId);
+    .startWith([])
+    .mergeMap((chats) => {
+      const recieverIds = chats
+        .map(({ memberIds }) => memberIds)
+        .reduce((result, memberIds) => result.concat(memberIds), [])
+        .concat(this.senderId);
 
-        return Users.find({
-          _id: {$nin: recieverIds}
-        })
-      });
+      return Users.find({
+        _id: { $nin: recieverIds }
+      })
+    });
   }
 
-  private handleError(e: Error): void {
+  handleError(e: Error): void {
     console.error(e);
 
     const alert = this.alertCtrl.create({
