@@ -60,7 +60,12 @@ export class MessagesPage implements OnInit, OnDestroy {
     this.autoScroller = this.autoScroll();
     this.subscribeMessages();
 
+    // Get total messages count in database so we can have an indication of when to
+    // stop the auto-subscriber
     MeteorObservable.call('countMessages').subscribe((messagesCount: number) => {
+      // Note that the 'scroller' element is being created dynamically by an Ionic
+      // component and therefore the event listener can't be registered directly
+      // from the view
       let scrollListener = this.onScroll.bind(this);
       this.scroller.addEventListener('scroll', scrollListener);
       this.autoRemoveScrollListener(messagesCount, scrollListener);
@@ -78,6 +83,7 @@ export class MessagesPage implements OnInit, OnDestroy {
   }
 
   onScroll(e): void {
+    // Unless we're at the top of the messages page
     if (!this.scroller.scrollTop) {
       this.subscribeMessages();
     }
@@ -87,26 +93,35 @@ export class MessagesPage implements OnInit, OnDestroy {
     const popover = this.popoverCtrl.create(MessagesOptionsComponent, {
       chat: this.selectedChat
     }, {
+      // Will be used as a CSS selector in our style-sheet
       cssClass: 'options-popover'
     });
 
     popover.present();
   }
 
+  // Subscribes to the relevant set of messages
   subscribeMessages(): Subscription {
+    // Prohibit parallel subscriptions
     if (this.loadingMessages) return;
+    // A flag which indicates if there's a subscription in process
     this.loadingMessages = true;
+    // A custom offset to be used to re-adjust the scrolling position once
+    // new dataset is fetched
     this.scrollOffset = this.scroller.scrollHeight;
 
     return MeteorObservable.subscribe('messages',
       this.selectedChat._id,
       ++this.messagesBatchCounter
     ).subscribe(() => {
+      // Keep tracking changes in the dataset and re-render the view
       if (!this.messagesComputation) this.messagesComputation = this.autorunMessages();
+      // Allow incoming subscription requests
       this.loadingMessages = false;
     });
   }
 
+  // Removes the scroll listener once all messages from the past were fetched
   autoRemoveScrollListener(
     messagesCount: number,
     scrollListener: EventListener
@@ -117,6 +132,7 @@ export class MessagesPage implements OnInit, OnDestroy {
     });
   }
 
+  // Detects changes in the messages dataset and re-renders the view
   autorunMessages(): Subscription {
     return MeteorObservable.autorun().subscribe(() => {
       this.messages = this.findMessages();
@@ -130,22 +146,25 @@ export class MessagesPage implements OnInit, OnDestroy {
       sort: { createdAt: 1 }
     })
     .map((messages: Message[]) => messages.map((message) => {
-       message.ownership = this.senderId == message.senderId ? 'mine' : 'other';
-       return message;
+      message.ownership = this.senderId == message.senderId ? 'mine' : 'other';
+      return message;
     }));
   }
 
   sendMessage(): void {
+    // If message was yet to be typed, abort
     if (!this.message) return;
 
     MeteorObservable.call('addMessage',
       this.selectedChat._id,
       this.message
     ).zone().subscribe(() => {
+      // Zero the input field
       this.message = '';
     });
   }
 
+  // Detects changes in the scroll view and scrolls automatically
   autoScroll(): MutationObserver {
     const autoScroller = new MutationObserver(this.scrollDown.bind(this));
 
@@ -158,9 +177,12 @@ export class MessagesPage implements OnInit, OnDestroy {
   }
 
   scrollDown(): void {
+    // Don't scroll down if messages subscription is being loaded
     if (this.loadingMessages) return;
 
+    // Scroll down and apply specified offset
     this.scroller.scrollTop = this.scroller.scrollHeight - this.scrollOffset;
+    // Zero offset for next invocation
     this.scrollOffset = 0;
   }
 }
