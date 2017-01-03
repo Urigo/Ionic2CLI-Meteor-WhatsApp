@@ -1,8 +1,10 @@
+import * as Moment from 'moment';
 import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { NavParams, PopoverController } from 'ionic-angular';
 import { Observable, Subscription } from 'rxjs';
 import { Meteor } from 'meteor/meteor';
+import { _ } from 'meteor/underscore';
 import { Chat, Message } from 'api/models/whatsapp-models';
 import { Messages } from 'api/collections/whatsapp-collections';
 import { MessagesOptionsComponent } from '../messages-options/messages-options';
@@ -19,7 +21,7 @@ export class MessagesPage implements OnInit, OnDestroy {
   senderId: string;
   title: string;
   autoScroller: MutationObserver;
-  messages: Observable<Message[]>;
+  messagesDayGroups: Observable<Message[]>;
   messagesComputation: Subscription;
   messagesSubscription: Subscription;
   loadingMessages: Boolean;
@@ -135,20 +137,41 @@ export class MessagesPage implements OnInit, OnDestroy {
   // Detects changes in the messages dataset and re-renders the view
   autorunMessages(): Subscription {
     return MeteorObservable.autorun().subscribe(() => {
-      this.messages = this.findMessages();
+      this.messagesDayGroups = this.findMessagesDayGroups();
     });
   }
 
-  findMessages(): Observable<Message[]> {
+  // Finds relevant messages and groups them by their creation day
+  findMessagesDayGroups(): Observable<Message[]> {
     return Messages.find({
       chatId: this.selectedChat._id
     }, {
       sort: { createdAt: 1 }
     })
-    .map((messages: Message[]) => messages.map((message) => {
-      message.ownership = this.senderId == message.senderId ? 'mine' : 'other';
-      return message;
-    }));
+    .map((messages: Message[]) => {
+      const format = 'D MMMM Y';
+
+      // Compose missing data that we would like to show in the view
+      messages.forEach((message) => {
+        message.ownership = this.senderId == message.senderId ? 'mine' : 'other';
+        return message;
+      });
+
+      // Group by creation day
+      messages = _.groupBy(messages, (message) => {
+        return Moment(message).format(format);
+      });
+
+      // Transform dictionary into an array since Angular's view engine doesn't know how
+      // to iterate through it
+      return Object.keys(messages).map((timestamp) => {
+        return {
+          timestamp: timestamp,
+          messages: messages[timestamp],
+          today: Moment().format(format) == timestamp
+        };
+      });
+    });
   }
 
   sendMessage(): void {
