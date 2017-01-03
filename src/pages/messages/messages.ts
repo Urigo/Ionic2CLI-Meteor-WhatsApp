@@ -27,8 +27,8 @@ export class MessagesPage implements OnInit, OnDestroy {
 
   constructor(
     navParams: NavParams,
-    element: ElementRef,
-    public popoverCtrl: PopoverController
+    private el: ElementRef,
+    private popoverCtrl: PopoverController
   ) {
     this.selectedChat = <Chat>navParams.get('chat');
     this.title = this.selectedChat.title;
@@ -37,11 +37,11 @@ export class MessagesPage implements OnInit, OnDestroy {
   }
 
   private get messagesPageContent(): Element {
-    return document.querySelector('.messages-page-content');
+    return this.el.nativeElement.querySelector('.messages-page-content');
   }
 
   private get messagesPageFooter(): Element {
-    return document.querySelector('.messages-page-footer');
+    return this.el.nativeElement.querySelector('.messages-page-footer');
   }
 
   private get messagesList(): Element {
