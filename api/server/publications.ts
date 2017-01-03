@@ -14,11 +14,19 @@ export function initPublications() {
     });
   });
 
-  Meteor.publish('messages', function(chatId: string): Mongo.Cursor<Message> {
+  Meteor.publish('messages', function(
+    chatId: string,
+    messagesBatchCounter: number
+  ): Mongo.Cursor<Message> {
     if (!this.userId) return;
     if (!chatId) return;
 
-    return Messages.collection.find({chatId});
+    return Messages.collection.find({
+      chatId
+    }, {
+      sort: {createdAt: -1},
+      limit: 30 * messagesBatchCounter
+    });
   });
 
   Meteor.publishComposite('chats', function() {
