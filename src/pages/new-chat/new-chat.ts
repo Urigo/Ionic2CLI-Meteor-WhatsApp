@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, ViewController, AlertController } from 'ionic-angular';
-import { Contacts, Contact } from 'ionic-native';
+import { Contacts, Contact, ContactFieldType } from 'ionic-native';
 import { MeteorObservable, ObservableCursor } from 'meteor-rxjs';
 import { Observable, Subscription } from 'rxjs';
 import { _ } from 'meteor/underscore';
@@ -56,10 +56,13 @@ export class NewChatComponent implements OnInit {
     // If we're running this in the browser, don't look for any contacts
     if (!navigator.hasOwnProperty('contacts')) return Promise.resolve();
 
+    const fields = <ContactFieldType[]>['phoneNumbers'];
+
     // Look for all the available phone numbers in contacts
-    return Contacts.find(['phoneNumbers'], {
+    return Contacts.find(fields, {
       hasPhoneNumber: true,
-      multiple: true
+      multiple: true,
+      desiredFields: fields
     });
   }
 
