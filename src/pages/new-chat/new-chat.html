@@ -9,8 +9,6 @@
 </ion-header>
 
 <ion-content class="new-chat">
-  <ion-searchbar [(ngModel)]="searchPattern"></ion-searchbar>
-
   <ion-list class="users">
     <button ion-item *ngFor="let user of users | async | search:searchPattern:'profile.name'" class="user" (click)="addChat(user)">
       <img class="user-picture" [src]="user.profile.picture">
@@ -18,3 +16,9 @@
     </button>
   </ion-list>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar color="whatsapp" position="bottom">
+    <ion-searchbar color="whatsapp" [(ngModel)]="searchPattern"></ion-searchbar>
+  </ion-toolbar>
+</ion-footer>
