@@ -2,7 +2,7 @@ import * as Moment from 'moment';
 import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { NavParams, PopoverController } from 'ionic-angular';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, Subscriber } from 'rxjs';
 import { Meteor } from 'meteor/meteor';
 import { _ } from 'meteor/underscore';
 import { Chat, Message } from 'api/models/whatsapp-models';
@@ -23,7 +23,6 @@ export class MessagesPage implements OnInit, OnDestroy {
   autoScroller: MutationObserver;
   messagesDayGroups: Observable<Message[]>;
   messagesComputation: Subscription;
-  messagesSubscription: Subscription;
   loadingMessages: Boolean;
   selectedChat: Chat;
 
@@ -65,12 +64,17 @@ export class MessagesPage implements OnInit, OnDestroy {
     // Get total messages count in database so we can have an indication of when to
     // stop the auto-subscriber
     MeteorObservable.call('countMessages').subscribe((messagesCount: number) => {
-      // Note that the 'scroller' element is being created dynamically by an Ionic
-      // component and therefore the event listener can't be registered directly
-      // from the view
-      let scrollListener = this.onScroll.bind(this);
-      this.scroller.addEventListener('scroll', scrollListener);
-      this.autoRemoveScrollListener(messagesCount, scrollListener);
+      Observable
+        // Chain every scroll event
+        .fromEvent(this.scroller, 'scroll')
+        // Remove the scroll listener once all messages have been fetched
+        .takeUntil(this.autoRemoveScrollListener(messagesCount))
+        // Filter event handling unless we're at the top of the page
+        .filter(() => !this.scroller.scrollTop)
+        // Prohibit parallel subscriptions
+        .filter(() => !this.loadingMessages)
+        // Invoke the messages subscription once all the requirements have been met
+        .forEach(() => this.subscribeMessages());
     });
   }
 
@@ -81,13 +85,6 @@ export class MessagesPage implements OnInit, OnDestroy {
   onInputKeypress({ keyCode }: KeyboardEvent): void {
     if (keyCode == 13) {
       this.sendMessage();
-    }
-  }
-
-  onScroll(e): void {
-    // Unless we're at the top of the messages page
-    if (!this.scroller.scrollTop) {
-      this.subscribeMessages();
     }
   }
 
@@ -103,16 +100,14 @@ export class MessagesPage implements OnInit, OnDestroy {
   }
 
   // Subscribes to the relevant set of messages
-  subscribeMessages(): Subscription {
-    // Prohibit parallel subscriptions
-    if (this.loadingMessages) return;
+  subscribeMessages(): void {
     // A flag which indicates if there's a subscription in process
     this.loadingMessages = true;
     // A custom offset to be used to re-adjust the scrolling position once
     // new dataset is fetched
     this.scrollOffset = this.scroller.scrollHeight;
 
-    return MeteorObservable.subscribe('messages',
+    MeteorObservable.subscribe('messages',
       this.selectedChat._id,
       ++this.messagesBatchCounter
     ).subscribe(() => {
@@ -124,13 +119,17 @@ export class MessagesPage implements OnInit, OnDestroy {
   }
 
   // Removes the scroll listener once all messages from the past were fetched
-  autoRemoveScrollListener(
-    messagesCount: number,
-    scrollListener: EventListener
-  ): Subscription {
-    return MeteorObservable.autorun().subscribe(() => {
-      if (messagesCount != Messages.collection.find().count()) return;
-      this.scroller.removeEventListener('scroll', scrollListener);
+  autoRemoveScrollListener<T>(messagesCount: number): Observable<T> {
+    return Observable.create((observer: Subscriber<T>) => {
+      MeteorObservable.autorun().subscribe(() => {
+        // Once all messages have been fetched
+        if (messagesCount == Messages.collection.find().count()) {
+          // Signal to stop listening to the scroll event
+          observer.next();
+          // Finish the observation to prevent unnecessary calculations
+          observer.complete();
+        }
+      });
     });
   }
 
