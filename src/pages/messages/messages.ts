@@ -121,14 +121,13 @@ export class MessagesPage implements OnInit, OnDestroy {
   // Removes the scroll listener once all messages from the past were fetched
   autoRemoveScrollListener<T>(messagesCount: number): Observable<T> {
     return Observable.create((observer: Subscriber<T>) => {
-      MeteorObservable.autorun().subscribe(() => {
+      Messages.find().subscribe((messages) => {
         // Once all messages have been fetched
-        if (messagesCount == Messages.collection.find().count()) {
-          // Signal to stop listening to the scroll event
-          observer.next();
-          // Finish the observation to prevent unnecessary calculations
-          observer.complete();
-        }
+        if (messagesCount != messages.length) return;
+        // Signal to stop listening to the scroll event
+        observer.next();
+        // Finish the observation to prevent unnecessary calculations
+        observer.complete();
       });
     });
   }
