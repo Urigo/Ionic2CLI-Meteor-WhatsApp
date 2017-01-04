@@ -26,6 +26,7 @@ export class NewChatComponent implements OnInit {
 
   ngOnInit() {
     this.findContacts().then((contacts) => {
+      // Pluck all contacts' phone numbers into a flat array
       contacts = contacts && _.chain(contacts)
         .pluck('phoneNumbers')
         .flatten()
@@ -33,6 +34,7 @@ export class NewChatComponent implements OnInit {
         .uniq()
         .value();
 
+      // Subscribe to all the users who are in the provided contacts list
       this.subscribeUsers(contacts);
     });
   }
@@ -51,8 +53,10 @@ export class NewChatComponent implements OnInit {
   }
 
   findContacts(): Promise<Contact[]> {
+    // If we're running this in the browser, don't look for any contacts
     if (!navigator.hasOwnProperty('contacts')) return Promise.resolve();
 
+    // Look for all the available phone numbers in contacts
     return Contacts.find(['phoneNumbers'], {
       hasPhoneNumber: true,
       multiple: true
@@ -60,6 +64,10 @@ export class NewChatComponent implements OnInit {
   }
 
   subscribeUsers(contacts?: any[]): Subscription {
+    // Fetch all users in contacts list. If no contacts list was provided, will
+    // fetch all available users in database. This behavior is **not** recommended
+    // in a production application since it will probably overload both client
+    // and server
     return MeteorObservable.subscribe('users', contacts).subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         this.users = this.findUsers().zone();
@@ -68,6 +76,7 @@ export class NewChatComponent implements OnInit {
   }
 
   findUsers(): ObservableCursor<User> {
+    // Find all belonging chats
     return Chats.find({
       memberIds: this.senderId
     }, {
@@ -75,13 +84,17 @@ export class NewChatComponent implements OnInit {
         memberIds: 1
       }
     })
+    // The initial value of the upcoming mapping function
     .startWith([])
     .mergeMap((chats) => {
-      const recieverIds = chats
-        .map(({ memberIds }) => memberIds)
-        .reduce((result, memberIds) => result.concat(memberIds), [])
-        .concat(this.senderId);
+      // Get all userIDs with whom we're chatting with
+      const recieverIds = _.chain(chats)
+        .pluck('memberIds')
+        .flatten()
+        .concat(this.senderId)
+        .value();
 
+      // Find all users which are not in belonging chats
       return Users.find({
         _id: { $nin: recieverIds }
       })
