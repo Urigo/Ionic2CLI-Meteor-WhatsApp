@@ -16,6 +16,17 @@
     margin: 42px -15px 99px !important;
   }
 
+  .day-wrapper .day-timestamp {
+    margin-left: calc(50% - 60px);
+    margin-right: calc(50% - 60px);
+    text-align: center;
+    line-height: 25px;
+    height: 25px;
+    border-radius: 3px;
+    color: gray;
+    background: #d9effa;
+  }
+
   .messages {
     height: 100%;
     background-image: url(/assets/chat-background.jpg);
