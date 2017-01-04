@@ -12,6 +12,7 @@ import { User } from 'api/models/whatsapp-models';
   templateUrl: 'new-chat.html'
 })
 export class NewChatComponent implements OnInit {
+  searchPattern = '';
   senderId: string;
   users: Observable<User[]>;
 
