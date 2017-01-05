@@ -1,11 +1,10 @@
 import 'reflect-metadata';
-import 'meteor-client-side';
-import 'accounts-base-client-side';
-import 'accounts-phone';
+import 'meteor-client';
 
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { AppModule } from './app.module';
 import { MeteorObservable } from 'meteor-rxjs';
+import { Meteor } from 'meteor/meteor';
+import { AppModule } from './app.module';
 
 Meteor.startup(() => {
   const sub = MeteorObservable.autorun().subscribe(() => {
