@@ -2,6 +2,7 @@ declare module 'api/models/whatsapp-models' {
   interface Profile {
     name?: string;
     picture?: string;
+    thumbnail?: string;
   }
 
   interface Chat {

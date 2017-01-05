@@ -9,7 +9,7 @@
 </ion-header>
 
 <ion-content class="profile-page-content">
-  <div class="profile-picture">
+  <div fileDrop class="profile-picture" (onFileDrop)="uploadProfilePic($event)">
     <img [src]="profile.picture">
     <ion-icon name="create"></ion-icon>
   </div>

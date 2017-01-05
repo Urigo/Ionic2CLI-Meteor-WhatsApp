@@ -1,7 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { check, Match } from 'meteor/check';
+import { UploadFS } from 'meteor/jalik:ufs';
 import { Profile } from 'api/models/whatsapp-models';
 import { Chats, Messages } from '../collections/whatsapp-collections';
+import { ImagesStore, Thumbs } from '../collections/images-collections';
 
 const nonEmptyString = Match.Where((str) => {
   check(str, String);
@@ -32,6 +34,7 @@ export function initMethods() {
 
       Chats.insert(chat);
     },
+
     removeChat(chatId: string): void {
       if (!this.userId) throw new Meteor.Error('unauthorized',
         'User must be logged-in to remove chat');
@@ -46,6 +49,7 @@ export function initMethods() {
       Messages.remove({chatId});
       Chats.remove(chatId);
     },
+
     updateProfile(profile: Profile): void {
       if (!this.userId) throw new Meteor.Error('unauthorized',
         'User must be logged-in to create a new chat');
@@ -59,6 +63,53 @@ export function initMethods() {
         $set: { profile }
       });
     },
+
+    uploadProfilePic(data: File): void {
+      const file = {
+        name: data.name,
+        type: data.type,
+        size: data.size,
+      };
+
+      const upload = Meteor.wrapAsync((options, callback) => {
+        options = Object.assign({}, options, {
+          onComplete: result => callback(result),
+          onError: err => callback(null, err),
+        });
+
+        new UploadFS.Uploader(options).start();
+      });
+
+      upload({
+        data: data,
+        file: file,
+        store: ImagesStore
+      }, (err, result) => {
+        if (err) throw new Meteor.Error('upload-failed', err.message);
+
+        const thumbnail = Thumbs.collection.findOne({
+          originalStore: 'images',
+          originalId: result._id
+        }, {
+          fields: {
+            _id: 0,
+            url: 1
+          }
+        });
+
+        Meteor.users.update(this.userId, {
+          $set: {
+            'profile.picture': result.url,
+            'profile.thumbnail': thumbnail.url
+          }
+        });
+
+        return Meteor.users.findOne(this.userId, {
+          fields: { profile: 1 }
+        });
+      });
+    },
+
     addMessage(chatId: string, content: string): Object {
       if (!this.userId) throw new Meteor.Error('unauthorized',
         'User must be logged-in to create a new chat');
@@ -80,6 +131,7 @@ export function initMethods() {
         })
       }
     },
+
     countMessages(): number {
       return Messages.collection.find().count();
     }
