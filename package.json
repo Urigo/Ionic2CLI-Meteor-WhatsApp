@@ -43,7 +43,7 @@
     "@types/meteor-accounts-phone": "0.0.5",
     "@types/meteor-publish-composite": "0.0.32",
     "@types/underscore": "^1.7.36",
-    "rimraf": "^2.5.4",
+    "tmp": "0.0.31",
     "typescript": "2.0.9",
     "typescript-extends": "^1.0.1"
   },
