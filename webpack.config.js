@@ -58,7 +58,6 @@ module.exports = {
 
 function resolveExternals(context, request, callback) {
   return meteorPackage(request, callback) ||
-         cordovaPlugin(request, callback) ||
          callback();
 }
 
@@ -68,18 +67,6 @@ function meteorPackage(request, callback) {
 
   if (pack) {
     callback(null, 'window.Package && Package["' + pack + '"]');
-    return true;
-  }
-}
-
-function cordovaPlugin(request, callback) {
-  var match = request.match(/^cordova\/(.+)$/);
-  var plugin = match && match[1];
-
-  if (plugin) {
-    plugin = camelCase(plugin);
-    plugin = upperFirst(plugin);
-    callback(null, 'window.cordova && cordova.plugins && cordova.plugins.' + plugin);
     return true;
   }
 }
