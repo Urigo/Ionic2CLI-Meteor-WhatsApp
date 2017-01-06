@@ -4,29 +4,29 @@ import { MomentModule } from 'angular2-moment';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { SearchPipe } from '../pipes/search';
-import { TabsPage } from '../pages/tabs/tabs';
+import { ChatsOptionsComponent } from '../pages/chats/chats-options';
 import { ChatsPage } from '../pages/chats/chats';
+import { LoginPage } from '../pages/login/login';
+import { MessagesOptionsComponent } from '../pages/messages/messages-options';
 import { MessagesPage } from '../pages/messages/messages';
-import { LoginComponent } from '../pages/auth/login';
-import { VerificationComponent } from '../pages/verification/verification';
-import { ProfileComponent } from '../pages/profile/profile';
-import { ChatsOptionsComponent } from '../pages/chat-options/chat-options';
-import { NewChatComponent } from '../pages/new-chat/new-chat';
-import { MessagesOptionsComponent } from '../pages/messages-options/messages-options';
+import { NewChatComponent } from '../pages/chats/new-chat';
+import { ProfilePage } from '../pages/profile/profile';
+import { TabsPage } from '../pages/tabs/tabs';
+import { VerificationPage } from '../pages/verification/verification';
 
 @NgModule({
   declarations: [
     MyApp,
-    ChatsPage,
-    TabsPage,
-    MessagesPage,
-    LoginComponent,
-    VerificationComponent,
-    ProfileComponent,
+    SearchPipe,
     ChatsOptionsComponent,
-    NewChatComponent,
+    ChatsPage,
+    LoginPage,
     MessagesOptionsComponent,
-    SearchPipe
+    MessagesPage,
+    NewChatComponent,
+    ProfilePage,
+    TabsPage,
+    VerificationPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -36,15 +36,15 @@ import { MessagesOptionsComponent } from '../pages/messages-options/messages-opt
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    ChatsPage,
-    TabsPage,
-    MessagesPage,
-    LoginComponent,
-    VerificationComponent,
-    ProfileComponent,
     ChatsOptionsComponent,
+    ChatsPage,
+    LoginPage,
+    MessagesOptionsComponent,
+    MessagesPage,
     NewChatComponent,
-    MessagesOptionsComponent
+    ProfilePage,
+    TabsPage,
+    VerificationPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

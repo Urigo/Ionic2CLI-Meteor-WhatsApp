@@ -4,8 +4,8 @@ import { Chat } from "api/models/whatsapp-models";
 import { Chats, Messages, Users } from "api/collections/whatsapp-collections";
 import { NavController, PopoverController, ModalController, AlertController } from "ionic-angular";
 import { MessagesPage } from "../messages/messages";
-import { ChatsOptionsComponent } from "../chat-options/chat-options";
-import { NewChatComponent } from "../new-chat/new-chat";
+import { ChatsOptionsComponent } from "./chats-options";
+import { NewChatComponent } from "./new-chat";
 import { MeteorObservable } from 'meteor-rxjs';
 
 @Component({

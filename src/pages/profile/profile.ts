@@ -8,7 +8,7 @@ import { TabsPage } from "../tabs/tabs";
   selector: 'profile',
   templateUrl: 'profile.html'
 })
-export class ProfileComponent implements OnInit {
+export class ProfilePage implements OnInit {
   profile: Profile;
 
   constructor(

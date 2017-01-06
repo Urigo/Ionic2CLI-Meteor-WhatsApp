@@ -7,7 +7,7 @@ import { Meteor } from 'meteor/meteor';
 import { _ } from 'meteor/underscore';
 import { Chat, Message } from 'api/models/whatsapp-models';
 import { Messages } from 'api/collections/whatsapp-collections';
-import { MessagesOptionsComponent } from '../messages-options/messages-options';
+import { MessagesOptionsComponent } from './messages-options';
 
 @Component({
   selector: 'messages-page',

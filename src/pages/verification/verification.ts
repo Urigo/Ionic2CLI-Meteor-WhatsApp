@@ -1,13 +1,13 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { Accounts } from 'meteor/accounts-base';
-import { ProfileComponent } from "../profile/profile";
+import { ProfilePage } from "../profile/profile";
 
 @Component({
   selector: 'verification',
   templateUrl: 'verification.html'
 })
-export class VerificationComponent implements OnInit {
+export class VerificationPage implements OnInit {
   code: string = '';
   phone: string;
 
@@ -33,7 +33,7 @@ export class VerificationComponent implements OnInit {
       this.zone.run(() => {
         if (e) return this.handleError(e);
 
-        this.navCtrl.setRoot(ProfileComponent, {}, {
+        this.navCtrl.setRoot(ProfilePage, {}, {
           animate: true
         });
       });
