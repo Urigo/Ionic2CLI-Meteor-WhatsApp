@@ -5,8 +5,8 @@ import { NavParams, PopoverController } from 'ionic-angular';
 import { Observable, Subscription, Subscriber } from 'rxjs';
 import { Meteor } from 'meteor/meteor';
 import { _ } from 'meteor/underscore';
-import { Chat, Message } from 'api/models/whatsapp-models';
-import { Messages } from 'api/collections/whatsapp-collections';
+import { Chat, Message } from 'api/models/whatsapp';
+import { Messages } from 'api/collections/whatsapp';
 import { MessagesOptionsComponent } from './messages-options';
 
 @Component({

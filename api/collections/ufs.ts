@@ -1,18 +1,18 @@
-import * as gm from 'gm';
+import * as Gm from 'gm';
 import { MongoObservable } from 'meteor-rxjs';
 import { Meteor } from 'meteor/meteor';
 import { UploadFS } from 'meteor/jalik:ufs';
-import { Thumb, Image } from 'api/models/images-models';
+import { Thumbnail, Image } from 'api/models/ufs';
 
 export const Images = new MongoObservable.Collection<Image>('images');
-export const Thumbs = new MongoObservable.Collection<Thumb>('thumbs');
+export const Thumbnails = new MongoObservable.Collection<Thumbnail>('thumbs');
 
 function loggedIn(userId) {
   return !!userId;
 }
 
-export const ThumbsStore = new UploadFS.store.GridFS({
-  collection: Thumbs.collection,
+export const ThumbnailsStore = new UploadFS.store.GridFS({
+  collection: Thumbnails.collection,
   name: 'thumbs',
   permissions: new UploadFS.StorePermissions({
     insert: loggedIn,
@@ -21,7 +21,7 @@ export const ThumbsStore = new UploadFS.store.GridFS({
   }),
   transformWrite(from, to, fileId, file) {
     // Resize to 32x32
-    gm(from, file.name)
+    Gm(from, file.name)
       .resize(32, 32)
       .gravity('Center')
       .extent(32, 32)
@@ -38,7 +38,7 @@ export const ImagesStore = new UploadFS.store.GridFS({
     contentTypes: ['image/*']
   }),
   copyTo: [
-    ThumbsStore
+    ThumbnailsStore
   ],
   permissions: new UploadFS.StorePermissions({
     insert: loggedIn,

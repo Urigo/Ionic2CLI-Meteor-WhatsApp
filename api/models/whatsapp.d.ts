@@ -1,4 +1,4 @@
-declare module 'api/models/whatsapp-models' {
+declare module 'api/models/whatsapp' {
   interface Profile {
     name?: string;
     picture?: string;

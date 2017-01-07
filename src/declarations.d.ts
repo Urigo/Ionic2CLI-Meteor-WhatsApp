@@ -15,7 +15,7 @@
 /// <reference types="@types/meteor-accounts-phone" />
 /// <reference types="@types/meteor-publish-composite" />
 /// <reference types="@types/underscore" />
-/// <reference path="../api/models/images-models.d.ts" />
-/// <reference path="../api/models/whatsapp-models.d.ts" />
+/// <reference path="../api/models/whatsapp.d.ts" />
+/// <reference path="../api/models/ufs.d.ts" />
 declare module '*';
 

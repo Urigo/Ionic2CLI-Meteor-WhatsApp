@@ -1,9 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { check, Match } from 'meteor/check';
 import { UploadFS } from 'meteor/jalik:ufs';
-import { Profile } from 'api/models/whatsapp-models';
-import { Chats, Messages } from '../collections/whatsapp-collections';
-import { ImagesStore, Thumbs } from '../collections/images-collections';
+import { Profile } from 'api/models/whatsapp';
+import { Image, Thumbnail } from 'api/models/ufs';
+import { Chats, Messages } from '../collections/whatsapp';
+import { Thumbnails } from '../collections/ufs';
 
 const nonEmptyString = Match.Where((str) => {
   check(str, String);
@@ -64,49 +65,29 @@ export function initMethods() {
       });
     },
 
-    uploadProfilePic(data: File): void {
-      const file = {
-        name: data.name,
-        type: data.type,
-        size: data.size,
-      };
-
-      const upload = Meteor.wrapAsync((options, callback) => {
-        options = Object.assign({}, options, {
-          onComplete: result => callback(result),
-          onError: err => callback(null, err),
-        });
-
-        new UploadFS.Uploader(options).start();
+    uploadProfilePic(image: Image): Profile {
+      const thumbnail = Thumbnails.collection.findOne({
+        originalStore: 'images',
+        originalId: image._id
+      }, {
+        fields: {
+          _id: 0,
+          url: 1
+        }
       });
 
-      upload({
-        data: data,
-        file: file,
-        store: ImagesStore
-      }, (err, result) => {
-        if (err) throw new Meteor.Error('upload-failed', err.message);
+      Meteor.users.update(this.userId, {
+        $set: {
+          'profile.picture': image.url,
+          'profile.thumbnail': thumbnail.url
+        }
+      });
 
-        const thumbnail = Thumbs.collection.findOne({
-          originalStore: 'images',
-          originalId: result._id
-        }, {
-          fields: {
-            _id: 0,
-            url: 1
-          }
-        });
-
-        Meteor.users.update(this.userId, {
-          $set: {
-            'profile.picture': result.url,
-            'profile.thumbnail': thumbnail.url
-          }
-        });
-
-        return Meteor.users.findOne(this.userId, {
-          fields: { profile: 1 }
-        });
+      return Meteor.users.findOne(this.userId, {
+        fields: {
+          'profile.picture': 1,
+          'profile.thumbnail': 1
+        }
       });
     },
 

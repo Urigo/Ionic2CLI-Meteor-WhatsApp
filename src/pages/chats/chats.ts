@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from "rxjs";
-import { Chat } from "api/models/whatsapp-models";
-import { Chats, Messages, Users } from "api/collections/whatsapp-collections";
+import { Chat } from "api/models/whatsapp";
+import { Chats, Messages, Users } from "api/collections/whatsapp";
 import { NavController, PopoverController, ModalController, AlertController } from "ionic-angular";
 import { MessagesPage } from "../messages/messages";
 import { ChatsOptionsComponent } from "./chats-options";

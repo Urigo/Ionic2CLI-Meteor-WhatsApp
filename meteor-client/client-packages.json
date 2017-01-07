@@ -48,5 +48,8 @@
     "templating",
     "matb33_collection-hooks",
     "jalik_ufs"
+  ],
+  "jalik:ufs-gridfs": [
+    "jalik_ufs-gridfs"
   ]
 }

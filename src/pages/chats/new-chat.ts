@@ -4,8 +4,8 @@ import { Contacts, Contact, ContactFieldType } from 'ionic-native';
 import { MeteorObservable, ObservableCursor } from 'meteor-rxjs';
 import { Observable, Subscription } from 'rxjs';
 import { _ } from 'meteor/underscore';
-import { Chats, Users } from 'api/collections/whatsapp-collections';
-import { User } from 'api/models/whatsapp-models';
+import { Chats, Users } from 'api/collections/whatsapp';
+import { User } from 'api/models/whatsapp';
 
 @Component({
   selector: 'new-chat',
