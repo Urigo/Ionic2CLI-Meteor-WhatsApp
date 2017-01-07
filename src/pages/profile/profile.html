@@ -3,15 +3,20 @@
     <ion-title>Profile</ion-title>
 
     <ion-buttons end>
-      <button ion-button class="done-button" (click)="done()">Done</button>
+      <button ion-button class="done-button" (click)="updateProfile()">Done</button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content class="profile-page-content">
-  <div fileDrop class="profile-picture" (onFileDrop)="uploadProfilePic($event)">
+  <div fileDrop class="profile-picture" (onFileDrop)="uploadProfilePicture($event)">
     <img [src]="profile.picture">
-    <ion-icon name="create"></ion-icon>
+
+    <label for="profile-picture-picker">
+      <ion-icon name="create"></ion-icon>
+    </label>
+
+    <input hidden type="file" id="profile-picture-picker" enctype="multipart/form-data" (change)="pickProfilePicture($event)"/>
   </div>
 
   <ion-item class="profile-name">

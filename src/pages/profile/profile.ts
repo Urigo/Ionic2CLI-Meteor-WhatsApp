@@ -27,7 +27,21 @@ export class ProfilePage implements OnInit {
     };
   }
 
-  done(): void {
+  pickProfilePicture({ target }: Event): void {
+    const file = (<HTMLInputElement>target).files[0];
+    this.uploadProfilePicture(file);
+  }
+
+  uploadProfilePicture(file: File): void {
+    this.imageUploader.upload(file).then((image) => {
+      this.updateProfilePicture(image);
+    })
+    .catch((e) => {
+      this.handleError(e);
+    });
+  }
+
+  updateProfile(): void {
     MeteorObservable.call('updateProfile', this.profile).subscribe({
       next: () => {
         this.navCtrl.push(TabsPage);
@@ -38,16 +52,7 @@ export class ProfilePage implements OnInit {
     });
   }
 
-  uploadProfilePic(file: File): void {
-    this.imageUploader.upload(file).then((image) => {
-      this.updateProfilePic(image);
-    })
-    .catch((e) => {
-      this.handleError(e);
-    });
-  }
-
-  updateProfilePic(image: Image) {
+  updateProfilePicture(image: Image) {
     MeteorObservable.call<Profile>('updateProfilePic', image).subscribe({
       next: ({ picture, thumbnail }) => {
         this.profile.picture = picture;
@@ -59,7 +64,7 @@ export class ProfilePage implements OnInit {
     });
   }
 
-  private handleError(e: Error): void {
+  handleError(e: Error): void {
     console.error(e);
 
     const alert = this.alertCtrl.create({

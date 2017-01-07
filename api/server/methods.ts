@@ -65,7 +65,7 @@ export function initMethods() {
       });
     },
 
-    uploadProfilePic(image: Image): Profile {
+    updateProfilePic(image: Image): Profile {
       const thumbnail = Thumbnails.collection.findOne({
         originalStore: 'images',
         originalId: image._id
@@ -83,12 +83,14 @@ export function initMethods() {
         }
       });
 
-      return Meteor.users.findOne(this.userId, {
+      const user = Meteor.users.findOne(this.userId, {
         fields: {
           'profile.picture': 1,
           'profile.thumbnail': 1
         }
       });
+
+      return user.profile;
     },
 
     addMessage(chatId: string, content: string): Object {

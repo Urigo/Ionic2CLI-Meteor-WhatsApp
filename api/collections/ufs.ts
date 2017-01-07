@@ -5,7 +5,7 @@ import { UploadFS } from 'meteor/jalik:ufs';
 import { Thumbnail, Image } from 'api/models/ufs';
 
 export const Images = new MongoObservable.Collection<Image>('images');
-export const Thumbnails = new MongoObservable.Collection<Thumbnail>('thumbs');
+export const Thumbnails = new MongoObservable.Collection<Thumbnail>('thumbnails');
 
 function loggedIn(userId) {
   return !!userId;
@@ -13,7 +13,7 @@ function loggedIn(userId) {
 
 export const ThumbnailsStore = new UploadFS.store.GridFS({
   collection: Thumbnails.collection,
-  name: 'thumbs',
+  name: 'thumbnails',
   permissions: new UploadFS.StorePermissions({
     insert: loggedIn,
     update: loggedIn,
