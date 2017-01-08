@@ -23,7 +23,7 @@ module.exports = {
     extensions: ['.ts', '.js', '.json'],
     modules: [Path.resolve('node_modules')],
     alias: {
-      'api': Path.resolve(__dirname, 'api'),
+      'api': Path.resolve(__dirname, 'api/server'),
       'meteor-client': Path.resolve(__dirname, 'meteor-client/meteor.bundle')
     }
   },

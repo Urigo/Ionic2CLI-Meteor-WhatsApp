@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { User, Message, Chat } from 'api/models/whatsapp';
-import { Users, Messages, Chats } from '../collections/whatsapp';
+import { Users, Messages, Chats } from './collections/whatsapp';
 
 export function initPublications() {
   Meteor.publish('users', function(phoneNumbers?: number[]): Mongo.Cursor<User> {
