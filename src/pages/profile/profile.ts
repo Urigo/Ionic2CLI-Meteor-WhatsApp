@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Profile } from 'api/models/whatsapp';
-import { Image } from 'api/models/ufs';
+import { Picture } from 'api/models/ufs';
 import { TabsPage } from '../tabs/tabs';
-import { ImageUploader } from '../../services/image-uploader';
+import { PictureUploader } from '../../services/picture-uploader';
 
 @Component({
   selector: 'profile',
@@ -16,14 +16,13 @@ export class ProfilePage implements OnInit {
   constructor(
     private navCtrl: NavController,
     private alertCtrl: AlertController,
-    private imageUploader: ImageUploader
+    private pictureUploader: PictureUploader
   ) {}
 
   ngOnInit(): void {
     this.profile = Meteor.user().profile || {
       name: '',
-      picture: '/ionicons/dist/svg/ios-contact.svg',
-      thumbnail: '/ionicons/dist/svg/ios-contact.svg'
+      picture: '/ionicons/dist/svg/ios-contact.svg'
     };
   }
 
@@ -33,8 +32,8 @@ export class ProfilePage implements OnInit {
   }
 
   uploadProfilePicture(file: File): void {
-    this.imageUploader.upload(file).then((image) => {
-      this.updateProfilePicture(image);
+    this.pictureUploader.upload(file).then((picture) => {
+      this.updateProfilePicture(picture);
     })
     .catch((e) => {
       this.handleError(e);
@@ -52,11 +51,10 @@ export class ProfilePage implements OnInit {
     });
   }
 
-  updateProfilePicture(image: Image) {
-    MeteorObservable.call<Profile>('updateProfilePic', image).subscribe({
-      next: ({ picture, thumbnail }) => {
+  updateProfilePicture(picture: Picture) {
+    MeteorObservable.call<Profile>('updateProfilePic', picture).subscribe({
+      next: ({ picture }) => {
         this.profile.picture = picture;
-        this.profile.thumbnail = thumbnail;
       },
       error: (e: Error) => {
         this.handleError(e);

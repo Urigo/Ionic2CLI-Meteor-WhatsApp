@@ -3,7 +3,7 @@ import { FileDropModule } from 'angular2-file-drop';
 import { MomentModule } from 'angular2-moment';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
-import { ImageUploader } from '../services/image-uploader';
+import { PictureUploader } from '../services/picture-uploader';
 import { SearchPipe } from '../pipes/search';
 import { ChatsOptionsComponent } from '../pages/chats/chats-options';
 import { ChatsPage } from '../pages/chats/chats';
@@ -49,7 +49,7 @@ import { VerificationPage } from '../pages/verification/verification';
   ],
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    ImageUploader
+    PictureUploader
   ]
 })
 export class AppModule {}

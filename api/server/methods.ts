@@ -2,9 +2,9 @@ import { Meteor } from 'meteor/meteor';
 import { check, Match } from 'meteor/check';
 import { UploadFS } from 'meteor/jalik:ufs';
 import { Profile } from 'api/models/whatsapp';
-import { Image, Thumbnail } from 'api/models/ufs';
+import { Picture } from 'api/models/ufs';
 import { Chats, Messages } from '../collections/whatsapp';
-import { Thumbnails } from '../collections/ufs';
+import { Pictures } from '../collections/ufs';
 
 const nonEmptyString = Match.Where((str) => {
   check(str, String);
@@ -65,28 +65,26 @@ export function initMethods() {
       });
     },
 
-    updateProfilePic(image: Image): Profile {
-      const thumbnail = Thumbnails.collection.findOne({
-        originalStore: 'images',
-        originalId: image._id
-      }, {
+    updateProfilePic(picture: Picture): Profile {
+      let user = Meteor.users.findOne(this.userId, {
         fields: {
-          _id: 0,
-          url: 1
+          'profile.picture': 1
         }
       });
+
+      if (user.profile) {
+        Pictures.collection.remove({ url: user.profile.picture });
+      }
 
       Meteor.users.update(this.userId, {
         $set: {
-          'profile.picture': image.url,
-          'profile.thumbnail': thumbnail.url
+          'profile.picture': picture.url
         }
       });
 
-      const user = Meteor.users.findOne(this.userId, {
+      user = Meteor.users.findOne(this.userId, {
         fields: {
-          'profile.picture': 1,
-          'profile.thumbnail': 1
+          'profile.picture': 1
         }
       });
 

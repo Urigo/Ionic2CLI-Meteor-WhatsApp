@@ -1,5 +1,5 @@
 declare module 'api/models/ufs' {
-  interface Image {
+  interface Picture {
     _id?: string;
     complete?: boolean;
     extension?: string;
@@ -13,11 +13,5 @@ declare module 'api/models/ufs' {
     uploading?: boolean;
     url?: string;
     userId?: string;
-  }
-
-  interface Thumbnail extends Image  {
-    originalId?: string;
-    originalStore?: string;
-    originalUrl?: string;
   }
 }

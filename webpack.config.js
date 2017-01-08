@@ -14,7 +14,7 @@ module.exports = {
   externals: [
     {
       cordova: 'cordova',
-      'child_process': '{}'
+      gm: '{}'
     },
     resolveExternals
   ],
