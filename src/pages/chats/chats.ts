@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from "rxjs";
 import { Chat } from "api/models/whatsapp";
+import { Pictures, DEFAULT_PICTURE_URL } from "api/collections/ufs";
 import { Chats, Messages, Users } from "api/collections/whatsapp";
 import { NavController, PopoverController, ModalController, AlertController } from "ionic-angular";
 import { MessagesPage } from "../messages/messages";
@@ -51,11 +52,15 @@ export class ChatsPage implements OnInit {
               chat.title = '';
               chat.picture = '';
 
-              const receiver = Users.findOne(chat.memberIds.find(memberId => memberId !== this.senderId));
+              const receiverId = chat.memberIds.find(memberId => memberId !== this.senderId);
+              const receiver = Users.findOne(receiverId);
               if (!receiver) return;
 
+              const picture = Pictures.findOne(receiver.profile.pictureId) || {};
+              const pictureUrl = picture.url || DEFAULT_PICTURE_URL;
+
               chat.title = receiver.profile.name;
-              chat.picture = receiver.profile.picture;
+              chat.picture = pictureUrl;
             });
 
             return chats;

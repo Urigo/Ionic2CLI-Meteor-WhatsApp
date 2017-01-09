@@ -57,7 +57,7 @@ export function initMethods() {
 
       check(profile, {
         name: nonEmptyString,
-        picture: nonEmptyString
+        pictureId: nonEmptyString
       });
 
       Meteor.users.update(this.userId, {
@@ -65,30 +65,9 @@ export function initMethods() {
       });
     },
 
-    updateProfilePic(picture: Picture): Profile {
-      let user = Meteor.users.findOne(this.userId, {
-        fields: {
-          'profile.picture': 1
-        }
-      });
-
-      if (user.profile) {
-        Pictures.collection.remove({ url: user.profile.picture });
-      }
-
-      Meteor.users.update(this.userId, {
-        $set: {
-          'profile.picture': picture.url
-        }
-      });
-
-      user = Meteor.users.findOne(this.userId, {
-        fields: {
-          'profile.picture': 1
-        }
-      });
-
-      return user.profile;
+    removePicture(pictureId: string): void {
+      check(pictureId, String);
+      Pictures.collection.remove(pictureId);
     },
 
     addMessage(chatId: string, content: string): Object {

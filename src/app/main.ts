@@ -7,13 +7,10 @@ import { Meteor } from 'meteor/meteor';
 import { AppModule } from './app.module';
 
 Meteor.startup(() => {
-  const sub = MeteorObservable.autorun().subscribe(() => {
+  const subscription = MeteorObservable.autorun().subscribe(() => {
     if (Meteor.loggingIn()) return;
 
-    setTimeout(() => {
-      sub.unsubscribe();
-    });
-
+    subscription.unsubscribe();
     platformBrowserDynamic().bootstrapModule(AppModule);
   });
 });

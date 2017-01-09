@@ -4,6 +4,7 @@ import { Contacts, Contact, ContactFieldType } from 'ionic-native';
 import { MeteorObservable, ObservableCursor } from 'meteor-rxjs';
 import { Observable, Subscription } from 'rxjs';
 import { _ } from 'meteor/underscore';
+import { Pictures, DEFAULT_PICTURE_URL } from 'api/collections/ufs';
 import { Chats, Users } from 'api/collections/whatsapp';
 import { User } from 'api/models/whatsapp';
 
@@ -108,6 +109,15 @@ export class NewChatComponent implements OnInit {
       return Users.find({
         _id: { $nin: recieverIds }
       })
+    })
+    .map((users) => {
+      users.forEach((user) => {
+        const picture = Pictures.findOne(user.profile.pictureId) || {};
+        const pictureUrl = picture.url || DEFAULT_PICTURE_URL;
+        user.profile.picture = pictureUrl;
+      });
+
+      return users;
     });
   }
 

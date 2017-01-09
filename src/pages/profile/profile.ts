@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
-import { Profile } from 'api/models/whatsapp';
+import { Pictures, DEFAULT_PICTURE_URL } from 'api/collections/ufs';
 import { Picture } from 'api/models/ufs';
+import { Profile } from 'api/models/whatsapp';
 import { TabsPage } from '../tabs/tabs';
 import { PictureUploader } from '../../services/picture-uploader';
 
@@ -11,6 +12,7 @@ import { PictureUploader } from '../../services/picture-uploader';
   templateUrl: 'profile.html'
 })
 export class ProfilePage implements OnInit {
+  picture: string;
   profile: Profile;
 
   constructor(
@@ -21,9 +23,13 @@ export class ProfilePage implements OnInit {
 
   ngOnInit(): void {
     this.profile = Meteor.user().profile || {
-      name: '',
-      picture: '/ionicons/dist/svg/ios-contact.svg'
+      name: 'Whatsapp Newbie'
     };
+
+    MeteorObservable.subscribe('user').subscribe(() => {
+      const picture = Pictures.findOne(this.profile.pictureId) || {};
+      this.picture = picture.url || DEFAULT_PICTURE_URL;
+    });
   }
 
   pickProfilePicture({ target }: Event): void {
@@ -33,7 +39,11 @@ export class ProfilePage implements OnInit {
 
   uploadProfilePicture(file: File): void {
     this.pictureUploader.upload(file).then((picture) => {
-      this.updateProfilePicture(picture);
+      const oldPictureId = this.profile.pictureId;
+      if (oldPictureId) Meteor.call('removePicture', oldPictureId);
+
+      this.profile.pictureId = picture._id;
+      this.picture = picture.url;
     })
     .catch((e) => {
       this.handleError(e);
@@ -44,17 +54,6 @@ export class ProfilePage implements OnInit {
     MeteorObservable.call('updateProfile', this.profile).subscribe({
       next: () => {
         this.navCtrl.push(TabsPage);
-      },
-      error: (e: Error) => {
-        this.handleError(e);
-      }
-    });
-  }
-
-  updateProfilePicture(picture: Picture) {
-    MeteorObservable.call<Profile>('updateProfilePic', picture).subscribe({
-      next: ({ picture }) => {
-        this.profile.picture = picture;
       },
       error: (e: Error) => {
         this.handleError(e);

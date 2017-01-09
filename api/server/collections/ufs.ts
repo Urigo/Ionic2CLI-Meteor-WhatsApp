@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { UploadFS } from 'meteor/jalik:ufs';
 import { Picture } from 'api/models/ufs';
 
+export const DEFAULT_PICTURE_URL = '/ionicons/dist/svg/ios-contact.svg';
 export const Pictures = new MongoObservable.Collection<Picture>('pictures');
 
 export const PicturesStore = new UploadFS.store.GridFS({
@@ -13,9 +14,9 @@ export const PicturesStore = new UploadFS.store.GridFS({
     contentTypes: ['image/*']
   }),
   permissions: new UploadFS.StorePermissions({
-    insert: Boolean,
-    update: Boolean,
-    remove: Boolean
+    insert: picturesPermissions,
+    update: picturesPermissions,
+    remove: picturesPermissions
   }),
   transformWrite(from, to, fileId, file) {
     // Compress
@@ -25,3 +26,7 @@ export const PicturesStore = new UploadFS.store.GridFS({
       .pipe(to);
   }
 });
+
+function picturesPermissions(userId: string): boolean {
+  return Meteor.isServer || !!userId;
+}
