@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, ViewController, AlertController } from 'ionic-angular';
+import { NavController, ViewController, AlertController, Platform } from 'ionic-angular';
 import { Contacts, Contact, ContactFieldType } from 'ionic-native';
 import { MeteorObservable, ObservableCursor } from 'meteor-rxjs';
 import { Observable, Subscription } from 'rxjs';
@@ -19,23 +19,29 @@ export class NewChatComponent implements OnInit {
   constructor(
     private navCtrl: NavController,
     private viewCtrl: ViewController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private platform: Platform
   ) {
     this.senderId = Meteor.userId();
   }
 
   ngOnInit() {
     this.findContacts().then((contacts) => {
-      // Pluck all contacts' phone numbers into a flat array
-      contacts = contacts && _.chain(contacts)
-        .pluck('phoneNumbers')
-        .flatten()
-        .pluck('value')
-        .uniq()
-        .value();
+      if (contacts) {
+        // Pluck all contacts' phone numbers into a flat array
+        var phoneNumbers: number[] = _.chain(contacts)
+          .pluck('phoneNumbers')
+          .flatten()
+          .pluck('value')
+          .uniq()
+          .value();
+      }
 
       // Subscribe to all the users who are in the provided contacts list
-      this.subscribeUsers(contacts);
+      this.subscribeUsers(phoneNumbers);
+    })
+    .catch((e) => {
+      this.handleError(e);
     });
   }
 
@@ -54,9 +60,9 @@ export class NewChatComponent implements OnInit {
 
   findContacts(): Promise<Contact[]> {
     // If we're running this in the browser, don't look for any contacts
-    if (!navigator.hasOwnProperty('contacts')) return Promise.resolve();
+    if (!this.platform.is('mobile')) return Promise.resolve();
 
-    const fields = <ContactFieldType[]>['phoneNumbers'];
+    const fields: ContactFieldType[] = ['phoneNumbers'];
 
     // Look for all the available phone numbers in contacts
     return Contacts.find(fields, {
@@ -66,15 +72,16 @@ export class NewChatComponent implements OnInit {
     });
   }
 
-  subscribeUsers(contacts?: any[]): Subscription {
-    // Fetch all users in contacts list. If no contacts list was provided, will
+  subscribeUsers(phoneNumbers?: number[]): Subscription {
+    // Fetch all users matching phone numbers. If no phone numbers were provided, will
     // fetch all available users in database. This behavior is **not** recommended
     // in a production application since it will probably overload both client
     // and server
-    return MeteorObservable.subscribe('users', contacts).subscribe(() => {
-      MeteorObservable.autorun().subscribe(() => {
-        this.users = this.findUsers().zone();
-      });
+    const subscription = MeteorObservable.subscribe('users', phoneNumbers);
+    const autorun = MeteorObservable.autorun();
+
+    return Observable.merge(subscription, autorun).subscribe(() => {
+      this.users = this.findUsers().zone();
     });
   }
 
@@ -90,7 +97,7 @@ export class NewChatComponent implements OnInit {
     // The initial value of the upcoming mapping function
     .startWith([])
     .mergeMap((chats) => {
-      // Get all userIDs with whom we're chatting with
+      // Get all userIDs who we're chatting with
       const recieverIds = _.chain(chats)
         .pluck('memberIds')
         .flatten()

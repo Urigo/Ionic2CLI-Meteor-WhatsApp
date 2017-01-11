@@ -1,18 +1,13 @@
-import { Pipe } from '@angular/core';
+import * as Get from 'get-value';
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'search'
 })
-export class SearchPipe {
-  transform(list, pattern = '', deepKey = '') {
-    if (!list) return;
-
-    return list.filter((item) => {
-      const value = deepKey.split('.').reduce((value, key) => {
-        return value[key];
-      }, item);
-
-      return value.match(pattern);
-    });
+export class SearchPipe implements PipeTransform {
+  transform(list, pattern = '', key = '') {
+    return list && list.filter(item =>
+      Get(item, key).match(pattern)
+    );
   }
 }

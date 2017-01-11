@@ -27,6 +27,7 @@
     "accounts-phone": "0.0.1",
     "angular2-moment": "^1.0.0",
     "babel-runtime": "^6.20.0",
+    "get-value": "^2.0.6",
     "ionic-angular": "2.0.0-rc.4",
     "ionic-native": "2.2.11",
     "ionicons": "3.0.0",

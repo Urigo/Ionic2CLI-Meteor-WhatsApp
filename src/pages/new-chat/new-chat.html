@@ -19,6 +19,6 @@
 
 <ion-footer>
   <ion-toolbar color="whatsapp" position="bottom">
-    <ion-searchbar color="whatsapp" [(ngModel)]="searchPattern"></ion-searchbar>
+    <ion-searchbar color="whatsapp" (ionInput)="searchPattern = $event.target.value"></ion-searchbar>
   </ion-toolbar>
 </ion-footer>
