@@ -72,7 +72,7 @@ export class ChatsPage implements OnInit {
 
   showOptions(): void {
     const popover = this.popoverCtrl.create(ChatsOptionsComponent, {}, {
-      cssClass: 'chats-options-popover'
+      cssClass: 'options-popover chats-options-popover'
     });
 
     popover.present();

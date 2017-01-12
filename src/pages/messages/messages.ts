@@ -93,8 +93,8 @@ export class MessagesPage implements OnInit, OnDestroy {
     const popover = this.popoverCtrl.create(MessagesAttachmentsComponent, {
       chat: this.selectedChat
     }, {
-      // Will be used as a CSS selector in our style-sheet
-      cssClass: 'messages-attachments-popover'
+      // Hooking components
+      cssClass: 'attachments-popover'
     });
 
     popover.present();
@@ -104,7 +104,7 @@ export class MessagesPage implements OnInit, OnDestroy {
     const popover = this.popoverCtrl.create(MessagesOptionsComponent, {
       chat: this.selectedChat
     }, {
-      cssClass: 'messages-options-popover'
+      cssClass: 'options-popover messages-options-popover'
     });
 
     popover.present();
