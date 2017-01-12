@@ -31,9 +31,10 @@ export class ProfilePage implements OnInit {
     });
   }
 
-  pickProfilePicture({ target }: Event): void {
-    const file = (<HTMLInputElement>target).files[0];
-    this.uploadProfilePicture(file);
+  selectProfilePicture(): void {
+    this.pictureUploader.select().then((file) => {
+      this.uploadProfilePicture(file);
+    });
   }
 
   uploadProfilePicture(file: File): void {

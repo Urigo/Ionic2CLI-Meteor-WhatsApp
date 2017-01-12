@@ -11,12 +11,7 @@
 <ion-content class="profile-page-content">
   <div fileDrop class="profile-picture" (onFileDrop)="uploadProfilePicture($event)">
     <img *ngIf="picture" [src]="picture">
-
-    <label for="profile-picture-picker">
-      <ion-icon name="create"></ion-icon>
-    </label>
-
-    <input hidden type="file" id="profile-picture-picker" enctype="multipart/form-data" (change)="pickProfilePicture($event)"/>
+    <ion-icon name="create" (click)="selectProfilePicture()"></ion-icon>
   </div>
 
   <ion-item class="profile-name">

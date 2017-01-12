@@ -6,6 +6,14 @@ import { _ } from 'meteor/underscore';
 
 @Injectable()
 export class PictureUploader {
+  select(): Promise<File> {
+    return new Promise((resolve, reject) => {
+      UploadFS.selectFile((file: File) => {
+        resolve(file);
+      });
+    });
+  }
+
   upload(file: File): Promise<Picture> {
     return new Promise((resolve, reject) => {
       const metadata = _.pick(file, 'name', 'type', 'size');
