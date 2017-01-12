@@ -1,7 +1,7 @@
-import * as Gm from 'gm';
 import { MongoObservable } from 'meteor-rxjs';
 import { UploadFS } from 'meteor/jalik:ufs';
 import { Meteor } from 'meteor/meteor';
+import * as Sharp from 'sharp';
 import { Picture } from './models';
 
 export const Chats = new MongoObservable.Collection('chats');
@@ -20,12 +20,10 @@ export const PicturesStore = new UploadFS.store.GridFS({
     update: picturesPermissions,
     remove: picturesPermissions
   }),
-  transformWrite(from, to, fileId, file) {
+  transformWrite(from, to) {
     // Compress
-    Gm(from, file.name)
-      .quality(75)
-      .stream()
-      .pipe(to);
+    const transform = Sharp().png({ quality: 75 });
+    from.pipe(transform).pipe(to);
   }
 });
 

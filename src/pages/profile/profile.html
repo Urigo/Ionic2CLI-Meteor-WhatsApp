@@ -10,7 +10,7 @@
 
 <ion-content class="profile-page-content">
   <div fileDrop class="profile-picture" (onFileDrop)="uploadProfilePicture($event)">
-    <img [src]="picture">
+    <img *ngIf="picture" [src]="picture">
 
     <label for="profile-picture-picker">
       <ion-icon name="create"></ion-icon>

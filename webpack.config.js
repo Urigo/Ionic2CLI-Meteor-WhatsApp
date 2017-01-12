@@ -14,7 +14,7 @@ module.exports = {
   externals: [
     {
       cordova: 'cordova',
-      gm: '{}'
+      sharp: '{}'
     },
     resolveExternals
   ],
