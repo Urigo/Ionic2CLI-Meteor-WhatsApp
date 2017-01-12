@@ -58,9 +58,11 @@ export class NewChatComponent implements OnInit {
     });
   }
 
-  findContacts(): Promise<Contact[]> {
-    // If we're running this in the browser, don't look for any contacts
+  findContacts(): Promise<Contact[] | void> {
+    // If we're running this in the browser
     if (!this.platform.is('mobile')) return Promise.resolve();
+    // If contacts plug-in is unavailable
+    if (!navigator.hasOwnProperty('contacts')) return Promise.resolve();
 
     const fields: ContactFieldType[] = ['phoneNumbers'];
 
