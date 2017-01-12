@@ -9,6 +9,11 @@ export const Messages = new MongoObservable.Collection('messages');
 export const Pictures = new MongoObservable.Collection<Picture>('pictures');
 export const Users = MongoObservable.fromExisting(Meteor.users);
 
+// Deny all client-side updates to user documents
+Meteor.users.deny({
+  update() { return true; }
+});
+
 export const PicturesStore = new UploadFS.store.GridFS({
   collection: Pictures.collection,
   name: 'pictures',
