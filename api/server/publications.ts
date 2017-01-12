@@ -1,9 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
-import { Picture } from 'api/models/ufs';
-import { User, Message, Chat } from 'api/models/whatsapp';
-import { Pictures } from './collections/ufs';
-import { Users, Messages, Chats } from './collections/whatsapp';
+import { Chats, Users, Messages, Pictures } from './collections';
+import { Chat, Message, Picture, User } from './models';
 
 export function initPublications() {
   Meteor.publish('user', function () {

@@ -2,10 +2,12 @@ import * as Gm from 'gm';
 import { MongoObservable } from 'meteor-rxjs';
 import { Meteor } from 'meteor/meteor';
 import { UploadFS } from 'meteor/jalik:ufs';
-import { Picture } from 'api/models/ufs';
+import { Picture } from './models';
 
-export const DEFAULT_PICTURE_URL = '/ionicons/dist/svg/ios-contact.svg';
+export const Chats = new MongoObservable.Collection('chats');
+export const Messages = new MongoObservable.Collection('messages');
 export const Pictures = new MongoObservable.Collection<Picture>('pictures');
+export const Users = MongoObservable.fromExisting(Meteor.users);
 
 export const PicturesStore = new UploadFS.store.GridFS({
   collection: Pictures.collection,

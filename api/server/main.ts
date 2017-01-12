@@ -2,8 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { initMethods } from './methods';
 import { initPublications } from './publications';
-import { Pictures } from './collections/ufs';
-import { Users } from './collections/whatsapp';
+import { Pictures, Users } from './collections';
 
 Meteor.startup(() => {
   initMethods();

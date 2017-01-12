@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from "rxjs";
-import { Chat } from "api/models/whatsapp";
-import { Pictures, DEFAULT_PICTURE_URL } from "api/collections/ufs";
-import { Chats, Messages, Users } from "api/collections/whatsapp";
+import { Chat, DEFAULT_PICTURE_URL } from "api/models";
+import { Chats, Messages, Pictures, Users } from "api/collections";
 import { NavController, PopoverController, ModalController, AlertController } from "ionic-angular";
 import { MessagesPage } from "../messages/messages";
 import { ChatsOptionsComponent } from "./chats-options";

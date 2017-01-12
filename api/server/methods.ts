@@ -1,10 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { check, Match } from 'meteor/check';
 import { UploadFS } from 'meteor/jalik:ufs';
-import { Profile } from 'api/models/whatsapp';
-import { Picture } from 'api/models/ufs';
-import { Chats, Messages } from './collections/whatsapp';
-import { Pictures } from './collections/ufs';
+import { Picture, Profile } from './models';
+import { Chats, Messages, Pictures } from './collections';
 
 const nonEmptyString = Match.Where((str) => {
   check(str, String);

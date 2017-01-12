@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
-import { Pictures, DEFAULT_PICTURE_URL } from 'api/collections/ufs';
-import { Picture } from 'api/models/ufs';
-import { Profile } from 'api/models/whatsapp';
+import { Pictures } from 'api/collections';
+import { Profile, DEFAULT_PICTURE_URL } from 'api/models';
 import { TabsPage } from '../tabs/tabs';
 import { PictureUploader } from '../../services/picture-uploader';
 

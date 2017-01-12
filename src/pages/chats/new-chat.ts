@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, ViewController, AlertController, Platform } from 'ionic-angular';
 import { Contacts, Contact, ContactFieldType } from 'ionic-native';
-import { MeteorObservable, ObservableCursor } from 'meteor-rxjs';
+import { MeteorObservable } from 'meteor-rxjs';
 import { Observable, Subscription } from 'rxjs';
 import { _ } from 'meteor/underscore';
-import { Pictures, DEFAULT_PICTURE_URL } from 'api/collections/ufs';
-import { Chats, Users } from 'api/collections/whatsapp';
-import { User } from 'api/models/whatsapp';
+import { Chats, Pictures, Users } from 'api/collections';
+import { User, DEFAULT_PICTURE_URL } from 'api/models';
 
 @Component({
   selector: 'new-chat',
@@ -86,7 +85,7 @@ export class NewChatComponent implements OnInit {
     });
   }
 
-  findUsers(): ObservableCursor<User> {
+  findUsers(): Observable<User[]> {
     // Find all belonging chats
     return Chats.find({
       memberIds: this.senderId
