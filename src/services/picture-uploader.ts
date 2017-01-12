@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { _ } from 'meteor/underscore';
-import { UploadFS } from 'meteor/jalik:ufs';
-import { Picture } from 'api/models';
 import { PicturesStore } from 'api/collections';
+import { Picture } from 'api/models';
+import { UploadFS } from 'meteor/jalik:ufs';
+import { _ } from 'meteor/underscore';
 
 @Injectable()
 export class PictureUploader {

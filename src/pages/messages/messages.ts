@@ -1,12 +1,12 @@
-import * as Moment from 'moment';
 import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
-import { MeteorObservable } from 'meteor-rxjs';
+import { Messages } from 'api/collections';
+import { Chat, Message } from 'api/models';
 import { NavParams, PopoverController } from 'ionic-angular';
-import { Observable, Subscription, Subscriber } from 'rxjs';
+import { MeteorObservable } from 'meteor-rxjs';
 import { Meteor } from 'meteor/meteor';
 import { _ } from 'meteor/underscore';
-import { Chat, Message } from 'api/models';
-import { Messages } from 'api/collections';
+import * as Moment from 'moment';
+import { Observable, Subscription, Subscriber } from 'rxjs';
 import { MessagesOptionsComponent } from './messages-options';
 
 @Component({
@@ -14,17 +14,17 @@ import { MessagesOptionsComponent } from './messages-options';
   templateUrl: 'messages.html'
 })
 export class MessagesPage implements OnInit, OnDestroy {
+  autoScroller: MutationObserver;
+  loadingMessages: Boolean;
   message: string = '';
   messagesBatchCounter = 0;
+  messagesComputation: Subscription;
+  messagesDayGroups: Observable<Message[]>;
   picture: string;
   scrollOffset = 0;
+  selectedChat: Chat;
   senderId: string;
   title: string;
-  autoScroller: MutationObserver;
-  messagesDayGroups: Observable<Message[]>;
-  messagesComputation: Subscription;
-  loadingMessages: Boolean;
-  selectedChat: Chat;
 
   constructor(
     navParams: NavParams,

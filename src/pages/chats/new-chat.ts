@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, ViewController, AlertController, Platform } from 'ionic-angular';
-import { Contacts, Contact, ContactFieldType } from 'ionic-native';
-import { MeteorObservable } from 'meteor-rxjs';
-import { Observable, Subscription } from 'rxjs';
-import { _ } from 'meteor/underscore';
 import { Chats, Pictures, Users } from 'api/collections';
 import { User, DEFAULT_PICTURE_URL } from 'api/models';
+import { AlertController, NavController, Platform, ViewController } from 'ionic-angular';
+import { Contacts, Contact, ContactFieldType } from 'ionic-native';
+import { MeteorObservable } from 'meteor-rxjs';
+import { _ } from 'meteor/underscore';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'new-chat',
@@ -17,10 +17,10 @@ export class NewChatComponent implements OnInit {
   users: Observable<User[]>;
 
   constructor(
-    private navCtrl: NavController,
-    private viewCtrl: ViewController,
     private alertCtrl: AlertController,
-    private platform: Platform
+    private navCtrl: NavController,
+    private platform: Platform,
+    private viewCtrl: ViewController
   ) {
     this.senderId = Meteor.userId();
   }

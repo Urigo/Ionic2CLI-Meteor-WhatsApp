@@ -1,8 +1,8 @@
-import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
+import { Meteor } from 'meteor/meteor';
+import { Pictures, Users } from './collections';
 import { initMethods } from './methods';
 import { initPublications } from './publications';
-import { Pictures, Users } from './collections';
 
 Meteor.startup(() => {
   initMethods();

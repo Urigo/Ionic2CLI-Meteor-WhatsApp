@@ -1,5 +1,5 @@
-import 'reflect-metadata';
 import 'meteor-client';
+import 'reflect-metadata';
 
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { MeteorObservable } from 'meteor-rxjs';

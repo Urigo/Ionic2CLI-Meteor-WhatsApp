@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
-import { Chats, Users, Messages, Pictures } from './collections';
+import { Chats, Messages, Pictures, Users } from './collections';
 import { Chat, Message, Picture, User } from './models';
 
 export function initPublications() {
@@ -29,7 +29,9 @@ export function initPublications() {
     });
   });
 
-  Meteor.publishComposite('users', function(phoneNumbers?: number[]): PublishCompositeConfig<User> {
+  Meteor.publishComposite('users', function(
+    phoneNumbers?: number[]
+  ): PublishCompositeConfig<User> {
     if (!this.userId) return;
 
     return {

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from "rxjs";
-import { Chat, DEFAULT_PICTURE_URL } from "api/models";
-import { Chats, Messages, Pictures, Users } from "api/collections";
-import { NavController, PopoverController, ModalController, AlertController } from "ionic-angular";
-import { MessagesPage } from "../messages/messages";
-import { ChatsOptionsComponent } from "./chats-options";
-import { NewChatComponent } from "./new-chat";
+import { Chats, Messages, Pictures, Users } from 'api/collections';
+import { Chat, DEFAULT_PICTURE_URL } from 'api/models';
+import { AlertController, ModalController, NavController, PopoverController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
+import { Observable } from 'rxjs';
+import { MessagesPage } from '../messages/messages';
+import { ChatsOptionsComponent } from './chats-options';
+import { NewChatComponent } from './new-chat';
 
 @Component({
   templateUrl: 'chats.html'
@@ -16,10 +16,10 @@ export class ChatsPage implements OnInit {
   senderId: string;
 
   constructor(
-    public navCtrl: NavController,
-    public popoverCtrl: PopoverController,
+    public alertCtrl: AlertController,
     public modalCtrl: ModalController,
-    public alertCtrl: AlertController
+    public navCtrl: NavController,
+    public popoverCtrl: PopoverController
   ) {}
 
   ngOnInit() {

@@ -5,9 +5,9 @@
   "private": true,
   "scripts": {
     "api": "cd api && meteor run --settings private/settings.json",
-    "meteor-client:bundle": "node meteor-client/bundler.js",
     "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve"
+    "ionic:serve": "ionic-app-scripts serve",
+    "meteor-client:bundle": "node meteor-client/bundler.js"
   },
   "dependencies": {
     "@angular/common": "2.2.1",

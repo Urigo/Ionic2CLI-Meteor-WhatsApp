@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { NavParams, NavController, ViewController, AlertController } from 'ionic-angular';
+import { AlertController, NavController, NavParams, ViewController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
-import { TabsPage } from "../tabs/tabs";
+import { TabsPage } from '../tabs/tabs';
 
 @Component({
   selector: 'messages-options',
@@ -9,10 +9,10 @@ import { TabsPage } from "../tabs/tabs";
 })
 export class MessagesOptionsComponent {
   constructor(
-    public navCtrl: NavController,
-    public viewCtrl: ViewController,
     public alertCtrl: AlertController,
-    public params: NavParams
+    public navCtrl: NavController,
+    public params: NavParams,
+    public viewCtrl: ViewController
   ) {}
 
   remove(): void {

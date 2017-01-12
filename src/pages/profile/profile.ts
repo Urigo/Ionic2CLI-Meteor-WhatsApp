@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
-import { MeteorObservable } from 'meteor-rxjs';
 import { Pictures } from 'api/collections';
-import { Profile, DEFAULT_PICTURE_URL } from 'api/models';
-import { TabsPage } from '../tabs/tabs';
+import { DEFAULT_PICTURE_URL, Profile } from 'api/models';
+import { AlertController, NavController } from 'ionic-angular';
+import { MeteorObservable } from 'meteor-rxjs';
 import { PictureUploader } from '../../services/picture-uploader';
+import { TabsPage } from '../tabs/tabs';
 
 @Component({
   selector: 'profile',
@@ -15,8 +15,8 @@ export class ProfilePage implements OnInit {
   profile: Profile;
 
   constructor(
-    private navCtrl: NavController,
     private alertCtrl: AlertController,
+    private navCtrl: NavController,
     private pictureUploader: PictureUploader
   ) {}
 

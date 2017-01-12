@@ -53,8 +53,7 @@ exec('tar', ['-zxf', tarPath], {
 var runtimeConfigPath = Path.resolve(__dirname, 'runtime-config.js');
 var runtimeConfig = Fs.readFileSync(runtimeConfigPath).toString();
 
-// Make sure the bundled file is empty before proceeding
-Fs.unlinkSync(meteorClientPath);
+// Start composing the bundle, override if already exists
 Fs.writeFileSync(meteorClientPath, runtimeConfig);
 
 // Eliminate duplicate packages name and preserve their order
@@ -73,7 +72,7 @@ Object.keys(packs).forEach(function (pack) {
   Fs.appendFileSync(meteorClientPath, packContent);
 });
 
-// Set global imports
+// Export Meteor packages globally
 var globalImportsPath = Path.resolve(__dirname, 'global-imports.js');
 var globalImports = Fs.readFileSync(globalImportsPath).toString();
 Fs.appendFileSync(meteorClientPath, globalImports);

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, ViewController, AlertController } from 'ionic-angular';
-import { ProfilePage } from '../profile/profile';
+import { AlertController, NavController, ViewController } from 'ionic-angular';
 import { LoginPage } from '../login/login';
+import { ProfilePage } from '../profile/profile';
 
 @Component({
   selector: 'chats-options',
@@ -9,9 +9,9 @@ import { LoginPage } from '../login/login';
 })
 export class ChatsOptionsComponent {
   constructor(
+    public alertCtrl: AlertController,
     public navCtrl: NavController,
-    public viewCtrl: ViewController,
-    public alertCtrl: AlertController
+    public viewCtrl: ViewController
   ) {}
 
   editProfile(): void {

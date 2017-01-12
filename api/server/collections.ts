@@ -1,7 +1,7 @@
 import * as Gm from 'gm';
 import { MongoObservable } from 'meteor-rxjs';
-import { Meteor } from 'meteor/meteor';
 import { UploadFS } from 'meteor/jalik:ufs';
+import { Meteor } from 'meteor/meteor';
 import { Picture } from './models';
 
 export const Chats = new MongoObservable.Collection('chats');

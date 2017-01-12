@@ -1,5 +1,5 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { AlertController, NavController, NavParams } from 'ionic-angular';
 import { Accounts } from 'meteor/accounts-base';
 import { ProfilePage } from "../profile/profile";
 
@@ -12,10 +12,10 @@ export class VerificationPage implements OnInit {
   phone: string;
 
   constructor(
-    public navCtrl: NavController,
     public alertCtrl: AlertController,
-    public zone: NgZone,
-    public navParams: NavParams
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public zone: NgZone
   ) {}
 
   ngOnInit() {

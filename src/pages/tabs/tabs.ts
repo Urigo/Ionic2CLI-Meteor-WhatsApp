@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ChatsPage } from "../chats/chats";
+import { ChatsPage } from '../chats/chats';
 
 @Component({
   templateUrl: 'tabs.html'
