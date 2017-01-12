@@ -6,6 +6,7 @@ import { ChatsOptionsComponent } from '../pages/chats/chats-options';
 import { NewChatComponent } from '../pages/chats/new-chat';
 import { LoginPage } from '../pages/login/login';
 import { MessagesPage } from '../pages/messages/messages';
+import { MessagesAttachmentsComponent } from '../pages/messages/messages-attachments'
 import { MessagesOptionsComponent } from '../pages/messages/messages-options';
 import { ProfilePage } from '../pages/profile/profile';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -21,6 +22,7 @@ import { MyApp } from './app.component';
     LoginPage,
     MessagesOptionsComponent,
     MessagesPage,
+    MessagesAttachmentsComponent,
     MyApp,
     NewChatComponent,
     ProfilePage,
@@ -39,6 +41,7 @@ import { MyApp } from './app.component';
     LoginPage,
     MessagesOptionsComponent,
     MessagesPage,
+    MessagesAttachmentsComponent,
     MyApp,
     NewChatComponent,
     ProfilePage,

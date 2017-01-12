@@ -121,3 +121,27 @@
     margin: auto;
   }
 }
+
+.messages-attachments-popover {
+  $popover-width: 100%;
+  $popover-margin: 0px;
+
+  .popover-content {
+    width: $popover-width;
+    transform-origin: 300px 30px !important;
+    left: calc(100% - #{$popover-width} - #{$popover-margin}) !important;
+    top: calc(58px + #{$popover-margin}) !important;
+  }
+}
+
+.messages-options-popover {
+  $popover-width: 200px;
+  $popover-margin: 5px;
+
+  .popover-content {
+    width: $popover-width;
+    transform-origin: right top 0px !important;
+    left: calc(100% - #{$popover-width} - #{$popover-margin}) !important;
+    top: $popover-margin !important;
+  }
+}

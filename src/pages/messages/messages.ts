@@ -7,6 +7,7 @@ import { Meteor } from 'meteor/meteor';
 import { _ } from 'meteor/underscore';
 import * as Moment from 'moment';
 import { Observable, Subscription, Subscriber } from 'rxjs';
+import { MessagesAttachmentsComponent } from './messages-attachments';
 import { MessagesOptionsComponent } from './messages-options';
 
 @Component({
@@ -88,12 +89,22 @@ export class MessagesPage implements OnInit, OnDestroy {
     }
   }
 
+  showAttachments(): void {
+    const popover = this.popoverCtrl.create(MessagesAttachmentsComponent, {
+      chat: this.selectedChat
+    }, {
+      // Will be used as a CSS selector in our style-sheet
+      cssClass: 'messages-attachments-popover'
+    });
+
+    popover.present();
+  }
+
   showOptions(): void {
     const popover = this.popoverCtrl.create(MessagesOptionsComponent, {
       chat: this.selectedChat
     }, {
-      // Will be used as a CSS selector in our style-sheet
-      cssClass: 'options-popover'
+      cssClass: 'messages-options-popover'
     });
 
     popover.present();
