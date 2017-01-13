@@ -55,7 +55,7 @@ export function initMethods() {
 
       check(profile, {
         name: nonEmptyString,
-        pictureId: nonEmptyString
+        pictureId: Match.Maybe(nonEmptyString)
       });
 
       Meteor.users.update(this.userId, {
