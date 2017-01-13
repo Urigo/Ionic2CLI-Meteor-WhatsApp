@@ -10,7 +10,7 @@ Meteor.startup(() => {
   const subscription = MeteorObservable.autorun().subscribe(() => {
     if (Meteor.loggingIn()) return;
 
-    subscription.unsubscribe();
+    setTimeout(() => subscription.unsubscribe());
     platformBrowserDynamic().bootstrapModule(AppModule);
   });
 });
