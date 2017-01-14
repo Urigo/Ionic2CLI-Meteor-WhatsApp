@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Messages } from 'api/collections';
 import { Chat, Message } from 'api/models';
 import { NavParams, PopoverController } from 'ionic-angular';

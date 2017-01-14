@@ -1,6 +1,7 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { MomentModule } from 'angular2-moment';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { AutofocusDirective } from '../directives/autofocus';
 import { ChatsPage } from '../pages/chats/chats';
 import { ChatsOptionsComponent } from '../pages/chats/chats-options';
 import { NewChatComponent } from '../pages/chats/new-chat';
@@ -17,6 +18,7 @@ import { MyApp } from './app.component';
 
 @NgModule({
   declarations: [
+    AutofocusDirective,
     ChatsOptionsComponent,
     ChatsPage,
     LoginPage,

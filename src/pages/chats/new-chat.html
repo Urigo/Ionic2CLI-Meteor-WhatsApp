@@ -1,6 +1,7 @@
 <ion-header>
   <ion-toolbar *ngIf="searching" color="whatsapp">
     <ion-searchbar
+      autofocus
       class="seach-bar"
       color="whatsapp"
       [showCancelButton]="true"
@@ -11,9 +12,12 @@
   <ion-toolbar *ngIf="!searching" color="whatsapp">
     <ion-title>New Chat</ion-title>
 
+    <ion-buttons left>
+      <button ion-button class="dismiss-button" (click)="viewCtrl.dismiss()"><ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
+
     <ion-buttons end>
       <button ion-button class="search-button" (click)="toggleSearching()"><ion-icon name="search"></ion-icon></button>
-      <button ion-button class="dismiss-button" (click)="viewCtrl.dismiss()"><ion-icon name="close"></ion-icon></button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
