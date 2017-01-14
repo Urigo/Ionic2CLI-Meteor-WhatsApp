@@ -12,7 +12,8 @@ import { Observable, Subscription } from 'rxjs';
   templateUrl: 'new-chat.html'
 })
 export class NewChatComponent implements OnInit {
-  searchPattern = '';
+  searching = false;
+  searchPattern: string;
   senderId: string;
   users: Observable<User[]>;
 
@@ -43,6 +44,11 @@ export class NewChatComponent implements OnInit {
     .catch((e) => {
       this.handleError(e);
     });
+  }
+
+  toggleSearching() {
+    this.searching = !this.searching;
+    this.searchPattern = '';
   }
 
   addChat(user): void {
