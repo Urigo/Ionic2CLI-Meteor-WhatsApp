@@ -25,6 +25,7 @@
     "@types/underscore": "^1.7.36",
     "accounts-base-client-side": "^0.1.1",
     "accounts-phone": "0.0.1",
+    "angular2-google-maps": "^0.17.0",
     "angular2-moment": "^1.0.0",
     "babel-runtime": "^6.20.0",
     "ionic-angular": "2.0.0-rc.4",
@@ -47,6 +48,7 @@
     "cordova-plugin-console",
     "cordova-plugin-device",
     "cordova-plugin-splashscreen",
+    "cordova-plugin-geolocation",
     "ionic-plugin-keyboard"
   ],
   "cordovaPlatforms": [],

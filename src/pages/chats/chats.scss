@@ -30,3 +30,14 @@
     top: $popover-margin !important;
   }
 }
+
+.attachment-popover {
+  $popover-width: 100%;
+
+  .popover-content {
+    width: $popover-width;
+    transform-origin: right top 0px !important;
+    left: calc(100% - #{$popover-width}) !important;
+    top: 58px !important;
+  }
+}

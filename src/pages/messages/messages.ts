@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy, ElementRef } from "@angular/core";
-import { NavParams, PopoverController } from "ionic-angular";
+import {NavParams, PopoverController, ModalController} from "ionic-angular";
 import { Chat, Message } from "api/models/whatsapp-models";
 import { Messages } from "api/collections/whatsapp-collections";
 import { Observable } from "rxjs";
 import { MeteorObservable } from "meteor-rxjs";
 import { MessagesOptionsComponent } from "../messages-options/messages-options";
+import {AttachmentMenuComponent} from '../attachment-menu/attachment-menu';
 
 @Component({
   selector: "messages-page",
@@ -19,7 +20,7 @@ export class MessagesPage implements OnInit, OnDestroy {
   autoScroller: MutationObserver;
   senderId: string;
 
-  constructor(navParams: NavParams, element: ElementRef, public popoverCtrl: PopoverController) {
+  constructor(navParams: NavParams, element: ElementRef, private modalCtrl: ModalController, public popoverCtrl: PopoverController) {
     this.selectedChat = <Chat>navParams.get('chat');
     this.title = this.selectedChat.title;
     this.picture = this.selectedChat.picture;
@@ -89,6 +90,16 @@ export class MessagesPage implements OnInit, OnDestroy {
     MeteorObservable.call('addMessage', this.selectedChat._id, this.message).zone().subscribe(() => {
       this.message = '';
     });
+  }
+
+  showAttachmentMenu() {
+    const popover = this.popoverCtrl.create(AttachmentMenuComponent, {
+      chat: this.selectedChat
+    }, {
+      cssClass: 'attachment-popover'
+    });
+
+    popover.present();
   }
 
   autoScroll(): MutationObserver {

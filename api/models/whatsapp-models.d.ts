@@ -12,6 +12,19 @@ declare module 'api/models/whatsapp-models' {
     memberIds?: string[];
   }
 
+  enum MessageType {
+    TEXT,
+    LOCATION
+  }
+
+  type TextMessage = Message & {
+    messageType: MessageType.TEXT;
+  }
+
+  type LocationMessage = Message & {
+    messageType: MessageType.LOCATION;
+  }
+
   interface Message {
     _id?: string;
     chatId?: string;
