@@ -19,7 +19,7 @@
       <div *ngFor="let message of day.messages" class="message-wrapper">
         <div [class]="'message message-' + message.ownership">
           <div *ngIf="message.type == 'text'" class="message-content message-content-text">{{message.content}}</div>
-          <img *ngIf="message.type == 'picture'" class="message-content message-content-picture" [src]="message.content">
+          <img *ngIf="message.type == 'picture'" (click)="showPicture($event)" class="message-content message-content-picture" [src]="message.content">
 
           <span class="message-timestamp">{{message.createdAt | amDateFormat: 'HH:MM'}}</span>
         </div>

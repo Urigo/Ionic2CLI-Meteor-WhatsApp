@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Messages } from 'api/collections';
 import { Chat, Message } from 'api/models';
-import { NavParams, PopoverController } from 'ionic-angular';
+import { ModalController, NavParams, PopoverController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Meteor } from 'meteor/meteor';
 import { _ } from 'meteor/underscore';
@@ -10,6 +10,7 @@ import { Observable, Subscription, Subscriber } from 'rxjs';
 import { PictureService } from '../../services/picture';
 import { MessagesAttachmentsComponent } from './messages-attachments';
 import { MessagesOptionsComponent } from './messages-options';
+import { ShowPictureComponent } from './show-picture';
 
 @Component({
   selector: 'messages-page',
@@ -32,7 +33,8 @@ export class MessagesPage implements OnInit, OnDestroy {
     navParams: NavParams,
     private el: ElementRef,
     private pictureService: PictureService,
-    private popoverCtrl: PopoverController
+    private popoverCtrl: PopoverController,
+    private modalCtrl: ModalController
   ) {
     this.selectedChat = <Chat>navParams.get('chat');
     this.title = this.selectedChat.title;
@@ -188,6 +190,14 @@ export class MessagesPage implements OnInit, OnDestroy {
         };
       });
     });
+  }
+
+  showPicture({ target }: Event) {
+    const modal = this.modalCtrl.create(ShowPictureComponent, {
+      pictureSrc: (<HTMLImageElement>target).src
+    });
+
+    modal.present();
   }
 
   sendPictureMessage(file: File): void {

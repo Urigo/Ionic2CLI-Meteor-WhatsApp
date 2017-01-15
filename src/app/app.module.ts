@@ -9,6 +9,7 @@ import { LoginPage } from '../pages/login/login';
 import { MessagesPage } from '../pages/messages/messages';
 import { MessagesAttachmentsComponent } from '../pages/messages/messages-attachments'
 import { MessagesOptionsComponent } from '../pages/messages/messages-options';
+import { ShowPictureComponent } from '../pages/messages/show-picture';
 import { ProfilePage } from '../pages/profile/profile';
 import { TabsPage } from '../pages/tabs/tabs';
 import { VerificationPage } from '../pages/verification/verification';
@@ -22,13 +23,14 @@ import { MyApp } from './app.component';
     ChatsOptionsComponent,
     ChatsPage,
     LoginPage,
+    MessagesAttachmentsComponent,
     MessagesOptionsComponent,
     MessagesPage,
-    MessagesAttachmentsComponent,
     MyApp,
     NewChatComponent,
     ProfilePage,
     SearchPipe,
+    ShowPictureComponent,
     TabsPage,
     VerificationPage
   ],
@@ -47,6 +49,7 @@ import { MyApp } from './app.component';
     MyApp,
     NewChatComponent,
     ProfilePage,
+    ShowPictureComponent,
     TabsPage,
     VerificationPage
   ],
