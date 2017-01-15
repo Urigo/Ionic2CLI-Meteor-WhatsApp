@@ -28,6 +28,7 @@
     "angular2-google-maps": "^0.17.0",
     "angular2-moment": "^1.0.0",
     "babel-runtime": "^6.20.0",
+    "get-value": "^2.0.6",
     "ionic-angular": "2.0.0-rc.4",
     "ionic-native": "2.2.11",
     "ionicons": "3.0.0",
@@ -49,6 +50,7 @@
     "cordova-plugin-device",
     "cordova-plugin-splashscreen",
     "cordova-plugin-geolocation",
+    "cordova-plugin-contacts",
     "ionic-plugin-keyboard"
   ],
   "cordovaPlatforms": [],

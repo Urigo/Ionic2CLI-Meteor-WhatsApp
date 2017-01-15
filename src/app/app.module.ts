@@ -1,6 +1,8 @@
 import { NgModule, ErrorHandler } from '@angular/core';
+import { MomentModule } from 'angular2-moment';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
+import { SearchPipe } from '../pipes/search';
 import { TabsPage } from '../pages/tabs/tabs';
 import { ChatsPage } from "../pages/chats/chats";
 import { MomentModule } from "angular2-moment";
@@ -12,8 +14,8 @@ import { ChatsOptionsComponent } from "../pages/chat-options/chat-options";
 import { NewChatComponent } from "../pages/new-chat/new-chat";
 import { MessagesOptionsComponent } from "../pages/messages-options/messages-options";
 import { AgmCoreModule } from 'angular2-google-maps/core';
-import {NewLocationMessageComponent} from '../pages/location-message/location-message';
-import {AttachmentMenuComponent} from '../pages/attachment-menu/attachment-menu';
+import { NewLocationMessageComponent } from '../pages/location-message/location-message';
+import { AttachmentMenuComponent } from '../pages/attachment-menu/attachment-menu';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import {AttachmentMenuComponent} from '../pages/attachment-menu/attachment-menu'
     NewChatComponent,
     MessagesOptionsComponent,
     NewLocationMessageComponent,
-    AttachmentMenuComponent
+    AttachmentMenuComponent,
+    SearchPipe
   ],
   imports: [
     IonicModule.forRoot(MyApp),

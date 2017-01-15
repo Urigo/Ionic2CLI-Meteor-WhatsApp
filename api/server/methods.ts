@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
-import { Chats, Messages } from "../collections/whatsapp-collections";
-import { check, Match } from "meteor/check";
-import { Profile } from "api/models/whatsapp-models";
+import { check, Match } from 'meteor/check';
+import { Profile } from 'api/models/whatsapp-models';
+import { Chats, Messages } from '../collections/whatsapp-collections';
 
 const nonEmptyString = Match.Where((str) => {
   check(str, String);
@@ -20,7 +20,7 @@ export function initMethods() {
         'Receiver must be different than the current logged in user');
 
       const chatExists = !!Chats.collection.find({
-        memberIds: {$all: [this.userId, receiverId]}
+        memberIds: { $all: [this.userId, receiverId] }
       }).count();
 
       if (chatExists) throw new Meteor.Error('chat-exists',
@@ -56,10 +56,10 @@ export function initMethods() {
       });
 
       Meteor.users.update(this.userId, {
-        $set: {profile}
+        $set: { profile }
       });
     },
-    addMessage(chatId: string, content: string) {
+    addMessage(chatId: string, content: string): Object {
       if (!this.userId) throw new Meteor.Error('unauthorized',
         'User must be logged-in to create a new chat');
 
@@ -79,6 +79,9 @@ export function initMethods() {
           createdAt: new Date()
         })
       }
+    },
+    countMessages(): number {
+      return Messages.collection.find().count();
     }
   });
 }
