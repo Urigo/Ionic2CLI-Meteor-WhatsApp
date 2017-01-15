@@ -5,7 +5,7 @@ import { UploadFS } from 'meteor/jalik:ufs';
 import { _ } from 'meteor/underscore';
 
 @Injectable()
-export class PictureUploader {
+export class PictureService {
   select(): Promise<File> {
     return new Promise((resolve, reject) => {
       try {

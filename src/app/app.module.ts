@@ -13,7 +13,7 @@ import { ProfilePage } from '../pages/profile/profile';
 import { TabsPage } from '../pages/tabs/tabs';
 import { VerificationPage } from '../pages/verification/verification';
 import { SearchPipe } from '../pipes/search';
-import { PictureUploader } from '../services/picture-uploader';
+import { PictureService } from '../services/picture';
 import { MyApp } from './app.component';
 
 @NgModule({
@@ -52,7 +52,7 @@ import { MyApp } from './app.component';
   ],
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    PictureUploader
+    PictureService
   ]
 })
 export class AppModule {}
