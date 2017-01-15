@@ -24,7 +24,8 @@
           <h2 class="chat-title">{{chat.title}}</h2>
 
           <span *ngIf="chat.lastMessage" class="last-message">
-            <p class="last-message-content">{{chat.lastMessage.content}}</p>
+            <p *ngIf="chat.lastMessage.type == 'text'" class="last-message-content last-message-content-text">{{chat.lastMessage.content}}</p>
+            <p *ngIf="chat.lastMessage.type == 'picture'" class="last-message-content last-message-content-picture"><ion-icon name="camera"></ion-icon> Picture</p>
             <span class="last-message-timestamp">{{chat.lastMessage.createdAt | amCalendar }}</span>
           </span>
         </div>
