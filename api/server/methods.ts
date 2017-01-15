@@ -63,10 +63,11 @@ export function initMethods() {
       });
     },
 
-    addMessage(chatId: string, content: string): Object {
+    addMessage(type: string, chatId: string, content: string): void {
       if (!this.userId) throw new Meteor.Error('unauthorized',
         'User must be logged-in to create a new chat');
 
+      check(type, Match.OneOf(String, ['text', 'picture']));
       check(chatId, nonEmptyString);
       check(content, nonEmptyString);
 
@@ -75,14 +76,13 @@ export function initMethods() {
       if (!chatExists) throw new Meteor.Error('chat-not-exists',
         'Chat doesn\'t exist');
 
-      return {
-        messageId: Messages.collection.insert({
-          senderId: this.userId,
-          chatId: chatId,
-          content: content,
-          createdAt: new Date()
-        })
-      }
+      Messages.collection.insert({
+        senderId: this.userId,
+        chatId: chatId,
+        content: content,
+        type: type,
+        createdAt: new Date()
+      });
     },
 
     countMessages(): number {

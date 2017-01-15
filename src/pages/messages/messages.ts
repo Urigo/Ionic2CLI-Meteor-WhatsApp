@@ -7,6 +7,7 @@ import { Meteor } from 'meteor/meteor';
 import { _ } from 'meteor/underscore';
 import * as Moment from 'moment';
 import { Observable, Subscription, Subscriber } from 'rxjs';
+import { PictureUploader } from '../../services/picture-uploader';
 import { MessagesAttachmentsComponent } from './messages-attachments';
 import { MessagesOptionsComponent } from './messages-options';
 
@@ -30,6 +31,7 @@ export class MessagesPage implements OnInit, OnDestroy {
   constructor(
     navParams: NavParams,
     private el: ElementRef,
+    private pictureUploader: PictureUploader,
     private popoverCtrl: PopoverController
   ) {
     this.selectedChat = <Chat>navParams.get('chat');
@@ -85,7 +87,7 @@ export class MessagesPage implements OnInit, OnDestroy {
 
   onInputKeypress({ keyCode }: KeyboardEvent): void {
     if (keyCode == 13) {
-      this.sendMessage();
+      this.sendTextMessage();
     }
   }
 
@@ -95,6 +97,11 @@ export class MessagesPage implements OnInit, OnDestroy {
     }, {
       // Hooking components
       cssClass: 'attachments-popover'
+    });
+
+    popover.onDidDismiss((params) => {
+      const file: File = params.selectedPicture;
+      this.sendPictureMessage(file);
     });
 
     popover.present();
@@ -183,11 +190,20 @@ export class MessagesPage implements OnInit, OnDestroy {
     });
   }
 
-  sendMessage(): void {
+  sendPictureMessage(file: File): void {
+    this.pictureUploader.upload(file).then((picture) => {
+      MeteorObservable.call('addMessage', 'picture',
+        this.selectedChat._id,
+        picture.url
+      ).zone().subscribe();
+    });
+  }
+
+  sendTextMessage(): void {
     // If message was yet to be typed, abort
     if (!this.message) return;
 
-    MeteorObservable.call('addMessage',
+    MeteorObservable.call('addMessage', 'text',
       this.selectedChat._id,
       this.message
     ).zone().subscribe(() => {

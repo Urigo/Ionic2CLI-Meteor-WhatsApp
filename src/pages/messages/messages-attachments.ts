@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { AlertController, NavController, NavParams, ViewController } from 'ionic-angular';
+import { AlertController, ViewController } from 'ionic-angular';
+import { PictureUploader } from '../../services/picture-uploader';
 
 @Component({
   selector: 'messages-attachments',
@@ -7,11 +8,18 @@ import { AlertController, NavController, NavParams, ViewController } from 'ionic
 })
 export class MessagesAttachmentsComponent {
   constructor(
-    public alertCtrl: AlertController,
-    public navCtrl: NavController,
-    public params: NavParams,
-    public viewCtrl: ViewController
+    private alertCtrl: AlertController,
+    private pictureUploader: PictureUploader,
+    private viewCtrl: ViewController
   ) {}
+
+  sendPicture(): void {
+    this.pictureUploader.select().then((file: File) => {
+      this.viewCtrl.dismiss({
+        selectedPicture: file
+      });
+    });
+  }
 
   handleError(e: Error): void {
     console.error(e);
