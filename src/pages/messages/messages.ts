@@ -102,8 +102,8 @@ export class MessagesPage implements OnInit, OnDestroy {
     });
 
     popover.onDidDismiss((params) => {
-      const file: File = params.selectedPicture;
-      this.sendPictureMessage(file);
+      const blob: Blob = params.selectedPicture;
+      this.sendPictureMessage(blob);
     });
 
     popover.present();
@@ -203,8 +203,8 @@ export class MessagesPage implements OnInit, OnDestroy {
     modal.present();
   }
 
-  sendPictureMessage(file: File): void {
-    this.pictureService.upload(file).then((picture) => {
+  sendPictureMessage(blob: Blob): void {
+    this.pictureService.upload(blob).then((picture) => {
       MeteorObservable.call('addMessage', MessageType.PICTURE,
         this.selectedChat._id,
         picture.url

@@ -45,12 +45,13 @@
     "typescript-extends": "^1.0.1"
   },
   "cordovaPlugins": [
-    "cordova-plugin-whitelist",
-    "cordova-plugin-statusbar",
+    "cordova-plugin-camera",
     "cordova-plugin-console",
+    "cordova-plugin-contacts",
     "cordova-plugin-device",
     "cordova-plugin-splashscreen",
-    "cordova-plugin-contacts",
+    "cordova-plugin-statusbar",
+    "cordova-plugin-whitelist",
     "ionic-plugin-keyboard"
   ],
   "cordovaPlatforms": [],
