@@ -8,9 +8,14 @@ import { _ } from 'meteor/underscore';
 export class PictureUploader {
   select(): Promise<File> {
     return new Promise((resolve, reject) => {
-      UploadFS.selectFile((file: File) => {
-        resolve(file);
-      });
+      try {
+        UploadFS.selectFile((file: File) => {
+          resolve(file);
+        });
+      }
+      catch (e) {
+        reject(e);
+      }
     });
   }
 

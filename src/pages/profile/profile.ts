@@ -34,6 +34,9 @@ export class ProfilePage implements OnInit {
   selectProfilePicture(): void {
     this.pictureUploader.select().then((file) => {
       this.uploadProfilePicture(file);
+    })
+    .catch((e) => {
+      this.handleError(e);
     });
   }
 
