@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Chats, Messages, Pictures, Users } from 'api/collections';
-import { Chat, DEFAULT_PICTURE_URL } from 'api/models';
+import { Chat } from 'api/models';
 import { AlertController, ModalController, NavController, PopoverController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Observable } from 'rxjs';
@@ -55,11 +55,8 @@ export class ChatsPage implements OnInit {
               const receiver = Users.findOne(receiverId);
               if (!receiver) return;
 
-              const picture = Pictures.findOne(receiver.profile.pictureId) || {};
-              const pictureUrl = picture.url || DEFAULT_PICTURE_URL;
-
               chat.title = receiver.profile.name;
-              chat.picture = pictureUrl;
+              chat.picture = Pictures.getPictureUrl(receiver.profile.pictureId);
             });
 
             return chats;

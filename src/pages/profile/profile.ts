@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Pictures } from 'api/collections';
-import { DEFAULT_PICTURE_URL, DEFAULT_USERNAME, Profile } from 'api/models';
+import { DEFAULT_USERNAME, Profile } from 'api/models';
 import { AlertController, NavController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import { PictureUploader } from '../../services/picture-uploader';
@@ -26,8 +26,7 @@ export class ProfilePage implements OnInit {
     };
 
     MeteorObservable.subscribe('user').subscribe(() => {
-      const picture = Pictures.findOne(this.profile.pictureId) || {};
-      this.picture = picture.url || DEFAULT_PICTURE_URL;
+      this.picture = Pictures.getPictureUrl(this.profile.pictureId);
     });
   }
 

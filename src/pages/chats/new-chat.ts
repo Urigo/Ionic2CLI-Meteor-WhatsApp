@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Chats, Pictures, Users } from 'api/collections';
-import { User, DEFAULT_PICTURE_URL } from 'api/models';
+import { User } from 'api/models';
 import { AlertController, NavController, Platform, ViewController } from 'ionic-angular';
 import { Contacts, Contact, ContactFieldType } from 'ionic-native';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -111,9 +111,7 @@ export class NewChatComponent implements OnInit {
     })
     .map((users) => {
       users.forEach((user) => {
-        const picture = Pictures.findOne(user.profile.pictureId) || {};
-        const pictureUrl = picture.url || DEFAULT_PICTURE_URL;
-        user.profile.picture = pictureUrl;
+        user.profile.picture = Pictures.getPictureUrl(user.profile.pictureId);
       });
 
       return users;
