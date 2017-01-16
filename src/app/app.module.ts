@@ -1,5 +1,4 @@
 import { NgModule, ErrorHandler } from '@angular/core';
-import { FileDropModule } from 'angular2-file-drop';
 import { MomentModule } from 'angular2-moment';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { ChatsPage } from '../pages/chats/chats';
@@ -31,7 +30,6 @@ import { MyApp } from './app.component';
   ],
   imports: [
     IonicModule.forRoot(MyApp),
-    FileDropModule,
     MomentModule
   ],
   bootstrap: [IonicApp],
