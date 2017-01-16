@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 export const DEFAULT_PICTURE_URL = '/ionicons/dist/svg/ios-contact.svg';
+export const DEFAULT_USERNAME = 'Whatsapp Newbie';
 
 export interface Profile {
   name?: string;

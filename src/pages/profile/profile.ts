@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Pictures } from 'api/collections';
-import { DEFAULT_PICTURE_URL, Profile } from 'api/models';
+import { DEFAULT_PICTURE_URL, DEFAULT_USERNAME, Profile } from 'api/models';
 import { AlertController, NavController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import { PictureUploader } from '../../services/picture-uploader';
@@ -22,7 +22,7 @@ export class ProfilePage implements OnInit {
 
   ngOnInit(): void {
     this.profile = Meteor.user().profile || {
-      name: 'Whatsapp Newbie'
+      name: DEFAULT_USERNAME
     };
 
     MeteorObservable.subscribe('user').subscribe(() => {
