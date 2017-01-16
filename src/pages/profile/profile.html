@@ -3,15 +3,15 @@
     <ion-title>Profile</ion-title>
 
     <ion-buttons end>
-      <button ion-button class="done-button" (click)="done()">Done</button>
+      <button ion-button class="done-button" (click)="updateProfile()">Done</button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content class="profile-page-content">
   <div class="profile-picture">
-    <img [src]="profile.picture">
-    <ion-icon name="create"></ion-icon>
+    <img *ngIf="picture" [src]="picture">
+    <ion-icon name="create" (click)="selectProfilePicture()"></ion-icon>
   </div>
 
   <ion-item class="profile-name">

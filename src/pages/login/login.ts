@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
-import { VerificationComponent } from "../verification/verification";
+import { AlertController, NavController } from 'ionic-angular';
+import { VerificationPage } from '../verification/verification';
 
 @Component({
   selector: 'login',
-  templateUrl: "login.html"
+  templateUrl: 'login.html'
 })
-export class LoginComponent {
+export class LoginPage {
   phone = '';
 
   constructor(
-    public navCtrl: NavController,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    public navCtrl: NavController
   ) {}
 
   onInputKeypress({keyCode}: KeyboardEvent): void {
@@ -47,7 +47,7 @@ export class LoginComponent {
       alert.dismiss().then(() => {
         if (e) return this.handleError(e);
 
-        this.navCtrl.push(VerificationComponent, {
+        this.navCtrl.push(VerificationPage, {
           phone: this.phone
         });
       });

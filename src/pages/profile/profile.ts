@@ -1,29 +1,55 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { Pictures } from 'api/collections';
+import { DEFAULT_USERNAME, Profile } from 'api/models';
+import { AlertController, NavController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
-import { Profile } from 'api/models/whatsapp-models';
-import { TabsPage } from "../tabs/tabs";
+import { PictureUploader } from '../../services/picture-uploader';
+import { TabsPage } from '../tabs/tabs';
 
 @Component({
   selector: 'profile',
   templateUrl: 'profile.html'
 })
-export class ProfileComponent implements OnInit {
+export class ProfilePage implements OnInit {
+  picture: string;
   profile: Profile;
 
   constructor(
-    public navCtrl: NavController,
-    public alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private navCtrl: NavController,
+    private pictureUploader: PictureUploader
   ) {}
 
   ngOnInit(): void {
     this.profile = Meteor.user().profile || {
-      name: '',
-      picture: '/ionicons/dist/svg/ios-contact.svg'
+      name: DEFAULT_USERNAME
     };
+
+    MeteorObservable.subscribe('user').subscribe(() => {
+      this.picture = Pictures.getPictureUrl(this.profile.pictureId);
+    });
   }
 
-  done(): void {
+  selectProfilePicture(): void {
+    this.pictureUploader.select().then((file) => {
+      this.uploadProfilePicture(file);
+    })
+    .catch((e) => {
+      this.handleError(e);
+    });
+  }
+
+  uploadProfilePicture(file: File): void {
+    this.pictureUploader.upload(file).then((picture) => {
+      this.profile.pictureId = picture._id;
+      this.picture = picture.url;
+    })
+    .catch((e) => {
+      this.handleError(e);
+    });
+  }
+
+  updateProfile(): void {
     MeteorObservable.call('updateProfile', this.profile).subscribe({
       next: () => {
         this.navCtrl.push(TabsPage);
@@ -34,7 +60,7 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  private handleError(e: Error): void {
+  handleError(e: Error): void {
     console.error(e);
 
     const alert = this.alertCtrl.create({

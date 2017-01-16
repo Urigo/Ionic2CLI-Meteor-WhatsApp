@@ -1,9 +1,9 @@
-import * as moment from "moment";
-import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import { initMethods } from "./methods";
-import { initPublications } from "./publications";
-import { Users } from "../collections/whatsapp-collections";
+import { Meteor } from 'meteor/meteor';
+import { Users } from './collections';
+import { Picture } from './models';
+import { initMethods } from './methods';
+import { initPublications } from './publications';
 
 Meteor.startup(() => {
   initMethods();
@@ -16,37 +16,73 @@ Meteor.startup(() => {
 
   if (Users.collection.find().count()) return;
 
-  [{
+  let picture = importPictureFromUrl({
+    name: 'man1.jpg',
+    url: 'https://randomuser.me/api/portraits/men/1.jpg'
+  });
+
+  Accounts.createUserWithPhone({
     phone: '+972540000001',
     profile: {
       name: 'Ethan Gonzalez',
-      picture: 'https://randomuser.me/api/portraits/thumb/men/1.jpg'
+      pictureId: picture._id
     }
-  }, {
+  });
+
+  picture = importPictureFromUrl({
+    name: 'lego1.jpg',
+    url: 'https://randomuser.me/api/portraits/lego/1.jpg'
+  });
+
+  Accounts.createUserWithPhone({
     phone: '+972540000002',
     profile: {
       name: 'Bryan Wallace',
-      picture: 'https://randomuser.me/api/portraits/thumb/lego/1.jpg'
+      pictureId: picture._id
     }
-  }, {
+  });
+
+  picture = importPictureFromUrl({
+    name: 'woman1.jpg',
+    url: 'https://randomuser.me/api/portraits/women/1.jpg'
+  });
+
+  Accounts.createUserWithPhone({
     phone: '+972540000003',
     profile: {
       name: 'Avery Stewart',
-      picture: 'https://randomuser.me/api/portraits/thumb/women/1.jpg'
+      pictureId: picture._id
     }
-  }, {
+  });
+
+  picture = importPictureFromUrl({
+    name: 'woman2.jpg',
+    url: 'https://randomuser.me/api/portraits/women/2.jpg'
+  });
+
+  Accounts.createUserWithPhone({
     phone: '+972540000004',
     profile: {
       name: 'Katie Peterson',
-      picture: 'https://randomuser.me/api/portraits/thumb/women/2.jpg'
+      pictureId: picture._id
     }
-  }, {
+  });
+
+  picture = importPictureFromUrl({
+    name: 'man2.jpg',
+    url: 'https://randomuser.me/api/portraits/men/2.jpg'
+  });
+
+  Accounts.createUserWithPhone({
     phone: '+972540000005',
     profile: {
       name: 'Ray Edwards',
-      picture: 'https://randomuser.me/api/portraits/thumb/men/2.jpg'
+      pictureId: picture._id
     }
-  }].forEach(user => {
-    Accounts.createUserWithPhone(user);
   });
 });
+
+function importPictureFromUrl(options: { name: string, url: string }): Picture {
+  const description = { name: options.name };
+  return Meteor.call('ufsImportURL', options.url, description, 'pictures');
+}

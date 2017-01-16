@@ -1,7 +1,8 @@
-import { Meteor } from 'meteor/meteor';
 import { check, Match } from 'meteor/check';
-import { Profile } from 'api/models/whatsapp-models';
-import { Chats, Messages } from '../collections/whatsapp-collections';
+import { UploadFS } from 'meteor/jalik:ufs';
+import { Meteor } from 'meteor/meteor';
+import { Chats, Messages } from './collections';
+import { Profile } from './models';
 
 const nonEmptyString = Match.Where((str) => {
   check(str, String);
@@ -32,6 +33,7 @@ export function initMethods() {
 
       Chats.insert(chat);
     },
+
     removeChat(chatId: string): void {
       if (!this.userId) throw new Meteor.Error('unauthorized',
         'User must be logged-in to remove chat');
@@ -46,19 +48,21 @@ export function initMethods() {
       Messages.remove({chatId});
       Chats.remove(chatId);
     },
+
     updateProfile(profile: Profile): void {
       if (!this.userId) throw new Meteor.Error('unauthorized',
         'User must be logged-in to create a new chat');
 
       check(profile, {
         name: nonEmptyString,
-        picture: nonEmptyString
+        pictureId: Match.Maybe(nonEmptyString)
       });
 
       Meteor.users.update(this.userId, {
         $set: { profile }
       });
     },
+
     addMessage(chatId: string, content: string): Object {
       if (!this.userId) throw new Meteor.Error('unauthorized',
         'User must be logged-in to create a new chat');
@@ -80,6 +84,7 @@ export function initMethods() {
         })
       }
     },
+
     countMessages(): number {
       return Messages.collection.find().count();
     }

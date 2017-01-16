@@ -1,31 +1,32 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { MomentModule } from 'angular2-moment';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { MyApp } from './app.component';
-import { SearchPipe } from '../pipes/search';
-import { TabsPage } from '../pages/tabs/tabs';
 import { ChatsPage } from '../pages/chats/chats';
+import { ChatsOptionsComponent } from '../pages/chats/chats-options';
+import { NewChatComponent } from '../pages/chats/new-chat';
+import { LoginPage } from '../pages/login/login';
 import { MessagesPage } from '../pages/messages/messages';
-import { LoginComponent } from '../pages/auth/login';
-import { VerificationComponent } from '../pages/verification/verification';
-import { ProfileComponent } from '../pages/profile/profile';
-import { ChatsOptionsComponent } from '../pages/chat-options/chat-options';
-import { NewChatComponent } from '../pages/new-chat/new-chat';
-import { MessagesOptionsComponent } from '../pages/messages-options/messages-options';
+import { MessagesOptionsComponent } from '../pages/messages/messages-options';
+import { ProfilePage } from '../pages/profile/profile';
+import { TabsPage } from '../pages/tabs/tabs';
+import { VerificationPage } from '../pages/verification/verification';
+import { SearchPipe } from '../pipes/search';
+import { PictureUploader } from '../services/picture-uploader';
+import { MyApp } from './app.component';
 
 @NgModule({
   declarations: [
-    MyApp,
-    ChatsPage,
-    TabsPage,
-    MessagesPage,
-    LoginComponent,
-    VerificationComponent,
-    ProfileComponent,
     ChatsOptionsComponent,
-    NewChatComponent,
+    ChatsPage,
+    LoginPage,
     MessagesOptionsComponent,
-    SearchPipe
+    MessagesPage,
+    MyApp,
+    NewChatComponent,
+    ProfilePage,
+    SearchPipe,
+    TabsPage,
+    VerificationPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -33,17 +34,20 @@ import { MessagesOptionsComponent } from '../pages/messages-options/messages-opt
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    ChatsPage,
-    TabsPage,
-    MessagesPage,
-    LoginComponent,
-    VerificationComponent,
-    ProfileComponent,
     ChatsOptionsComponent,
+    ChatsPage,
+    LoginPage,
+    MessagesOptionsComponent,
+    MessagesPage,
+    MyApp,
     NewChatComponent,
-    MessagesOptionsComponent
+    ProfilePage,
+    TabsPage,
+    VerificationPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    PictureUploader
+  ]
 })
 export class AppModule {}
