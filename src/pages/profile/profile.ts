@@ -42,9 +42,6 @@ export class ProfilePage implements OnInit {
 
   uploadProfilePicture(file: File): void {
     this.pictureUploader.upload(file).then((picture) => {
-      const oldPictureId = this.profile.pictureId;
-      if (oldPictureId) Meteor.call('removePicture', oldPictureId);
-
       this.profile.pictureId = picture._id;
       this.picture = picture.url;
     })

@@ -1,8 +1,8 @@
 import { check, Match } from 'meteor/check';
 import { UploadFS } from 'meteor/jalik:ufs';
 import { Meteor } from 'meteor/meteor';
-import { Chats, Messages, Pictures } from './collections';
-import { Picture, Profile } from './models';
+import { Chats, Messages } from './collections';
+import { Profile } from './models';
 
 const nonEmptyString = Match.Where((str) => {
   check(str, String);
@@ -61,11 +61,6 @@ export function initMethods() {
       Meteor.users.update(this.userId, {
         $set: { profile }
       });
-    },
-
-    removePicture(pictureId: string): void {
-      check(pictureId, String);
-      Pictures.collection.remove(pictureId);
     },
 
     addMessage(chatId: string, content: string): Object {
