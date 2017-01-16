@@ -2,7 +2,7 @@ var ChildProcess = require('child_process');
 var Fs = require('fs');
 var Path = require('path');
 var Tmp = require('tmp');
-var ClientPacks = require('./client-packages.json');
+var Config = require('./bundler.config.json');
 
 var exec = ChildProcess.execFileSync.bind(ChildProcess);
 var meteor = exec.bind(null, 'meteor');
@@ -45,20 +45,21 @@ meteor(['build', '--debug', '.'], {
 // Unpack the built project
 var tarPath = Path.resolve(tmpDir.name, Path.basename(tmpDir.name)) + '.tar.gz';
 
+// Extract tar so we can access the built project
 exec('tar', ['-zxf', tarPath], {
   cwd: tmpDir.name
 });
 
 // A necessary code snippet so the meteor-client can work properly
-var runtimeConfigPath = Path.resolve(__dirname, 'runtime-config.js');
-var runtimeConfig = Fs.readFileSync(runtimeConfigPath).toString();
+var runtimeConfig = '__meteor_runtime_config__ = ' +
+  JSON.stringify(Config['run-time'], null, 2) + ';\n\n';
 
 // Start composing the bundle, override if already exists
 Fs.writeFileSync(meteorClientPath, runtimeConfig);
 
 // Eliminate duplicate packages name and preserve their order
-var packs = Object.keys(ClientPacks).reduce(function (packs, packsBatch) {
-  ClientPacks[packsBatch].forEach(function (pack) {
+var packs = Object.keys(Config['import']).reduce(function (packs, packsBatch) {
+  Config['import'][packsBatch].forEach(function (pack) {
     packs[pack] = true;
   });
 
@@ -68,11 +69,27 @@ var packs = Object.keys(ClientPacks).reduce(function (packs, packsBatch) {
 // Append all specified packages
 Object.keys(packs).forEach(function (pack) {
   var packPath = Path.resolve(packsDir, pack) + '.js';
-  var packContent = Fs.readFileSync(packPath);
+  var packContent = Fs.readFileSync(packPath) + '\n\n';
   Fs.appendFileSync(meteorClientPath, packContent);
 });
 
-// Export Meteor packages globally
-var globalImportsPath = Path.resolve(__dirname, 'global-imports.js');
-var globalImports = Fs.readFileSync(globalImportsPath).toString();
-Fs.appendFileSync(meteorClientPath, globalImports);
+// Get all packages names we'd like to export
+var packagesNames = Object.keys(Config['export']);
+// Go through all packages names and compose an exportation line
+// e.g. Accounts = Package["accounts-base"]["Accounts"];
+var bundleExports = packagesNames.reduce(function (lines, packageName) {
+  var packageExports = Config['export'][packageName];
+
+  packageExports.forEach(function (objectName) {
+    lines.push(objectName + ' = Package["' + packageName + '"]["' + objectName + '"]');
+  });
+
+  return lines;
+}, [])
+  // Add an empty string so the next rule would apply on the last line as well
+  .concat('')
+  // Add a semi-colon and a line skip after each composed line
+  .join(';\n');
+
+// Append export into bundle
+Fs.appendFileSync(meteorClientPath, bundleExports);
