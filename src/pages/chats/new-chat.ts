@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, ViewController, AlertController, Platform } from 'ionic-angular';
+import { Chats, Pictures, Users } from 'api/collections';
+import { User } from 'api/models';
+import { AlertController, NavController, Platform, ViewController } from 'ionic-angular';
 import { Contacts, Contact, ContactFieldType } from 'ionic-native';
-import { MeteorObservable, ObservableCursor } from 'meteor-rxjs';
-import { Observable, Subscription } from 'rxjs';
+import { MeteorObservable } from 'meteor-rxjs';
 import { _ } from 'meteor/underscore';
-import { Chats, Users } from 'api/collections/whatsapp-collections';
-import { User } from 'api/models/whatsapp-models';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'new-chat',
@@ -17,10 +17,10 @@ export class NewChatComponent implements OnInit {
   users: Observable<User[]>;
 
   constructor(
-    private navCtrl: NavController,
-    private viewCtrl: ViewController,
     private alertCtrl: AlertController,
-    private platform: Platform
+    private navCtrl: NavController,
+    private platform: Platform,
+    private viewCtrl: ViewController
   ) {
     this.senderId = Meteor.userId();
   }
@@ -85,7 +85,7 @@ export class NewChatComponent implements OnInit {
     });
   }
 
-  findUsers(): ObservableCursor<User> {
+  findUsers(): Observable<User[]> {
     // Find all belonging chats
     return Chats.find({
       memberIds: this.senderId
@@ -108,6 +108,13 @@ export class NewChatComponent implements OnInit {
       return Users.find({
         _id: { $nin: recieverIds }
       })
+    })
+    .map((users) => {
+      users.forEach((user) => {
+        user.profile.picture = Pictures.getPictureUrl(user.profile.pictureId);
+      });
+
+      return users;
     });
   }
 

@@ -1,26 +1,30 @@
-var path = require('path');
-var webpack = require('webpack');
-var ionicWebpackFactory = require(process.env.IONIC_WEBPACK_FACTORY);
+var Path = require('path');
+var Webpack = require('webpack');
+var IonicWebpackFactory = require(process.env.IONIC_WEBPACK_FACTORY);
 
 module.exports = {
   entry: process.env.IONIC_APP_ENTRY_POINT,
   output: {
     path: '{{BUILD}}',
     filename: process.env.IONIC_OUTPUT_JS_FILE_NAME,
-    devtoolModuleFilenameTemplate: ionicWebpackFactory.getSourceMapperFunction(),
+    devtoolModuleFilenameTemplate: IonicWebpackFactory.getSourceMapperFunction(),
   },
   devtool: process.env.IONIC_GENERATE_SOURCE_MAP ? process.env.IONIC_SOURCE_MAP_TYPE : '',
 
   externals: [
-    'cordova',
+    {
+      cordova: 'cordova',
+      sharp: '{}'
+    },
     resolveExternals
   ],
 
   resolve: {
     extensions: ['.ts', '.js', '.json'],
-    modules: [path.resolve('node_modules')],
+    modules: [Path.resolve('node_modules')],
     alias: {
-      'api': path.resolve(__dirname, 'api')
+      'api': Path.resolve(__dirname, 'api/server'),
+      'meteor-client': Path.resolve(__dirname, 'meteor-client/meteor.bundle')
     }
   },
 
@@ -39,8 +43,8 @@ module.exports = {
   },
 
   plugins: [
-    ionicWebpackFactory.getIonicEnvironmentPlugin(),
-    new webpack.ProvidePlugin({
+    IonicWebpackFactory.getIonicEnvironmentPlugin(),
+    new Webpack.ProvidePlugin({
       __extends: 'typescript-extends'
     })
   ],
@@ -56,29 +60,16 @@ module.exports = {
 };
 
 function resolveExternals(context, request, callback) {
-  return meteorPackage(request, callback) ||
-         cordovaPlugin(request, callback) ||
+  return resolveMeteor(request, callback) ||
          callback();
 }
 
-function meteorPackage(request, callback) {
+function resolveMeteor(request, callback) {
   var match = request.match(/^meteor\/(.+)$/);
   var pack = match && match[1];
 
   if (pack) {
-    callback(null, 'window.Package && Package["' + pack + '"]');
-    return true;
-  }
-}
-
-function cordovaPlugin(request, callback) {
-  var match = request.match(/^cordova\/(.+)$/);
-  var plugin = match && match[1];
-
-  if (plugin) {
-    plugin = camelCase(plugin);
-    plugin = upperFirst(plugin);
-    callback(null, 'window.cordova && cordova.plugins && cordova.plugins.' + plugin);
+    callback(null, 'Package["' + pack + '"]');
     return true;
   }
 }

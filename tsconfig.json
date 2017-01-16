@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -10,6 +11,9 @@
     ],
     "module": "commonjs",
     "moduleResolution": "node",
+    "paths": {
+      "api/*": ["./api/server/*"]
+    },
     "sourceMap": true,
     "target": "es5",
     "skipLibCheck": true,

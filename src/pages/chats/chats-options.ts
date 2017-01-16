@@ -1,22 +1,22 @@
 import { Component } from '@angular/core';
-import { NavController, ViewController, AlertController } from 'ionic-angular';
-import { ProfileComponent } from '../profile/profile';
-import { LoginComponent } from '../auth/login';
+import { AlertController, NavController, ViewController } from 'ionic-angular';
+import { LoginPage } from '../login/login';
+import { ProfilePage } from '../profile/profile';
 
 @Component({
   selector: 'chats-options',
-  templateUrl: 'chat-options.html'
+  templateUrl: 'chats-options.html'
 })
 export class ChatsOptionsComponent {
   constructor(
+    public alertCtrl: AlertController,
     public navCtrl: NavController,
-    public viewCtrl: ViewController,
-    public alertCtrl: AlertController
+    public viewCtrl: ViewController
   ) {}
 
   editProfile(): void {
     this.viewCtrl.dismiss().then(() => {
-      this.navCtrl.push(ProfileComponent);
+      this.navCtrl.push(ProfilePage);
     });
   }
 
@@ -49,7 +49,7 @@ export class ChatsOptionsComponent {
       alert.dismiss().then(() => {
         if (e) return this.handleError(e);
 
-        this.navCtrl.setRoot(LoginComponent, {}, {
+        this.navCtrl.setRoot(LoginPage, {}, {
           animate: true
         });
       });

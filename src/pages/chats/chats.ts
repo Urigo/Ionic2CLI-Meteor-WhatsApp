@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from "rxjs";
-import { Chat } from "api/models/whatsapp-models";
-import { Chats, Messages, Users } from "api/collections/whatsapp-collections";
-import { NavController, PopoverController, ModalController, AlertController } from "ionic-angular";
-import { MessagesPage } from "../messages/messages";
-import { ChatsOptionsComponent } from "../chat-options/chat-options";
-import { NewChatComponent } from "../new-chat/new-chat";
+import { Chats, Messages, Pictures, Users } from 'api/collections';
+import { Chat } from 'api/models';
+import { AlertController, ModalController, NavController, PopoverController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
+import { Observable } from 'rxjs';
+import { MessagesPage } from '../messages/messages';
+import { ChatsOptionsComponent } from './chats-options';
+import { NewChatComponent } from './new-chat';
 
 @Component({
   templateUrl: 'chats.html'
@@ -16,10 +16,10 @@ export class ChatsPage implements OnInit {
   senderId: string;
 
   constructor(
-    public navCtrl: NavController,
-    public popoverCtrl: PopoverController,
+    public alertCtrl: AlertController,
     public modalCtrl: ModalController,
-    public alertCtrl: AlertController
+    public navCtrl: NavController,
+    public popoverCtrl: PopoverController
   ) {}
 
   ngOnInit() {
@@ -51,11 +51,12 @@ export class ChatsPage implements OnInit {
               chat.title = '';
               chat.picture = '';
 
-              const receiver = Users.findOne(chat.memberIds.find(memberId => memberId !== this.senderId));
+              const receiverId = chat.memberIds.find(memberId => memberId !== this.senderId);
+              const receiver = Users.findOne(receiverId);
               if (!receiver) return;
 
               chat.title = receiver.profile.name;
-              chat.picture = receiver.profile.picture;
+              chat.picture = Pictures.getPictureUrl(receiver.profile.pictureId);
             });
 
             return chats;
