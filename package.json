@@ -52,6 +52,7 @@
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
     "cordova-plugin-whitelist",
+    "https://github.com/Telerik-Verified-Plugins/ImagePicker",
     "ionic-plugin-keyboard"
   ],
   "cordovaPlatforms": [],

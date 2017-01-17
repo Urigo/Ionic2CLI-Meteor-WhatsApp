@@ -31,16 +31,16 @@ export class ProfilePage implements OnInit {
   }
 
   selectProfilePicture(): void {
-    this.pictureService.select().then((file) => {
-      this.uploadProfilePicture(file);
+    this.pictureService.select().then((blob) => {
+      this.uploadProfilePicture(blob);
     })
     .catch((e) => {
       this.handleError(e);
     });
   }
 
-  uploadProfilePicture(file: File): void {
-    this.pictureService.upload(file).then((picture) => {
+  uploadProfilePicture(blob: Blob): void {
+    this.pictureService.upload(blob).then((picture) => {
       this.profile.pictureId = picture._id;
       this.picture = picture.url;
     })

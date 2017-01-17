@@ -1,16 +1,24 @@
 import { Injectable } from '@angular/core';
 import { PicturesStore } from 'api/collections';
 import { DEFAULT_PICTURE_NAME, Picture } from 'api/models';
+import { Platform } from 'ionic-angular';
+import { ImagePicker } from 'ionic-native';
 import { UploadFS } from 'meteor/jalik:ufs';
 import { _ } from 'meteor/underscore';
 
 @Injectable()
 export class PictureService {
-  select(): Promise<File> {
-    return new Promise((resolve, reject) => {
+  constructor(private platform: Platform) {}
+
+  select(): Promise<Blob> {
+    if (!this.platform.is('mobile')) return new Promise((resolve, reject) => {
       UploadFS.selectFile((file: File) => {
         resolve(file);
       });
+    });
+
+    return ImagePicker.getPictures({ maximumImagesCount: 1 }).then((URL: string) => {
+      return this.convertURLtoBlob(URL);
     });
   }
 
