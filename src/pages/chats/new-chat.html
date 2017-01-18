@@ -1,9 +1,23 @@
 <ion-header>
-  <ion-toolbar color="whatsapp">
+  <ion-toolbar *ngIf="searching" color="whatsapp">
+    <ion-searchbar
+      autofocus
+      class="seach-bar"
+      color="whatsapp"
+      [showCancelButton]="true"
+      (ionCancel)="toggleSearching()"
+      (ionInput)="searchPattern = $event.target.value"></ion-searchbar>
+  </ion-toolbar>
+
+  <ion-toolbar *ngIf="!searching" color="whatsapp">
     <ion-title>New Chat</ion-title>
 
-    <ion-buttons end>
+    <ion-buttons left>
       <button ion-button class="dismiss-button" (click)="viewCtrl.dismiss()"><ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
+
+    <ion-buttons end>
+      <button ion-button class="search-button" (click)="toggleSearching()"><ion-icon name="search"></ion-icon></button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -16,9 +30,3 @@
     </button>
   </ion-list>
 </ion-content>
-
-<ion-footer>
-  <ion-toolbar color="whatsapp" position="bottom">
-    <ion-searchbar color="whatsapp" (ionInput)="searchPattern = $event.target.value"></ion-searchbar>
-  </ion-toolbar>
-</ion-footer>

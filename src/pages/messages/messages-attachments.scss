@@ -1,0 +1,46 @@
+.messages-attachments-page-content {
+  $icon-background-size: 60px;
+  $icon-font-size: 20pt;
+
+  .attachments {
+    width: 100%;
+    margin: 0;
+    display: inline-flex;
+  }
+
+  .attachment {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+
+    .item-inner {
+      padding: 0
+    }
+
+    .attachment-icon {
+      width: $icon-background-size;
+      height: $icon-background-size;
+      line-height: $icon-background-size;
+      font-size: $icon-font-size;
+      border-radius: 50%;
+      color: white;
+      margin-bottom: 10px
+    }
+
+    .attachment-name {
+      color: gray;
+    }
+  }
+
+  .attachment-gallery .attachment-icon {
+    background: linear-gradient(#e13838 50%, #f53d3d 50%);
+  }
+
+  .attachment-camera .attachment-icon {
+    background: linear-gradient(#3474e1 50%, #387ef5 50%);
+  }
+
+  .attachment-location .attachment-icon {
+    background: linear-gradient(#2ec95c 50%, #32db64 50%);
+  }
+}
