@@ -15,5 +15,6 @@
 /// <reference types="@types/meteor-accounts-phone" />
 /// <reference types="@types/meteor-publish-composite" />
 /// <reference types="@types/underscore" />
+/// <reference path="../api/server/collections/hooks.d.ts" />
 declare module '*';
 
