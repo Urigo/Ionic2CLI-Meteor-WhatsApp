@@ -3,6 +3,16 @@ import { Meteor } from 'meteor/meteor';
 export const DEFAULT_PICTURE_URL = '/ionicons/dist/svg/ios-contact.svg';
 export const DEFAULT_USERNAME = 'Whatsapp Newbie';
 
+export enum MessageOwnership {
+  MINE = <any>'mine',
+  OTHER = <any>'other'
+}
+
+export enum MessageType {
+  PICTURE = <any>'picture',
+  TEXT = <any>'text'
+}
+
 export interface Profile {
   name?: string;
   pictureId?: string;
@@ -13,8 +23,9 @@ export interface Message {
   chatId?: string;
   content?: string;
   createdAt?: Date;
-  ownership?: string;
+  ownership?: MessageOwnership;
   senderId?: string;
+  type?: MessageType;
 }
 
 export interface Chat {

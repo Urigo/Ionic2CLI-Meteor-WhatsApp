@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Messages } from 'api/collections';
-import { Chat, Message } from 'api/models';
+import { MessageOwnership, MessageType, Chat, Message } from 'api/models';
 import { ModalController, NavParams, PopoverController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Meteor } from 'meteor/meteor';
@@ -171,7 +171,10 @@ export class MessagesPage implements OnInit, OnDestroy {
 
       // Compose missing data that we would like to show in the view
       messages.forEach((message) => {
-        message.ownership = this.senderId == message.senderId ? 'mine' : 'other';
+        message.ownership = this.senderId == message.senderId ?
+          MessageOwnership.MINE :
+          MessageOwnership.OTHER;
+
         return message;
       });
 
@@ -202,7 +205,7 @@ export class MessagesPage implements OnInit, OnDestroy {
 
   sendPictureMessage(file: File): void {
     this.pictureService.upload(file).then((picture) => {
-      MeteorObservable.call('addMessage', 'picture',
+      MeteorObservable.call('addMessage', MessageType.PICTURE,
         this.selectedChat._id,
         picture.url
       ).zone().subscribe();
@@ -213,7 +216,7 @@ export class MessagesPage implements OnInit, OnDestroy {
     // If message was yet to be typed, abort
     if (!this.message) return;
 
-    MeteorObservable.call('addMessage', 'text',
+    MeteorObservable.call('addMessage', MessageType.TEXT,
       this.selectedChat._id,
       this.message
     ).zone().subscribe(() => {
