@@ -16,13 +16,7 @@ export class NewLocationMessageComponent implements OnInit, OnDestroy {
   accuracy: number = -1;
   intervalHandler: any;
 
-  constructor(
-    private navCtrl: NavController,
-    private viewCtrl: ViewController,
-    private alertCtrl: AlertController,
-    private platform: Platform
-  ) {
-
+  constructor(private viewCtrl: ViewController, private platform: Platform) {
   }
 
   ngOnInit() {
@@ -65,7 +59,8 @@ export class NewLocationMessageComponent implements OnInit, OnDestroy {
   sendLocation() {
     this.viewCtrl.dismiss(<Location>{
       lat: this.lat,
-      lng: this.lng
+      lng: this.lng,
+      zoom: this.zoom
     });
   }
 }

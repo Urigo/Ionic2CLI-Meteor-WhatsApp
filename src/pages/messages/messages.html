@@ -19,7 +19,11 @@
       <div *ngFor="let message of day.messages" class="message-wrapper">
         <div [class]="'message message-' + message.ownership">
           <div *ngIf="message.type == 'text'" class="message-content message-content-text">{{message.content}}</div>
-          <div *ngIf="message.type == 'location'" class="message-content message-content-text">{{message.content}}</div>
+          <div *ngIf="message.type == 'location'" class="message-content message-content-text">
+            <sebm-google-map [zoom]="getLocation(message.content).zoom" [latitude]="getLocation(message.content).lat" [longitude]="getLocation(message.content).lng">
+              <sebm-google-map-marker [latitude]="getLocation(message.content).lat" [longitude]="getLocation(message.content).lng"></sebm-google-map-marker>
+            </sebm-google-map>
+          </div>
           <img *ngIf="message.type == 'picture'" (click)="showPicture($event)" class="message-content message-content-picture" [src]="message.content">
 
           <span class="message-timestamp">{{message.createdAt | amDateFormat: 'HH:MM'}}</span>

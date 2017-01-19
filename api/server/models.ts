@@ -22,6 +22,7 @@ export interface Profile {
 export interface Location {
   lat: number;
   lng: number;
+  zoom: number;
 }
 
 export interface Message {

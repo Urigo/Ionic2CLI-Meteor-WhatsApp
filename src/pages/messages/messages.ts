@@ -223,7 +223,7 @@ export class MessagesPage implements OnInit, OnDestroy {
   sendLocationMessage(location: Location): void {
     MeteorObservable.call('addMessage', MessageType.LOCATION,
       this.selectedChat._id,
-      `${location.lat},${location.lng}`
+      `${location.lat},${location.lng},${location.zoom}`
     ).zone().subscribe(() => {
       // Zero the input field
       this.message = '';
@@ -253,6 +253,16 @@ export class MessagesPage implements OnInit, OnDestroy {
     });
 
     return autoScroller;
+  }
+
+  getLocation(locationString: string): Location {
+    const splitted = locationString.split(',');
+
+    return <Location>{
+      lat: Number(splitted[0]),
+      lng: Number(splitted[1]),
+      zoom: Math.min(Number(splitted[2] || 0), 19)
+    }
   }
 
   scrollDown(): void {
