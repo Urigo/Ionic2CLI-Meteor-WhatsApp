@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {NavController, ViewController, AlertController, Platform} from 'ionic-angular';
+import { NavController, ViewController, AlertController, Platform } from 'ionic-angular';
 import { Geolocation } from 'ionic-native';
+import { Location } from 'api/models';
 
 const DEFAULT_ZOOM = 8;
 
@@ -47,9 +48,7 @@ export class NewLocationMessageComponent implements OnInit, OnDestroy {
     const screenSize = Math.min(deviceWidth, deviceHeight);
     const equator = 40075004;
     const requiredMpp = accuracy / screenSize;
-    const zoomLevel = ((Math.log(equator / (256 * requiredMpp))) / Math.log(2)) + 1;
-
-    return zoomLevel;
+    return ((Math.log(equator / (256 * requiredMpp))) / Math.log(2)) + 1;
   }
 
   reloadLocation() {
@@ -64,11 +63,9 @@ export class NewLocationMessageComponent implements OnInit, OnDestroy {
   }
 
   sendLocation() {
-    this.viewCtrl.dismiss({
-      selectedLocation: {
-        lat: this.lat,
-        lng: this.lng
-      }
+    this.viewCtrl.dismiss(<Location>{
+      lat: this.lat,
+      lng: this.lng
     });
   }
 }

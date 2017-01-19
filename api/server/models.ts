@@ -10,12 +10,18 @@ export enum MessageOwnership {
 
 export enum MessageType {
   PICTURE = <any>'picture',
-  TEXT = <any>'text'
+  TEXT = <any>'text',
+  LOCATION = <any>'location'
 }
 
 export interface Profile {
   name?: string;
   pictureId?: string;
+}
+
+export interface Location {
+  lat: number;
+  lng: number;
 }
 
 export interface Message {
@@ -25,6 +31,7 @@ export interface Message {
   createdAt?: Date;
   ownership?: MessageOwnership;
   senderId?: string;
+  location?: Location;
   type?: MessageType;
 }
 

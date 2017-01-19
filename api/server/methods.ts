@@ -67,7 +67,7 @@ export function initMethods() {
       if (!this.userId) throw new Meteor.Error('unauthorized',
         'User must be logged-in to create a new chat');
 
-      check(type, Match.OneOf(String, [MessageType.TEXT, MessageType.PICTURE]));
+      check(type, Match.OneOf(String, [MessageType.TEXT, MessageType.PICTURE, MessageType.LOCATION]));
       check(chatId, nonEmptyString);
       check(content, nonEmptyString);
 

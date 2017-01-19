@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Messages } from 'api/collections';
-import { MessageOwnership, MessageType, Chat, Message } from 'api/models';
+import {MessageOwnership, MessageType, Chat, Message, Location} from 'api/models';
 import { ModalController, NavParams, PopoverController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Meteor } from 'meteor/meteor';
@@ -102,8 +102,16 @@ export class MessagesPage implements OnInit, OnDestroy {
     });
 
     popover.onDidDismiss((params) => {
-      const file: File = params.selectedPicture;
-      this.sendPictureMessage(file);
+      if (params) {
+        if (params.messageType === MessageType.PICTURE) {
+          const file: File = params.selectedPicture;
+          this.sendPictureMessage(file);
+        }
+        else if (params.messageType === MessageType.LOCATION) {
+          const location = params.selectedLocation;
+          this.sendLocationMessage(location);
+        }
+      }
     });
 
     popover.present();
@@ -209,6 +217,16 @@ export class MessagesPage implements OnInit, OnDestroy {
         this.selectedChat._id,
         picture.url
       ).zone().subscribe();
+    });
+  }
+
+  sendLocationMessage(location: Location): void {
+    MeteorObservable.call('addMessage', MessageType.LOCATION,
+      this.selectedChat._id,
+      `${location.lat},${location.lng}`
+    ).zone().subscribe(() => {
+      // Zero the input field
+      this.message = '';
     });
   }
 

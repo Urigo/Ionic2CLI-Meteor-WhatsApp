@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AlertController, ViewController, ModalController } from 'ionic-angular';
 import { PictureService } from '../../services/picture';
 import { NewLocationMessageComponent } from '../location-message/location-message';
+import {MessageType} from 'api/models';
 
 @Component({
   selector: 'messages-attachments',
@@ -18,6 +19,7 @@ export class MessagesAttachmentsComponent {
   sendPicture(): void {
     this.pictureService.select().then((file: File) => {
       this.viewCtrl.dismiss({
+        messageType: MessageType.PICTURE,
         selectedPicture: file
       });
     });
@@ -26,7 +28,16 @@ export class MessagesAttachmentsComponent {
   sendLocation(): void {
     const locationModal = this.modelCtrl.create(NewLocationMessageComponent);
     locationModal.onDidDismiss((location) => {
-      console.log(location);
+      if (!location) {
+        this.viewCtrl.dismiss();
+
+        return;
+      }
+
+      this.viewCtrl.dismiss({
+        messageType: MessageType.LOCATION,
+        selectedLocation: location
+      });
     });
 
     locationModal.present();
