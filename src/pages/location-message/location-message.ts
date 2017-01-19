@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavController, ViewController, AlertController } from 'ionic-angular';
+import {NavController, ViewController, AlertController, Platform} from 'ionic-angular';
 import { Geolocation } from 'ionic-native';
 
 const DEFAULT_ZOOM = 8;
@@ -9,7 +9,6 @@ const DEFAULT_ZOOM = 8;
   templateUrl: 'location-message.html'
 })
 export class NewLocationMessageComponent implements OnInit, OnDestroy {
-  title: string = 'My first angular2-google-maps project';
   lat: number = 51.678418;
   lng: number = 7.809007;
   zoom: number = DEFAULT_ZOOM;
@@ -17,19 +16,22 @@ export class NewLocationMessageComponent implements OnInit, OnDestroy {
   intervalHandler: any;
 
   constructor(
-    public navCtrl: NavController,
-    public viewCtrl: ViewController,
-    public alertCtrl: AlertController
+    private navCtrl: NavController,
+    private viewCtrl: ViewController,
+    private alertCtrl: AlertController,
+    private platform: Platform
   ) {
 
   }
 
   ngOnInit() {
-    // Load the current location now, and when fetched - refresh it to improve accuracy
-    this.reloadLocation().then(() => {
-      this.intervalHandler = setInterval(() => {
-        this.reloadLocation();
-      }, 1000);
+    this.platform.ready().then(() => {
+      // Load the current location now, and when fetched - refresh it to improve accuracy
+      this.reloadLocation().then(() => {
+        this.intervalHandler = setInterval(() => {
+          this.reloadLocation();
+        }, 1000);
+      });
     });
   }
 
@@ -39,28 +41,34 @@ export class NewLocationMessageComponent implements OnInit, OnDestroy {
     }
   }
 
+  calculateZoomByAccureacy(accuracy: number): number {
+    const deviceHeight = this.platform.height();
+    const deviceWidth = this.platform.width();
+    const screenSize = Math.min(deviceWidth, deviceHeight);
+    const equator = 40075004;
+    const requiredMpp = accuracy / screenSize;
+    const zoomLevel = ((Math.log(equator / (256 * requiredMpp))) / Math.log(2)) + 1;
+
+    return zoomLevel;
+  }
+
   reloadLocation() {
     return Geolocation.getCurrentPosition().then((position) => {
       if (this.lat && this.lng) {
         this.accuracy = position.coords.accuracy;
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
-
-        if (this.accuracy <= 60) {
-          this.zoom = (60 - this.accuracy) * 2;
-        }
-        else {
-          this.zoom = DEFAULT_ZOOM;
-        }
-
-        if (this.zoom === 0) {
-          this.zoom = DEFAULT_ZOOM;
-        }
+        this.zoom = this.calculateZoomByAccureacy(this.accuracy);
       }
     });
   }
 
   sendLocation() {
-
+    this.viewCtrl.dismiss({
+      selectedLocation: {
+        lat: this.lat,
+        lng: this.lng
+      }
+    });
   }
 }

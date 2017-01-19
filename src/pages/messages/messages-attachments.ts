@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { AlertController, ViewController } from 'ionic-angular';
+import { AlertController, ViewController, ModalController } from 'ionic-angular';
 import { PictureService } from '../../services/picture';
+import { NewLocationMessageComponent } from '../location-message/location-message';
 
 @Component({
   selector: 'messages-attachments',
@@ -10,7 +11,8 @@ export class MessagesAttachmentsComponent {
   constructor(
     private alertCtrl: AlertController,
     private pictureService: PictureService,
-    private viewCtrl: ViewController
+    private viewCtrl: ViewController,
+    private modelCtrl: ModalController
   ) {}
 
   sendPicture(): void {
@@ -19,6 +21,15 @@ export class MessagesAttachmentsComponent {
         selectedPicture: file
       });
     });
+  }
+
+  sendLocation(): void {
+    const locationModal = this.modelCtrl.create(NewLocationMessageComponent);
+    locationModal.onDidDismiss((location) => {
+      console.log(location);
+    });
+
+    locationModal.present();
   }
 
   handleError(e: Error): void {
