@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Chats, Pictures, Users } from 'api/collections';
 import { User } from 'api/models';
 import { AlertController, NavController, Platform, ViewController } from 'ionic-angular';
-import { Contacts, Contact, ContactFieldType } from 'ionic-native';
 import { MeteorObservable } from 'meteor-rxjs';
 import { _ } from 'meteor/underscore';
 import { Observable, Subscription } from 'rxjs';
@@ -11,11 +10,12 @@ import { Observable, Subscription } from 'rxjs';
   selector: 'new-chat',
   templateUrl: 'new-chat.html'
 })
-export class NewChatComponent implements OnInit {
+export class NewChatComponent {
   searching = false;
   searchPattern: string;
   senderId: string;
   users: Observable<User[]>;
+  usersSubscription: Subscription;
 
   constructor(
     private alertCtrl: AlertController,
@@ -26,29 +26,15 @@ export class NewChatComponent implements OnInit {
     this.senderId = Meteor.userId();
   }
 
-  ngOnInit() {
-    this.findContacts().then((contacts) => {
-      if (contacts) {
-        // Pluck all contacts' phone numbers into a flat array
-        var phoneNumbers: number[] = _.chain(contacts)
-          .pluck('phoneNumbers')
-          .flatten()
-          .pluck('value')
-          .uniq()
-          .value();
-      }
-
-      // Subscribe to all the users who are in the provided contacts list
-      this.subscribeUsers(phoneNumbers);
-    })
-    .catch((e) => {
-      this.handleError(e);
-    });
-  }
-
-  toggleSearching() {
-    this.searching = !this.searching;
-    this.searchPattern = '';
+  observeSearchBar(observe: (eventName: string) => Observable<Event>): void {
+    // Each time the search pattern changes, re-subscribe to the users data-set
+    observe('keyup')
+      // Prevents the search bar from being spammed
+      .debounce(() => Observable.timer(1000))
+      .forEach(() => {
+        if (this.usersSubscription) this.usersSubscription.unsubscribe();
+        this.usersSubscription = this.subscribeUsers()
+      });
   }
 
   addChat(user): void {
@@ -64,29 +50,9 @@ export class NewChatComponent implements OnInit {
     });
   }
 
-  findContacts(): Promise<Contact[] | void> {
-    if (!this.platform.is('mobile')) {
-      console.warn('Device must be mobile in order to retrieve contacts');
-      console.warn('Fetching all users');
-      return Promise.resolve();
-    }
-
-    const fields: ContactFieldType[] = ['phoneNumbers'];
-
-    // Look for all the available phone numbers in contacts
-    return Contacts.find(fields, {
-      hasPhoneNumber: true,
-      multiple: true,
-      desiredFields: fields
-    });
-  }
-
-  subscribeUsers(phoneNumbers?: number[]): Subscription {
-    // Fetch all users matching phone numbers. If no phone numbers were provided, will
-    // fetch all available users in database. This behavior is **not** recommended
-    // in a production application since it will probably overload both client
-    // and server
-    const subscription = MeteorObservable.subscribe('users', phoneNumbers);
+  subscribeUsers(): Subscription {
+    // Fetch all users matching search pattern
+    const subscription = MeteorObservable.subscribe('users', this.searchPattern);
     const autorun = MeteorObservable.autorun();
 
     return Observable.merge(subscription, autorun).subscribe(() => {

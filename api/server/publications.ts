@@ -30,20 +30,18 @@ export function initPublications() {
   });
 
   Meteor.publishComposite('users', function(
-    phoneNumbers?: number[]
+    pattern: string
   ): PublishCompositeConfig<User> {
     if (!this.userId) return;
+    if (!pattern) return;
 
     return {
       find: () => {
-        const query = !phoneNumbers ? {} : {
-          phone: { $in: phoneNumbers }
-        };
-
-        return Users.collection.find(query, {
-          fields: {
-            profile: 1
-          }
+        return Users.collection.find({
+          'profile.name': { $regex: pattern, $options: 'i' }
+        }, {
+          fields: { profile: 1 },
+          limit: 15
         });
       },
 
