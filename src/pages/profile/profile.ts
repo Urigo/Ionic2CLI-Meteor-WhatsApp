@@ -3,7 +3,7 @@ import { Pictures } from 'api/collections';
 import { DEFAULT_USERNAME, Profile } from 'api/models';
 import { AlertController, NavController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
-import { PictureUploader } from '../../services/picture-uploader';
+import { PictureService } from '../../services/picture';
 import { TabsPage } from '../tabs/tabs';
 
 @Component({
@@ -17,7 +17,7 @@ export class ProfilePage implements OnInit {
   constructor(
     private alertCtrl: AlertController,
     private navCtrl: NavController,
-    private pictureUploader: PictureUploader
+    private pictureService: PictureService
   ) {}
 
   ngOnInit(): void {
@@ -31,7 +31,7 @@ export class ProfilePage implements OnInit {
   }
 
   selectProfilePicture(): void {
-    this.pictureUploader.select().then((file) => {
+    this.pictureService.select().then((file) => {
       this.uploadProfilePicture(file);
     })
     .catch((e) => {
@@ -40,7 +40,7 @@ export class ProfilePage implements OnInit {
   }
 
   uploadProfilePicture(file: File): void {
-    this.pictureUploader.upload(file).then((picture) => {
+    this.pictureService.upload(file).then((picture) => {
       this.profile.pictureId = picture._id;
       this.picture = picture.url;
     })

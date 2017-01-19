@@ -1,13 +1,16 @@
-import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Messages } from 'api/collections';
-import { Chat, Message } from 'api/models';
-import { NavParams, PopoverController } from 'ionic-angular';
+import { MessageOwnership, MessageType, Chat, Message } from 'api/models';
+import { ModalController, NavParams, PopoverController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Meteor } from 'meteor/meteor';
 import { _ } from 'meteor/underscore';
 import * as Moment from 'moment';
 import { Observable, Subscription, Subscriber } from 'rxjs';
+import { PictureService } from '../../services/picture';
+import { MessagesAttachmentsComponent } from './messages-attachments';
 import { MessagesOptionsComponent } from './messages-options';
+import { ShowPictureComponent } from './show-picture';
 
 @Component({
   selector: 'messages-page',
@@ -29,7 +32,9 @@ export class MessagesPage implements OnInit, OnDestroy {
   constructor(
     navParams: NavParams,
     private el: ElementRef,
-    private popoverCtrl: PopoverController
+    private pictureService: PictureService,
+    private popoverCtrl: PopoverController,
+    private modalCtrl: ModalController
   ) {
     this.selectedChat = <Chat>navParams.get('chat');
     this.title = this.selectedChat.title;
@@ -84,16 +89,31 @@ export class MessagesPage implements OnInit, OnDestroy {
 
   onInputKeypress({ keyCode }: KeyboardEvent): void {
     if (keyCode == 13) {
-      this.sendMessage();
+      this.sendTextMessage();
     }
+  }
+
+  showAttachments(): void {
+    const popover = this.popoverCtrl.create(MessagesAttachmentsComponent, {
+      chat: this.selectedChat
+    }, {
+      // Hooking components
+      cssClass: 'attachments-popover'
+    });
+
+    popover.onDidDismiss((params) => {
+      const file: File = params.selectedPicture;
+      this.sendPictureMessage(file);
+    });
+
+    popover.present();
   }
 
   showOptions(): void {
     const popover = this.popoverCtrl.create(MessagesOptionsComponent, {
       chat: this.selectedChat
     }, {
-      // Will be used as a CSS selector in our style-sheet
-      cssClass: 'options-popover'
+      cssClass: 'options-popover messages-options-popover'
     });
 
     popover.present();
@@ -151,7 +171,10 @@ export class MessagesPage implements OnInit, OnDestroy {
 
       // Compose missing data that we would like to show in the view
       messages.forEach((message) => {
-        message.ownership = this.senderId == message.senderId ? 'mine' : 'other';
+        message.ownership = this.senderId == message.senderId ?
+          MessageOwnership.MINE :
+          MessageOwnership.OTHER;
+
         return message;
       });
 
@@ -172,11 +195,28 @@ export class MessagesPage implements OnInit, OnDestroy {
     });
   }
 
-  sendMessage(): void {
+  showPicture({ target }: Event) {
+    const modal = this.modalCtrl.create(ShowPictureComponent, {
+      pictureSrc: (<HTMLImageElement>target).src
+    });
+
+    modal.present();
+  }
+
+  sendPictureMessage(file: File): void {
+    this.pictureService.upload(file).then((picture) => {
+      MeteorObservable.call('addMessage', MessageType.PICTURE,
+        this.selectedChat._id,
+        picture.url
+      ).zone().subscribe();
+    });
+  }
+
+  sendTextMessage(): void {
     // If message was yet to be typed, abort
     if (!this.message) return;
 
-    MeteorObservable.call('addMessage',
+    MeteorObservable.call('addMessage', MessageType.TEXT,
       this.selectedChat._id,
       this.message
     ).zone().subscribe(() => {

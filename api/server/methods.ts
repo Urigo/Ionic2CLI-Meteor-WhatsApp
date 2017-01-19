@@ -2,7 +2,7 @@ import { check, Match } from 'meteor/check';
 import { UploadFS } from 'meteor/jalik:ufs';
 import { Meteor } from 'meteor/meteor';
 import { Chats, Messages } from './collections';
-import { Profile } from './models';
+import { MessageType, Profile } from './models';
 
 const nonEmptyString = Match.Where((str) => {
   check(str, String);
@@ -63,10 +63,11 @@ export function initMethods() {
       });
     },
 
-    addMessage(chatId: string, content: string): Object {
+    addMessage(type: MessageType, chatId: string, content: string): void {
       if (!this.userId) throw new Meteor.Error('unauthorized',
         'User must be logged-in to create a new chat');
 
+      check(type, Match.OneOf(String, [MessageType.TEXT, MessageType.PICTURE]));
       check(chatId, nonEmptyString);
       check(content, nonEmptyString);
 
@@ -75,14 +76,13 @@ export function initMethods() {
       if (!chatExists) throw new Meteor.Error('chat-not-exists',
         'Chat doesn\'t exist');
 
-      return {
-        messageId: Messages.collection.insert({
-          senderId: this.userId,
-          chatId: chatId,
-          content: content,
-          createdAt: new Date()
-        })
-      }
+      Messages.collection.insert({
+        senderId: this.userId,
+        chatId: chatId,
+        content: content,
+        type: type,
+        createdAt: new Date()
+      });
     },
 
     countMessages(): number {

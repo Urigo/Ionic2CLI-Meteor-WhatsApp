@@ -12,7 +12,8 @@ import { Observable, Subscription } from 'rxjs';
   templateUrl: 'new-chat.html'
 })
 export class NewChatComponent implements OnInit {
-  searchPattern = '';
+  searching = false;
+  searchPattern: string;
   senderId: string;
   users: Observable<User[]>;
 
@@ -45,6 +46,11 @@ export class NewChatComponent implements OnInit {
     });
   }
 
+  toggleSearching() {
+    this.searching = !this.searching;
+    this.searchPattern = '';
+  }
+
   addChat(user): void {
     MeteorObservable.call('addChat', user._id).subscribe({
       next: () => {
@@ -58,9 +64,11 @@ export class NewChatComponent implements OnInit {
     });
   }
 
-  findContacts(): Promise<Contact[]> {
-    // If we're running this in the browser, don't look for any contacts
+  findContacts(): Promise<Contact[] | void> {
+    // If we're running this in the browser
     if (!this.platform.is('mobile')) return Promise.resolve();
+    // If contacts plug-in is unavailable
+    if (!navigator.hasOwnProperty('contacts')) return Promise.resolve();
 
     const fields: ContactFieldType[] = ['phoneNumbers'];
 
