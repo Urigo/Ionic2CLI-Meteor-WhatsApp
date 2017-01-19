@@ -13,21 +13,27 @@ import { VerificationPage } from '../pages/verification/verification';
 import { SearchPipe } from '../pipes/search';
 import { PictureUploader } from '../services/picture-uploader';
 import { MyApp } from './app.component';
+import { AgmCoreModule } from 'angular2-google-maps/core';
+import { NewLocationMessageComponent } from '../pages/location-message/location-message';
+
+const DECLARATIONS = [
+  ChatsOptionsComponent,
+  ChatsPage,
+  LoginPage,
+  MessagesOptionsComponent,
+  MessagesPage,
+  MyApp,
+  NewChatComponent,
+  ProfilePage,
+  SearchPipe,
+  TabsPage,
+  VerificationPage,
+  NewLocationMessageComponent
+];
 
 @NgModule({
-  declarations: [
-    ChatsOptionsComponent,
-    ChatsPage,
-    LoginPage,
-    MessagesOptionsComponent,
-    MessagesPage,
-    MyApp,
-    NewChatComponent,
-    ProfilePage,
-    SearchPipe,
-    TabsPage,
-    VerificationPage
-  ],
+  declarations: DECLARATIONS,
+  entryComponents: DECLARATIONS,
   imports: [
     IonicModule.forRoot(MyApp),
     MomentModule,
@@ -36,18 +42,6 @@ import { MyApp } from './app.component';
     })
   ],
   bootstrap: [IonicApp],
-  entryComponents: [
-    ChatsOptionsComponent,
-    ChatsPage,
-    LoginPage,
-    MessagesOptionsComponent,
-    MessagesPage,
-    MyApp,
-    NewChatComponent,
-    ProfilePage,
-    TabsPage,
-    VerificationPage
-  ],
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     PictureUploader
