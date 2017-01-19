@@ -48,6 +48,7 @@
     "cordova-plugin-console",
     "cordova-plugin-contacts",
     "cordova-plugin-device",
+    "cordova-plugin-sim",
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
     "cordova-plugin-whitelist",

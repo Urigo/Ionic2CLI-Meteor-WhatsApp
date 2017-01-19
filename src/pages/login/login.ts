@@ -1,18 +1,26 @@
-import { Component } from '@angular/core';
-import { AlertController, NavController } from 'ionic-angular';
+import { AfterContentInit, Component } from '@angular/core';
+import { Alert, AlertController, NavController } from 'ionic-angular';
+import { PhoneService } from '../../services/phone';
 import { VerificationPage } from '../verification/verification';
 
 @Component({
   selector: 'login',
   templateUrl: 'login.html'
 })
-export class LoginPage {
+export class LoginPage implements AfterContentInit {
   phone = '';
 
   constructor(
-    public alertCtrl: AlertController,
-    public navCtrl: NavController
+    private alertCtrl: AlertController,
+    private navCtrl: NavController,
+    private phoneService: PhoneService
   ) {}
+
+  ngAfterContentInit() {
+    this.phoneService.getNumber().then((phone) => {
+      if (phone) this.login(phone);
+    });
+  }
 
   onInputKeypress({keyCode}: KeyboardEvent): void {
     if (keyCode == 13) {
@@ -20,10 +28,10 @@ export class LoginPage {
     }
   }
 
-  login(): void {
+  login(phone: string = this.phone): void {
     const alert = this.alertCtrl.create({
       title: 'Confirm',
-      message: `Would you like to proceed with the phone number ${this.phone}?`,
+      message: `Would you like to proceed with the phone number ${phone}?`,
       buttons: [
         {
           text: 'Cancel',
@@ -42,19 +50,21 @@ export class LoginPage {
     alert.present();
   }
 
-  private handleLogin(alert): void {
-    Accounts.requestPhoneVerification(this.phone, (e: Error) => {
-      alert.dismiss().then(() => {
-        if (e) return this.handleError(e);
-
-        this.navCtrl.push(VerificationPage, {
-          phone: this.phone
-        });
+  handleLogin(alert: Alert): void {
+    alert.dismiss().then(() => {
+      return this.phoneService.verify(this.phone);
+    })
+    .then(() => {
+      this.navCtrl.push(VerificationPage, {
+        phone: this.phone
       });
+    })
+    .catch((e) => {
+      this.handleError(e);
     });
   }
 
-  private handleError(e: Error): void {
+  handleError(e: Error): void {
     console.error(e);
 
     const alert = this.alertCtrl.create({

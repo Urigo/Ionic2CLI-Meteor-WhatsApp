@@ -14,6 +14,7 @@ import { ShowPictureComponent } from '../pages/messages/show-picture';
 import { ProfilePage } from '../pages/profile/profile';
 import { TabsPage } from '../pages/tabs/tabs';
 import { VerificationPage } from '../pages/verification/verification';
+import { PhoneService } from '../services/phone';
 import { PictureService } from '../services/picture';
 import { MyApp } from './app.component';
 
@@ -55,6 +56,7 @@ import { MyApp } from './app.component';
   ],
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },
+    PhoneService,
     PictureService
   ]
 })
