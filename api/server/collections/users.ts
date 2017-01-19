@@ -7,9 +7,11 @@ export const Users = MongoObservable.fromExisting<User>(Meteor.users);
 
 // Dispose unused profile pictures
 Meteor.users.after.update(function (userId, doc, fieldNames, modifier, options) {
-  if (doc.profile.pictureId != this.previous.profile.pictureId) {
-    Pictures.collection.remove({ _id: doc.profile.pictureId });
-  }
+  if (!doc.profile) return;
+  if (!this.previous.profile) return;
+  if (doc.profile.pictureId == this.previous.profile.pictureId) return;
+
+  Pictures.collection.remove({ _id: doc.profile.pictureId });
 }, { fetchPrevious: true });
 
 // Deny all client-side updates to user documents

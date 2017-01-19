@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Chats, Messages, Pictures, Users } from 'api/collections';
-import { Chat } from 'api/models';
+import { Chat, Message } from 'api/models';
 import { AlertController, ModalController, NavController, PopoverController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
-import { Observable } from 'rxjs';
+import { Observable, Subscriber } from 'rxjs';
 import { MessagesPage } from '../messages/messages';
 import { ChatsOptionsComponent } from './chats-options';
 import { NewChatComponent } from './new-chat';
@@ -12,55 +12,61 @@ import { NewChatComponent } from './new-chat';
   templateUrl: 'chats.html'
 })
 export class ChatsPage implements OnInit {
-  chats;
+  chatComputations = new Map();
+  chats: Observable<Chat[]>;
   senderId: string;
 
   constructor(
-    public alertCtrl: AlertController,
-    public modalCtrl: ModalController,
-    public navCtrl: NavController,
-    public popoverCtrl: PopoverController
-  ) {}
+    private alertCtrl: AlertController,
+    private modalCtrl: ModalController,
+    private navCtrl: NavController,
+    private popoverCtrl: PopoverController
+  ) {
+    this.senderId = Meteor.userId();
+  }
 
   ngOnInit() {
-    this.senderId = Meteor.userId();
-
     MeteorObservable.subscribe('chats').subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
-        if (this.chats) {
-          this.chats.unsubscribe();
-          this.chats = undefined;
-        }
+        this.chats = this.findChats();
+      });
+    });
+  }
 
-        this.chats = Chats
-          .find({})
-          .mergeMap((chats: Chat[]) =>
-            Observable.combineLatest(
-              ...chats.map((chat: Chat) =>
-                Messages
-                  .find({chatId: chat._id})
-                  .startWith(null)
-                  .map(messages => {
-                    if (messages) chat.lastMessage = messages[0];
-                    return chat;
-                  })
-              )
-            )
-          ).map(chats => {
-            chats.forEach(chat => {
-              chat.title = '';
-              chat.picture = '';
+  findChats(): Observable<Chat[]> {
+    return Chats
+      .find()
+      .map(chats => {
+        chats.forEach(chat => {
+          chat.title = '';
+          chat.picture = '';
 
-              const receiverId = chat.memberIds.find(memberId => memberId !== this.senderId);
-              const receiver = Users.findOne(receiverId);
-              if (!receiver) return;
+          const receiverId = chat.memberIds.find(memberId => memberId != this.senderId);
+          const receiver = Users.findOne(receiverId);
 
-              chat.title = receiver.profile.name;
-              chat.picture = Pictures.getPictureUrl(receiver.profile.pictureId);
-            });
+          if (!receiver) return;
 
-            return chats;
-          }).zone();
+          chat.title = receiver.profile.name;
+          chat.picture = Pictures.getPictureUrl(receiver.profile.pictureId);
+
+          this.findLastChatMessage(chat._id).subscribe((message) => {
+            chat.lastMessage = message
+          });
+        });
+
+        return chats;
+      });
+  }
+
+  findLastChatMessage(chatId: string): Observable<Message> {
+    return Observable.create((observer: Subscriber<Message>) => {
+      MeteorObservable.autorun().subscribe(() => {
+        Messages
+          .find({ chatId })
+          .subscribe((messages = []) => {
+            const message = messages[0];
+            if (message) observer.next(message);
+          });
       });
     });
   }
@@ -84,16 +90,13 @@ export class ChatsPage implements OnInit {
 
   removeChat(chat: Chat): void {
     MeteorObservable.call('removeChat', chat._id).subscribe({
-      complete: () => {
-        this.chats = this.chats.zone();
-      },
       error: (e: Error) => {
         if (e) this.handleError(e);
       }
     });
   }
 
-  private handleError(e: Error): void {
+  handleError(e: Error): void {
     console.error(e);
 
     const alert = this.alertCtrl.create({
