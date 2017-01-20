@@ -12,7 +12,6 @@ import { NewChatComponent } from './new-chat';
   templateUrl: 'chats.html'
 })
 export class ChatsPage implements OnInit {
-  chatComputations = new Map();
   chats: Observable<Chat[]>;
   senderId: string;
 
@@ -34,39 +33,52 @@ export class ChatsPage implements OnInit {
   }
 
   findChats(): Observable<Chat[]> {
-    return Chats
-      .find()
-      .map(chats => {
-        chats.forEach(chat => {
-          chat.title = '';
-          chat.picture = '';
+    // Find chats and transform them
+    return Chats.find().map(chats => {
+      chats.forEach(chat => {
+        chat.title = '';
+        chat.picture = '';
 
-          const receiverId = chat.memberIds.find(memberId => memberId != this.senderId);
-          const receiver = Users.findOne(receiverId);
+        const receiverId = chat.memberIds.find(memberId => memberId != this.senderId);
+        const receiver = Users.findOne(receiverId);
 
-          if (!receiver) return;
-
+        if (receiver) {
           chat.title = receiver.profile.name;
           chat.picture = Pictures.getPictureUrl(receiver.profile.pictureId);
+        }
 
-          this.findLastChatMessage(chat._id).subscribe((message) => {
-            chat.lastMessage = message
-          });
+        // This will make the last message reactive
+        this.findLastChatMessage(chat._id).subscribe((message) => {
+          chat.lastMessage = message
         });
-
-        return chats;
       });
+
+      return chats;
+    });
   }
 
   findLastChatMessage(chatId: string): Observable<Message> {
     return Observable.create((observer: Subscriber<Message>) => {
-      MeteorObservable.autorun().subscribe(() => {
-        Messages
-          .find({ chatId })
-          .subscribe((messages = []) => {
-            const message = messages[0];
-            if (message) observer.next(message);
-          });
+      const chatExists = () => !!Chats.findOne(chatId);
+
+      // Re-compute until chat is removed
+      MeteorObservable.autorun().takeWhile(chatExists).subscribe(() => {
+        Messages.find({ chatId }).subscribe({
+          next: (messages) => {
+            // Invoke subscription with the last message found
+            if (!messages.length) return;
+            const lastMessage = messages[messages.length - 1];
+            observer.next(lastMessage);
+          },
+
+          error: (e) => {
+            observer.error(e);
+          },
+
+          complete: () => {
+            observer.complete();
+          }
+        });
       });
     });
   }
@@ -85,7 +97,7 @@ export class ChatsPage implements OnInit {
   }
 
   showMessages(chat): void {
-    this.navCtrl.push(MessagesPage, {chat});
+    this.navCtrl.push(MessagesPage, { chat });
   }
 
   removeChat(chat: Chat): void {

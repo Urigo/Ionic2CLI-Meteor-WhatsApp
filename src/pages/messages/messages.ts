@@ -141,13 +141,19 @@ export class MessagesPage implements OnInit, OnDestroy {
   // Removes the scroll listener once all messages from the past were fetched
   autoRemoveScrollListener<T>(messagesCount: number): Observable<T> {
     return Observable.create((observer: Subscriber<T>) => {
-      Messages.find().subscribe((messages) => {
-        // Once all messages have been fetched
-        if (messagesCount != messages.length) return;
-        // Signal to stop listening to the scroll event
-        observer.next();
-        // Finish the observation to prevent unnecessary calculations
-        observer.complete();
+      Messages.find().subscribe({
+        next: (messages) => {
+          // Once all messages have been fetched
+          if (messagesCount != messages.length) return;
+          // Signal to stop listening to the scroll event
+          observer.next();
+          // Finish the observation to prevent unnecessary calculations
+          observer.complete();
+        },
+
+        error: (e) => {
+          observer.error(e);
+        }
       });
     });
   }
