@@ -12,7 +12,6 @@ import { MessagesAttachmentsComponent } from '../pages/messages/messages-attachm
 import { MessagesOptionsComponent } from '../pages/messages/messages-options';
 import { ShowPictureComponent } from '../pages/messages/show-picture';
 import { ProfilePage } from '../pages/profile/profile';
-import { TabsPage } from '../pages/tabs/tabs';
 import { VerificationPage } from '../pages/verification/verification';
 import { PhoneService } from '../services/phone';
 import { PictureService } from '../services/picture';
@@ -32,7 +31,6 @@ import { MyApp } from './app.component';
     NewChatComponent,
     ProfilePage,
     ShowPictureComponent,
-    TabsPage,
     VerificationPage
   ],
   imports: [
@@ -51,7 +49,6 @@ import { MyApp } from './app.component';
     NewChatComponent,
     ProfilePage,
     ShowPictureComponent,
-    TabsPage,
     VerificationPage
   ],
   providers: [
