@@ -26,8 +26,6 @@ Now we're gonna define 4 tabs: `chats`, `contacts`, `favorites` and `recents`. I
 
 {{{diff_step 2.3}}}
 
-If you will take a closer look at the view template we've just defined, you can see that one of the tab's attributes is wrapped with \[square brackets\]. This is part of Angular2's new template syntax and what it means is that the property called `root` of the HTML element is bound to the `chatsTabRoot` property of the component.
-
 Our next step would be implementing the `chats` tab; First let's start by adding `moment` as a dependency - a utility library in JavaScript which will help us parse, validate, manipulate, and display dates:
 
     $ npm install --save moment
@@ -59,6 +57,8 @@ Let's define it on the tabs component:
 And define it as the root tab, which means that once we enter the tabs view, this is the initial tab which is gonna show up:
 
 {{{diff_step 2.9}}}
+
+One of the tab's attributes is wrapped with \[square brackets\]. This is part of Angular2's new template syntax and it means that the `root` property of the HTML element is bound to the `chatsTab` property of the component.
 
 ## TypeScript Interfaces
 
