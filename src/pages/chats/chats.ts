@@ -63,11 +63,13 @@ export class ChatsPage implements OnInit {
 
       // Re-compute until chat is removed
       MeteorObservable.autorun().takeWhile(chatExists).subscribe(() => {
-        Messages.find({ chatId }).subscribe({
+        Messages.find({ chatId }, {
+          sort: { createdAt: -1 }
+        }).subscribe({
           next: (messages) => {
             // Invoke subscription with the last message found
             if (!messages.length) return;
-            const lastMessage = messages[messages.length - 1];
+            const lastMessage = messages[0];
             observer.next(lastMessage);
           },
 

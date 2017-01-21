@@ -186,7 +186,7 @@ export class MessagesPage implements OnInit, OnDestroy {
 
       // Group by creation day
       messages = _.groupBy(messages, (message) => {
-        return Moment(message).format(format);
+        return Moment(message.createdAt).format(format);
       });
 
       // Transform dictionary into an array since Angular's view engine doesn't know how
