@@ -193,7 +193,7 @@ export class MessagesPage implements OnInit, OnDestroy {
       });
 
       // Group by creation day
-      groupedMessages = _.groupBy(messages, (message) => {
+      const groupedMessages = _.groupBy(messages, (message) => {
         return Moment(message.createdAt).format(format);
       });
 
