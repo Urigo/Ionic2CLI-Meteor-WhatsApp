@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AlertController, ViewController, ModalController } from 'ionic-angular';
 import { PictureService } from '../../services/picture';
 import { NewLocationMessageComponent } from './location-message';
-import {MessageType} from 'api/models';
+import { MessageType } from 'api/models';
 
 @Component({
   selector: 'messages-attachments',

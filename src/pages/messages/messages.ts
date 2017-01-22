@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Messages } from 'api/collections';
-import {MessageOwnership, MessageType, Chat, Message, Location} from 'api/models';
+import { MessageOwnership, MessageType, Chat, Message, Location } from 'api/models';
 import { ModalController, NavParams, PopoverController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Meteor } from 'meteor/meteor';
