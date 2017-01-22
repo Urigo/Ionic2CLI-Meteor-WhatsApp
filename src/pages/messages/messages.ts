@@ -102,8 +102,8 @@ export class MessagesPage implements OnInit, OnDestroy {
     });
 
     popover.onDidDismiss((params) => {
-      const file: File = params.selectedPicture;
-      this.sendPictureMessage(file);
+      const blob: Blob = params.selectedPicture;
+      this.sendPictureMessage(blob);
     });
 
     popover.present();
@@ -141,13 +141,19 @@ export class MessagesPage implements OnInit, OnDestroy {
   // Removes the scroll listener once all messages from the past were fetched
   autoRemoveScrollListener<T>(messagesCount: number): Observable<T> {
     return Observable.create((observer: Subscriber<T>) => {
-      Messages.find().subscribe((messages) => {
-        // Once all messages have been fetched
-        if (messagesCount != messages.length) return;
-        // Signal to stop listening to the scroll event
-        observer.next();
-        // Finish the observation to prevent unnecessary calculations
-        observer.complete();
+      Messages.find().subscribe({
+        next: (messages) => {
+          // Once all messages have been fetched
+          if (messagesCount != messages.length) return;
+          // Signal to stop listening to the scroll event
+          observer.next();
+          // Finish the observation to prevent unnecessary calculations
+          observer.complete();
+        },
+
+        error: (e) => {
+          observer.error(e);
+        }
       });
     });
   }
@@ -180,7 +186,7 @@ export class MessagesPage implements OnInit, OnDestroy {
 
       // Group by creation day
       messages = _.groupBy(messages, (message) => {
-        return Moment(message).format(format);
+        return Moment(message.createdAt).format(format);
       });
 
       // Transform dictionary into an array since Angular's view engine doesn't know how
@@ -203,8 +209,8 @@ export class MessagesPage implements OnInit, OnDestroy {
     modal.present();
   }
 
-  sendPictureMessage(file: File): void {
-    this.pictureService.upload(file).then((picture) => {
+  sendPictureMessage(blob: Blob): void {
+    this.pictureService.upload(blob).then((picture) => {
       MeteorObservable.call('addMessage', MessageType.PICTURE,
         this.selectedChat._id,
         picture.url

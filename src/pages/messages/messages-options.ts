@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AlertController, NavController, NavParams, ViewController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
-import { TabsPage } from '../tabs/tabs';
+import { ChatsPage } from '../chats/chats';
 
 @Component({
   selector: 'messages-options',
@@ -43,7 +43,7 @@ export class MessagesOptionsComponent {
     MeteorObservable.call('removeChat', this.params.get('chat')._id).subscribe({
       next: () => {
         alert.dismiss().then(() => {
-          this.navCtrl.setRoot(TabsPage, {}, {
+          this.navCtrl.setRoot(ChatsPage, {}, {
             animate: true
           });
         });
@@ -52,7 +52,7 @@ export class MessagesOptionsComponent {
         alert.dismiss().then(() => {
           if (e) return this.handleError(e);
 
-          this.navCtrl.setRoot(TabsPage, {}, {
+          this.navCtrl.setRoot(ChatsPage, {}, {
             animate: true
           });
         });

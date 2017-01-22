@@ -1,6 +1,6 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AlertController, NavController, NavParams } from 'ionic-angular';
-import { Accounts } from 'meteor/accounts-base';
+import { PhoneService } from '../../services/phone';
 import { ProfilePage } from "../profile/profile";
 
 @Component({
@@ -12,10 +12,10 @@ export class VerificationPage implements OnInit {
   phone: string;
 
   constructor(
-    public alertCtrl: AlertController,
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public zone: NgZone
+    private alertCtrl: AlertController,
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private phoneService: PhoneService
   ) {}
 
   ngOnInit() {
@@ -29,18 +29,17 @@ export class VerificationPage implements OnInit {
   }
 
   verify(): void {
-    Accounts.verifyPhone(this.phone, this.code, (e: Error) => {
-      this.zone.run(() => {
-        if (e) return this.handleError(e);
-
-        this.navCtrl.setRoot(ProfilePage, {}, {
-          animate: true
-        });
+    this.phoneService.login(this.phone, this.code).then(() => {
+      this.navCtrl.setRoot(ProfilePage, {}, {
+        animate: true
       });
+    })
+    .catch((e) => {
+      this.handleError(e);
     });
   }
 
-  private handleError(e: Error): void {
+  handleError(e: Error): void {
     console.error(e);
 
     const alert = this.alertCtrl.create({
