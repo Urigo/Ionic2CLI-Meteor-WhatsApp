@@ -17,7 +17,7 @@ import { SearchPipe } from '../pipes/search';
 import { PictureService } from '../services/picture';
 import { MyApp } from './app.component';
 import { AgmCoreModule } from 'angular2-google-maps/core';
-import { NewLocationMessageComponent } from '../pages/location-message/location-message';
+import { NewLocationMessageComponent } from '../pages/messages/location-message';
 
 @NgModule({
   declarations: [

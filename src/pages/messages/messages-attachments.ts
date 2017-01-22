@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AlertController, ViewController, ModalController } from 'ionic-angular';
 import { PictureService } from '../../services/picture';
-import { NewLocationMessageComponent } from '../location-message/location-message';
+import { NewLocationMessageComponent } from './location-message';
 import {MessageType} from 'api/models';
 
 @Component({

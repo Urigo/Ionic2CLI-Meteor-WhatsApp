@@ -19,7 +19,10 @@ export class NewLocationMessageComponent implements OnInit, OnDestroy {
   accuracy: number = -1;
   intervalHandler: any;
 
-  constructor(private viewCtrl: ViewController, private platform: Platform) {
+  constructor(
+    private viewCtrl: ViewController,
+    private platform: Platform) {
+
   }
 
   ngOnInit() {
@@ -40,10 +43,12 @@ export class NewLocationMessageComponent implements OnInit, OnDestroy {
   }
 
   calculateZoomByAccureacy(accuracy: number): number {
+    // Source: http://stackoverflow.com/a/25143326
     const deviceHeight = this.platform.height();
     const deviceWidth = this.platform.width();
     const screenSize = Math.min(deviceWidth, deviceHeight);
     const requiredMpp = accuracy / screenSize;
+
     return ((Math.log(EQUATOR / (256 * requiredMpp))) / Math.log(2)) + 1;
   }
 
