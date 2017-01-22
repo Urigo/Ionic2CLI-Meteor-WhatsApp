@@ -168,7 +168,7 @@ export class MessagesPage implements OnInit, OnDestroy {
   }
 
   // Finds relevant messages and groups them by their creation day
-  findMessagesDayGroups(): Observable<Message[]> {
+  findMessagesDayGroups(): Observable<{timestamp: string, messages: Message[], today: boolean}[]> {
     return Messages.find({
       chatId: this.selectedChat._id
     }, {
@@ -187,16 +187,16 @@ export class MessagesPage implements OnInit, OnDestroy {
       });
 
       // Group by creation day
-      messages = _.groupBy(messages, (message) => {
+      let groupedMessages: {[timestamp: string]: Message[]} = _.groupBy(messages, (message) => {
         return Moment(message).format(format);
       });
 
       // Transform dictionary into an array since Angular's view engine doesn't know how
       // to iterate through it
-      return Object.keys(messages).map((timestamp) => {
+      return Object.keys(groupedMessages).map((timestamp: string) => {
         return {
           timestamp: timestamp,
-          messages: messages[timestamp],
+          messages: groupedMessages[timestamp],
           today: Moment().format(format) == timestamp
         };
       });
@@ -256,12 +256,12 @@ export class MessagesPage implements OnInit, OnDestroy {
   }
 
   getLocation(locationString: string): Location {
-    const splitted = locationString.split(',').map(Number).filter(Number.isNaN);
+    const splitted = locationString.split(',').map(Number);
 
     return <Location>{
       lat: splitted[0],
       lng: splitted[1],
-      zoom: Math.min(splitted[2], 19)
+      zoom: Math.min(splitted[2] || 0, 19)
     };
   }
 
