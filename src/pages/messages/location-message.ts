@@ -2,11 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ViewController, Platform } from 'ionic-angular';
 import { Geolocation } from 'ionic-native';
 import { Location } from 'api/models';
+import { Observable, Subscription } from 'rxjs';
 
 const DEFAULT_ZOOM = 8;
 const EQUATOR = 40075004;
 const DEFAULT_LAT = 51.678418;
 const DEFAULT_LNG = 7.809007;
+const LOCATION_REFRESH_INTERVAL = 500;
 
 @Component({
   selector: 'location-message',
@@ -17,28 +19,28 @@ export class NewLocationMessageComponent implements OnInit, OnDestroy {
   lng: number = DEFAULT_LNG;
   zoom: number = DEFAULT_ZOOM;
   accuracy: number = -1;
-  intervalHandler: any;
+  intervalObs: Subscription;
 
   constructor(
     private viewCtrl: ViewController,
     private platform: Platform) {
-
   }
 
   ngOnInit() {
     this.platform.ready().then(() => {
-      // Load the current location now, and when fetched - refresh it to improve accuracy
-      this.reloadLocation().then(() => {
-        this.intervalHandler = setInterval(() => {
+      this.intervalObs = this.reloadLocation()
+        .flatMapTo(Observable
+          .interval(LOCATION_REFRESH_INTERVAL)
+          .timeInterval())
+        .subscribe(() => {
           this.reloadLocation();
-        }, 1000);
-      });
+        });
     });
   }
 
   ngOnDestroy() {
-    if (this.intervalHandler) {
-      clearInterval(this.intervalHandler);
+    if (this.intervalObs) {
+      this.intervalObs.unsubscribe();
     }
   }
 
@@ -53,14 +55,14 @@ export class NewLocationMessageComponent implements OnInit, OnDestroy {
   }
 
   reloadLocation() {
-    return Geolocation.getCurrentPosition().then((position) => {
+    return Observable.fromPromise(Geolocation.getCurrentPosition().then((position) => {
       if (this.lat && this.lng) {
         this.accuracy = position.coords.accuracy;
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
         this.zoom = this.calculateZoomByAccureacy(this.accuracy);
       }
-    });
+    }));
   }
 
   sendLocation() {
