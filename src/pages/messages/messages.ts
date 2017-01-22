@@ -256,13 +256,13 @@ export class MessagesPage implements OnInit, OnDestroy {
   }
 
   getLocation(locationString: string): Location {
-    const splitted = locationString.split(',');
+    const splitted = locationString.split(',').map(Number).filter(Number.isNaN);
 
     return <Location>{
-      lat: Number(splitted[0]),
-      lng: Number(splitted[1]),
-      zoom: Math.min(Number(splitted[2] || 0), 19)
-    }
+      lat: splitted[0],
+      lng: splitted[1],
+      zoom: Math.min(splitted[2], 19)
+    };
   }
 
   scrollDown(): void {
