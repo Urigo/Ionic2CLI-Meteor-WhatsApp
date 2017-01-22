@@ -9,9 +9,9 @@ export enum MessageOwnership {
 }
 
 export enum MessageType {
+  LOCATION = <any>'location'
   PICTURE = <any>'picture',
   TEXT = <any>'text',
-  LOCATION = <any>'location'
 }
 
 export interface Profile {

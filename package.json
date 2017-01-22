@@ -7,6 +7,7 @@
     "api": "cd api && meteor run --settings private/settings.json",
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve",
+    "ionic:lint": "ionic-app-scripts lint",
     "meteor-client:bundle": "node meteor-client/bundler.js"
   },
   "dependencies": {
@@ -42,17 +43,18 @@
     "@types/meteor-publish-composite": "0.0.32",
     "@types/underscore": "^1.7.36",
     "tmp": "0.0.31",
+    "tslint": "^4.3.1",
     "typescript": "2.0.9",
     "typescript-extends": "^1.0.1"
   },
   "cordovaPlugins": [
-    "cordova-plugin-whitelist",
-    "cordova-plugin-statusbar",
     "cordova-plugin-console",
-    "cordova-plugin-device",
-    "cordova-plugin-splashscreen",
-    "cordova-plugin-geolocation",
     "cordova-plugin-contacts",
+    "cordova-plugin-device",
+    "cordova-plugin-geolocation",
+    "cordova-plugin-splashscreen",
+    "cordova-plugin-statusbar",
+    "cordova-plugin-whitelist",
     "ionic-plugin-keyboard"
   ],
   "cordovaPlatforms": [],
