@@ -26,7 +26,7 @@
           </div>
           <img *ngIf="message.type == 'picture'" (click)="showPicture($event)" class="message-content message-content-picture" [src]="message.content">
 
-          <span class="message-timestamp">{{message.createdAt | amDateFormat: 'HH:MM'}}</span>
+          <span class="message-timestamp">{{message.createdAt | amDateFormat: 'HH:mm'}}</span>
         </div>
       </div>
 

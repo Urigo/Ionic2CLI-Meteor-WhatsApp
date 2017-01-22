@@ -1,7 +1,8 @@
-import { ErrorHandler, NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { MomentModule } from 'angular2-moment';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { AutofocusDirective } from '../directives/autofocus';
+import { ObserveDirective } from '../directives/observe';
 import { ChatsPage } from '../pages/chats/chats';
 import { ChatsOptionsComponent } from '../pages/chats/chats-options';
 import { NewChatComponent } from '../pages/chats/new-chat';
@@ -11,9 +12,8 @@ import { MessagesAttachmentsComponent } from '../pages/messages/messages-attachm
 import { MessagesOptionsComponent } from '../pages/messages/messages-options';
 import { ShowPictureComponent } from '../pages/messages/show-picture';
 import { ProfilePage } from '../pages/profile/profile';
-import { TabsPage } from '../pages/tabs/tabs';
 import { VerificationPage } from '../pages/verification/verification';
-import { SearchPipe } from '../pipes/search';
+import { PhoneService } from '../services/phone';
 import { PictureService } from '../services/picture';
 import { MyApp } from './app.component';
 import { AgmCoreModule } from 'angular2-google-maps/core';
@@ -22,6 +22,7 @@ import { NewLocationMessageComponent } from '../pages/messages/location-message'
 @NgModule({
   declarations: [
     AutofocusDirective,
+    ObserveDirective,
     ChatsOptionsComponent,
     ChatsPage,
     LoginPage,
@@ -30,12 +31,10 @@ import { NewLocationMessageComponent } from '../pages/messages/location-message'
     MessagesPage,
     MyApp,
     NewChatComponent,
+    NewLocationMessageComponent,
     ProfilePage,
-    SearchPipe,
     ShowPictureComponent,
-    TabsPage,
-    VerificationPage,
-    NewLocationMessageComponent
+    VerificationPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -49,19 +48,19 @@ import { NewLocationMessageComponent } from '../pages/messages/location-message'
     ChatsOptionsComponent,
     ChatsPage,
     LoginPage,
-    MessagesAttachmentsComponent,
     MessagesOptionsComponent,
     MessagesPage,
+    MessagesAttachmentsComponent,
     MyApp,
     NewChatComponent,
+    NewLocationMessageComponent,
     ProfilePage,
     ShowPictureComponent,
-    TabsPage,
-    VerificationPage,
-    NewLocationMessageComponent
+    VerificationPage
   ],
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },
+    PhoneService,
     PictureService
   ]
 })

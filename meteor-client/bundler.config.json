@@ -39,6 +39,9 @@
       "accounts-base",
       "service-configuration"
     ],
+    "matb33:collection-hooks": [
+      "matb33_collection-hooks"
+    ],
     "mys:accounts-phone": [
       "sha",
       "srp",

@@ -45,7 +45,6 @@ export function initMethods() {
       if (!chatExists) throw new Meteor.Error('chat-not-exists',
         'Chat doesn\'t exist');
 
-      Messages.remove({chatId});
       Chats.remove(chatId);
     },
 

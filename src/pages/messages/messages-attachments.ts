@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { AlertController, ViewController, ModalController } from 'ionic-angular';
+import { AlertController, Platform, ModalController, ViewController } from 'ionic-angular';
+import { Camera } from 'ionic-native';
 import { PictureService } from '../../services/picture';
 import { NewLocationMessageComponent } from './location-message';
 import { MessageType } from 'api/models';
@@ -12,9 +13,24 @@ export class MessagesAttachmentsComponent {
   constructor(
     private alertCtrl: AlertController,
     private pictureService: PictureService,
+    private platform: Platform,
     private viewCtrl: ViewController,
     private modelCtrl: ModalController
   ) {}
+
+  takePicture(): void {
+    if (!this.platform.is('cordova')) {
+      return console.warn('Device must run cordova in order to take pictures');
+    }
+
+    Camera.getPicture().then((dataURI) => {
+      const blob = this.pictureService.convertDataURIToBlob(dataURI);
+
+      this.viewCtrl.dismiss({
+        selectedPicture: blob
+      });
+    });
+  }
 
   sendPicture(): void {
     this.pictureService.select().then((file: File) => {

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { AlertController, NavController, ViewController } from 'ionic-angular';
+import { Alert, AlertController, NavController, ViewController } from 'ionic-angular';
+import { PhoneService } from '../../services/phone';
 import { LoginPage } from '../login/login';
 import { ProfilePage } from '../profile/profile';
 
@@ -9,9 +10,10 @@ import { ProfilePage } from '../profile/profile';
 })
 export class ChatsOptionsComponent {
   constructor(
-    public alertCtrl: AlertController,
-    public navCtrl: NavController,
-    public viewCtrl: ViewController
+    private alertCtrl: AlertController,
+    private navCtrl: NavController,
+    private phoneService: PhoneService,
+    private viewCtrl: ViewController
   ) {}
 
   editProfile(): void {
@@ -44,19 +46,21 @@ export class ChatsOptionsComponent {
     });
   }
 
-  private handleLogout(alert): void {
-    Meteor.logout((e: Error) => {
-      alert.dismiss().then(() => {
-        if (e) return this.handleError(e);
-
-        this.navCtrl.setRoot(LoginPage, {}, {
-          animate: true
-        });
+  handleLogout(alert: Alert): void {
+    alert.dismiss().then(() => {
+      return this.phoneService.logout();
+    })
+    .then(() => {
+      this.navCtrl.setRoot(LoginPage, {}, {
+        animate: true
       });
+    })
+    .catch((e) => {
+      this.handleError(e);
     });
   }
 
-  private handleError(e: Error): void {
+  handleError(e: Error): void {
     console.error(e);
 
     const alert = this.alertCtrl.create({

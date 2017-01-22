@@ -4,7 +4,7 @@ import { DEFAULT_USERNAME, Profile } from 'api/models';
 import { AlertController, NavController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import { PictureService } from '../../services/picture';
-import { TabsPage } from '../tabs/tabs';
+import { ChatsPage } from '../chats/chats';
 
 @Component({
   selector: 'profile',
@@ -31,16 +31,16 @@ export class ProfilePage implements OnInit {
   }
 
   selectProfilePicture(): void {
-    this.pictureService.select().then((file) => {
-      this.uploadProfilePicture(file);
+    this.pictureService.select().then((blob) => {
+      this.uploadProfilePicture(blob);
     })
     .catch((e) => {
       this.handleError(e);
     });
   }
 
-  uploadProfilePicture(file: File): void {
-    this.pictureService.upload(file).then((picture) => {
+  uploadProfilePicture(blob: Blob): void {
+    this.pictureService.upload(blob).then((picture) => {
       this.profile.pictureId = picture._id;
       this.picture = picture.url;
     })
@@ -52,7 +52,7 @@ export class ProfilePage implements OnInit {
   updateProfile(): void {
     MeteorObservable.call('updateProfile', this.profile).subscribe({
       next: () => {
-        this.navCtrl.push(TabsPage);
+        this.navCtrl.push(ChatsPage);
       },
       error: (e: Error) => {
         this.handleError(e);
