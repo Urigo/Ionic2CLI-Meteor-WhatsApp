@@ -5,13 +5,14 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { MomentModule } from 'angular2-moment';
 import { ChatsPage } from '../pages/chats/chats';
-
+import { MessagesPage } from '../pages/messages/messages';
 import { MyApp } from './app.component';
 
 @NgModule({
   declarations: [
     MyApp,
-    ChatsPage
+    ChatsPage,
+    MessagesPage
   ],
   imports: [
     BrowserModule,
@@ -21,7 +22,8 @@ import { MyApp } from './app.component';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    ChatsPage
+    ChatsPage,
+    MessagesPage
   ],
   providers: [
     StatusBar,
