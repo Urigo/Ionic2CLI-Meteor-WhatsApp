@@ -80,7 +80,16 @@ Meteor.publishComposite('chats', function(): PublishCompositeConfig<Chat> {
           }, {
             fields: { profile: 1 }
           });
-        }
+        },
+        children: [
+          <PublishCompositeConfig2<Chat, User, Picture>> {
+            find: (user, chat) => {
+              return Pictures.collection.find(user.profile.pictureId, {
+                fields: { url: 1 }
+              });
+            }
+          }
+        ]
       }
     ]
   };
