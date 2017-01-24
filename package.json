@@ -48,6 +48,7 @@
     "typescript-extends": "^1.0.1"
   },
   "cordovaPlugins": [
+    "cordova-plugin-camera",
     "cordova-plugin-whitelist",
     "cordova-plugin-console",
     "cordova-plugin-statusbar",
