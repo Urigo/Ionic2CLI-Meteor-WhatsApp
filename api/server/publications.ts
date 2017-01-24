@@ -2,6 +2,7 @@ import { User, Message, Chat } from './models';
 import { Users } from './collections/users';
 import { Messages } from './collections/messages';
 import { Chats } from './collections/chats';
+import { Pictures } from './collections/pictures';
 
 Meteor.publishComposite('users', function(
   pattern: string
@@ -73,4 +74,16 @@ Meteor.publishComposite('chats', function(): PublishCompositeConfig<Chat> {
       }
     ]
   };
+});
+
+Meteor.publish('user', function () {
+  if (!this.userId) {
+    return;
+  }
+
+  const profile = Users.findOne(this.userId).profile || {};
+
+  return Pictures.collection.find({
+    _id: profile.pictureId
+  });
 });
