@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Chats, Messages, Users } from 'api/collections';
+import { Chats, Messages, Users, Pictures } from 'api/collections';
 import { Chat, Message } from 'api/models';
-import { NavController, PopoverController, ModalController, AlertController } from 'ionic-angular';
+import { NavController, PopoverController, ModalController, AlertController, Platform } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Observable, Subscriber } from 'rxjs';
 import { MessagesPage } from '../messages/messages';
@@ -19,7 +19,8 @@ export class ChatsPage implements OnInit {
     private navCtrl: NavController,
     private popoverCtrl: PopoverController,
     private modalCtrl: ModalController,
-    private alertCtrl: AlertController) {
+    private alertCtrl: AlertController,
+    private platform: Platform) {
     this.senderId = Meteor.userId();
   }
 
@@ -48,7 +49,12 @@ export class ChatsPage implements OnInit {
 
         if (receiver) {
           chat.title = receiver.profile.name;
-          chat.picture = receiver.profile.picture;
+
+          let platform = this.platform.is('android') ? "android" :
+            this.platform.is('ios') ? "ios" : "";
+          platform = this.platform.is('cordova') ? platform : "";
+
+          chat.picture = Pictures.getPictureUrl(receiver.profile.pictureId, platform);
         }
 
         // This will make the last message reactive
