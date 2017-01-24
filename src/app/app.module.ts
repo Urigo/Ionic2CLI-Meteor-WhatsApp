@@ -3,12 +3,14 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { ChatsPage } from '../pages/chats/chats';
 
 import { MyApp } from './app.component';
 
 @NgModule({
   declarations: [
-    MyApp
+    MyApp,
+    ChatsPage
   ],
   imports: [
     BrowserModule,
@@ -16,7 +18,8 @@ import { MyApp } from './app.component';
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp
+    MyApp,
+    ChatsPage
   ],
   providers: [
     StatusBar,
