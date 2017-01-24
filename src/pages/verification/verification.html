@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar color="whatsapp">
+    <ion-title>Verification</ion-title>
+
+    <ion-buttons end>
+      <button ion-button class="verify-button" (click)="verify()">Verify</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="verification-page-content">
+  <div class="instructions">
+    <div>
+      An SMS message with the verification code has been sent to {{phone}}.
+    </div>
+    <br>
+    <div>
+      To proceed, please enter the 4-digit verification code below.
+    </div>
+  </div>
+
+  <ion-item>
+    <ion-input [(ngModel)]="code" (keypress)="onInputKeypress($event)" type="tel" placeholder="Your verification code"></ion-input>
+  </ion-item>
+</ion-content>
