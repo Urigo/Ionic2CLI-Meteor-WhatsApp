@@ -51,5 +51,8 @@
       "locator": "ios"
     }
   ],
-  "description": "whatsapp: An Ionic project"
+  "description": "whatsapp: An Ionic project",
+  "config": {
+    "ionic_webpack": "./webpack.config.js"
+  }
 }
