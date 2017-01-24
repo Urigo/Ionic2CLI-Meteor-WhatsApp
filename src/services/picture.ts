@@ -28,6 +28,10 @@ export class PictureService {
     });
   }
 
+  upload(blob: File): Promise<any> {
+    return Promise.resolve();
+  }
+
   convertURLtoBlob(url: string, options = {}): Promise<File> {
     return new Promise((resolve, reject) => {
       const image = document.createElement('img');
