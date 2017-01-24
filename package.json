@@ -33,6 +33,7 @@
     "ionic-angular": "3.7.1",
     "ionicons": "3.0.0",
     "meteor-node-stubs": "^0.2.11",
+    "meteor-rxjs": "^0.4.8",
     "moment": "^2.19.0",
     "rxjs": "5.4.3",
     "sw-toolbox": "3.6.0",
