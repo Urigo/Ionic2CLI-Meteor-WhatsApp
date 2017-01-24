@@ -17,7 +17,6 @@ es5-shim@4.6.15                # ECMAScript 5 compatibility for older browsers
 ecmascript@0.9.0-rc.7              # Enable ECMAScript2015+ syntax in app code
 shell-server@0.3.0-rc.7            # Server-side component of the `meteor shell` command
 
-autopublish@1.0.7             # Publish all data to the clients (for prototyping)
 barbatus:typescript
 check
 accounts-base
