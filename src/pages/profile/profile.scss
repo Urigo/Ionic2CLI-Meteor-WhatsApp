@@ -1,0 +1,20 @@
+.profile-page-content {
+  .profile-picture {
+    max-width: 300px;
+    display: block;
+    margin: auto;
+
+    img {
+      margin-bottom: -33px;
+      width: 100%;
+    }
+
+    ion-icon {
+      float: right;
+      font-size: 30px;
+      opacity: 0.5;
+      border-left: black solid 1px;
+      padding-left: 5px;
+    }
+  }
+}
