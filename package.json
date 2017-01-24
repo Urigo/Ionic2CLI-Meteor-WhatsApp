@@ -4,6 +4,7 @@
   "homepage": "http://ionicframework.com/",
   "private": true,
   "scripts": {
+    "api": "cd api && meteor run --settings private/settings.json",
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
     "ionic:build": "ionic-app-scripts build",
