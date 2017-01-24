@@ -40,7 +40,13 @@ export class NewChatComponent implements OnInit {
   }
 
   loadUsers(): void {
-    this.users = this.findUsers();
+    // Fetch all users matching search pattern
+    const subscription = MeteorObservable.subscribe('users');
+    const autorun = MeteorObservable.autorun();
+
+    Observable.merge(subscription, autorun).subscribe(() => {
+      this.users = this.findUsers();
+    });
   }
 
   findUsers(): Observable<User[]> {
