@@ -50,6 +50,7 @@
     "cordova-plugin-console",
     "cordova-plugin-statusbar",
     "cordova-plugin-device",
+    "cordova-plugin-geolocation",
     "ionic-plugin-keyboard",
     "cordova-plugin-splashscreen"
   ],
