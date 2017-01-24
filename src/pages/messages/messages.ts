@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 import { MessagesOptionsComponent } from './messages-options';
 import { Subscription, Observable, Subscriber } from 'rxjs';
+import { MessagesAttachmentsComponent } from './messages-attachments';
 
 @Component({
   selector: 'messages-page',
@@ -210,5 +211,19 @@ export class MessagesPage implements OnInit, OnDestroy {
       // Zero the input field
       this.message = '';
     });
+  }
+
+  showAttachments(): void {
+    const popover = this.popoverCtrl.create(MessagesAttachmentsComponent, {
+      chat: this.selectedChat
+    }, {
+      cssClass: 'attachments-popover'
+    });
+
+    popover.onDidDismiss((params) => {
+      // TODO: Handle result
+    });
+
+    popover.present();
   }
 }
