@@ -81,6 +81,9 @@ var devConfig = {
   },
 
   externals: [
+    {
+      sharp: '{}'
+    },
     resolveExternals
   ],
 
