@@ -24,7 +24,7 @@
 
           <span *ngIf="chat.lastMessage" class="last-message">
             <p *ngIf="chat.lastMessage.type == 'text'" class="last-message-content last-message-content-text">{{chat.lastMessage.content}}</p>
-            <span class="last-message-timestamp">{{chat.lastMessage.createdAt }}</span>
+            <span class="last-message-timestamp">{{ chat.lastMessage.createdAt | amCalendar }}</span>
           </span>
         </div>
       </button>
