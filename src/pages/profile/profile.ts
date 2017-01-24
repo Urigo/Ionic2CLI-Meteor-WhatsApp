@@ -3,6 +3,8 @@ import { Profile } from 'api/models';
 import { AlertController, NavController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import { ChatsPage } from '../chats/chats';
+import { PictureService } from '../../services/picture';
+import { Pictures } from 'api/collections';
 
 @Component({
   selector: 'profile',
@@ -14,13 +16,37 @@ export class ProfilePage implements OnInit {
 
   constructor(
     private alertCtrl: AlertController,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private pictureService: PictureService
   ) {}
 
   ngOnInit(): void {
     this.profile = Meteor.user().profile || {
       name: ''
     };
+
+    MeteorObservable.subscribe('user').subscribe(() => {
+      this.picture = Pictures.getPictureUrl(this.profile.pictureId);
+    });
+  }
+
+  selectProfilePicture(): void {
+    this.pictureService.select().then((blob) => {
+      this.uploadProfilePicture(blob);
+    })
+      .catch((e) => {
+        this.handleError(e);
+      });
+  }
+
+  uploadProfilePicture(blob: Blob): void {
+    this.pictureService.upload(blob).then((picture) => {
+      this.profile.pictureId = picture._id;
+      this.picture = picture.url;
+    })
+      .catch((e) => {
+        this.handleError(e);
+      });
   }
 
   updateProfile(): void {
