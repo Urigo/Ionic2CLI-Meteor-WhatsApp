@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar color="whatsapp">
+    <ion-title>Send Location</ion-title>
+
+    <ion-buttons end>
+      <button ion-button class="dismiss-button" (click)="viewCtrl.dismiss()"><ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="location-message-content">
+  <ion-list>
+    <sebm-google-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+      <sebm-google-map-marker [latitude]="lat" [longitude]="lng"></sebm-google-map-marker>
+    </sebm-google-map>
+    <ion-item (click)="sendLocation()">
+      <ion-icon name="compass" item-left></ion-icon>
+      <h2>Send your current location</h2>
+      <p *ngIf="accuracy !== -1">Accurate to {{accuracy}} meters</p>
+    </ion-item>
+  </ion-list>
+</ion-content>
