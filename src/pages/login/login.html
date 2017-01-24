@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar color="whatsapp">
+    <ion-title>Login</ion-title>
+
+    <ion-buttons end>
+      <button ion-button class="done-button" (click)="login()">Done</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="login-page-content">
+  <div class="instructions">
+    <div>
+      Please enter your phone number including its country code.
+    </div>
+    <br>
+    <div>
+      The messenger will send a one time SMS message to verify your phone number. Carrier SMS charges may apply.
+    </div>
+  </div>
+
+  <ion-item>
+    <ion-input [(ngModel)]="phone" (keypress)="onInputKeypress($event)" type="tel" placeholder="Your phone number"></ion-input>
+  </ion-item>
+</ion-content>
