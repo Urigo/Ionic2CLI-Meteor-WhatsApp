@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-navbar color="whatsapp">
+    <ion-title>Profile</ion-title>
+
+    <ion-buttons end>
+      <button ion-button class="done-button" (click)="updateProfile()">Done</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="profile-page-content">
+  <div class="profile-picture">
+    <img *ngIf="picture" [src]="picture">
+  </div>
+
+  <ion-item class="profile-name">
+    <ion-label stacked>Name</ion-label>
+    <ion-input [(ngModel)]="profile.name" placeholder="Your name"></ion-input>
+  </ion-item>
+</ion-content>
