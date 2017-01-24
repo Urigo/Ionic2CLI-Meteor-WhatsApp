@@ -3,6 +3,7 @@ import { Chats, Messages } from 'api/collections';
 import { Chat } from 'api/models';
 import { NavController } from 'ionic-angular';
 import { Observable } from 'rxjs';
+import { MessagesPage } from '../messages/messages';
 
 @Component({
   templateUrl: 'chats.html'
