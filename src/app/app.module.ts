@@ -7,6 +7,7 @@ import { NewChatComponent } from '../pages/chats/new-chat';
 import { ChatsOptionsComponent } from '../pages/chats/chats-options';
 import { LoginPage } from '../pages/login/login';
 import { MessagesPage } from '../pages/messages/messages';
+import { MessagesAttachmentsComponent } from '../pages/messages/messages-attachments';
 import { MessagesOptionsComponent } from '../pages/messages/messages-options';
 import { ProfilePage } from '../pages/profile/profile';
 import { VerificationPage } from '../pages/verification/verification';
@@ -23,7 +24,8 @@ import { MyApp } from './app.component';
     ProfilePage,
     ChatsOptionsComponent,
     NewChatComponent,
-    MessagesOptionsComponent
+    MessagesOptionsComponent,
+    MessagesAttachmentsComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -42,7 +44,8 @@ import { MyApp } from './app.component';
     ProfilePage,
     ChatsOptionsComponent,
     NewChatComponent,
-    MessagesOptionsComponent
+    MessagesOptionsComponent,
+    MessagesAttachmentsComponent
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},
