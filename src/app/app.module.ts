@@ -4,6 +4,7 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { ChatsPage } from '../pages/chats/chats';
 import { LoginPage } from '../pages/login/login';
 import { MessagesPage } from '../pages/messages/messages';
+import { VerificationPage } from '../pages/verification/verification';
 import { PhoneService } from '../services/phone';
 import { MyApp } from './app.component';
 
@@ -12,7 +13,8 @@ import { MyApp } from './app.component';
     MyApp,
     ChatsPage,
     MessagesPage,
-    LoginPage
+    LoginPage,
+    VerificationPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -23,7 +25,8 @@ import { MyApp } from './app.component';
     MyApp,
     ChatsPage,
     MessagesPage,
-    LoginPage
+    LoginPage,
+    VerificationPage
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},
