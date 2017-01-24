@@ -23,6 +23,7 @@ export class MessagesPage implements OnInit, OnDestroy {
   senderId: string;
   loadingMessages: boolean;
   messagesComputation: Subscription;
+  messagesBatchCounter: number = 0;
 
   constructor(
     navParams: NavParams,
@@ -65,7 +66,8 @@ export class MessagesPage implements OnInit, OnDestroy {
     this.scrollOffset = this.scroller.scrollHeight;
 
     MeteorObservable.subscribe('messages',
-      this.selectedChat._id
+      this.selectedChat._id,
+      ++this.messagesBatchCounter
     ).subscribe(() => {
       // Keep tracking changes in the dataset and re-render the view
       if (!this.messagesComputation) {
