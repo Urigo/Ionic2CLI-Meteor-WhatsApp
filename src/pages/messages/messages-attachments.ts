@@ -3,6 +3,7 @@ import { AlertController, Platform, ModalController, ViewController } from 'ioni
 import { NewLocationMessageComponent } from './location-message';
 import { MessageType } from 'api/models';
 import { PictureService } from '../../services/picture';
+import { Camera } from 'ionic-native';
 
 @Component({
   selector: 'messages-attachments',
@@ -22,6 +23,21 @@ export class MessagesAttachmentsComponent {
       this.viewCtrl.dismiss({
         messageType: MessageType.PICTURE,
         selectedPicture: file
+      });
+    });
+  }
+
+  takePicture(): void {
+    if (!this.platform.is('cordova')) {
+      return console.warn('Device must run cordova in order to take pictures');
+    }
+
+    Camera.getPicture().then((dataURI) => {
+      const blob = this.pictureService.convertDataURIToBlob(dataURI);
+
+      this.viewCtrl.dismiss({
+        messageType: MessageType.PICTURE,
+        selectedPicture: blob
       });
     });
   }
