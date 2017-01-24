@@ -15,11 +15,15 @@
 
 <ion-content padding class="messages-page-content">
   <ion-scroll scrollY="true" class="messages">
-    <div *ngFor="let message of messages | async" class="message-wrapper">
+    <div *ngFor="let day of messagesDayGroups | async" class="day-wrapper">
+      <div *ngFor="let message of day.messages" class="message-wrapper">
         <div [class]="'message message-' + message.ownership">
           <div *ngIf="message.type == 'text'" class="message-content message-content-text">{{message.content}}</div>
           <span class="message-timestamp">{{ message.createdAt | amDateFormat: 'HH:mm' }}</span>
+        </div>
       </div>
+
+      <div *ngIf="!day.today" class="day-timestamp">{{day.timestamp}}</div>
     </div>
   </ion-scroll>
 </ion-content>
