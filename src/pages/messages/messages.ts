@@ -241,4 +241,14 @@ export class MessagesPage implements OnInit, OnDestroy {
 
     popover.present();
   }
+
+  getLocation(locationString: string): Location {
+    const splitted = locationString.split(',').map(Number);
+
+    return <Location>{
+      lat: splitted[0],
+      lng: splitted[1],
+      zoom: Math.min(splitted[2] || 0, 19)
+    };
+  }
 }
