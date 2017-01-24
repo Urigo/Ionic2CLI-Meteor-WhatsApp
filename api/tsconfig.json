@@ -16,7 +16,8 @@
     "stripInternal": true,
     "noImplicitAny": false,
     "types": [
-      "@types/meteor"
+      "@types/meteor",
+      "@types/meteor-accounts-phone"
     ]
   },
   "exclude": [
