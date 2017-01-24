@@ -14,3 +14,16 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+// Options Popover Component
+// --------------------------------------------------
+
+$options-popover-width: 200px;
+$options-popover-margin: 5px;
+
+.options-popover .popover-content {
+  width: $options-popover-width;
+  transform-origin: right top 0px !important;
+  left: calc(100% - #{$options-popover-width} - #{$options-popover-margin}) !important;
+  top: $options-popover-margin !important;
+}
