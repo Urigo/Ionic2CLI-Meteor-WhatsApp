@@ -27,3 +27,15 @@ $options-popover-margin: 5px;
   left: calc(100% - #{$options-popover-width} - #{$options-popover-margin}) !important;
   top: $options-popover-margin !important;
 }
+
+// Attachments Popover Component
+// --------------------------------------------------
+
+$attachments-popover-width: 100%;
+
+.attachments-popover .popover-content {
+  width: $attachments-popover-width;
+  transform-origin: 300px 30px !important;
+  left: calc(100% - #{$attachments-popover-width}) !important;
+  top: 58px !important;
+}
