@@ -9,6 +9,7 @@
     "url": "https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp.git"
   },
   "scripts": {
+    "api": "cd api && meteor run --settings private/settings.json",
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
