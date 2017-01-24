@@ -13,7 +13,8 @@
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
     "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve"
+    "ionic:serve": "ionic-app-scripts serve",
+    "meteor-client:bundle": "meteor-client bundle -s api"
   },
   "dependencies": {
     "@angular/common": "4.4.3",
