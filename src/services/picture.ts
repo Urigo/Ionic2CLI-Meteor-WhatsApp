@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { ImagePicker } from 'ionic-native';
 import { UploadFS } from 'meteor/jalik:ufs';
+import { PicturesStore } from 'api/collections';
+import { _ } from 'meteor/underscore';
+import { DEFAULT_PICTURE_URL } from 'api/models';
 
 @Injectable()
 export class PictureService {
@@ -28,7 +31,23 @@ export class PictureService {
   }
 
   upload(blob: Blob): Promise<any> {
-    return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      const metadata = _.pick(blob, 'name', 'type', 'size');
+
+      if (!metadata.name) {
+        metadata.name = DEFAULT_PICTURE_URL;
+      }
+
+      const upload = new UploadFS.Uploader({
+        data: blob,
+        file: metadata,
+        store: PicturesStore,
+        onComplete: resolve,
+        onError: reject
+      });
+
+      upload.start();
+    });
   }
 
   convertURLtoBlob(URL: string): Promise<Blob> {
