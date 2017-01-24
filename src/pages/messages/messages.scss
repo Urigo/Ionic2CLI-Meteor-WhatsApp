@@ -1,0 +1,106 @@
+.messages-page-navbar {
+  .chat-picture {
+    width: 50px;
+    border-radius: 50%;
+    float: left;
+  }
+
+  .chat-title {
+    line-height: 50px;
+    float: left;
+  }
+}
+
+.messages-page-content {
+  > .scroll-content {
+    margin: 42px -16px 42px !important;
+  }
+
+  .day-wrapper .day-timestamp {
+    margin-left: calc(50% - 64px);
+    margin-right: calc(50% - 64px);
+    margin-bottom: 9px;
+    text-align: center;
+    line-height: 27px;
+    height: 27px;
+    border-radius: 3px;
+    color: gray;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+    background: #d9effa;
+  }
+
+  .messages {
+    height: 100%;
+    background-image: url(../assets/chat-background.jpg);
+    background-color: #E0DAD6;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .message-wrapper {
+    margin-bottom: 9px;
+
+    &::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+  }
+
+  .message {
+    display: inline-block;
+    position: relative;
+    max-width: 65vh;
+    border-radius: 7px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+
+    &.message-mine {
+      float: right;
+      background-color: #DCF8C6;
+
+      &::before {
+        right: -11px;
+        background-image: url(../assets/message-mine.png)
+      }
+    }
+
+    &.message-other {
+      float: left;
+      background-color: #FFF;
+
+      &::before {
+        left: -11px;
+        background-image: url(../assets/message-other.png)
+      }
+    }
+
+    &.message-other::before, &.message-mine::before {
+      content: "";
+      position: absolute;
+      bottom: 3px;
+      width: 12px;
+      height: 19px;
+      background-position: 50% 50%;
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+
+    .message-content {
+      padding: 5px 7px;
+      word-wrap: break-word;
+
+      &::after {
+        content: " \00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0";
+        display: inline;
+      }
+    }
+
+    .message-timestamp {
+      position: absolute;
+      bottom: 2px;
+      right: 7px;
+      font-size: 12px;
+      color: gray;
+    }
+  }
+}
