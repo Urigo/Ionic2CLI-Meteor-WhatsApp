@@ -32,9 +32,22 @@
       "allow-deny",
       "reactive-var",
       "mongo"
+    ],
+    "npm-bcrypt": [],
+    "accounts-base": [
+      "callback-hook",
+      "localstorage",
+      "accounts-base",
+      "service-configuration"
+    ],
+    "mys:accounts-phone": [
+      "sha",
+      "srp",
+      "mys_accounts-phone"
     ]
   },
   "export": {
+    "accounts-base": ["Accounts"],
     "ddp": ["DDP"],
     "meteor": ["Meteor"],
     "mongo": ["Mongo"],
