@@ -14,8 +14,15 @@ module.exports = {
 
   resolve: {
     extensions: ['.ts', '.js', '.json'],
-    modules: [path.resolve('node_modules')]
+    modules: [path.resolve('node_modules')],
+    alias: {
+      'api': path.resolve(__dirname, 'api/server')
+    }
   },
+
+  externals: [
+    resolveExternals
+  ],
 
   module: {
     loaders: [
@@ -36,6 +43,9 @@ module.exports = {
 
   plugins: [
     ionicWebpackFactory.getIonicEnvironmentPlugin(),
+    new webpack.ProvidePlugin({
+      __extends: 'typescript-extends'
+    })
   ],
 
   // Some libraries import Node modules but don't use them in the browser.
@@ -43,6 +53,22 @@ module.exports = {
   node: {
     fs: 'empty',
     net: 'empty',
-    tls: 'empty'
+    tls: 'empty',
+    __dirname: true
   }
 };
+
+function resolveExternals(context, request, callback) {
+  return resolveMeteor(request, callback) ||
+    callback();
+}
+
+function resolveMeteor(request, callback) {
+  var match = request.match(/^meteor\/(.+)$/);
+  var pack = match && match[1];
+
+  if (pack) {
+    callback(null, 'Package["' + pack + '"]');
+    return true;
+  }
+}
