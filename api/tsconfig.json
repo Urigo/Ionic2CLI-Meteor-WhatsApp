@@ -17,7 +17,8 @@
     "noImplicitAny": false,
     "types": [
       "@types/meteor",
-      "@types/meteor-accounts-phone"
+      "@types/meteor-accounts-phone",
+      "@types/meteor-publish-composite"
     ]
   },
   "exclude": [
