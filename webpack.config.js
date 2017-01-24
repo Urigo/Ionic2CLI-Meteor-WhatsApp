@@ -21,6 +21,9 @@ module.exports = {
   },
 
   externals: [
+    {
+      sharp: '{}'
+    },
     resolveExternals
   ],
 
