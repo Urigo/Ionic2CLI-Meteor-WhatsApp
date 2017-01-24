@@ -17,7 +17,7 @@
 <ion-content class="chats-page-content">
   <ion-list class="chats">
     <ion-item-sliding *ngFor="let chat of chats | async">
-      <button ion-item class="chat">
+      <button ion-item class="chat" (click)="showMessages(chat)">
         <img class="chat-picture" [src]="chat.picture">
         <div class="chat-info">
           <h2 class="chat-title">{{chat.title}}</h2>
