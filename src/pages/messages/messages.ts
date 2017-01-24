@@ -6,7 +6,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { MessagesOptionsComponent } from './messages-options';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable, Subscriber } from 'rxjs';
 
 @Component({
   selector: 'messages-page',
@@ -51,6 +51,22 @@ export class MessagesPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.autoScroller = this.autoScroll();
     this.subscribeMessages();
+
+    // Get total messages count in database so we can have an indication of when to
+    // stop the auto-subscriber
+    MeteorObservable.call('countMessages').subscribe((messagesCount: number) => {
+      Observable
+      // Chain every scroll event
+        .fromEvent(this.scroller, 'scroll')
+        // Remove the scroll listener once all messages have been fetched
+        .takeUntil(this.autoRemoveScrollListener(messagesCount))
+        // Filter event handling unless we're at the top of the page
+        .filter(() => !this.scroller.scrollTop)
+        // Prohibit parallel subscriptions
+        .filter(() => !this.loadingMessages)
+        // Invoke the messages subscription once all the requirements have been met
+        .forEach(() => this.subscribeMessages());
+    });
   }
 
   ngOnDestroy() {
@@ -83,6 +99,29 @@ export class MessagesPage implements OnInit, OnDestroy {
   autorunMessages(): Subscription {
     return MeteorObservable.autorun().subscribe(() => {
       this.messagesDayGroups = this.findMessagesDayGroups();
+    });
+  }
+
+  // Removes the scroll listener once all messages from the past were fetched
+  autoRemoveScrollListener<T>(messagesCount: number): Observable<T> {
+    return Observable.create((observer: Subscriber<T>) => {
+      Messages.find().subscribe({
+        next: (messages) => {
+          // Once all messages have been fetched
+          if (messagesCount !== messages.length) {
+            return;
+          }
+
+          // Signal to stop listening to the scroll event
+          observer.next();
+
+          // Finish the observation to prevent unnecessary calculations
+          observer.complete();
+        },
+        error: (e) => {
+          observer.error(e);
+        }
+      });
     });
   }
 
