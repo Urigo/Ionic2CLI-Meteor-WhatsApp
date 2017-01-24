@@ -58,6 +58,7 @@
     "cordova-plugin-statusbar",
     "cordova-plugin-device",
     "cordova-plugin-geolocation",
+    "cordova-plugin-sim",
     "ionic-plugin-keyboard",
     "cordova-plugin-splashscreen",
     "https://github.com/Telerik-Verified-Plugins/ImagePicker"
