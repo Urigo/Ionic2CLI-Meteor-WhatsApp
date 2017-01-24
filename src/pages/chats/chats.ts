@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Chats, Messages, Users } from 'api/collections';
+import { Chats, Messages, Users, Pictures } from 'api/collections';
 import { Chat, Message } from 'api/models';
 import { NavController, PopoverController, ModalController, AlertController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -48,7 +48,7 @@ export class ChatsPage implements OnInit {
 
         if (receiver) {
           chat.title = receiver.profile.name;
-          chat.picture = receiver.profile.picture;
+          chat.picture = Pictures.getPictureUrl(receiver.profile.pictureId);
         }
 
         // This will make the last message reactive
