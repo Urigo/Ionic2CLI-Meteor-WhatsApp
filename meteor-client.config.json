@@ -44,6 +44,19 @@
       "sha",
       "srp",
       "mys_accounts-phone"
+    ],
+    "jalik:ufs": [
+      "observe-sequence",
+      "htmljs",
+      "blaze",
+      "spacebars",
+      "templating-runtime",
+      "templating",
+      "matb33_collection-hooks",
+      "jalik_ufs"
+    ],
+    "jalik:ufs-gridfs": [
+      "jalik_ufs-gridfs"
     ]
   },
   "export": {
