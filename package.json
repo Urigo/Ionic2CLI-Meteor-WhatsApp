@@ -29,9 +29,11 @@
     "@angular/platform-browser-dynamic": "4.4.3",
     "@ionic-native/core": "4.3.0",
     "@ionic-native/geolocation": "^4.3.1",
+    "@ionic-native/image-picker": "^4.3.1",
     "@ionic-native/splash-screen": "4.3.0",
     "@ionic-native/status-bar": "4.3.0",
     "@ionic/storage": "2.0.1",
+    "ImagePicker": "git+https://github.com/dhavalsoni2001/ImagePicker.git",
     "angular2-moment": "^1.7.0",
     "babel-runtime": "^6.26.0",
     "cordova-android": "^6.3.0",
@@ -75,7 +77,8 @@
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-webview": {},
-      "cordova-plugin-geolocation": {}
+      "cordova-plugin-geolocation": {},
+      "com.synconset.imagepicker": {}
     },
     "platforms": [
       "android"
