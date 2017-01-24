@@ -24,3 +24,5 @@ accounts-base
 mys:accounts-phone
 npm-bcrypt
 reywood:publish-composite
+jalik:ufs
+jalik:ufs-gridfs
