@@ -27,13 +27,16 @@
     "@angular/platform-browser": "4.4.3",
     "@angular/platform-browser-dynamic": "4.4.3",
     "@ionic-native/core": "4.3.0",
+    "@ionic-native/geolocation": "^4.3.1",
     "@ionic-native/splash-screen": "4.3.0",
     "@ionic-native/status-bar": "4.3.0",
     "@ionic/storage": "2.0.1",
     "angular2-moment": "^1.7.0",
     "babel-runtime": "^6.26.0",
     "cordova-android": "^6.3.0",
+    "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-device": "^1.1.4",
+    "cordova-plugin-geolocation": "^2.4.3",
     "cordova-plugin-ionic-webview": "^1.1.15",
     "cordova-plugin-splashscreen": "^4.0.3",
     "cordova-plugin-statusbar": "https://github.com/apache/cordova-plugin-statusbar.git",
@@ -70,7 +73,8 @@
       "cordova-plugin-statusbar": {},
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
-      "cordova-plugin-ionic-webview": {}
+      "cordova-plugin-ionic-webview": {},
+      "cordova-plugin-geolocation": {}
     },
     "platforms": [
       "android"
