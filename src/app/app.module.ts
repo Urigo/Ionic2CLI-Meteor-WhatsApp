@@ -13,6 +13,7 @@ import { NewLocationMessageComponent } from '../pages/messages/location-message'
 import { ProfilePage } from '../pages/profile/profile';
 import { VerificationPage } from '../pages/verification/verification';
 import { PhoneService } from '../services/phone';
+import { PictureService } from '../services/picture';
 import { MyApp } from './app.component';
 
 @NgModule({
@@ -52,7 +53,8 @@ import { MyApp } from './app.component';
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    PhoneService
+    PhoneService,
+    PictureService
   ]
 })
 export class AppModule {}
