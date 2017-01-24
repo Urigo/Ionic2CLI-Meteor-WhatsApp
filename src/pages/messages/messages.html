@@ -15,7 +15,7 @@
 
 <ion-content padding class="messages-page-content">
   <ion-scroll scrollY="true" class="messages">
-    <div *ngFor="let message of messages | async" class="day-wrapper">
+    <div *ngFor="let message of messages | async" class="message-wrapper">
         <div [class]="'message message-' + message.ownership">
           <div *ngIf="message.type == 'text'" class="message-content message-content-text">{{message.content}}</div>
           <span class="message-timestamp">{{ message.createdAt }}</span>
