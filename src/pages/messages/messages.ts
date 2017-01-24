@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { MessagesOptionsComponent } from './messages-options';
 import { Subscription, Observable, Subscriber } from 'rxjs';
 import { MessagesAttachmentsComponent } from './messages-attachments';
+import { PictureService } from '../../services/picture';
 
 @Component({
   selector: 'messages-page',
@@ -29,7 +30,8 @@ export class MessagesPage implements OnInit, OnDestroy {
   constructor(
     navParams: NavParams,
     private el: ElementRef,
-    private popoverCtrl: PopoverController
+    private popoverCtrl: PopoverController,
+    private pictureService: PictureService
   ) {
     this.selectedChat = <Chat>navParams.get('chat');
     this.title = this.selectedChat.title;
@@ -236,10 +238,23 @@ export class MessagesPage implements OnInit, OnDestroy {
           const location = params.selectedLocation;
           this.sendLocationMessage(location);
         }
+        else if (params.messageType === MessageType.PICTURE) {
+          const blob: File = params.selectedPicture;
+          this.sendPictureMessage(blob);
+        }
       }
     });
 
     popover.present();
+  }
+
+  sendPictureMessage(blob: File): void {
+    this.pictureService.upload(blob).then((picture) => {
+      MeteorObservable.call('addMessage', MessageType.PICTURE,
+        this.selectedChat._id,
+        picture.url
+      ).zone().subscribe();
+    });
   }
 
   getLocation(locationString: string): Location {
