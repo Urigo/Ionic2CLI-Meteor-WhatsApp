@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { AlertController, Platform, ModalController, ViewController } from 'ionic-angular';
+import { NewLocationMessageComponent } from './location-message';
+import { MessageType } from 'api/models';
 
 @Component({
   selector: 'messages-attachments',
@@ -12,4 +14,22 @@ export class MessagesAttachmentsComponent {
     private viewCtrl: ViewController,
     private modelCtrl: ModalController
   ) {}
+
+  sendLocation(): void {
+    const locationModal = this.modelCtrl.create(NewLocationMessageComponent);
+    locationModal.onDidDismiss((location) => {
+      if (!location) {
+        this.viewCtrl.dismiss();
+
+        return;
+      }
+
+      this.viewCtrl.dismiss({
+        messageType: MessageType.LOCATION,
+        selectedLocation: location
+      });
+    });
+
+    locationModal.present();
+  }
 }
