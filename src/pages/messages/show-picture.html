@@ -1,0 +1,13 @@
+<ion-header>
+  <ion-toolbar color="whatsapp">
+    <ion-title>Show Picture</ion-title>
+
+    <ion-buttons left>
+      <button ion-button class="dismiss-button" (click)="viewCtrl.dismiss()"><ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="show-picture">
+  <img class="picture" [src]="pictureSrc">
+</ion-content>
