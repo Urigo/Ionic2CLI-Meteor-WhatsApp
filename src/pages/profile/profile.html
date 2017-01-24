@@ -11,6 +11,7 @@
 <ion-content class="profile-page-content">
   <div class="profile-picture">
     <img *ngIf="picture" [src]="picture">
+    <ion-icon name="create" (click)="selectProfilePicture()"></ion-icon>
   </div>
 
   <ion-item class="profile-name">
