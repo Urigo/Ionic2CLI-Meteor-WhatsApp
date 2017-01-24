@@ -1,0 +1,14 @@
+.new-chat {
+  .user-picture {
+    border-radius: 50%;
+    width: 50px;
+    float: left;
+  }
+
+  .user-name {
+    margin-left: 20px;
+    margin-top: 25px;
+    transform: translate(0, -50%);
+    float: left;
+  }
+}
