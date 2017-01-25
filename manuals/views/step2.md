@@ -332,7 +332,7 @@ The `d.ts` extension stands for `declaration - TypeScipt`, which basically tells
  ┊12┊12┊  https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html
  ┊13┊13┊*/
 -┊14┊  ┊declare module '*';🚫↵
-+┊  ┊14┊/// <reference path="../models/whatsapp-models.d.ts" />
++┊  ┊14┊/// <reference path="../api/models/whatsapp-models.d.ts" />
 +┊  ┊15┊declare module '*';
 +┊  ┊16┊
 ```
