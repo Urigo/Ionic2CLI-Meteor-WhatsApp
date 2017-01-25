@@ -294,7 +294,7 @@ And define it as the root tab, which means that once we enter the tabs view, thi
 
 ## TypeScript Interfaces
 
-Now, because we use TypeScript, we can define our own data-types and use then in our app, which will give you a better auto-complete and developing experience in most IDEs. In our application, we have 2 models at the moment: a `chat` model and a `message` model. We will define their interfaces in a file located under the path `/modes/whatsapp-models.d.ts`:
+Now, because we use TypeScript, we can define our own data-types and use then in our app, which will give you a better auto-complete and developing experience in most IDEs. In our application, we have 2 models at the moment: a `chat` model and a `message` model. We will define their interfaces in a file located under the path `/models/whatsapp-models.d.ts`:
 
 [{]: <helper> (diff_step 2.10)
 #### Step 2.10: Added chat and message models
