@@ -1,0 +1,35 @@
+In this step, we will be implementing additional native features, to enhance the user experience.
+
+## Automatic phone number detection
+
+`Ionic 2` is provided by default with a `Cordova` plug-in called `cordova-plugin-sim`, which allows us to retrieve some data from the current device's SIM card, if even exists. We will use the SIM card to automatically detect the current device's phone number, so this way the user won't need to manually fill-in his phone number whenever he tries to login. We will start by adding the appropriate handler in the `PhoneService`:
+
+{{{diffStep 13.1}}}
+
+And we will use it inside the `LoginPage`:
+
+{{{diffStep 13.2}}}
+
+In-order for it to work, be sure to install the following `Cordova` plug-in:
+
+    $ ionic plugin add cordova-plugin-sim
+
+## Camera
+
+Next - we will grant access to the device's camera so we can send pictures which are yet to exist in the gallery.
+
+We will start by adding the appropriate `Cordova` plug-in:
+
+    $ ionic plugin add cordova-plugin-camera
+
+We will bind the `click` event in the `MessagesAttachmentsComponent`:
+
+{{{diffStep 13.5}}}
+
+And we will use the recently installed `Cordova` plug-in in the event handler to take some pictures:
+
+{{{diffStep 13.6}}}
+
+Note that take pictures are retrieved as relative paths in the device, but we use some existing methods in the `PictureService` to convert these paths into the desired format.
+
+{{{navStep prevRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/file-upload" nextRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/summary"}}}
