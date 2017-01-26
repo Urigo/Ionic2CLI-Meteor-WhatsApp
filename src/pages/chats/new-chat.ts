@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Chats, Users } from 'api/collections';
+import { Chats, Users, Pictures } from 'api/collections';
 import { User } from 'api/models';
 import { AlertController, ViewController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -106,5 +106,9 @@ export class NewChatComponent implements OnInit {
     });
 
     alert.present();
+  }
+
+  getPic(pictureId): string {
+    return Pictures.getPictureUrl(pictureId);
   }
 }
