@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Chats, Users } from 'api/collections';
+import { Chats, Users, Pictures } from 'api/collections';
 import { User } from 'api/models';
-import { AlertController, ViewController } from 'ionic-angular';
+import { AlertController, Platform, ViewController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import * as _ from 'lodash';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
@@ -18,7 +18,8 @@ export class NewChatComponent implements OnInit {
 
   constructor(
     private alertCtrl: AlertController,
-    private viewCtrl: ViewController
+    private viewCtrl: ViewController,
+    private platform: Platform
   ) {
     this.senderId = Meteor.userId();
     this.searchPattern = new BehaviorSubject(undefined);
@@ -106,5 +107,13 @@ export class NewChatComponent implements OnInit {
     });
 
     alert.present();
+  }
+
+  getPic(pictureId): string {
+    let platform = this.platform.is('android') ? "android" :
+      this.platform.is('ios') ? "ios" : "";
+    platform = this.platform.is('cordova') ? platform : "";
+
+    return Pictures.getPictureUrl(pictureId, platform);
   }
 }
