@@ -26,7 +26,7 @@
 <ion-content class="new-chat">
   <ion-list class="users">
     <button ion-item *ngFor="let user of users | async" class="user" (click)="addChat(user)">
-      <img class="user-picture" [src]="user.profile.picture">
+      <img class="user-picture" [src]="getPic(user.profile.pictureId)">
       <h2 class="user-name">{{user.profile.name}}</h2>
     </button>
   </ion-list>
