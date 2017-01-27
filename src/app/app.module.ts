@@ -3,6 +3,7 @@ import { MomentModule } from 'angular2-moment';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { ChatsPage } from '../pages/chats/chats';
 import { MessagesPage } from '../pages/messages/messages';
+import { PhoneService } from '../services/phone';
 import { MyApp } from './app.component';
 
 @NgModule({
@@ -21,6 +22,9 @@ import { MyApp } from './app.component';
     ChatsPage,
     MessagesPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    PhoneService
+  ]
 })
 export class AppModule {}
