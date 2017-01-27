@@ -20,7 +20,8 @@
     "stripInternal": true,
     "noImplicitAny": false,
     "types": [
-      "@types/underscore"
+      "@types/underscore",
+      "@types/meteor-accounts-phone"
     ]
   },
   "include": [
