@@ -6,6 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { MomentModule } from 'angular2-moment';
 import { ChatsPage } from '../pages/chats/chats';
 import { MessagesPage } from '../pages/messages/messages';
+import { PhoneService } from '../services/phone';
 import { MyApp } from './app.component';
 
 @NgModule({
@@ -28,7 +29,8 @@ import { MyApp } from './app.component';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    PhoneService
   ]
 })
 export class AppModule {}
