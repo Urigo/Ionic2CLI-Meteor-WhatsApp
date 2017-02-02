@@ -6,7 +6,7 @@ To help you get started with `RxJS`, we recommend you to read [this post](http:/
 
 ## TL;DR
 
-`RxJS` is a library that allows us to easily create and manipulate streams of events and data. This makes complex asynchronous development must easier to handle and understand. `Angular 2` adopted `RxJS` as a dependency, and uses it to manage it's stream of data and flow of actions.
+`RxJS` is a library that allows us to easily create and manipulate streams of events and data. This makes complex asynchronous development much easier to handle and understand. `Angular 2` adopted `RxJS` as a dependency, and uses it to manage its stream of data and flow of actions.
 
 ## Quick Reference
 
