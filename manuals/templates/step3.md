@@ -8,7 +8,7 @@ To help you get started with `RxJS`, we recommend you to read [this post](http:/
 
 In this tutorial, we will be using fundamental `RxJS` operators, as listed below:
 
-- **map** - Modifies the value of the observable. Common use cases are converting, parsing, adding new fields etc.
+- **map** - Transform values of the observable (into another observable). Common use cases are converting, parsing, adding new fields etc.
 
 - **filter** - Filters values emitted by the observable, and continue the flow only with the values which passed the filter handler.
 
