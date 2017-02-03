@@ -54,9 +54,10 @@ This requires us to update its reference in the declarations file as well:
 
 {{{diff_step 4.11}}}
 
-We will also install the `meteor-rxjs` package so we can define collections and data streams:
+We will also install the `meteor-rxjs` package so we can define collections and data streams and TypeScript definitions for Meteor:
 
     $ npm install --save meteor-rxjs
+    $ npm install --save-dev @types/meteor
 
 ## Collections
 
