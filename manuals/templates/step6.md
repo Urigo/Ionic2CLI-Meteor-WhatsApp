@@ -78,7 +78,7 @@ It requires us to add the following package in the server:
 
 And we're gonna use it in the `addMessage` method we've just defined:
 
-{{{diff_step 6.15}}}
+{{{diff_step 6.16}}}
 
 ## Auto Scroll
 
