@@ -45,6 +45,7 @@
     "@types/meteor": "^1.3.31",
     "@types/meteor-accounts-phone": "0.0.5",
     "@types/meteor-publish-composite": "0.0.32",
+    "@types/meteor-collection-hooks": "^0.8.0",
     "@types/underscore": "^1.7.36",
     "meteor-typings": "^1.3.1",
     "tmp": "0.0.31",
