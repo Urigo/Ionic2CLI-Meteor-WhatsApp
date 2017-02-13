@@ -61,6 +61,7 @@
     "@types/lodash": "^4.14.77",
     "@types/meteor": "^1.4.8",
     "@types/meteor-accounts-phone": "0.0.5",
+    "@types/meteor-collection-hooks": "^0.8.1",
     "@types/meteor-publish-composite": "0.0.32",
     "tmp": "0.0.33",
     "typescript": "^2.4.2",
