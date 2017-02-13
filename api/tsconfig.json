@@ -18,7 +18,8 @@
     "types": [
       "@types/meteor",
       "@types/meteor-accounts-phone",
-      "@types/meteor-publish-composite"
+      "@types/meteor-publish-composite",
+      "@types/meteor-collection-hooks"
     ]
   },
   "exclude": [
