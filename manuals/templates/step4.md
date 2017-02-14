@@ -19,7 +19,7 @@ These scripts should be loaded automatically by their alphabetic order on their 
 
 Since we don't wanna have duplicate resources between the client and the server, we will remove the `package.json` file in the `api` dir:
 
-    api$ remove package.json
+    api$ rm package.json
 
 And we will add a symbolic link between the client's `node_modules` and client `node_modules`:
 
