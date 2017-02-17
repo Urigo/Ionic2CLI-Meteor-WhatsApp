@@ -543,7 +543,7 @@ Now we can implement the handler for messages sending in the component:
 ```
 [}]: #
 
-As you can see, we've used a `Meteor` method called `sendTextMessage`, which is yet to exist. This method will add messages to our messages collection and run on both client's local cache and server. Now we're going to create a `server/methods/methods.ts` file in our server and implement the method's logic:
+As you can see, we've used a `Meteor` method called `sendTextMessage`, which is yet to exist. This method will add messages to our messages collection and run on both client's local cache and server. Now we're going to create a `server/methods.ts` file in our server and implement the method's logic:
 
 [{]: <helper> (diff_step 6.15)
 #### Step 6.15: Implement Meteor method for adding a new message
