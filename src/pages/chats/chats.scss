@@ -1,0 +1,32 @@
+.chats-page-content {
+  .chat-picture {
+    border-radius: 50%;
+    width: 50px;
+    float: left;
+  }
+
+  .chat-info {
+    float: left;
+    margin: 10px 0 0 20px;
+
+    .last-message-timestamp {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 14px;
+      color: #9A9898;
+    }
+  }
+}
+
+.options-popover {
+  $popover-width: 200px;
+  $popover-margin: 5px;
+
+  .popover-content {
+    width: $popover-width;
+    transform-origin: right top 0px !important;
+    left: calc(100% - #{$popover-width} - #{$popover-margin}) !important;
+    top: $popover-margin !important;
+  }
+}
