@@ -499,6 +499,9 @@ And re-implement the `removeChat` method using the actual `Meteor` collection:
 -┊21┊  ┊  },
 -┊22┊  ┊});
 ```
+## Summary
+
+The `meteor-client-bundler` separates the client portions of the `Meteor` deployment to a single script - `meteor-client.js` that's placed in the `/node_modules` folder of the Ionic project.  When Ionic is compiled, it merges that script into the default output location in `/www/build/main.js`.  When the developer runs `ionic serve` it starts a listening service on port 8100 (by default) that serves the contents of `/www` to the calling user.  When the user agent loads the `meteor-client.js`, it will bring up the DDP connection to the `Meteor` server which is listening on port 3000 by default.  At the same time, the connection will be upgraded to a WebSocket so you'll see that connection happen too.  Both servers must be running simutaneously.  If a user were to connect to port 3000 they would receive an empty html page since there is no `/client` folder in `Meteor`, but this is a valid test to ensure the server is listening for client connections and accessible through any firewalls that may be between them (and that proxies will support upgrades to WebSockets).  User connections should be made to port 8100.  This also illustrates how for production purposes one could separate the contents of `/www` to a different server from `Meteor` to increase scalability, etc.     
 
 [}]: #
 
