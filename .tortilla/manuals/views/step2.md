@@ -619,6 +619,7 @@ Now we will need to declare this module in the app's main component:
 ```diff
 @@ -1,4 +1,5 @@
  ┊1┊1┊import { NgModule, ErrorHandler } from '@angular/core';
+ < Where is BrowserModule import? >
 +┊ ┊2┊import { MomentModule } from 'angular2-moment';
  ┊2┊3┊import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
  ┊3┊4┊import { ChatsPage } from '../pages/chats/chats';
@@ -629,6 +630,7 @@ Now we will need to declare this module in the app's main component:
  ┊ 9┊10┊    ChatsPage
  ┊10┊11┊  ],
  ┊11┊12┊  imports: [
+ < Where is BrowserModule? >
 -┊12┊  ┊    IonicModule.forRoot(MyApp)
 +┊  ┊13┊    IonicModule.forRoot(MyApp),
 +┊  ┊14┊    MomentModule
