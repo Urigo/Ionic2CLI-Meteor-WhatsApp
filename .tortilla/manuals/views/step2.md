@@ -482,7 +482,7 @@ Now, because we use `TypeScript`, we can define our own data-types and use them 
 
 [}]: #
 
-Now that the models are up and set, we can use apply it to the `ChatsPage`:
+Now that the models are up and set, we can apply them to the `ChatsPage`:
 
 < insert missing diffStep 2.10 here >
 
