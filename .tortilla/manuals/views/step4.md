@@ -25,6 +25,7 @@ Since we don't wanna have duplicate resources between the client and the server,
 
 And we will add a symbolic link between Ionic's `node_modules` and Meteor's `node_modules`:
 
+    api$ rm -rf node_modules
     api$ ln -s ../node_modules
 
 Since we will be writing our app using `Typescript`, we will need to support it in our `Meteor` project as well, especially when the client and the server share some of the script files. To add this support we will add the following package to our `Meteor` project:
