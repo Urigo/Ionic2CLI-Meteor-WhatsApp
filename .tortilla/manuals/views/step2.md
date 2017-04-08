@@ -510,7 +510,7 @@ Now that the models are up and set, we can apply them to the `ChatsPage`:
 
 The `whatsapp` color can be used by adding an attribute called `color` with a value `whatsapp` to any Ionic component.
 
-To begin with, we can start by implementing the `ChatsView` and apply our newly defined theme into it. This view will contain a list representing all the available chats in the component's data-ser:
+To begin with, we can start by implementing the `ChatsView` and apply our newly defined theme into it. This view will contain a list representing all the available chats in the component's data-set:
 
 [{]: <helper> (diffStep 2.12)
 
