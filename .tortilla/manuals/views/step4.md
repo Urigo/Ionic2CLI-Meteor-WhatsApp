@@ -23,7 +23,7 @@ Since we don't wanna have duplicate resources between the client and the server,
 
     api$ rm package.json
 
-And we will add a symbolic link between the client's `node_modules` and client `node_modules`:
+And we will add a symbolic link between Ionic's `node_modules` and Meteor's `node_modules`:
 
     api$ ln -s ../node_modules
 
