@@ -17,6 +17,191 @@ By default, the application will be created with 3 pages - `about`, `home` and `
     $ rm -rf src/pages/contact
     $ rm -rf src/pages/tabs
 
+[{]: <helper> (diffStep 2.1)
+
+#### [Step 2.1: Removed default tabs app](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/51bcabe)
+
+##### Deleted src&#x2F;pages&#x2F;about&#x2F;about.html
+```diff
+@@ -1,11 +0,0 @@
+-┊ 1┊  ┊<ion-header>
+-┊ 2┊  ┊  <ion-navbar>
+-┊ 3┊  ┊    <ion-title>
+-┊ 4┊  ┊      About
+-┊ 5┊  ┊    </ion-title>
+-┊ 6┊  ┊  </ion-navbar>
+-┊ 7┊  ┊</ion-header>
+-┊ 8┊  ┊
+-┊ 9┊  ┊<ion-content padding>
+-┊10┊  ┊
+-┊11┊  ┊</ion-content>
+```
+
+##### Deleted src&#x2F;pages&#x2F;about&#x2F;about.scss
+```diff
+@@ -1,3 +0,0 @@
+-┊1┊ ┊page-about {
+-┊2┊ ┊
+-┊3┊ ┊}
+```
+
+##### Deleted src&#x2F;pages&#x2F;about&#x2F;about.ts
+```diff
+@@ -1,15 +0,0 @@
+-┊ 1┊  ┊import { Component } from '@angular/core';
+-┊ 2┊  ┊
+-┊ 3┊  ┊import { NavController } from 'ionic-angular';
+-┊ 4┊  ┊
+-┊ 5┊  ┊@Component({
+-┊ 6┊  ┊  selector: 'page-about',
+-┊ 7┊  ┊  templateUrl: 'about.html'
+-┊ 8┊  ┊})
+-┊ 9┊  ┊export class AboutPage {
+-┊10┊  ┊
+-┊11┊  ┊  constructor(public navCtrl: NavController) {
+-┊12┊  ┊
+-┊13┊  ┊  }
+-┊14┊  ┊
+-┊15┊  ┊}
+```
+
+##### Deleted src&#x2F;pages&#x2F;contact&#x2F;contact.html
+```diff
+@@ -1,17 +0,0 @@
+-┊ 1┊  ┊<ion-header>
+-┊ 2┊  ┊  <ion-navbar>
+-┊ 3┊  ┊    <ion-title>
+-┊ 4┊  ┊      Contact
+-┊ 5┊  ┊    </ion-title>
+-┊ 6┊  ┊  </ion-navbar>
+-┊ 7┊  ┊</ion-header>
+-┊ 8┊  ┊
+-┊ 9┊  ┊<ion-content>
+-┊10┊  ┊  <ion-list>
+-┊11┊  ┊    <ion-list-header>Follow us on Twitter</ion-list-header>
+-┊12┊  ┊    <ion-item>
+-┊13┊  ┊      <ion-icon name="ionic" item-left></ion-icon>
+-┊14┊  ┊      @ionicframework
+-┊15┊  ┊    </ion-item>
+-┊16┊  ┊  </ion-list>
+-┊17┊  ┊</ion-content>
+```
+
+##### Deleted src&#x2F;pages&#x2F;contact&#x2F;contact.scss
+```diff
+@@ -1,3 +0,0 @@
+-┊1┊ ┊page-contact {
+-┊2┊ ┊
+-┊3┊ ┊}
+```
+
+##### Deleted src&#x2F;pages&#x2F;contact&#x2F;contact.ts
+```diff
+@@ -1,15 +0,0 @@
+-┊ 1┊  ┊import { Component } from '@angular/core';
+-┊ 2┊  ┊
+-┊ 3┊  ┊import { NavController } from 'ionic-angular';
+-┊ 4┊  ┊
+-┊ 5┊  ┊@Component({
+-┊ 6┊  ┊  selector: 'page-contact',
+-┊ 7┊  ┊  templateUrl: 'contact.html'
+-┊ 8┊  ┊})
+-┊ 9┊  ┊export class ContactPage {
+-┊10┊  ┊
+-┊11┊  ┊  constructor(public navCtrl: NavController) {
+-┊12┊  ┊
+-┊13┊  ┊  }
+-┊14┊  ┊
+-┊15┊  ┊}
+```
+
+##### Deleted src&#x2F;pages&#x2F;home&#x2F;home.html
+```diff
+@@ -1,17 +0,0 @@
+-┊ 1┊  ┊<ion-header>
+-┊ 2┊  ┊  <ion-navbar>
+-┊ 3┊  ┊    <ion-title>Home</ion-title>
+-┊ 4┊  ┊  </ion-navbar>
+-┊ 5┊  ┊</ion-header>
+-┊ 6┊  ┊
+-┊ 7┊  ┊<ion-content padding>
+-┊ 8┊  ┊  <h2>Welcome to Ionic!</h2>
+-┊ 9┊  ┊  <p>
+-┊10┊  ┊    This starter project comes with simple tabs-based layout for apps
+-┊11┊  ┊    that are going to primarily use a Tabbed UI.
+-┊12┊  ┊  </p>
+-┊13┊  ┊  <p>
+-┊14┊  ┊    Take a look at the <code>src/pages/</code> directory to add or change tabs,
+-┊15┊  ┊    update any existing page or create new pages.
+-┊16┊  ┊  </p>
+-┊17┊  ┊</ion-content>
+```
+
+##### Deleted src&#x2F;pages&#x2F;home&#x2F;home.scss
+```diff
+@@ -1,3 +0,0 @@
+-┊1┊ ┊page-home {
+-┊2┊ ┊
+-┊3┊ ┊}
+```
+
+##### Deleted src&#x2F;pages&#x2F;home&#x2F;home.ts
+```diff
+@@ -1,15 +0,0 @@
+-┊ 1┊  ┊import { Component } from '@angular/core';
+-┊ 2┊  ┊
+-┊ 3┊  ┊import { NavController } from 'ionic-angular';
+-┊ 4┊  ┊
+-┊ 5┊  ┊@Component({
+-┊ 6┊  ┊  selector: 'page-home',
+-┊ 7┊  ┊  templateUrl: 'home.html'
+-┊ 8┊  ┊})
+-┊ 9┊  ┊export class HomePage {
+-┊10┊  ┊
+-┊11┊  ┊  constructor(public navCtrl: NavController) {
+-┊12┊  ┊
+-┊13┊  ┊  }
+-┊14┊  ┊
+-┊15┊  ┊}
+```
+
+##### Deleted src&#x2F;pages&#x2F;tabs&#x2F;tabs.html
+```diff
+@@ -1,5 +0,0 @@
+-┊1┊ ┊<ion-tabs>
+-┊2┊ ┊  <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab>
+-┊3┊ ┊  <ion-tab [root]="tab2Root" tabTitle="About" tabIcon="information-circle"></ion-tab>
+-┊4┊ ┊  <ion-tab [root]="tab3Root" tabTitle="Contact" tabIcon="contacts"></ion-tab>
+-┊5┊ ┊</ion-tabs>
+```
+
+##### Deleted src&#x2F;pages&#x2F;tabs&#x2F;tabs.ts
+```diff
+@@ -1,20 +0,0 @@
+-┊ 1┊  ┊import { Component } from '@angular/core';
+-┊ 2┊  ┊
+-┊ 3┊  ┊import { HomePage } from '../home/home';
+-┊ 4┊  ┊import { AboutPage } from '../about/about';
+-┊ 5┊  ┊import { ContactPage } from '../contact/contact';
+-┊ 6┊  ┊
+-┊ 7┊  ┊@Component({
+-┊ 8┊  ┊  templateUrl: 'tabs.html'
+-┊ 9┊  ┊})
+-┊10┊  ┊export class TabsPage {
+-┊11┊  ┊  // this tells the tabs component which Pages
+-┊12┊  ┊  // should be each tab's root Page
+-┊13┊  ┊  tab1Root: any = HomePage;
+-┊14┊  ┊  tab2Root: any = AboutPage;
+-┊15┊  ┊  tab3Root: any = ContactPage;
+-┊16┊  ┊
+-┊17┊  ┊  constructor() {
+-┊18┊  ┊
+-┊19┊  ┊  }
+-┊20┊  ┊}
+```
+
+[}]: #
+
 Second, we will remove their declaration in the app module:
 
 [{]: <helper> (diffStep 2.2)
@@ -297,192 +482,9 @@ Now, because we use `TypeScript`, we can define our own data-types and use them 
 
 [}]: #
 
-Now that the models are up and set, we can use apply it to the `ChatsPage`:
+Now that the models are up and set, we can apply them to the `ChatsPage`:
 
-[{]: <helper> (diffStep 2.1)
-
-#### [Step 2.1: Removed default tabs app](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/51bcabe)
-
-##### Deleted src&#x2F;pages&#x2F;about&#x2F;about.html
-```diff
-@@ -1,11 +0,0 @@
--┊ 1┊  ┊<ion-header>
--┊ 2┊  ┊  <ion-navbar>
--┊ 3┊  ┊    <ion-title>
--┊ 4┊  ┊      About
--┊ 5┊  ┊    </ion-title>
--┊ 6┊  ┊  </ion-navbar>
--┊ 7┊  ┊</ion-header>
--┊ 8┊  ┊
--┊ 9┊  ┊<ion-content padding>
--┊10┊  ┊
--┊11┊  ┊</ion-content>
-```
-
-##### Deleted src&#x2F;pages&#x2F;about&#x2F;about.scss
-```diff
-@@ -1,3 +0,0 @@
--┊1┊ ┊page-about {
--┊2┊ ┊
--┊3┊ ┊}
-```
-
-##### Deleted src&#x2F;pages&#x2F;about&#x2F;about.ts
-```diff
-@@ -1,15 +0,0 @@
--┊ 1┊  ┊import { Component } from '@angular/core';
--┊ 2┊  ┊
--┊ 3┊  ┊import { NavController } from 'ionic-angular';
--┊ 4┊  ┊
--┊ 5┊  ┊@Component({
--┊ 6┊  ┊  selector: 'page-about',
--┊ 7┊  ┊  templateUrl: 'about.html'
--┊ 8┊  ┊})
--┊ 9┊  ┊export class AboutPage {
--┊10┊  ┊
--┊11┊  ┊  constructor(public navCtrl: NavController) {
--┊12┊  ┊
--┊13┊  ┊  }
--┊14┊  ┊
--┊15┊  ┊}
-```
-
-##### Deleted src&#x2F;pages&#x2F;contact&#x2F;contact.html
-```diff
-@@ -1,17 +0,0 @@
--┊ 1┊  ┊<ion-header>
--┊ 2┊  ┊  <ion-navbar>
--┊ 3┊  ┊    <ion-title>
--┊ 4┊  ┊      Contact
--┊ 5┊  ┊    </ion-title>
--┊ 6┊  ┊  </ion-navbar>
--┊ 7┊  ┊</ion-header>
--┊ 8┊  ┊
--┊ 9┊  ┊<ion-content>
--┊10┊  ┊  <ion-list>
--┊11┊  ┊    <ion-list-header>Follow us on Twitter</ion-list-header>
--┊12┊  ┊    <ion-item>
--┊13┊  ┊      <ion-icon name="ionic" item-left></ion-icon>
--┊14┊  ┊      @ionicframework
--┊15┊  ┊    </ion-item>
--┊16┊  ┊  </ion-list>
--┊17┊  ┊</ion-content>
-```
-
-##### Deleted src&#x2F;pages&#x2F;contact&#x2F;contact.scss
-```diff
-@@ -1,3 +0,0 @@
--┊1┊ ┊page-contact {
--┊2┊ ┊
--┊3┊ ┊}
-```
-
-##### Deleted src&#x2F;pages&#x2F;contact&#x2F;contact.ts
-```diff
-@@ -1,15 +0,0 @@
--┊ 1┊  ┊import { Component } from '@angular/core';
--┊ 2┊  ┊
--┊ 3┊  ┊import { NavController } from 'ionic-angular';
--┊ 4┊  ┊
--┊ 5┊  ┊@Component({
--┊ 6┊  ┊  selector: 'page-contact',
--┊ 7┊  ┊  templateUrl: 'contact.html'
--┊ 8┊  ┊})
--┊ 9┊  ┊export class ContactPage {
--┊10┊  ┊
--┊11┊  ┊  constructor(public navCtrl: NavController) {
--┊12┊  ┊
--┊13┊  ┊  }
--┊14┊  ┊
--┊15┊  ┊}
-```
-
-##### Deleted src&#x2F;pages&#x2F;home&#x2F;home.html
-```diff
-@@ -1,17 +0,0 @@
--┊ 1┊  ┊<ion-header>
--┊ 2┊  ┊  <ion-navbar>
--┊ 3┊  ┊    <ion-title>Home</ion-title>
--┊ 4┊  ┊  </ion-navbar>
--┊ 5┊  ┊</ion-header>
--┊ 6┊  ┊
--┊ 7┊  ┊<ion-content padding>
--┊ 8┊  ┊  <h2>Welcome to Ionic!</h2>
--┊ 9┊  ┊  <p>
--┊10┊  ┊    This starter project comes with simple tabs-based layout for apps
--┊11┊  ┊    that are going to primarily use a Tabbed UI.
--┊12┊  ┊  </p>
--┊13┊  ┊  <p>
--┊14┊  ┊    Take a look at the <code>src/pages/</code> directory to add or change tabs,
--┊15┊  ┊    update any existing page or create new pages.
--┊16┊  ┊  </p>
--┊17┊  ┊</ion-content>
-```
-
-##### Deleted src&#x2F;pages&#x2F;home&#x2F;home.scss
-```diff
-@@ -1,3 +0,0 @@
--┊1┊ ┊page-home {
--┊2┊ ┊
--┊3┊ ┊}
-```
-
-##### Deleted src&#x2F;pages&#x2F;home&#x2F;home.ts
-```diff
-@@ -1,15 +0,0 @@
--┊ 1┊  ┊import { Component } from '@angular/core';
--┊ 2┊  ┊
--┊ 3┊  ┊import { NavController } from 'ionic-angular';
--┊ 4┊  ┊
--┊ 5┊  ┊@Component({
--┊ 6┊  ┊  selector: 'page-home',
--┊ 7┊  ┊  templateUrl: 'home.html'
--┊ 8┊  ┊})
--┊ 9┊  ┊export class HomePage {
--┊10┊  ┊
--┊11┊  ┊  constructor(public navCtrl: NavController) {
--┊12┊  ┊
--┊13┊  ┊  }
--┊14┊  ┊
--┊15┊  ┊}
-```
-
-##### Deleted src&#x2F;pages&#x2F;tabs&#x2F;tabs.html
-```diff
-@@ -1,5 +0,0 @@
--┊1┊ ┊<ion-tabs>
--┊2┊ ┊  <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab>
--┊3┊ ┊  <ion-tab [root]="tab2Root" tabTitle="About" tabIcon="information-circle"></ion-tab>
--┊4┊ ┊  <ion-tab [root]="tab3Root" tabTitle="Contact" tabIcon="contacts"></ion-tab>
--┊5┊ ┊</ion-tabs>
-```
-
-##### Deleted src&#x2F;pages&#x2F;tabs&#x2F;tabs.ts
-```diff
-@@ -1,20 +0,0 @@
--┊ 1┊  ┊import { Component } from '@angular/core';
--┊ 2┊  ┊
--┊ 3┊  ┊import { HomePage } from '../home/home';
--┊ 4┊  ┊import { AboutPage } from '../about/about';
--┊ 5┊  ┊import { ContactPage } from '../contact/contact';
--┊ 6┊  ┊
--┊ 7┊  ┊@Component({
--┊ 8┊  ┊  templateUrl: 'tabs.html'
--┊ 9┊  ┊})
--┊10┊  ┊export class TabsPage {
--┊11┊  ┊  // this tells the tabs component which Pages
--┊12┊  ┊  // should be each tab's root Page
--┊13┊  ┊  tab1Root: any = HomePage;
--┊14┊  ┊  tab2Root: any = AboutPage;
--┊15┊  ┊  tab3Root: any = ContactPage;
--┊16┊  ┊
--┊17┊  ┊  constructor() {
--┊18┊  ┊
--┊19┊  ┊  }
--┊20┊  ┊}
-```
-
-[}]: #
+< insert missing diffStep 2.10 here >
 
 ## Ionic's Theming System
 
@@ -508,7 +510,7 @@ Now that the models are up and set, we can use apply it to the `ChatsPage`:
 
 The `whatsapp` color can be used by adding an attribute called `color` with a value `whatsapp` to any Ionic component.
 
-To begin with, we can start by implementing the `ChatsView` and apply our newly defined theme into it. This view will contain a list representing all the available chats in the component's data-ser:
+To begin with, we can start by implementing the `ChatsView` and apply our newly defined theme into it. This view will contain a list representing all the available chats in the component's data-set:
 
 [{]: <helper> (diffStep 2.12)
 
@@ -617,6 +619,7 @@ Now we will need to declare this module in the app's main component:
 ```diff
 @@ -1,4 +1,5 @@
  ┊1┊1┊import { NgModule, ErrorHandler } from '@angular/core';
+ < Where is BrowserModule import? >
 +┊ ┊2┊import { MomentModule } from 'angular2-moment';
  ┊2┊3┊import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
  ┊3┊4┊import { ChatsPage } from '../pages/chats/chats';
@@ -627,6 +630,7 @@ Now we will need to declare this module in the app's main component:
  ┊ 9┊10┊    ChatsPage
  ┊10┊11┊  ],
  ┊11┊12┊  imports: [
+ < Where is BrowserModule? >
 -┊12┊  ┊    IonicModule.forRoot(MyApp)
 +┊  ┊13┊    IonicModule.forRoot(MyApp),
 +┊  ┊14┊    MomentModule
@@ -699,7 +703,9 @@ And now that it is bound to the component we can safely implement its handler:
 +┊  ┊71┊  removeChat(chat: Chat): void {
 +┊  ┊72┊    this.chats = this.chats.map<Chat[]>(chatsArray => {
 +┊  ┊73┊      const chatIndex = chatsArray.indexOf(chat);
-+┊  ┊74┊      chatsArray.splice(chatIndex, 1);
+              if (chatIndex !== -1) {
++┊  ┊74┊        chatsArray.splice(chatIndex, 1);
+              }
 +┊  ┊75┊
 +┊  ┊76┊      return chatsArray;
 +┊  ┊77┊    });
