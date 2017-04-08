@@ -703,7 +703,9 @@ And now that it is bound to the component we can safely implement its handler:
 +┊  ┊71┊  removeChat(chat: Chat): void {
 +┊  ┊72┊    this.chats = this.chats.map<Chat[]>(chatsArray => {
 +┊  ┊73┊      const chatIndex = chatsArray.indexOf(chat);
-+┊  ┊74┊      chatsArray.splice(chatIndex, 1);
+              if (chatIndex !== -1) {
++┊  ┊74┊        chatsArray.splice(chatIndex, 1);
+              }
 +┊  ┊75┊
 +┊  ┊76┊      return chatsArray;
 +┊  ┊77┊    });
