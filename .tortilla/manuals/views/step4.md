@@ -259,7 +259,7 @@ Since we have real collections now, and not dummy ones, we will need to fill the
 
 > This behavior is **not** recommended and should be removed once we're ready for production. A conditioned environment variable may also be a great solution
 
-Note how we use the `.collection` property to get the actual `Mongo.Collection` instance. In the `Meteor` server we want to avoid the usage of observables since it uses `fibers`. More information about fibers can be fond [here](https://www.npmjs.com/package/fibers).
+Note how we use the `.collection` property to get the actual `Mongo.Collection` instance. In the `Meteor` server we want to avoid the usage of observables since it uses `fibers`. More information about fibers can be found [here](https://www.npmjs.com/package/fibers).
 
 ## Preparing the Meteor client
 
