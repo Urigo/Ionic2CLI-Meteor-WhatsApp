@@ -543,7 +543,7 @@ Now we can implement the handler for messages sending in the component:
  ┊37┊39┊  }
 +┊  ┊40┊
 +┊  ┊41┊  onInputKeypress({ keyCode }: KeyboardEvent): void {
-+┊  ┊42┊    if (keyCode === 13) {
++┊  ┊42┊    if (keyCode.charCode === 13) {
 +┊  ┊43┊      this.sendTextMessage();
 +┊  ┊44┊    }
 +┊  ┊45┊  }
