@@ -365,7 +365,7 @@ Let's start by creating the `LoginComponent`. In this component we will request 
 +┊  ┊15┊    private navCtrl: NavController
 +┊  ┊16┊  ) {}
 +┊  ┊17┊
-+┊  ┊18┊  onInputKeypress({keyCode}: KeyboardEvent): void {
++┊  ┊18┊  onInputKeypress(keyCode: KeyboardEvent): void {
 +┊  ┊19┊    if (keyCode.charCode === 13) {
 +┊  ┊20┊      this.login();
 +┊  ┊21┊    }
