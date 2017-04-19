@@ -169,7 +169,7 @@ Now, whenever we fetch a new messages-batch we will check if we reached the tota
 
 ## Filter
 
-Now we're gonna implement the a search-bar, in the `NewChatComponent`.
+Now we're gonna implement the search-bar, in the `NewChatComponent`.
 
 Let's start by implementing the logic using `RxJS`. We will use a `BehaviorSubject` which will store the search pattern entered in the search bar, and we will be able to detect changes in its value using the `Observable` API; So whenever the search pattern is being changed, we will update the users list by re-subscribing to the `users` subscription:
 
