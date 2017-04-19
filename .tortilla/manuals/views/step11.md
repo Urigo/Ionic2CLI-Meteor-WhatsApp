@@ -420,7 +420,7 @@ Up next, would be implementing the actual component which will handle geo-locati
 
 [}]: #
 
-Basically, what this component does is refreshing the current geo-location at a specific refresh rate. Note that in order to fetch the geo-location we use `Geolocation's` API, but behind the scene it uses ``cordova-plugin-geolocation`. The `sendLocation` method dismisses the view and returns the calculated geo-location. Now let's added the component's corresponding view:
+Basically, what this component does is refreshing the current geo-location at a specific refresh rate. Note that in order to fetch the geo-location we use `Geolocation's` API, but behind the scene it uses ``cordova-plugin-geolocation`. The `sendLocation` method dismisses the view and returns the calculated geo-location. Now let's add the component's corresponding view:
 
 [{]: <helper> (diffStep 11.14)
 
