@@ -33,7 +33,7 @@ Before we proceed to the server, we will add the ability to select and upload pi
 +┊  ┊ 1┊import { Injectable } from '@angular/core';
 +┊  ┊ 2┊import { Platform } from 'ionic-angular';
 +┊  ┊ 3┊import { ImagePicker } from 'ionic-native';
-+┊  ┊ 4┊import { UploadFS } from 'meteor/jalik:ufs';
++┊  ┊ 4┊declare const UploadFS: any;
 +┊  ┊ 5┊
 +┊  ┊ 6┊@Injectable()
 +┊  ┊ 7┊export class PictureService {
