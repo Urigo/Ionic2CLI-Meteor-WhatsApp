@@ -365,8 +365,8 @@ Let's start by creating the `LoginComponent`. In this component we will request 
 +┊  ┊15┊    private navCtrl: NavController
 +┊  ┊16┊  ) {}
 +┊  ┊17┊
-+┊  ┊18┊  onInputKeypress({keyCode}: KeyboardEvent): void {
-+┊  ┊19┊    if (keyCode === 13) {
++┊  ┊18┊  onInputKeypress(keyCode: KeyboardEvent): void {
++┊  ┊19┊    if (keyCode.charCode === 13) {
 +┊  ┊20┊      this.login();
 +┊  ┊21┊    }
 +┊  ┊22┊  }
@@ -590,8 +590,8 @@ Let's proceed and implement the verification page. We will start by creating its
 +┊  ┊21┊    this.phone = this.navParams.get('phone');
 +┊  ┊22┊  }
 +┊  ┊23┊
-+┊  ┊24┊  onInputKeypress({keyCode}: KeyboardEvent): void {
-+┊  ┊25┊    if (keyCode === 13) {
++┊  ┊24┊  onInputKeypress(keyCode: KeyboardEvent): void {
++┊  ┊25┊    if (keyCode.charCode === 13) {
 +┊  ┊26┊      this.verify();
 +┊  ┊27┊    }
 +┊  ┊28┊  }

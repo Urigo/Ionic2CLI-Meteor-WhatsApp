@@ -126,7 +126,7 @@ We will be using `Ionic`'s modal dialog to show the chat creation view. The firs
 +┊  ┊59┊      const receiverIds = _.chain(chats)
 +┊  ┊60┊        .pluck('memberIds')
 +┊  ┊61┊        .flatten()
-+┊  ┊62┊        .concat(this.senderId)
++┊  ┊62┊        .union([this.senderId])
 +┊  ┊63┊        .value();
 +┊  ┊64┊
 +┊  ┊65┊      // Find all users which are not in belonging chats

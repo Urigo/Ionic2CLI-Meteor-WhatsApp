@@ -27,17 +27,21 @@ Before we proceed to the server, we will add the ability to select and upload pi
 
 #### [Step 12.3: Create PictureService with utils for files](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5e36bd4)
 
+npm install --save @ionic-native/image-picker
+
 ##### Added src&#x2F;services&#x2F;picture.ts
 ```diff
 @@ -0,0 +1,80 @@
 +┊  ┊ 1┊import { Injectable } from '@angular/core';
 +┊  ┊ 2┊import { Platform } from 'ionic-angular';
-+┊  ┊ 3┊import { ImagePicker } from 'ionic-native';
-+┊  ┊ 4┊import { UploadFS } from 'meteor/jalik:ufs';
++┊  ┊ 3┊import {ImagePicker} from "@ionic-native/image-picker";
+// We don't have @types for meteor/jalik:ufs yet
++┊  ┊ 4┊declare const UploadFS: any;
 +┊  ┊ 5┊
 +┊  ┊ 6┊@Injectable()
 +┊  ┊ 7┊export class PictureService {
-+┊  ┊ 8┊  constructor(private platform: Platform) {
++┊  ┊ 8┊  constructor(private platform: Platform,
+                      private imagePicker: ImagePicker) {
 +┊  ┊ 9┊  }
 +┊  ┊10┊
 +┊  ┊11┊  select(): Promise<Blob> {
@@ -54,7 +58,7 @@ Before we proceed to the server, we will add the ability to select and upload pi
 +┊  ┊22┊      });
 +┊  ┊23┊    }
 +┊  ┊24┊
-+┊  ┊25┊    return ImagePicker.getPictures({maximumImagesCount: 1}).then((URL: string) => {
++┊  ┊25┊    return this.imagePicker.getPictures({maximumImagesCount: 1}).then((URL: string) => {
 +┊  ┊26┊      return this.convertURLtoBlob(URL);
 +┊  ┊27┊    });
 +┊  ┊28┊  }

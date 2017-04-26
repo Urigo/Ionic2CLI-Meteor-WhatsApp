@@ -23,8 +23,9 @@ Since we don't wanna have duplicate resources between the client and the server,
 
     api$ rm package.json
 
-And we will add a symbolic link between the client's `node_modules` and client `node_modules`:
+And we will add a symbolic link between Ionic's `node_modules` and Meteor's `node_modules`:
 
+    api$ rm -rf node_modules
     api$ ln -s ../node_modules
 
 Since we will be writing our app using `Typescript`, we will need to support it in our `Meteor` project as well, especially when the client and the server share some of the script files. To add this support we will add the following package to our `Meteor` project:
@@ -258,7 +259,7 @@ Since we have real collections now, and not dummy ones, we will need to fill the
 
 > This behavior is **not** recommended and should be removed once we're ready for production. A conditioned environment variable may also be a great solution
 
-Note how we use the `.collection` property to get the actual `Mongo.Collection` instance. In the `Meteor` server we want to avoid the usage of observables since it uses `fibers`. More information about fibers can be fond [here](https://www.npmjs.com/package/fibers).
+Note how we use the `.collection` property to get the actual `Mongo.Collection` instance. In the `Meteor` server we want to avoid the usage of observables since it uses `fibers`. More information about fibers can be found [here](https://www.npmjs.com/package/fibers).
 
 ## Preparing the Meteor client
 
