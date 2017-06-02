@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, AfterContentInit } from '@angular/core';
 import { Alert, AlertController, NavController } from 'ionic-angular';
 import { PhoneService } from '../../services/phone';
 import { VerificationPage } from '../verification/verification';
@@ -7,7 +7,7 @@ import { VerificationPage } from '../verification/verification';
   selector: 'login',
   templateUrl: 'login.html'
 })
-export class LoginPage {
+export class LoginPage implements AfterContentInit {
   private phone = '';
 
   constructor(
@@ -15,6 +15,12 @@ export class LoginPage {
     private phoneService: PhoneService,
     private navCtrl: NavController
   ) {}
+
+  ngAfterContentInit() {
+    this.phoneService.getNumber()
+      .then((phone) => this.phone = phone)
+      .catch((e) => console.error(e.message));
+  }
 
   onInputKeypress({keyCode}: KeyboardEvent): void {
     if (keyCode === 13) {
