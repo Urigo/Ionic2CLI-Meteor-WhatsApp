@@ -1,0 +1,91 @@
+In this step, we will be implementing additional native features like automatic phone number detection and access to the device's camera, to enhance the user experience.
+
+## Automatic phone number detection
+
+`Ionic 2` is provided by default with a `Cordova` plug-in called `cordova-plugin-sim`, which allows us to retrieve some data from the current device's SIM card, if even exists. We will use the SIM card to automatically detect the current device's phone number, so this way the user won't need to manually fill-in his phone number whenever he tries to login.
+
+Let's start installing the `Sim` `Cordova` plug-in:
+
+    $ ionic cordova plugin add cordova-plugin-sim --save
+    $ npm install --save @ionic-native/sim
+
+Then let's add it to `app.module.ts`:
+
+{{{diffStep "14.2"}}}
+
+Let's add the appropriate handler in the `PhoneService`, we will use it inside the `LoginPage`:
+
+{{{diffStep "14.3"}}}
+
+{{{diffStep "14.4"}}}
+
+## SMS OTP autofill
+
+On supported platforms (`Android`) it would be nice to automatically detect the incoming OTP (One Time Password) SMS and fill the verification field in place of the user.
+
+We need to add the `Cordova` plugin first:
+
+    $ ionic cordova plugin add cordova-plugin-sms-receiver --save
+
+Then we must create the corresponding `ionic-native` plugin, since no one created it:
+
+{{{diffStep "14.6"}}}
+
+Last but not the least we must import it into `app.module.ts` as usual:
+
+{{{diffStep "14.7"}}}
+
+Let's start by using the yet-to-be-created method in the `verification` page:
+
+{{{diffStep "14.8"}}}
+
+We will need `bluebird` to promisify `sms-receiver`:
+
+    $ npm install --save bluebird
+    $ npm install --save-dev @types/bluebird
+
+We will need to add support for `es2016` in Typescript, because we will use `Array.prototype.includes()`:
+
+{{{diffStep "14.10"}}}
+
+Now we can implement the method in the `phone` service:
+
+{{{diffStep "14.11"}}}
+
+## Camera
+
+Next - we will grant access to the device's camera so we can send pictures which are yet to exist in the gallery. Since the `Camera` plugin can also access the gallery, we will replace the previously used `ImagePicker` plugin with `Camera`, which is better maintained and allows for more code reuse.
+We will also use the `Crop` plugin to force a 1:1 aspect ratio, when needed.
+
+We will start by adding the appropriate `Cordova` plug-ins:
+
+    $ ionic cordova plugin add cordova-plugin-camera --save
+    $ ionic cordova plugin add cordova-plugin-crop --save
+    $ npm install --save @ionic-native/camera
+    $ npm install --save @ionic-native/crop
+
+Then let's add them to `app.module.ts`:
+
+{{{diffStep "14.13"}}}
+
+We will bind the `click` event in the view:
+
+{{{diffStep "14.14"}}}
+
+And we will create the event handler in `MessagesAttachmentsComponent`:
+
+{{{diffStep "14.15"}}}
+
+Finally we can create a new method in the `PictureService` to take some pictures and remove the old method which used `ImagePicker`:
+
+{{{diffStep "14.16"}}}
+
+Choosing to take the picture from the camera instead of the gallery is as simple as passing a boolean parameter to the method. The same is true for cropping.
+
+> *NOTE*: even if the client will not crop the image when passing `false`, the server will still crop it. Eventually, we will need to edit our `Store` in order to fix it.
+
+We will also have to update `selectProfilePicture` in the profile `Page` to use `getPicture`:
+
+{{{diffStep "14.17"}}}
+
+{{{navStep prevRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/file-upload" nextRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/addressbook"}}}
