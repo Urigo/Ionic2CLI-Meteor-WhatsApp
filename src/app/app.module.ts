@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Geolocation } from '@ionic-native/geolocation';
 import { ImagePicker } from '@ionic-native/image-picker';
+import { Sim } from '@ionic-native/sim';
 import { AgmCoreModule } from '@agm/core';
 import { MomentModule } from 'angular2-moment';
 import { ChatsPage } from '../pages/chats/chats';
@@ -67,7 +68,8 @@ import { MyApp } from './app.component';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     PhoneService,
     ImagePicker,
-    PictureService
+    PictureService,
+    Sim
   ]
 })
 export class AppModule {}
