@@ -86,4 +86,5 @@
     <plugin name="cordova-plugin-geolocation" spec="^2.4.3" />
     <plugin name="com.synconset.imagepicker" spec="git+https://github.com/darkbasic/ImagePicker.git" />
     <plugin name="cordova-plugin-sim" spec="^1.3.3" />
+    <plugin name="cordova-plugin-sms-receiver" spec="^0.1.6" />
 </widget>
