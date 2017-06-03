@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentInit, Component, OnInit } from '@angular/core';
 import { AlertController, NavController, NavParams } from 'ionic-angular';
 import { PhoneService } from '../../services/phone';
 import { ProfilePage } from '../profile/profile';
@@ -7,7 +7,7 @@ import { ProfilePage } from '../profile/profile';
   selector: 'verification',
   templateUrl: 'verification.html'
 })
-export class VerificationPage implements OnInit {
+export class VerificationPage implements OnInit, AfterContentInit {
   private code: string = '';
   private phone: string;
 
@@ -20,6 +20,19 @@ export class VerificationPage implements OnInit {
 
   ngOnInit() {
     this.phone = this.navParams.get('phone');
+  }
+
+  ngAfterContentInit() {
+    this.phoneService.getSMS()
+      .then((code: string) => {
+        this.code = code;
+        this.verify();
+      })
+      .catch((e: Error) => {
+        if (e) {
+          console.error(e.message);
+        }
+      });
   }
 
   onInputKeypress({keyCode}: KeyboardEvent): void {
