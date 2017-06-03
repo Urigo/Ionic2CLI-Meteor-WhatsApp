@@ -1,4 +1,5 @@
 export const DEFAULT_PICTURE_URL = '/assets/default-profile-pic.svg';
+export const TWILIO_SMS_NUMBERS = ["+12248032362"];
 
 export interface Profile {
   name?: string;
