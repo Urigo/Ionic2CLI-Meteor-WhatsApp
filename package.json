@@ -38,6 +38,7 @@
     "ImagePicker": "git+https://github.com/dhavalsoni2001/ImagePicker.git",
     "angular2-moment": "^1.7.0",
     "babel-runtime": "^6.26.0",
+    "bluebird": "^3.5.1",
     "cordova-android": "^6.3.0",
     "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-device": "^1.1.4",
@@ -62,6 +63,7 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.0.0",
+    "@types/bluebird": "^3.5.15",
     "@types/lodash": "^4.14.77",
     "@types/meteor": "^1.4.8",
     "@types/meteor-accounts-phone": "0.0.5",
