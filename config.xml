@@ -89,4 +89,5 @@
     <plugin name="cordova-plugin-sms-receiver" spec="^0.1.6" />
     <plugin name="cordova-plugin-camera" spec="^2.4.1" />
     <plugin name="cordova-plugin-crop" spec="^0.4.0" />
+    <plugin name="cordova-plugin-contacts" spec="^2.3.1" />
 </widget>
