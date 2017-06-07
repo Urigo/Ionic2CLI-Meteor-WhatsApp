@@ -5,7 +5,8 @@ import { Chats } from './collections/chats';
 import { Pictures } from './collections/pictures';
 
 Meteor.publishComposite('users', function(
-  pattern: string
+  pattern: string,
+  contacts: string[]
 ): PublishCompositeConfig<User> {
   if (!this.userId) {
     return;
@@ -15,8 +16,11 @@ Meteor.publishComposite('users', function(
 
   if (pattern) {
     selector = {
-      'profile.name': { $regex: pattern, $options: 'i' }
+      'profile.name': { $regex: pattern, $options: 'i' },
+      'phone.number': {$in: contacts}
     };
+  } else {
+    selector = {'phone.number': {$in: contacts}}
   }
 
   return {
