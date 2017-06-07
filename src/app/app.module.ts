@@ -7,6 +7,8 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { Sim } from '@ionic-native/sim';
 import { SmsReceiver } from "../ionic/sms-receiver";
+import { Camera } from '@ionic-native/camera';
+import { Crop } from '@ionic-native/crop';
 import { AgmCoreModule } from '@agm/core';
 import { MomentModule } from 'angular2-moment';
 import { ChatsPage } from '../pages/chats/chats';
@@ -71,7 +73,9 @@ import { MyApp } from './app.component';
     ImagePicker,
     PictureService,
     Sim,
-    SmsReceiver
+    SmsReceiver,
+    Camera,
+    Crop
   ]
 })
 export class AppModule {}
