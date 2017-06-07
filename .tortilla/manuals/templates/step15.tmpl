@@ -1,0 +1,42 @@
+In this step we are going to implement native address book integration, to automatically show only the users whose numbers are present in our address book.
+
+`Ionic 2` is provided by default with a `Cordova` plug-in called `cordova-plugin-contacts`, which allows us to retrieve the contacts from the address book.
+
+Let's start by installing the `Contacts` `Cordova` plug-in:
+
+    $ ionic cordova plugin add cordova-plugin-contacts --save
+    $ npm install --save @ionic-native/contacts
+
+Then let's add it to `app.module.ts`:
+
+{{{diffStep "15.2"}}}
+
+Since we're going to use `Sets` in our code, we will have to set the `Typescript` target to `es6` or enable `downlevelIteration`:
+
+{{{diffStep "15.3"}}}
+
+Now we can create the appropriate handler in the `PhoneService`, we will use it inside the `NewChatPage`:
+
+{{{diffStep "15.4"}}}
+
+{{{diffStep "15.5"}}}
+
+We will have to update the `users` publication to filter our results:
+
+{{{diffStep "15.6"}}}
+
+Since they are now useless, we can finally remove our fake users from the db initialization:
+
+{{{diffStep "15.7"}}}
+
+Obviously we will have to reset the database to see any effect:
+
+    $ npm run api:reset
+
+To test if everything works properly I suggest to create a test user on your PC using a phone number which is already present in your phone's address book.
+
+Let's re-add our fake users and whitelist them in the `users` publication for the moment:
+
+{{{diffStep "15.8"}}}
+
+{{{navStep prevRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/native-mobile" nextRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/push-notifications"}}}
