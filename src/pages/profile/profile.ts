@@ -36,7 +36,7 @@ export class ProfilePage implements OnInit {
   }
 
   selectProfilePicture(): void {
-    this.pictureService.select().then((blob) => {
+    this.pictureService.getPicture(false, true).then((blob) => {
       this.uploadProfilePicture(blob);
     })
       .catch((e) => {
