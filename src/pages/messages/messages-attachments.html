@@ -1,11 +1,11 @@
 <ion-content class="messages-attachments-page-content">
   <ion-list class="attachments">
-    <button ion-item class="attachment attachment-gallery" (click)="sendPicture()">
+    <button ion-item class="attachment attachment-gallery" (click)="sendPicture(false)">
       <ion-icon name="images" class="attachment-icon"></ion-icon>
       <div class="attachment-name">Gallery</div>
     </button>
 
-    <button ion-item class="attachment attachment-camera">
+    <button ion-item class="attachment attachment-camera" (click)="sendPicture(true)">
       <ion-icon name="camera" class="attachment-icon"></ion-icon>
       <div class="attachment-name">Camera</div>
     </button>
