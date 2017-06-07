@@ -9,6 +9,7 @@ import { Sim } from '@ionic-native/sim';
 import { SmsReceiver } from "../ionic/sms-receiver";
 import { Camera } from '@ionic-native/camera';
 import { Crop } from '@ionic-native/crop';
+import { Contacts } from "@ionic-native/contacts";
 import { AgmCoreModule } from '@agm/core';
 import { MomentModule } from 'angular2-moment';
 import { ChatsPage } from '../pages/chats/chats';
@@ -75,7 +76,8 @@ import { MyApp } from './app.component';
     Sim,
     SmsReceiver,
     Camera,
-    Crop
+    Crop,
+    Contacts
   ]
 })
 export class AppModule {}
