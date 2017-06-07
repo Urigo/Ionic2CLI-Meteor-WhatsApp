@@ -29,6 +29,7 @@
     "@angular/platform-browser": "4.1.2",
     "@angular/platform-browser-dynamic": "4.1.2",
     "@ionic-native/camera": "^3.12.1",
+    "@ionic-native/contacts": "^3.12.1",
     "@ionic-native/core": "3.10.2",
     "@ionic-native/crop": "^3.12.1",
     "@ionic-native/geolocation": "^3.10.3",
@@ -45,6 +46,7 @@
     "cordova-plugin-camera": "^2.4.1",
     "cordova-plugin-compat": "^1.1.0",
     "cordova-plugin-console": "^1.0.5",
+    "cordova-plugin-contacts": "^2.3.1",
     "cordova-plugin-crop": "^0.4.0",
     "cordova-plugin-device": "^1.1.4",
     "cordova-plugin-geolocation": "^2.4.3",
@@ -96,7 +98,8 @@
       "cordova-plugin-sim": {},
       "cordova-plugin-sms-receiver": {},
       "cordova-plugin-camera": {},
-      "cordova-plugin-crop": {}
+      "cordova-plugin-crop": {},
+      "cordova-plugin-contacts": {}
     },
     "platforms": [
       "android"
