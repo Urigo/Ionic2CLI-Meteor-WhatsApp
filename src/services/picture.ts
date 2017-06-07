@@ -1,34 +1,50 @@
 import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
-import { ImagePicker } from '@ionic-native/image-picker';
 import { UploadFS } from 'meteor/jalik:ufs';
 import { PicturesStore } from 'api/collections';
 import * as _ from 'lodash';
 import { DEFAULT_PICTURE_URL } from 'api/models';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+import { Crop } from '@ionic-native/crop';
 
 @Injectable()
 export class PictureService {
   constructor(private platform: Platform,
-              private imagePicker: ImagePicker) {
+              private camera: Camera,
+              private crop: Crop) {
   }
 
-  select(): Promise<File> {
-    if (!this.platform.is('cordova') || !this.platform.is('mobile')) {
+  getPicture(camera: boolean, crop: boolean): Promise<File> {
+    if (!this.platform.is('cordova')) {
       return new Promise((resolve, reject) => {
-        try {
-          UploadFS.selectFile((file: File) => {
-            resolve(file);
-          });
-        }
-        catch (e) {
-          reject(e);
+        //TODO: add javascript image crop
+        if (camera === true) {
+          reject(new Error("Can't access the camera on Browser"));
+        } else {
+          try {
+            UploadFS.selectFile((file: File) => {
+              resolve(file);
+            });
+          } catch (e) {
+            reject(e);
+          }
         }
       });
     }
 
-    return this.imagePicker.getPictures({maximumImagesCount: 1}).then((URL: string) => {
-      return this.convertURLtoBlob(URL);
-    });
+    return this.camera.getPicture(<CameraOptions>{
+      destinationType: 1,
+      quality: 50,
+      correctOrientation: true,
+      saveToPhotoAlbum: false,
+      sourceType: camera ? 1 : 0
+    })
+      .then((fileURI) => {
+        return crop ? this.crop.crop(fileURI, {quality: 50}) : fileURI;
+      })
+      .then((croppedFileURI) => {
+        return this.convertURLtoBlob(croppedFileURI);
+      });
   }
 
   upload(blob: File): Promise<any> {
