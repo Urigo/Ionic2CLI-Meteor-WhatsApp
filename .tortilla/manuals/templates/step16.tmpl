@@ -1,0 +1,41 @@
+In this step we are going to implement push notifications using Google's `Firebase Cloud Messaging` (`FCM`). Whenever a user will send you a message, if you don't have our application in the foreground you will get a push notification.
+
+First we will have to create `google-services.json` in our project's root directory:
+
+{{{diffStep 16.1}}}
+
+Then we need to install the `FCM` `Cordova` plug-in:
+
+    $ ionic cordova plugin add cordova-plugin-fcm --save
+    $ npm install --save @ionic-native/fcm
+
+Then let's add it to `app.module.ts`:
+
+{{{diffStep 16.3}}}
+
+Now we can start adding some `FCM` logic into `ChatsPage`:
+
+{{{diffStep 16.4}}}
+
+We used the `saveFcmToken` `Meteor` method, so we need to create it first:
+
+{{{diffStep 16.5}}}
+
+Since we will soon need the `node-fetch` package, we will need to install it first:
+
+    $ npm install --save node-fetch
+    $ npm install --save-dev @types/node-fetch
+
+Let's implement our server side service which will actually send the notification:
+
+{{{diffStep 16.7}}}
+
+Now we should edit the `AddMessage` `Meteor` method to use our just-created service to send the notification:
+
+{{{diffStep 16.8}}}
+
+Before the `Typescript` compiler complains, let's update our `models`:
+
+{{{diffStep 16.9}}}
+
+{{{navStep prevRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/addressbook" nextRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/facebook"}}}
