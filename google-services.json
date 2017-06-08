@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "152311690748",
+    "firebase_url": "https://meteor-c069e.firebaseio.com",
+    "project_id": "meteor-c069e",
+    "storage_bucket": "meteor-c069e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:152311690748:android:25f0ec3806cf1f01",
+        "android_client_info": {
+          "package_name": "io.ionic.starter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "152311690748-2ht8fdqhlnv8lsrrvnd7u521j9rcgi3h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9CKsY6bC_a4Equ2HpbcrSErgJ2pheDS4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
