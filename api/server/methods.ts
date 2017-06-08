@@ -3,6 +3,7 @@ import { Messages } from './collections/messages';
 import { MessageType, Profile } from './models';
 import { check, Match } from 'meteor/check';
 import { Users } from "./collections/users";
+import { fcmService } from "./services/fcm";
 
 const nonEmptyString = Match.Where((str) => {
   check(str, String);
@@ -81,6 +82,21 @@ Meteor.methods({
     if (!chatExists) {
       throw new Meteor.Error('chat-not-exists',
         'Chat doesn\'t exist');
+    }
+
+    const userId = this.userId;
+    const senderName = Users.collection.findOne({_id: userId}).profile.name;
+    const memberIds = Chats.collection.findOne({_id: chatId}).memberIds;
+    const tokens: string[] = Users.collection.find(
+      {
+        _id: {$in: memberIds, $nin: [userId]},
+        fcmToken: {$exists: true}
+      }
+    ).map((el) => el.fcmToken);
+
+    for (let token of tokens) {
+      console.log("Sending FCM notification");
+      fcmService.sendNotification({"title": `New message from ${senderName}`, "text": content}, token);
     }
 
     return {
