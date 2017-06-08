@@ -2,6 +2,7 @@ import { Chats } from './collections/chats';
 import { Messages } from './collections/messages';
 import { MessageType, Profile } from './models';
 import { check, Match } from 'meteor/check';
+import { Users } from "./collections/users";
 
 const nonEmptyString = Match.Where((str) => {
   check(str, String);
@@ -94,5 +95,12 @@ Meteor.methods({
   },
   countMessages(): number {
     return Messages.collection.find().count();
+  },
+  saveFcmToken(token: string): void {
+    if (!this.userId) throw new Meteor.Error('unauthorized', 'User must be logged-in to call this method');
+
+    check(token, nonEmptyString);
+
+    Users.collection.update({_id: this.userId}, {$set: {"fcmToken": token}});
   }
 });
