@@ -33,6 +33,7 @@ export interface Message {
 
 export interface User extends Meteor.User {
   profile?: Profile;
+  fcmToken?: string;
 }
 
 export interface Location {
