@@ -5,9 +5,29 @@
     "adminPhoneNumbers": ["+9721234567", "+97212345678", "+97212345679"],
     "phoneVerificationMasterCode": "1234"
   },
+  "public": {
+    "facebook": {
+      "permissions": [
+        "public_profile",
+        "user_friends",
+        "email"
+      ],
+      "profileFields": [
+        "name",
+        "gender",
+        "location"
+      ]
+    }
+  },
   "private": {
     "fcm": {
       "key": "AIzaSyBnmvN5WNv3rAaLra1RUr9vA5k0pNp0KuY"
+    },
+    "oAuth": {
+      "facebook": {
+        "appId": "1800004730327605",
+        "secret": "57f57a93e8847896a0b779c0d0cdfa7b"
+      }
     }
   }
 }
