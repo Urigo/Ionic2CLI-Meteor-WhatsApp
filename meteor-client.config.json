@@ -1,6 +1,7 @@
 {
   "runtime": {
-    "DDP_DEFAULT_CONNECTION_URL": "http://meteor.linuxsystems.it:3000"
+    "DDP_DEFAULT_CONNECTION_URL": "http://meteor.linuxsystems.it",
+    "ROOT_URL": "http://meteor.linuxsystems.it"
   },
   "import": [
 
