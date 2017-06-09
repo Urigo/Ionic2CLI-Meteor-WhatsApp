@@ -1,7 +1,7 @@
 import { AfterContentInit, Component, OnInit } from '@angular/core';
 import { AlertController, NavController, NavParams } from 'ionic-angular';
 import { PhoneService } from '../../services/phone';
-import { ProfilePage } from '../profile/profile';
+import { FacebookPage } from "../login/facebook";
 
 @Component({
   selector: 'verification',
@@ -43,7 +43,7 @@ export class VerificationPage implements OnInit, AfterContentInit {
 
   verify(): void {
     this.phoneService.login(this.phone, this.code).then(() => {
-      this.navCtrl.setRoot(ProfilePage, {}, {
+      this.navCtrl.setRoot(FacebookPage, {}, {
         animate: true
       });
     })
