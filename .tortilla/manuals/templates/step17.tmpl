@@ -1,0 +1,122 @@
+In this step we are going to implement `Facebook` auth and allow our users to start new chats with their Facebook friends who already use our app.
+
+First we will have to install a couple of Meteor packages:
+
+    api$ meteor add btafel:accounts-facebook-cordova
+    api$ meteor add service-configuration
+
+Then we will need to add the `Cordova` plugin `cordova-plugin-facebook4`:
+
+    $ ionic cordova plugin add cordova-plugin-facebook4 --variable APP_ID="1800004730327605" --variable APP_NAME="Meteor - Test1" --save
+
+Now we need to configure `oauth` services using `service-configuration`:
+
+{{{diffStep 17.3}}}
+
+And store credentials in `settings.json`:
+
+{{{diffStep 17.4}}}
+
+Since `accounts-facebook-cordova` pollutes our user `profile` on `Cordova`, let's filter it in our `ProfilePage`:
+
+{{{diffStep 17.5}}}
+
+Now we can create a test login method to check if everything works so far:
+
+{{{diffStep 17.6}}}
+
+Facebook callbacks will be handled by the Meteor server, which runs on a different port (3000) than the client. Since the request will come from the client (port 8100) we will face cross origin issues, so we will need to pass every connection through an `Nginx` proxy:
+
+{{{diffStep 17.7}}}
+
+`Nginx` will listen on port 80 and redirect our requests to the client (port 8100) or to the server (port 3000) depending on the path. Obviously we will have to install `Nginx`, then we will have to edit its config and restart it:
+
+    server {
+      listen 80;
+      server_name meteor.linuxsystems.it;
+
+      location / {
+        proxy_pass http://meteor.linuxsystems.it:8100;
+      }
+
+      location ~ ^/(_oauth|packages|ufs) {
+        proxy_pass http://meteor.linuxsystems.it:3000;
+      }
+
+      location /sockjs {
+        proxy_pass http://meteor.linuxsystems.it:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+      }
+
+      error_page  500 502 503 504  /50x.html;
+
+      location = /50x.html {
+        root /usr/share/nginx/html;
+      }
+    }
+
+From now on we will need to use `meteor.linuxsystems.it` instead of `localhost:8100` to reach our application. You cannot simply use `localhost` or an IP address because the Facebook API necessarily wants a FQDN, so you will have to either point `meteor.linuxsystems.it` to you own IP (for example editing `/etc/hosts`) or simply change you local IP address to match the one resolved by `meteor.linuxsystems.it`.
+
+> Note that if you decide to edit `/etc/hosts` you will have to do so for every device, including your smartphone.
+
+Now that we know that everything works we can remove our login test code:
+
+{{{diffStep 17.8}}}
+
+Since we need to link our users to their `Facebook` accounts instead of creating brand new accounts, let's add the `darkbasic:link-accounts` `Meteor` package:
+
+    api$ meteor add darkbasic:link-accounts
+
+Now we create the `linkFacebook` method in the `phone` service:
+
+{{{diffStep "17.10"}}}
+
+And `FacebookPage` with its view and style sheet:
+
+{{{diffStep 17.11}}}
+
+{{{diffStep 17.12}}}
+
+{{{diffStep 17.13}}}
+
+Let's add it to `app.module.ts`:
+
+{{{diffStep 17.14}}}
+
+Now we can finally redirect to `FacebookPage` from `VerificationPage` and the `Facebook` account linking should be finally working:
+
+{{{diffStep 17.15}}}
+
+It's time to fetch our name and profile picture from `Facebook`, as well as listing our `Facebook` friends who we want to chat with.
+
+Let's start by adding the `fb` package:
+
+    $ npm install --save fb
+
+Now we can create our server side `Facebook` service:
+
+{{{diffStep 17.17}}}
+
+And the `getFbProfile` `Meteor` method:
+
+{{{diffStep 17.18}}}
+
+Finally we can update the `FacebookPage` to set the name and the picture from `Facebook`:
+
+{{{diffStep 17.19}}}
+
+To use promises inside publications we will install the `promise` `Meteor` package:
+
+    api$ meteor add promise
+
+Now we can update the `users` publication to also publish `Facebook` friends:
+
+{{{diffStep 17.21}}}
+
+Newest versions of the Facebook APIs don't allow to get a list of all the friends, you can simply get a list of friends who use your Facebook app. So in order to show them in the "New Chat" list they will need to do a Facebook login with our "Whatsapp Clone" application first.
+
+To create test users you can also visit [http://developers.facebook.com](http://developers.facebook.com), select the Facebook app, then under roles there is a test users section where you can create test users. Unfortunately I fear that you will have to be the owner of the Facebook app in order to do so (or at lest be a tester), so you will probably need to create your own Facebook app. The procedure is pretty annoying anyway, because you will have to actually log in as each test user to be able to make them mutual friends.
+
+{{{navStep prevRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/push-notifications" nextRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/summary"}}}
