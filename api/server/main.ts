@@ -2,11 +2,23 @@ import { Meteor } from 'meteor/meteor';
 import { Picture } from './models';
 import { Accounts } from 'meteor/accounts-base';
 import { Users } from './collections/users';
+declare const ServiceConfiguration: any;
 
 Meteor.startup(() => {
   if (Meteor.settings) {
     Object.assign(Accounts._options, Meteor.settings['accounts-phone']);
     SMS.twilio = Meteor.settings['twilio'];
+  }
+
+  // Configuring oAuth services
+  const services = Meteor.settings.private.oAuth;
+
+  if (services) {
+    for (let service in services) {
+      ServiceConfiguration.configurations.upsert({service: service}, {
+        $set: services[service]
+      });
+    }
   }
 
   if (Users.collection.find().count() > 0) {
