@@ -146,6 +146,23 @@ export class PhoneService {
     });
   }
 
+  linkFacebook(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const options = {
+        requestPermissions: ['public_profile', 'user_friends', 'email']
+      };
+
+      // TODO: add link-accounts types to meteor typings
+      (<any>Meteor).linkWithFacebook(options, (error: Error) => {
+        if (error) {
+          reject(new Error(error.message));
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
   logout(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       Meteor.logout((e: Error) => {
