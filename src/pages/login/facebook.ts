@@ -2,6 +2,9 @@ import { Component } from "@angular/core";
 import { Alert, AlertController, NavController } from "ionic-angular";
 import { PhoneService } from "../../services/phone";
 import { ProfilePage } from "../profile/profile";
+import { MeteorObservable } from "meteor-rxjs";
+import { FbProfile } from "api/services/facebook";
+import { Profile } from "api/models";
 
 @Component({
   selector: 'facebook',
@@ -39,8 +42,29 @@ export class FacebookPage {
   linkFacebook(): void {
     this.phoneService.linkFacebook()
       .then(() => {
-        this.navCtrl.setRoot(ProfilePage, {}, {
-          animate: true
+        MeteorObservable.call('getFbProfile').subscribe({
+          next: (fbProfile: FbProfile) => {
+            const pathname = (new URL(fbProfile.pictureUrl)).pathname;
+            const filename = pathname.substring(pathname.lastIndexOf('/') + 1);
+            const description = {name: filename};
+            let profile: Profile = {name: fbProfile.name, pictureId: ""};
+            MeteorObservable.call('ufsImportURL', fbProfile.pictureUrl, description, 'pictures')
+              .map((value) => profile.pictureId = (<any>value)._id)
+              .switchMapTo(MeteorObservable.call('updateProfile', profile))
+              .subscribe({
+                next: () => {
+                  this.navCtrl.setRoot(ProfilePage, {}, {
+                    animate: true
+                  });
+                },
+                error: (e: Error) => {
+                  this.handleError(e);
+                }
+              });
+          },
+          error: (e: Error) => {
+            this.handleError(e);
+          }
         });
       })
       .catch((e) => {
