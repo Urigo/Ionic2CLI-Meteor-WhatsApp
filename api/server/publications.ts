@@ -3,6 +3,7 @@ import { Users } from './collections/users';
 import { Messages } from './collections/messages';
 import { Chats } from './collections/chats';
 import { Pictures } from './collections/pictures';
+import { facebookService } from "./services/facebook";
 
 Meteor.publishComposite('users', function(
   pattern: string,
@@ -14,11 +15,22 @@ Meteor.publishComposite('users', function(
 
   let selector = {};
 
+  var facebookFriendsIds: string[] = [];
+  if (Users.collection.findOne({'_id': this.userId}).services.facebook) {
+    //FIXME: add definitions for the promise Meteor package
+    //TODO: handle error: token may be expired
+    const accessToken = (<any>Promise).await(facebookService.getAccessToken(this.userId));
+    //TODO: handle error: user may have denied permissions
+    const facebookFriends = (<any>Promise).await(facebookService.getFriends(accessToken));
+    facebookFriendsIds = facebookFriends.map((friend) => friend.id);
+  }
+
   if (pattern) {
     selector = {
       'profile.name': { $regex: pattern, $options: 'i' },
       $or: [
         {'phone.number': {$in: contacts}},
+        {'services.facebook.id': {$in: facebookFriendsIds}},
         {'profile.name': {$in: ['Ethan Gonzalez', 'Bryan Wallace', 'Avery Stewart', 'Katie Peterson', 'Ray Edwards']}}
       ]
     };
@@ -26,6 +38,7 @@ Meteor.publishComposite('users', function(
     selector = {
       $or: [
         {'phone.number': {$in: contacts}},
+        {'services.facebook.id': {$in: facebookFriendsIds}},
         {'profile.name': {$in: ['Ethan Gonzalez', 'Bryan Wallace', 'Avery Stewart', 'Katie Peterson', 'Ray Edwards']}}
       ]
     }
