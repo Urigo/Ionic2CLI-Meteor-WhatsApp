@@ -4,6 +4,7 @@ import { MessageType, Profile } from './models';
 import { check, Match } from 'meteor/check';
 import { Users } from "./collections/users";
 import { fcmService } from "./services/fcm";
+import { facebookService, FbProfile } from "./services/facebook";
 
 const nonEmptyString = Match.Where((str) => {
   check(str, String);
@@ -118,5 +119,17 @@ Meteor.methods({
     check(token, nonEmptyString);
 
     Users.collection.update({_id: this.userId}, {$set: {"fcmToken": token}});
+  },
+  async getFbProfile(): Promise<FbProfile> {
+    if (!this.userId) throw new Meteor.Error('unauthorized', 'User must be logged-in to call this method');
+
+    if (!Users.collection.findOne({'_id': this.userId}).services.facebook) {
+      throw new Meteor.Error('unauthorized', 'User must be logged-in with Facebook to call this method');
+    }
+
+    //TODO: handle error: token may be expired
+    const accessToken = await facebookService.getAccessToken(this.userId);
+    //TODO: handle error: user may have denied permissions
+    return await facebookService.getProfile(accessToken);
   }
 });
