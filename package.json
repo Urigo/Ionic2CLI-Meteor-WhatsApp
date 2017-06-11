@@ -49,6 +49,7 @@
     "cordova-plugin-contacts": "^2.3.1",
     "cordova-plugin-crop": "^0.4.0",
     "cordova-plugin-device": "^1.1.4",
+    "cordova-plugin-facebook4": "^1.9.1",
     "cordova-plugin-fcm": "^2.1.2",
     "cordova-plugin-geolocation": "^2.4.3",
     "cordova-plugin-ionic-webview": "^1.1.15",
@@ -102,7 +103,11 @@
       "cordova-plugin-camera": {},
       "cordova-plugin-crop": {},
       "cordova-plugin-contacts": {},
-      "cordova-plugin-fcm": {}
+      "cordova-plugin-fcm": {},
+      "cordova-plugin-facebook4": {
+        "APP_ID": "1800004730327605",
+        "APP_NAME": "Meteor - Test1"
+      }
     },
     "platforms": [
       "android"
