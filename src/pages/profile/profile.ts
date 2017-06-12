@@ -22,9 +22,10 @@ export class ProfilePage implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.profile = Meteor.user().profile || {
-      name: ''
-    };
+    this.profile = (({name = '', pictureId} = {}) => ({
+      name,
+      pictureId
+    }))(Meteor.user().profile);
 
     MeteorObservable.subscribe('user').subscribe(() => {
       let platform = this.platform.is('android') ? "android" :
