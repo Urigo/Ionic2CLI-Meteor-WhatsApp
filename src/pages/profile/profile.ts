@@ -53,7 +53,7 @@ export class ProfilePage implements OnInit {
     MeteorObservable.call('updateProfile', this.profile).subscribe({
       next: () => {
         //remove profile page from stack
-        this.navCtrl.pop();
+        this.navCtrl.setRoot(ChatsPage);
       },
       error: (e: Error) => {
         this.handleError(e);
