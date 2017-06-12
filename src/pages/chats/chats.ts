@@ -29,6 +29,7 @@ export class ChatsPage implements OnInit {
   }
 
   ngOnInit() {
+    MeteorObservable.subscribe('users').subscribe();
     MeteorObservable.subscribe('chats').subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         this.chats = this.findChats();
