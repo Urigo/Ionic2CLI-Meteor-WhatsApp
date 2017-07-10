@@ -16,6 +16,7 @@ A `Meteor` project will contain the following dirs by default:
 
 These scripts should be loaded automatically by their alphabetic order on their belonging platform, e.g. a script defined under the client dir should be loaded by `Meteor` only on the client. A script defined in neither of these folders should be loaded on both. Since we're using `Ionic`'s CLI for the client code we have no need in the client dir in the `Meteor` project. Let's get rid of it:
 
+    cd api
     api$ rm -rf client
 
 Since we don't wanna have duplicate resources between the client and the server, we will remove the `package.json` file in the `api` dir:
