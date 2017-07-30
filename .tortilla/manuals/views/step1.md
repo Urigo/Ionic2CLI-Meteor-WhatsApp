@@ -294,7 +294,7 @@ Now, we need to make some modifications for the `TypeScript` config so we can lo
 +┊  ┊19┊    "skipLibCheck": true,
 +┊  ┊20┊    "stripInternal": true,
 +┊  ┊21┊    "noImplicitAny": false,
-+┊  ┊22┊    "types": [
++┊  ┊22┊    "typeRoots": [
 +┊  ┊23┊      "meteor-typings",
 +┊  ┊24┊      "@types/underscore"
 +┊  ┊25┊    ]
