@@ -77,7 +77,7 @@ The first thing we gonna do would be telling Ionic that we're using `Webpack` as
 -┊43┊  ┊  "description": "whatsapp: An Ionic project"
 +┊  ┊43┊  "description": "whatsapp: An Ionic project",
 +┊  ┊44┊  "config": {
-+┊  ┊45┊    "ionic_webpack": "./webpack.config.js"
++┊  ┊45┊    "ionic_webpack": "./config/webpack.config.js"
 +┊  ┊46┊  }
  ┊44┊47┊}
 ```
