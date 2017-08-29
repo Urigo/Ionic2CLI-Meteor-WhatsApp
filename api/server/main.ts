@@ -1,21 +1,29 @@
+import { createApolloServer } from 'meteor/apollo';
+import { makeExecutableSchema } from 'graphql-tools';
 import { Meteor } from 'meteor/meteor';
-import { Accounts } from 'meteor/accounts-base';
-declare const ServiceConfiguration: any;
+import {typeDefs, resolvers} from './imports/api/schema';
+import * as cors from 'cors';
 
 Meteor.startup(() => {
-  if (Meteor.settings) {
-    Object.assign(Accounts._options, Meteor.settings['accounts-phone']);
-    SMS.twilio = Meteor.settings['twilio'];
-  }
 
-  // Configuring oAuth services
-  const services = Meteor.settings.private.oAuth;
+  const schema = makeExecutableSchema({
+    typeDefs,
+    resolvers,
+  });
 
-  if (services) {
-    for (let service in services) {
-      ServiceConfiguration.configurations.upsert({service: service}, {
-        $set: services[service]
-      });
-    }
-  }
+
+  createApolloServer({
+    schema,
+    context: {},
+    formatError(error) {
+      console.error(error.stack);
+
+      return error;
+    },
+  }, {
+    configServer(app) {
+        app.use(cors());
+    },
+  });
+
 });

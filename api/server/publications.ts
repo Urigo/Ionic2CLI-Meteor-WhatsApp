@@ -2,7 +2,6 @@ import { User, Message, Chat, Picture } from './models';
 import { Users } from './collections/users';
 import { Messages } from './collections/messages';
 import { Chats } from './collections/chats';
-import { Pictures } from './collections/pictures';
 import { facebookService } from "./services/facebook";
 
 Meteor.publishComposite('users', function(
@@ -53,9 +52,7 @@ Meteor.publishComposite('users', function(
     children: [
       <PublishCompositeConfig1<User, Picture>> {
         find: (user) => {
-          return Pictures.collection.find(user.profile.pictureId, {
-            fields: { url: 1 }
-          });
+          return;
         }
       }
     ]
@@ -107,9 +104,7 @@ Meteor.publishComposite('chats', function(): PublishCompositeConfig<Chat> {
         children: [
           <PublishCompositeConfig2<Chat, User, Picture>> {
             find: (user, chat) => {
-              return Pictures.collection.find(user.profile.pictureId, {
-                fields: { url: 1 }
-              });
+              return;
             }
           }
         ]
@@ -125,7 +120,5 @@ Meteor.publish('user', function () {
 
   const profile = Users.findOne(this.userId).profile || {};
 
-  return Pictures.collection.find({
-    _id: profile.pictureId
-  });
+  return;
 });

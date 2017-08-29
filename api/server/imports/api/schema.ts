@@ -21,16 +21,22 @@ type Query {
 
 export const resolvers = {
   Query: {
-    user(root, args, context) {
+    async user(root, args, context) {
       /*
        * We access to the current user here thanks to the context. The current
        * user is added to the context thanks to the `meteor/apollo` package.
        */
-      return context.user;
+
+      // console.log(context.user);
+      // Meteor.users.find().fetch()
+      const s =  await Meteor.users.find().fetch();
+      // console.log(s[0].emails[0]);
+      // console.log(s[0].emails[0]);
+      return s;
     },
   },
   User: {
-    emails: ({ emails }) => emails,
+    emails: (users) => users[0].emails,
     randomString: () => Random.id(),
   },
 };
