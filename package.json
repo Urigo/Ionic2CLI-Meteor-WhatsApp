@@ -33,6 +33,7 @@
     "babel-runtime": "^6.26.0",
     "ionic-angular": "3.7.1",
     "ionicons": "3.0.0",
+    "lodash": "^4.17.4",
     "meteor-node-stubs": "^0.2.11",
     "meteor-rxjs": "^0.4.8",
     "moment": "^2.19.0",
@@ -42,6 +43,7 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.0.0",
+    "@types/lodash": "^4.14.77",
     "@types/meteor": "^1.4.8",
     "tmp": "0.0.33",
     "typescript": "^2.4.2",
