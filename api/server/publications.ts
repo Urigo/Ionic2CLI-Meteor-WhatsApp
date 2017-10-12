@@ -17,10 +17,18 @@ Meteor.publishComposite('users', function(
   if (pattern) {
     selector = {
       'profile.name': { $regex: pattern, $options: 'i' },
-      'phone.number': {$in: contacts}
+      $or: [
+        {'phone.number': {$in: contacts}},
+        {'profile.name': {$in: ['Ethan Gonzalez', 'Bryan Wallace', 'Avery Stewart', 'Katie Peterson', 'Ray Edwards']}}
+      ]
     };
   } else {
-    selector = {'phone.number': {$in: contacts}}
+    selector = {
+      $or: [
+        {'phone.number': {$in: contacts}},
+        {'profile.name': {$in: ['Ethan Gonzalez', 'Bryan Wallace', 'Avery Stewart', 'Katie Peterson', 'Ray Edwards']}}
+      ]
+    }
   }
 
   return {
