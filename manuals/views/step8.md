@@ -1,7 +1,5 @@
-[{]: <region> (header)
-# Step 8: Chats Creation & Removal
-[}]: #
-[{]: <region> (body)
+# Step 8: Chats Creation &amp; Removal
+
 Our next step is about adding the ability to create new chats. We have the `ChatsPage` and the authentication system, but we need to hook them up some how. Let's define the initial `User` schema which will be used to retrieve its relevant information in our application:
 
 [{]: <helper> (diff_step 8.1)
@@ -317,46 +315,19 @@ We will import the newly created component in the app's `NgModule` as well, so i
 
 We're also required to implement the appropriate `Meteor` method which will be the actually handler for feeding our data-base with newly created chats:
 
-[{]: <helper> (diff_step 8.10)
-#### Step 8.10: Implement addChat method
+[{]: <helper> (diff_step 8.1)
+#### Step 8.1: Added user model
 
-##### Changed api/server/methods.ts
+##### Changed api/server/models.ts
 ```diff
-@@ -9,6 +9,34 @@
- ┊ 9┊ 9┊});
- ┊10┊10┊
- ┊11┊11┊Meteor.methods({
-+┊  ┊12┊  addChat(receiverId: string): void {
-+┊  ┊13┊    if (!this.userId) {
-+┊  ┊14┊      throw new Meteor.Error('unauthorized',
-+┊  ┊15┊        'User must be logged-in to create a new chat');
-+┊  ┊16┊    }
-+┊  ┊17┊
-+┊  ┊18┊    check(receiverId, nonEmptyString);
-+┊  ┊19┊
-+┊  ┊20┊    if (receiverId === this.userId) {
-+┊  ┊21┊      throw new Meteor.Error('illegal-receiver',
-+┊  ┊22┊        'Receiver must be different than the current logged in user');
-+┊  ┊23┊    }
-+┊  ┊24┊
-+┊  ┊25┊    const chatExists = !!Chats.collection.find({
-+┊  ┊26┊      memberIds: { $all: [this.userId, receiverId] }
-+┊  ┊27┊    }).count();
+@@ -25,3 +25,7 @@
+ ┊25┊25┊  type?: MessageType
+ ┊26┊26┊  ownership?: string;
+ ┊27┊27┊}
 +┊  ┊28┊
-+┊  ┊29┊    if (chatExists) {
-+┊  ┊30┊      throw new Meteor.Error('chat-exists',
-+┊  ┊31┊        'Chat already exists');
-+┊  ┊32┊    }
-+┊  ┊33┊
-+┊  ┊34┊    const chat = {
-+┊  ┊35┊      memberIds: [this.userId, receiverId]
-+┊  ┊36┊    };
-+┊  ┊37┊
-+┊  ┊38┊    Chats.insert(chat);
-+┊  ┊39┊  },
- ┊12┊40┊  updateProfile(profile: Profile): void {
- ┊13┊41┊    if (!this.userId) throw new Meteor.Error('unauthorized',
- ┊14┊42┊      'User must be logged-in to create a new chat');
++┊  ┊29┊export interface User extends Meteor.User {
++┊  ┊30┊  profile?: Profile;
++┊  ┊31┊}
 ```
 [}]: #
 
@@ -635,10 +606,8 @@ Now, as soon as you start the server, new users should be fabricated and inserte
 
     $ npm run api
 
-[}]: #
-[{]: <region> (footer)
-[{]: <helper> (nav_step)
-| [< Previous Step](step7.md) | [Next Step >](step9.md) |
+[{]: <helper> (nav_step next_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/privacy" prev_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/authentication")
+| [< Previous Step](https://angular-meteor.com/tutorials/whatsapp2/ionic/authentication) | [Next Step >](https://angular-meteor.com/tutorials/whatsapp2/ionic/privacy) |
 |:--------------------------------|--------------------------------:|
 [}]: #
-[}]: #
+

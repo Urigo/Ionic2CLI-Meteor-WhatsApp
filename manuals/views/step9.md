@@ -1,7 +1,5 @@
-[{]: <region> (header)
-# Step 9: Privacy & Subscriptions
-[}]: #
-[{]: <region> (body)
+# Step 9: Privacy &amp; Subscriptions
+
 In this step we gonna take care of the app's security and encapsulation, since we don't want the users to do whatever they want, and we don't want them to be able to see content which is irrelevant for them.
 
 We gonna start by removing a `Meteor` package named `insecure`. This package provides the client with the ability to run collection mutation methods. This is a behavior we are not interested in since removing data and creating data should be done in the server and only after certain validations. Meteor includes this package by default only for development purposes and it should be removed once our app is ready for production. As said, we will remove this package by typing the following command:
@@ -631,10 +629,8 @@ The `messages` publication is responsible for bringing all the relevant messages
 ```
 [}]: #
 
-[}]: #
-[{]: <region> (footer)
-[{]: <helper> (nav_step)
-| [< Previous Step](step8.md) | [Next Step >](step10.md) |
+[{]: <helper> (nav_step next_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/filter-and-pagination" prev_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/chats-mutations")
+| [< Previous Step](https://angular-meteor.com/tutorials/whatsapp2/ionic/chats-mutations) | [Next Step >](https://angular-meteor.com/tutorials/whatsapp2/ionic/filter-and-pagination) |
 |:--------------------------------|--------------------------------:|
 [}]: #
-[}]: #
+

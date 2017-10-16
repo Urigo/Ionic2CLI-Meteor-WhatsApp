@@ -1,7 +1,5 @@
-[{]: <region> (header)
 # Step 5: Folder Structure
-[}]: #
-[{]: <region> (body)
+
 As you have probably noticed, our tutorial app has a strict modular structure at this point; There are no pure JavaScript files that are being bundled together and auto-executed, so Meteor's file loading conventions don't have any effect. Furthermore, every `.ts` file is being compiled into a separate CommonJS module, which we can then import whenever we desire.
 
 ## TypeScript
@@ -122,10 +120,8 @@ const config = {
 module.exports = config;
 ```
 
-[}]: #
-[{]: <region> (footer)
-[{]: <helper> (nav_step)
-| [< Previous Step](step4.md) | [Next Step >](step6.md) |
+[{]: <helper> (nav_step next_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/messages-page" prev_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/meteor-server-side")
+| [< Previous Step](https://angular-meteor.com/tutorials/whatsapp2/ionic/meteor-server-side) | [Next Step >](https://angular-meteor.com/tutorials/whatsapp2/ionic/messages-page) |
 |:--------------------------------|--------------------------------:|
 [}]: #
-[}]: #
+

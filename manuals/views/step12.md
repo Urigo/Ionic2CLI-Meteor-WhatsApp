@@ -1,7 +1,5 @@
-[{]: <region> (header)
-# Step 12: File Upload & Images
-[}]: #
-[{]: <region> (body)
+# Step 12: File Upload &amp; Images
+
 In this step, we will be using `Ionic 2` to pick up some images from our device's gallery, and we will use them to send pictures, and to set our profile picture.
 
 ## Image Picker
@@ -305,31 +303,21 @@ For now, we will add a stub for the `upload` method in the `PictureService` and 
 
 So as we said, need to handle storage of pictures that were sent by the client. First, we will create a `Picture` model so the compiler can recognize a picture object:
 
-[{]: <helper> (diff_step 12.10)
-#### Step 12.10: Create Picture model
+[{]: <helper> (diff_step 12.1)
+#### Step 12.1: Add cordova plugin for image picker
 
-##### Changed api/server/models.ts
+##### Changed package.json
 ```diff
-@@ -38,3 +38,19 @@
- ┊38┊38┊  lng: number;
- ┊39┊39┊  zoom: number;
- ┊40┊40┊}
-+┊  ┊41┊
-+┊  ┊42┊export interface Picture {
-+┊  ┊43┊  _id?: string;
-+┊  ┊44┊  complete?: boolean;
-+┊  ┊45┊  extension?: string;
-+┊  ┊46┊  name?: string;
-+┊  ┊47┊  progress?: number;
-+┊  ┊48┊  size?: number;
-+┊  ┊49┊  store?: string;
-+┊  ┊50┊  token?: string;
-+┊  ┊51┊  type?: string;
-+┊  ┊52┊  uploadedAt?: Date;
-+┊  ┊53┊  uploading?: boolean;
-+┊  ┊54┊  url?: string;
-+┊  ┊55┊  userId?: string;
-+┊  ┊56┊}
+@@ -53,7 +53,8 @@
+ ┊53┊53┊    "cordova-plugin-device",
+ ┊54┊54┊    "cordova-plugin-geolocation",
+ ┊55┊55┊    "ionic-plugin-keyboard",
+-┊56┊  ┊    "cordova-plugin-splashscreen"
++┊  ┊56┊    "cordova-plugin-splashscreen",
++┊  ┊57┊    "https://github.com/Telerik-Verified-Plugins/ImagePicker"
+ ┊57┊58┊  ],
+ ┊58┊59┊  "cordovaPlatforms": [
+ ┊59┊60┊    "ios",
 ```
 [}]: #
 
@@ -557,43 +545,36 @@ As you can see, we also bound the picture message to the `click` event, which me
 ```
 [}]: #
 
-[{]: <helper> (diff_step 12.20)
-#### Step 12.20: Import ShowPictureComponent
+[{]: <helper> (diff_step 12.2)
+#### Step 12.2: Add server side fs packages
 
-##### Changed src/app/app.module.ts
+##### Changed api/.meteor/packages
 ```diff
-@@ -10,6 +10,7 @@
- ┊10┊10┊import { MessagesAttachmentsComponent } from '../pages/messages/messages-attachments';
- ┊11┊11┊import { MessagesOptionsComponent } from '../pages/messages/messages-options';
- ┊12┊12┊import { NewLocationMessageComponent } from '../pages/messages/location-message';
-+┊  ┊13┊import { ShowPictureComponent } from '../pages/messages/show-picture';
- ┊13┊14┊import { ProfilePage } from '../pages/profile/profile';
- ┊14┊15┊import { VerificationPage } from '../pages/verification/verification';
- ┊15┊16┊import { PhoneService } from '../services/phone';
+@@ -24,3 +24,5 @@
+ ┊24┊24┊mys:accounts-phone
+ ┊25┊25┊npm-bcrypt
+ ┊26┊26┊reywood:publish-composite
++┊  ┊27┊jalik:ufs
++┊  ┊28┊jalik:ufs-gridfs
 ```
+
+##### Changed api/.meteor/versions
 ```diff
-@@ -28,7 +29,8 @@
- ┊28┊29┊    NewChatComponent,
- ┊29┊30┊    MessagesOptionsComponent,
- ┊30┊31┊    MessagesAttachmentsComponent,
--┊31┊  ┊    NewLocationMessageComponent
-+┊  ┊32┊    NewLocationMessageComponent,
-+┊  ┊33┊    ShowPictureComponent
- ┊32┊34┊  ],
- ┊33┊35┊  imports: [
- ┊34┊36┊    IonicModule.forRoot(MyApp),
-```
-```diff
-@@ -49,7 +51,8 @@
- ┊49┊51┊    NewChatComponent,
- ┊50┊52┊    MessagesOptionsComponent,
- ┊51┊53┊    MessagesAttachmentsComponent,
--┊52┊  ┊    NewLocationMessageComponent
-+┊  ┊54┊    NewLocationMessageComponent,
-+┊  ┊55┊    ShowPictureComponent
- ┊53┊56┊  ],
- ┊54┊57┊  providers: [
- ┊55┊58┊    {provide: ErrorHandler, useClass: IonicErrorHandler},
+@@ -35,11 +35,14 @@
+ ┊35┊35┊htmljs@1.0.11
+ ┊36┊36┊http@1.1.8
+ ┊37┊37┊id-map@1.0.9
++┊  ┊38┊jalik:ufs@0.7.1_1
++┊  ┊39┊jalik:ufs-gridfs@0.1.4
+ ┊38┊40┊jquery@1.11.10
+ ┊39┊41┊launch-screen@1.0.12
+ ┊40┊42┊livedata@1.0.18
+ ┊41┊43┊localstorage@1.0.12
+ ┊42┊44┊logging@1.1.16
++┊  ┊45┊matb33:collection-hooks@0.8.4
+ ┊43┊46┊meteor@1.6.0
+ ┊44┊47┊meteor-base@1.0.4
+ ┊45┊48┊minifier-css@1.2.15
 ```
 [}]: #
 
@@ -885,31 +866,21 @@ We will also modify the `users` and `chats` publication, so each user will conta
 ```
 [}]: #
 
-[{]: <helper> (diff_step 12.10)
-#### Step 12.10: Create Picture model
+[{]: <helper> (diff_step 12.1)
+#### Step 12.1: Add cordova plugin for image picker
 
-##### Changed api/server/models.ts
+##### Changed package.json
 ```diff
-@@ -38,3 +38,19 @@
- ┊38┊38┊  lng: number;
- ┊39┊39┊  zoom: number;
- ┊40┊40┊}
-+┊  ┊41┊
-+┊  ┊42┊export interface Picture {
-+┊  ┊43┊  _id?: string;
-+┊  ┊44┊  complete?: boolean;
-+┊  ┊45┊  extension?: string;
-+┊  ┊46┊  name?: string;
-+┊  ┊47┊  progress?: number;
-+┊  ┊48┊  size?: number;
-+┊  ┊49┊  store?: string;
-+┊  ┊50┊  token?: string;
-+┊  ┊51┊  type?: string;
-+┊  ┊52┊  uploadedAt?: Date;
-+┊  ┊53┊  uploading?: boolean;
-+┊  ┊54┊  url?: string;
-+┊  ┊55┊  userId?: string;
-+┊  ┊56┊}
+@@ -53,7 +53,8 @@
+ ┊53┊53┊    "cordova-plugin-device",
+ ┊54┊54┊    "cordova-plugin-geolocation",
+ ┊55┊55┊    "ionic-plugin-keyboard",
+-┊56┊  ┊    "cordova-plugin-splashscreen"
++┊  ┊56┊    "cordova-plugin-splashscreen",
++┊  ┊57┊    "https://github.com/Telerik-Verified-Plugins/ImagePicker"
+ ┊57┊58┊  ],
+ ┊58┊59┊  "cordovaPlatforms": [
+ ┊59┊60┊    "ios",
 ```
 [}]: #
 
@@ -1132,10 +1103,8 @@ And we will do the same in the `NewChatComponent`:
 ```
 [}]: #
 
-[}]: #
-[{]: <region> (footer)
-[{]: <helper> (nav_step)
-| [< Previous Step](step11.md) | [Next Step >](step13.md) |
+[{]: <helper> (nav_step next_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/native-mobile" prev_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/google-maps")
+| [< Previous Step](https://angular-meteor.com/tutorials/whatsapp2/ionic/google-maps) | [Next Step >](https://angular-meteor.com/tutorials/whatsapp2/ionic/native-mobile) |
 |:--------------------------------|--------------------------------:|
 [}]: #
-[}]: #
+

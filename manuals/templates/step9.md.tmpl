@@ -81,3 +81,5 @@ The second subscription we're going to define would be the `chats` subscription 
 The `messages` publication is responsible for bringing all the relevant messages for a certain chat. Unlike the other two publications, this publication is actually parameterized and it requires us to pass a chat id during subscription. Let's subscribe to the `messages` publication in the `MessagesPage`, and pass the current active chat ID provided to us by the navigation parameters:
 
 {{{diff_step 9.19}}}
+
+{{{nav_step prev_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/chats-mutations" next_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/filter-and-pagination"}}}

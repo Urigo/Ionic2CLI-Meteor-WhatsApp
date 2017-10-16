@@ -1,7 +1,5 @@
-[{]: <region> (header)
 # Step 3: RxJS
-[}]: #
-[{]: <region> (body)
+
 To help you get started with `RxJS`, we recommend you to read [this post](http://blog.angular-university.io/functional-reactive-programming-for-angular-2-developers-rxjs-and-observables/).
 
 ## TL;DR
@@ -35,10 +33,8 @@ In this tutorial, we will be using fundamental `RxJS` operators, as listed below
 - [RxJS API Documentation](http://reactivex.io/rxjs/)
 - [meteor-rxjs @ GitHub](https://github.com/Urigo/meteor-rxjs)
 
-[}]: #
-[{]: <region> (footer)
-[{]: <helper> (nav_step)
-| [< Previous Step](step2.md) | [Next Step >](step4.md) |
+[{]: <helper> (nav_step next_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/meteor-server-side" prev_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/chats-page")
+| [< Previous Step](https://angular-meteor.com/tutorials/whatsapp2/ionic/chats-page) | [Next Step >](https://angular-meteor.com/tutorials/whatsapp2/ionic/meteor-server-side) |
 |:--------------------------------|--------------------------------:|
 [}]: #
-[}]: #
+

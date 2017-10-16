@@ -1,7 +1,5 @@
-[{]: <region> (header)
-# Step 11: Google Maps & Geolocation
-[}]: #
-[{]: <region> (body)
+# Step 11: Google Maps &amp; Geolocation
+
 In this step we will add the ability to send the current location in [Google Maps](https://www.google.com/maps/).
 
 [{]: <helper> (diff_step 11.1)
@@ -258,40 +256,19 @@ We will add a generic style-sheet for the attachments menu since it can also use
 
 Now we will add a handler in the `MessagesPage` which will open the newly created menu, and we will bind it to the view:
 
-[{]: <helper> (diff_step 11.10)
-#### Step 11.10: Add showAttachments method
+[{]: <helper> (diff_step 11.1)
+#### Step 11.1: Add cordova plugin for geolocation
 
-##### Changed src/pages/messages/messages.ts
+##### Changed package.json
 ```diff
-@@ -7,6 +7,7 @@
- ┊ 7┊ 7┊import { _ } from 'meteor/underscore';
- ┊ 8┊ 8┊import { MessagesOptionsComponent } from './messages-options';
- ┊ 9┊ 9┊import { Subscription, Observable, Subscriber } from 'rxjs';
-+┊  ┊10┊import { MessagesAttachmentsComponent } from './messages-attachments';
- ┊10┊11┊
- ┊11┊12┊@Component({
- ┊12┊13┊  selector: 'messages-page',
-```
-```diff
-@@ -211,4 +212,18 @@
- ┊211┊212┊      this.message = '';
- ┊212┊213┊    });
- ┊213┊214┊  }
-+┊   ┊215┊
-+┊   ┊216┊  showAttachments(): void {
-+┊   ┊217┊    const popover = this.popoverCtrl.create(MessagesAttachmentsComponent, {
-+┊   ┊218┊      chat: this.selectedChat
-+┊   ┊219┊    }, {
-+┊   ┊220┊      cssClass: 'attachments-popover'
-+┊   ┊221┊    });
-+┊   ┊222┊
-+┊   ┊223┊    popover.onDidDismiss((params) => {
-+┊   ┊224┊      // TODO: Handle result
-+┊   ┊225┊    });
-+┊   ┊226┊
-+┊   ┊227┊    popover.present();
-+┊   ┊228┊  }
- ┊214┊229┊}
+@@ -50,6 +50,7 @@
+ ┊50┊50┊    "cordova-plugin-console",
+ ┊51┊51┊    "cordova-plugin-statusbar",
+ ┊52┊52┊    "cordova-plugin-device",
++┊  ┊53┊    "cordova-plugin-geolocation",
+ ┊53┊54┊    "ionic-plugin-keyboard",
+ ┊54┊55┊    "cordova-plugin-splashscreen"
+ ┊55┊56┊  ],
 ```
 [}]: #
 
@@ -638,19 +615,19 @@ Now we will implement a new method in the `MessagesPage`, called `sendLocationMe
 
 This requires us to update the `addMessage` method in the server so it can support location typed messages:
 
-[{]: <helper> (diff_step 11.20)
-#### Step 11.20: Allow location message type on server side
+[{]: <helper> (diff_step 11.2)
+#### Step 11.2: Add angular 2 google maps package
 
-##### Changed api/server/methods.ts
+##### Changed package.json
 ```diff
-@@ -70,7 +70,7 @@
- ┊70┊70┊    if (!this.userId) throw new Meteor.Error('unauthorized',
- ┊71┊71┊      'User must be logged-in to create a new chat');
- ┊72┊72┊
--┊73┊  ┊    check(type, Match.OneOf(String, [ MessageType.TEXT ]));
-+┊  ┊73┊    check(type, Match.OneOf(String, [ MessageType.TEXT, MessageType.LOCATION ]));
- ┊74┊74┊    check(chatId, nonEmptyString);
- ┊75┊75┊    check(content, nonEmptyString);
+@@ -22,6 +22,7 @@
+ ┊22┊22┊    "@angular/platform-browser-dynamic": "2.2.1",
+ ┊23┊23┊    "@angular/platform-server": "2.2.1",
+ ┊24┊24┊    "@ionic/storage": "1.1.7",
++┊  ┊25┊    "angular2-google-maps": "^0.17.0",
+ ┊25┊26┊    "angular2-moment": "^1.1.0",
+ ┊26┊27┊    "babel-runtime": "^6.22.0",
+ ┊27┊28┊    "ionic-angular": "2.0.0-rc.5",
 ```
 [}]: #
 
@@ -728,10 +705,8 @@ And we will make some final adjustments for the view so the map can be presented
 ```
 [}]: #
 
-[}]: #
-[{]: <region> (footer)
-[{]: <helper> (nav_step)
-| [< Previous Step](step10.md) | [Next Step >](step12.md) |
+[{]: <helper> (nav_step next_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/file-upload" prev_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/filter-and-pagination")
+| [< Previous Step](https://angular-meteor.com/tutorials/whatsapp2/ionic/filter-and-pagination) | [Next Step >](https://angular-meteor.com/tutorials/whatsapp2/ionic/file-upload) |
 |:--------------------------------|--------------------------------:|
 [}]: #
-[}]: #
+

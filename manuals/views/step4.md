@@ -1,7 +1,5 @@
-[{]: <region> (header)
 # Step 4: Realtime Meteor Server
-[}]: #
-[{]: <region> (body)
+
 Now that we have the initial chats layout and its component, we will take it a step further by providing the chats data from a server instead of having it locally. In this step we will be implementing the API server and we will do so using `Meteor`.
 
 First make sure that you have `Meteor` installed. If not, install it by typing the following command:
@@ -417,31 +415,75 @@ The client we've just imported gives us the ability to interact with the server.
 
 And re-implement the `removeChat` method using the actual `Meteor` collection:
 
-[{]: <helper> (diff_step 4.20)
-#### Step 4.20: Implement remove chat with the Collection
+[{]: <helper> (diff_step 4.2)
+#### Step 4.2: Remove old client files
 
-##### Changed src/pages/chats/chats.ts
+##### Deleted api/client/main.css
 ```diff
-@@ -31,11 +31,7 @@
- ┊31┊31┊  }
- ┊32┊32┊
- ┊33┊33┊  removeChat(chat: Chat): void {
--┊34┊  ┊    this.chats = this.chats.map(chatsArray => {
--┊35┊  ┊      const chatIndex = chatsArray.indexOf(chat);
--┊36┊  ┊      chatsArray.splice(chatIndex, 1);
--┊37┊  ┊
--┊38┊  ┊      return chatsArray;
-+┊  ┊34┊    Chats.remove({_id: chat._id}).subscribe(() => {
- ┊39┊35┊    });
- ┊40┊36┊  }
- ┊41┊37┊}
+@@ -1 +0,0 @@
+-┊1┊ ┊/* CSS declarations go here */
+```
+
+##### Deleted api/client/main.html
+```diff
+@@ -1,25 +0,0 @@
+-┊ 1┊  ┊<head>
+-┊ 2┊  ┊  <title>api</title>
+-┊ 3┊  ┊</head>
+-┊ 4┊  ┊
+-┊ 5┊  ┊<body>
+-┊ 6┊  ┊  <h1>Welcome to Meteor!</h1>
+-┊ 7┊  ┊
+-┊ 8┊  ┊  {{> hello}}
+-┊ 9┊  ┊  {{> info}}
+-┊10┊  ┊</body>
+-┊11┊  ┊
+-┊12┊  ┊<template name="hello">
+-┊13┊  ┊  <button>Click Me</button>
+-┊14┊  ┊  <p>You've pressed the button {{counter}} times.</p>
+-┊15┊  ┊</template>
+-┊16┊  ┊
+-┊17┊  ┊<template name="info">
+-┊18┊  ┊  <h2>Learn Meteor!</h2>
+-┊19┊  ┊  <ul>
+-┊20┊  ┊    <li><a href="https://www.meteor.com/try" target="_blank">Do the Tutorial</a></li>
+-┊21┊  ┊    <li><a href="http://guide.meteor.com" target="_blank">Follow the Guide</a></li>
+-┊22┊  ┊    <li><a href="https://docs.meteor.com" target="_blank">Read the Docs</a></li>
+-┊23┊  ┊    <li><a href="https://forums.meteor.com" target="_blank">Discussions</a></li>
+-┊24┊  ┊  </ul>
+-┊25┊  ┊</template>
+```
+
+##### Deleted api/client/main.js
+```diff
+@@ -1,22 +0,0 @@
+-┊ 1┊  ┊import { Template } from 'meteor/templating';
+-┊ 2┊  ┊import { ReactiveVar } from 'meteor/reactive-var';
+-┊ 3┊  ┊
+-┊ 4┊  ┊import './main.html';
+-┊ 5┊  ┊
+-┊ 6┊  ┊Template.hello.onCreated(function helloOnCreated() {
+-┊ 7┊  ┊  // counter starts at 0
+-┊ 8┊  ┊  this.counter = new ReactiveVar(0);
+-┊ 9┊  ┊});
+-┊10┊  ┊
+-┊11┊  ┊Template.hello.helpers({
+-┊12┊  ┊  counter() {
+-┊13┊  ┊    return Template.instance().counter.get();
+-┊14┊  ┊  },
+-┊15┊  ┊});
+-┊16┊  ┊
+-┊17┊  ┊Template.hello.events({
+-┊18┊  ┊  'click button'(event, instance) {
+-┊19┊  ┊    // increment the counter when button is clicked
+-┊20┊  ┊    instance.counter.set(instance.counter.get() + 1);
+-┊21┊  ┊  },
+-┊22┊  ┊});
 ```
 [}]: #
 
-[}]: #
-[{]: <region> (footer)
-[{]: <helper> (nav_step)
-| [< Previous Step](step3.md) | [Next Step >](step5.md) |
+[{]: <helper> (nav_step next_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/folder-structure" prev_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/rxjs")
+| [< Previous Step](https://angular-meteor.com/tutorials/whatsapp2/ionic/rxjs) | [Next Step >](https://angular-meteor.com/tutorials/whatsapp2/ionic/folder-structure) |
 |:--------------------------------|--------------------------------:|
 [}]: #
-[}]: #
+

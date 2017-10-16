@@ -1,7 +1,5 @@
-[{]: <region> (header)
 # Step 13: Native Mobile
-[}]: #
-[{]: <region> (body)
+
 In this step, we will be implementing additional native features, to enhance the user experience.
 
 ## Automatic phone number detection
@@ -163,10 +161,8 @@ And we will use the recently installed `Cordova` plug-in in the event handler to
 
 Note that take pictures are retrieved as relative paths in the device, but we use some existing methods in the `PictureService` to convert these paths into the desired format.
 
-[}]: #
-[{]: <region> (footer)
-[{]: <helper> (nav_step)
-| [< Previous Step](step12.md) | [Next Step >](step14.md) |
+[{]: <helper> (nav_step next_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/summary" prev_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/file-upload")
+| [< Previous Step](https://angular-meteor.com/tutorials/whatsapp2/ionic/file-upload) | [Next Step >](https://angular-meteor.com/tutorials/whatsapp2/ionic/summary) |
 |:--------------------------------|--------------------------------:|
 [}]: #
-[}]: #
+

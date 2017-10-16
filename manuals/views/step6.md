@@ -1,7 +1,5 @@
-[{]: <region> (header)
 # Step 6: Messages Page
-[}]: #
-[{]: <region> (body)
+
 In this step we will add the messages view and the ability to send messages.
 
 Before we implement anything related to the messages pages, we first have to make sure that once we click on a chat item in the chats page, we will be promoted into its corresponding messages view. Let's first implement the `showMessages()` method in the chats component:
@@ -821,35 +819,25 @@ We can group our messages right after being fetched by the `Observable` using th
 
 And now we will add a nested iteration in the messages view; The outer loop would iterate through the messages day-groups, and the inner loop would iterate through the messages themselves:
 
-[{]: <helper> (diff_step 6.20)
-#### Step 6.20: Update the template to use grouped messages
+[{]: <helper> (diff_step 6.2)
+#### Step 6.2: Bind click event to showMessages
 
-##### Changed src/pages/messages/messages.html
+##### Changed src/pages/chats/chats.html
 ```diff
-@@ -15,11 +15,15 @@
- ┊15┊15┊
- ┊16┊16┊<ion-content padding class="messages-page-content">
- ┊17┊17┊  <ion-scroll scrollY="true" class="messages">
--┊18┊  ┊    <div *ngFor="let message of messages | async" class="message-wrapper">
-+┊  ┊18┊    <div *ngFor="let day of messagesDayGroups | async" class="day-wrapper">
-+┊  ┊19┊      <div *ngFor="let message of day.messages" class="message-wrapper">
- ┊19┊20┊        <div [class]="'message message-' + message.ownership">
- ┊20┊21┊          <div *ngIf="message.type == 'text'" class="message-content message-content-text">{{message.content}}</div>
- ┊21┊22┊          <span class="message-timestamp">{{ message.createdAt | amDateFormat: 'HH:mm' }}</span>
-+┊  ┊23┊        </div>
- ┊22┊24┊      </div>
-+┊  ┊25┊
-+┊  ┊26┊      <div *ngIf="!day.today" class="day-timestamp">{{day.timestamp}}</div>
- ┊23┊27┊    </div>
- ┊24┊28┊  </ion-scroll>
- ┊25┊29┊</ion-content>
+@@ -17,7 +17,7 @@
+ ┊17┊17┊<ion-content class="chats-page-content">
+ ┊18┊18┊  <ion-list class="chats">
+ ┊19┊19┊    <ion-item-sliding *ngFor="let chat of chats | async">
+-┊20┊  ┊      <button ion-item class="chat">
++┊  ┊20┊      <button ion-item class="chat" (click)="showMessages(chat)">
+ ┊21┊21┊        <img class="chat-picture" [src]="chat.picture">
+ ┊22┊22┊        <div class="chat-info">
+ ┊23┊23┊          <h2 class="chat-title">{{chat.title}}</h2>
 ```
 [}]: #
 
-[}]: #
-[{]: <region> (footer)
-[{]: <helper> (nav_step)
-| [< Previous Step](step5.md) | [Next Step >](step7.md) |
+[{]: <helper> (nav_step next_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/authentication" prev_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/folder-structure")
+| [< Previous Step](https://angular-meteor.com/tutorials/whatsapp2/ionic/folder-structure) | [Next Step >](https://angular-meteor.com/tutorials/whatsapp2/ionic/authentication) |
 |:--------------------------------|--------------------------------:|
 [}]: #
-[}]: #
+

@@ -1,7 +1,5 @@
-[{]: <region> (header)
 # Step 2: Chats Page
-[}]: #
-[{]: <region> (body)
+
 ## First Ionic Component
 
 Now that we're finished with the initial setup, we can start building our app.
@@ -287,93 +285,186 @@ Now, because we use `TypeScript`, we can define our own data-types and use them 
 
 Now that the models are up and set, we can use apply it to the `ChatsPage`:
 
-[{]: <helper> (diff_step 2.10)
-#### Step 2.10: Use TypeScript models
+[{]: <helper> (diff_step 2.1)
+#### Step 2.1: Removed default tabs app
 
-##### Changed src/pages/chats/chats.ts
+##### Deleted src/pages/about/about.html
 ```diff
-@@ -1,18 +1,19 @@
- ┊ 1┊ 1┊import { Component } from '@angular/core';
- ┊ 2┊ 2┊import { Observable } from 'rxjs';
- ┊ 3┊ 3┊import * as moment from 'moment';
-+┊  ┊ 4┊import { Chat, MessageType } from '../../models';
- ┊ 4┊ 5┊
- ┊ 5┊ 6┊@Component({
- ┊ 6┊ 7┊  templateUrl: 'chats.html'
- ┊ 7┊ 8┊})
- ┊ 8┊ 9┊export class ChatsPage {
--┊ 9┊  ┊  chats: Observable<any[]>;
-+┊  ┊10┊  chats: Observable<Chat[]>;
- ┊10┊11┊
- ┊11┊12┊  constructor() {
- ┊12┊13┊    this.chats = this.findChats();
- ┊13┊14┊  }
- ┊14┊15┊
--┊15┊  ┊  private findChats(): Observable<any[]> {
-+┊  ┊16┊  private findChats(): Observable<Chat[]> {
- ┊16┊17┊    return Observable.of([
- ┊17┊18┊      {
- ┊18┊19┊        _id: '0',
+@@ -1,11 +0,0 @@
+-┊ 1┊  ┊<ion-header>
+-┊ 2┊  ┊  <ion-navbar>
+-┊ 3┊  ┊    <ion-title>
+-┊ 4┊  ┊      About
+-┊ 5┊  ┊    </ion-title>
+-┊ 6┊  ┊  </ion-navbar>
+-┊ 7┊  ┊</ion-header>
+-┊ 8┊  ┊
+-┊ 9┊  ┊<ion-content padding>
+-┊10┊  ┊
+-┊11┊  ┊</ion-content>
 ```
+
+##### Deleted src/pages/about/about.scss
 ```diff
-@@ -20,7 +21,8 @@
- ┊20┊21┊        picture: 'https://randomuser.me/api/portraits/thumb/men/1.jpg',
- ┊21┊22┊        lastMessage: {
- ┊22┊23┊          content: 'You on your way?',
--┊23┊  ┊          createdAt: moment().subtract(1, 'hours').toDate()
-+┊  ┊24┊          createdAt: moment().subtract(1, 'hours').toDate(),
-+┊  ┊25┊          type: MessageType.TEXT
- ┊24┊26┊        }
- ┊25┊27┊      },
- ┊26┊28┊      {
+@@ -1,3 +0,0 @@
+-┊1┊ ┊page-about {
+-┊2┊ ┊
+-┊3┊ ┊}
 ```
+
+##### Deleted src/pages/about/about.ts
 ```diff
-@@ -29,7 +31,8 @@
- ┊29┊31┊        picture: 'https://randomuser.me/api/portraits/thumb/lego/1.jpg',
- ┊30┊32┊        lastMessage: {
- ┊31┊33┊          content: 'Hey, it\'s me',
--┊32┊  ┊          createdAt: moment().subtract(2, 'hours').toDate()
-+┊  ┊34┊          createdAt: moment().subtract(2, 'hours').toDate(),
-+┊  ┊35┊          type: MessageType.TEXT
- ┊33┊36┊        }
- ┊34┊37┊      },
- ┊35┊38┊      {
+@@ -1,15 +0,0 @@
+-┊ 1┊  ┊import { Component } from '@angular/core';
+-┊ 2┊  ┊
+-┊ 3┊  ┊import { NavController } from 'ionic-angular';
+-┊ 4┊  ┊
+-┊ 5┊  ┊@Component({
+-┊ 6┊  ┊  selector: 'page-about',
+-┊ 7┊  ┊  templateUrl: 'about.html'
+-┊ 8┊  ┊})
+-┊ 9┊  ┊export class AboutPage {
+-┊10┊  ┊
+-┊11┊  ┊  constructor(public navCtrl: NavController) {
+-┊12┊  ┊
+-┊13┊  ┊  }
+-┊14┊  ┊
+-┊15┊  ┊}
 ```
+
+##### Deleted src/pages/contact/contact.html
 ```diff
-@@ -38,7 +41,8 @@
- ┊38┊41┊        picture: 'https://randomuser.me/api/portraits/thumb/women/1.jpg',
- ┊39┊42┊        lastMessage: {
- ┊40┊43┊          content: 'I should buy a boat',
--┊41┊  ┊          createdAt: moment().subtract(1, 'days').toDate()
-+┊  ┊44┊          createdAt: moment().subtract(1, 'days').toDate(),
-+┊  ┊45┊          type: MessageType.TEXT
- ┊42┊46┊        }
- ┊43┊47┊      },
- ┊44┊48┊      {
+@@ -1,17 +0,0 @@
+-┊ 1┊  ┊<ion-header>
+-┊ 2┊  ┊  <ion-navbar>
+-┊ 3┊  ┊    <ion-title>
+-┊ 4┊  ┊      Contact
+-┊ 5┊  ┊    </ion-title>
+-┊ 6┊  ┊  </ion-navbar>
+-┊ 7┊  ┊</ion-header>
+-┊ 8┊  ┊
+-┊ 9┊  ┊<ion-content>
+-┊10┊  ┊  <ion-list>
+-┊11┊  ┊    <ion-list-header>Follow us on Twitter</ion-list-header>
+-┊12┊  ┊    <ion-item>
+-┊13┊  ┊      <ion-icon name="ionic" item-left></ion-icon>
+-┊14┊  ┊      @ionicframework
+-┊15┊  ┊    </ion-item>
+-┊16┊  ┊  </ion-list>
+-┊17┊  ┊</ion-content>
 ```
+
+##### Deleted src/pages/contact/contact.scss
 ```diff
-@@ -47,7 +51,8 @@
- ┊47┊51┊        picture: 'https://randomuser.me/api/portraits/thumb/women/2.jpg',
- ┊48┊52┊        lastMessage: {
- ┊49┊53┊          content: 'Look at my mukluks!',
--┊50┊  ┊          createdAt: moment().subtract(4, 'days').toDate()
-+┊  ┊54┊          createdAt: moment().subtract(4, 'days').toDate(),
-+┊  ┊55┊          type: MessageType.TEXT
- ┊51┊56┊        }
- ┊52┊57┊      },
- ┊53┊58┊      {
+@@ -1,3 +0,0 @@
+-┊1┊ ┊page-contact {
+-┊2┊ ┊
+-┊3┊ ┊}
 ```
+
+##### Deleted src/pages/contact/contact.ts
 ```diff
-@@ -56,7 +61,8 @@
- ┊56┊61┊        picture: 'https://randomuser.me/api/portraits/thumb/men/2.jpg',
- ┊57┊62┊        lastMessage: {
- ┊58┊63┊          content: 'This is wicked good ice cream.',
--┊59┊  ┊          createdAt: moment().subtract(2, 'weeks').toDate()
-+┊  ┊64┊          createdAt: moment().subtract(2, 'weeks').toDate(),
-+┊  ┊65┊          type: MessageType.TEXT
- ┊60┊66┊        }
- ┊61┊67┊      }
- ┊62┊68┊    ]);
+@@ -1,15 +0,0 @@
+-┊ 1┊  ┊import { Component } from '@angular/core';
+-┊ 2┊  ┊
+-┊ 3┊  ┊import { NavController } from 'ionic-angular';
+-┊ 4┊  ┊
+-┊ 5┊  ┊@Component({
+-┊ 6┊  ┊  selector: 'page-contact',
+-┊ 7┊  ┊  templateUrl: 'contact.html'
+-┊ 8┊  ┊})
+-┊ 9┊  ┊export class ContactPage {
+-┊10┊  ┊
+-┊11┊  ┊  constructor(public navCtrl: NavController) {
+-┊12┊  ┊
+-┊13┊  ┊  }
+-┊14┊  ┊
+-┊15┊  ┊}
+```
+
+##### Deleted src/pages/home/home.html
+```diff
+@@ -1,17 +0,0 @@
+-┊ 1┊  ┊<ion-header>
+-┊ 2┊  ┊  <ion-navbar>
+-┊ 3┊  ┊    <ion-title>Home</ion-title>
+-┊ 4┊  ┊  </ion-navbar>
+-┊ 5┊  ┊</ion-header>
+-┊ 6┊  ┊
+-┊ 7┊  ┊<ion-content padding>
+-┊ 8┊  ┊  <h2>Welcome to Ionic!</h2>
+-┊ 9┊  ┊  <p>
+-┊10┊  ┊    This starter project comes with simple tabs-based layout for apps
+-┊11┊  ┊    that are going to primarily use a Tabbed UI.
+-┊12┊  ┊  </p>
+-┊13┊  ┊  <p>
+-┊14┊  ┊    Take a look at the <code>src/pages/</code> directory to add or change tabs,
+-┊15┊  ┊    update any existing page or create new pages.
+-┊16┊  ┊  </p>
+-┊17┊  ┊</ion-content>
+```
+
+##### Deleted src/pages/home/home.scss
+```diff
+@@ -1,3 +0,0 @@
+-┊1┊ ┊page-home {
+-┊2┊ ┊
+-┊3┊ ┊}
+```
+
+##### Deleted src/pages/home/home.ts
+```diff
+@@ -1,15 +0,0 @@
+-┊ 1┊  ┊import { Component } from '@angular/core';
+-┊ 2┊  ┊
+-┊ 3┊  ┊import { NavController } from 'ionic-angular';
+-┊ 4┊  ┊
+-┊ 5┊  ┊@Component({
+-┊ 6┊  ┊  selector: 'page-home',
+-┊ 7┊  ┊  templateUrl: 'home.html'
+-┊ 8┊  ┊})
+-┊ 9┊  ┊export class HomePage {
+-┊10┊  ┊
+-┊11┊  ┊  constructor(public navCtrl: NavController) {
+-┊12┊  ┊
+-┊13┊  ┊  }
+-┊14┊  ┊
+-┊15┊  ┊}
+```
+
+##### Deleted src/pages/tabs/tabs.html
+```diff
+@@ -1,5 +0,0 @@
+-┊1┊ ┊<ion-tabs>
+-┊2┊ ┊  <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab>
+-┊3┊ ┊  <ion-tab [root]="tab2Root" tabTitle="About" tabIcon="information-circle"></ion-tab>
+-┊4┊ ┊  <ion-tab [root]="tab3Root" tabTitle="Contact" tabIcon="contacts"></ion-tab>
+-┊5┊ ┊</ion-tabs>
+```
+
+##### Deleted src/pages/tabs/tabs.ts
+```diff
+@@ -1,20 +0,0 @@
+-┊ 1┊  ┊import { Component } from '@angular/core';
+-┊ 2┊  ┊
+-┊ 3┊  ┊import { HomePage } from '../home/home';
+-┊ 4┊  ┊import { AboutPage } from '../about/about';
+-┊ 5┊  ┊import { ContactPage } from '../contact/contact';
+-┊ 6┊  ┊
+-┊ 7┊  ┊@Component({
+-┊ 8┊  ┊  templateUrl: 'tabs.html'
+-┊ 9┊  ┊})
+-┊10┊  ┊export class TabsPage {
+-┊11┊  ┊  // this tells the tabs component which Pages
+-┊12┊  ┊  // should be each tab's root Page
+-┊13┊  ┊  tab1Root: any = HomePage;
+-┊14┊  ┊  tab2Root: any = AboutPage;
+-┊15┊  ┊  tab3Root: any = ContactPage;
+-┊16┊  ┊
+-┊17┊  ┊  constructor() {
+-┊18┊  ┊
+-┊19┊  ┊  }
+-┊20┊  ┊}
 ```
 [}]: #
 
@@ -588,10 +679,8 @@ And now that it is bound to the component we can safely implement its handler:
 ```
 [}]: #
 
-[}]: #
-[{]: <region> (footer)
-[{]: <helper> (nav_step)
-| [< Previous Step](step1.md) | [Next Step >](step3.md) |
+[{]: <helper> (nav_step next_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/rxjs" prev_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/setup")
+| [< Previous Step](https://angular-meteor.com/tutorials/whatsapp2/ionic/setup) | [Next Step >](https://angular-meteor.com/tutorials/whatsapp2/ionic/rxjs) |
 |:--------------------------------|--------------------------------:|
 [}]: #
-[}]: #
+

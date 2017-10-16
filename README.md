@@ -1,7 +1,5 @@
-[{]: <region> (header)
 # How to build a Whatsapp-clone using Ionic 2 CLI and Meteor
-[}]: #
-[{]: <region> (body)
+
 Facing your next mobile app project, you want to choose the best solutions to start fast while also solutions that will stay relevant when your project grows and scales.
 
 The two companies that took the concept of creating a platform with a complete set of tools for your development needs and not just another framework to the furthest are `Meteor` and `Ionic`.
@@ -44,10 +42,9 @@ In this tutorial, we will create a full `WhatsApp` clone using Angular and `Ioni
 - **[Step 11](manuals/views/step11.md)** - Google Maps & Geolocation
 - **[Step 12](manuals/views/step12.md)** - File Upload & Images
 - **[Step 13](manuals/views/step13.md)** - Native Mobile
-[}]: #
-[{]: <region> (footer)
-[{]: <helper> (nav_step)
-| [Begin Tutorial >](manuals/views/step1.md) |
+
+[{]: <helper> (nav_step ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/setup")
+| [Begin Tutorial >](https://angular-meteor.com/tutorials/whatsapp2/ionic/setup) |
 |----------------------:|
 [}]: #
-[}]: #
+

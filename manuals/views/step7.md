@@ -1,7 +1,5 @@
-[{]: <region> (header)
-# Step 7: Users & Authentication
-[}]: #
-[{]: <region> (body)
+# Step 7: Users &amp; Authentication
+
 In this step we will authenticate and identify users in our app.
 
 Before we go ahead and start extending our app, we will add a few packages which will make our lives a bit less complex when it comes to authentication and users management.
@@ -239,21 +237,81 @@ The `PhoneService` is not only packed with whatever functionality we need, but i
 
 Just so the `TypeScript` compiler will know how to digest it, we shall also specify the `accounts-phone` types in the client `tsconfig.json` as well:
 
-[{]: <helper> (diff_step 7.10)
-#### Step 7.10: Added meteor accouts typings to client side
+[{]: <helper> (diff_step 7.1)
+#### Step 7.1: Add meteor packages to server side
 
-##### Changed tsconfig.json
+##### Changed api/.meteor/packages
 ```diff
-@@ -21,7 +21,8 @@
- ┊21┊21┊    "noImplicitAny": false,
- ┊22┊22┊    "types": [
- ┊23┊23┊      "meteor-typings",
--┊24┊  ┊      "@types/underscore"
-+┊  ┊24┊      "@types/underscore",
-+┊  ┊25┊      "@types/meteor-accounts-phone"
- ┊25┊26┊    ]
- ┊26┊27┊  },
- ┊27┊28┊  "include": [
+@@ -22,3 +22,6 @@
+ ┊22┊22┊insecure@1.0.7                # Allow all DB writes from clients (for prototyping)
+ ┊23┊23┊barbatus:typescript
+ ┊24┊24┊check
++┊  ┊25┊accounts-base
++┊  ┊26┊mys:accounts-phone
++┊  ┊27┊npm-bcrypt
+```
+
+##### Changed api/.meteor/versions
+```diff
+@@ -1,3 +1,4 @@
++┊ ┊1┊accounts-base@1.2.14
+ ┊1┊2┊allow-deny@1.0.5
+ ┊2┊3┊autopublish@1.0.7
+ ┊3┊4┊autoupdate@1.2.11
+```
+```diff
+@@ -19,12 +20,14 @@
+ ┊19┊20┊ddp@1.2.5
+ ┊20┊21┊ddp-client@1.2.9
+ ┊21┊22┊ddp-common@1.2.8
++┊  ┊23┊ddp-rate-limiter@1.0.6
+ ┊22┊24┊ddp-server@1.2.10
+ ┊23┊25┊deps@1.0.12
+ ┊24┊26┊diff-sequence@1.0.7
+ ┊25┊27┊ecmascript@0.6.1
+ ┊26┊28┊ecmascript-runtime@0.3.15
+ ┊27┊29┊ejson@1.0.13
++┊  ┊30┊email@1.0.16
+ ┊28┊31┊es5-shim@4.6.15
+ ┊29┊32┊fastclick@1.0.13
+ ┊30┊33┊geojson-utils@1.0.10
+```
+```diff
+@@ -37,6 +40,7 @@
+ ┊37┊40┊jquery@1.11.10
+ ┊38┊41┊launch-screen@1.0.12
+ ┊39┊42┊livedata@1.0.18
++┊  ┊43┊localstorage@1.0.12
+ ┊40┊44┊logging@1.1.16
+ ┊41┊45┊meteor@1.6.0
+ ┊42┊46┊meteor-base@1.0.4
+```
+```diff
+@@ -49,18 +53,24 @@
+ ┊49┊53┊modules-runtime@0.7.8
+ ┊50┊54┊mongo@1.1.14
+ ┊51┊55┊mongo-id@1.0.6
++┊  ┊56┊mys:accounts-phone@0.0.21
++┊  ┊57┊npm-bcrypt@0.9.2
+ ┊52┊58┊npm-mongo@2.2.16_1
+ ┊53┊59┊observe-sequence@1.0.14
+ ┊54┊60┊ordered-dict@1.0.9
+ ┊55┊61┊promise@0.8.8
+ ┊56┊62┊random@1.0.10
++┊  ┊63┊rate-limit@1.0.6
+ ┊57┊64┊reactive-var@1.0.11
+ ┊58┊65┊reload@1.1.11
+ ┊59┊66┊retry@1.0.9
+ ┊60┊67┊routepolicy@1.0.12
++┊  ┊68┊service-configuration@1.0.11
++┊  ┊69┊sha@1.0.9
+ ┊61┊70┊shell-server@0.2.1
+ ┊62┊71┊spacebars@1.0.13
+ ┊63┊72┊spacebars-compiler@1.1.0
++┊  ┊73┊srp@1.0.10
+ ┊64┊74┊standard-minifier-css@1.3.2
+ ┊65┊75┊standard-minifier-js@1.2.1
+ ┊66┊76┊templating@1.3.0
 ```
 [}]: #
 
@@ -631,33 +689,20 @@ And add it to the `NgModule`:
 
 Now we can make sure that anytime we login, we will be promoted to the `VerificationPage` right after:
 
-[{]: <helper> (diff_step 7.20)
-#### Step 7.20: Import and use verfication page from login
+[{]: <helper> (diff_step 7.2)
+#### Step 7.2: Add accounts-phone settings
 
-##### Changed src/pages/login/login.ts
+##### Added api/private/settings.json
 ```diff
-@@ -1,6 +1,7 @@
- ┊1┊1┊import { Component } from '@angular/core';
- ┊2┊2┊import { Alert, AlertController, NavController } from 'ionic-angular';
- ┊3┊3┊import { PhoneService } from '../../services/phone';
-+┊ ┊4┊import { VerificationPage } from '../verification/verification';
- ┊4┊5┊
- ┊5┊6┊@Component({
- ┊6┊7┊  selector: 'login',
-```
-```diff
-@@ -47,6 +48,11 @@
- ┊47┊48┊    alert.dismiss().then(() => {
- ┊48┊49┊      return this.phoneService.verify(this.phone);
- ┊49┊50┊    })
-+┊  ┊51┊      .then(() => {
-+┊  ┊52┊        this.navCtrl.push(VerificationPage, {
-+┊  ┊53┊          phone: this.phone
-+┊  ┊54┊        });
-+┊  ┊55┊      })
- ┊50┊56┊    .catch((e) => {
- ┊51┊57┊      this.handleError(e);
- ┊52┊58┊    });
+@@ -0,0 +1,8 @@
++┊ ┊1┊{
++┊ ┊2┊  "accounts-phone": {
++┊ ┊3┊    "verificationWaitTime": 0,
++┊ ┊4┊    "verificationRetriesWaitTime": 0,
++┊ ┊5┊    "adminPhoneNumbers": ["+9721234567", "+97212345678", "+97212345679"],
++┊ ┊6┊    "phoneVerificationMasterCode": "1234"
++┊ ┊7┊  }
++┊ ┊8┊}
 ```
 [}]: #
 
@@ -951,19 +996,19 @@ Now that our authentication flow is complete, we will need to edit the messages,
 
 This requires us to update the `Message` model as well so `TypeScript` will recognize the changes:
 
-[{]: <helper> (diff_step 7.30)
-#### Step 7.30: Added senderId property to Message object
+[{]: <helper> (diff_step 7.3)
+#### Step 7.3: Updated NPM script
 
-##### Changed api/server/models.ts
+##### Changed package.json
 ```diff
-@@ -19,6 +19,7 @@
- ┊19┊19┊export interface Message {
- ┊20┊20┊  _id?: string;
- ┊21┊21┊  chatId?: string;
-+┊  ┊22┊  senderId?: string;
- ┊22┊23┊  content?: string;
- ┊23┊24┊  createdAt?: Date;
- ┊24┊25┊  type?: MessageType
+@@ -4,6 +4,7 @@
+ ┊ 4┊ 4┊  "homepage": "http://ionicframework.com/",
+ ┊ 5┊ 5┊  "private": true,
+ ┊ 6┊ 6┊  "scripts": {
++┊  ┊ 7┊    "api": "cd api && meteor run --settings private/settings.json",
+ ┊ 7┊ 8┊    "clean": "ionic-app-scripts clean",
+ ┊ 8┊ 9┊    "build": "ionic-app-scripts build",
+ ┊ 9┊10┊    "ionic:build": "ionic-app-scripts build",
 ```
 [}]: #
 
@@ -1290,10 +1335,8 @@ As for now, once you click on the options icon in the chats view, the popover sh
 ```
 [}]: #
 
-[}]: #
-[{]: <region> (footer)
-[{]: <helper> (nav_step)
-| [< Previous Step](step6.md) | [Next Step >](step8.md) |
+[{]: <helper> (nav_step next_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/chats-mutations" prev_ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/messages-page")
+| [< Previous Step](https://angular-meteor.com/tutorials/whatsapp2/ionic/messages-page) | [Next Step >](https://angular-meteor.com/tutorials/whatsapp2/ionic/chats-mutations) |
 |:--------------------------------|--------------------------------:|
 [}]: #
-[}]: #
+
