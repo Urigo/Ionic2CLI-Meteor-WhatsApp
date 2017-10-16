@@ -66,7 +66,7 @@ Now we can implement the handler for messages sending in the component:
 
 {{{diff_step 6.14}}}
 
-As you can see, we've used a `Meteor` method called `sendTextMessage`, which is yet to exist. This method will add messages to our messages collection and run on both client's local cache and server. Now we're going to create a `server/methods/methods.ts` file in our server and implement the method's logic:
+As you can see, we've used a `Meteor` method called `addMessage`, which is yet to exist. This method will add messages to our messages collection and run on both client's local cache and server. Now we're going to create a `api/server/methods.ts` file in our server and implement the method's logic:
 
 {{{diff_step 6.15}}}
 
@@ -78,7 +78,7 @@ It requires us to add the following package in the server:
 
 And we're gonna use it in the `addMessage` method we've just defined:
 
-{{{diff_step 6.15}}}
+{{{diff_step 6.17}}}
 
 ## Auto Scroll
 
