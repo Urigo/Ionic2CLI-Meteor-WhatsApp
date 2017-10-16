@@ -45,8 +45,7 @@ In this tutorial, we will create a full `WhatsApp` clone using Angular and `Ioni
 
 [{]: <helper> (navStep ref="https://angular-meteor.com/tutorials/whatsapp2/ionic/setup")
 
-| [Begin Tutorial >](https://angular-meteor.com/tutorials/whatsapp2/ionic/setup) |
-|----------------------:|
+<b>║</b> <a href="https://angular-meteor.com/tutorials/whatsapp2/ionic/setup">BEGIN TUTORIAL</a> ⟹
 
 [}]: #
 
