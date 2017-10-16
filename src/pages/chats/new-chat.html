@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar *ngIf="searching" color="whatsapp">
+    <ion-searchbar
+      autofocus
+      class="seach-bar"
+      color="whatsapp"
+      [showCancelButton]="true"
+      (ionInput)="updateSubscription($event.target.value); searching = true;"
+      (ionClear)="updateSubscription(undefined); searching = false;">
+      </ion-searchbar>
+  </ion-toolbar>
+
+  <ion-toolbar *ngIf="!searching" color="whatsapp">
+    <ion-title>New Chat</ion-title>
+
+    <ion-buttons left>
+      <button ion-button class="dismiss-button" (click)="viewCtrl.dismiss()"><ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
+
+    <ion-buttons end>
+      <button ion-button class="search-button" (click)="searching = true"><ion-icon name="search"></ion-icon></button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="new-chat">
+  <ion-list class="users">
+    <button ion-item *ngFor="let user of users | async" class="user" (click)="addChat(user)">
+      <img class="user-picture" [src]="getPic(user.profile.pictureId)">
+      <h2 class="user-name">{{user.profile.name}}</h2>
+    </button>
+  </ion-list>
+</ion-content>

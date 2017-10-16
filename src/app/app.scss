@@ -1,0 +1,41 @@
+// http://ionicframework.com/docs/v2/theming/
+
+
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+
+// Options Popover Component
+// --------------------------------------------------
+
+$options-popover-width: 200px;
+$options-popover-margin: 5px;
+
+.options-popover .popover-content {
+  width: $options-popover-width;
+  transform-origin: right top 0px !important;
+  left: calc(100% - #{$options-popover-width} - #{$options-popover-margin}) !important;
+  top: $options-popover-margin !important;
+}
+
+// Attachments Popover Component
+// --------------------------------------------------
+
+$attachments-popover-width: 100%;
+
+.attachments-popover .popover-content {
+  width: $attachments-popover-width;
+  transform-origin: 300px 30px !important;
+  left: calc(100% - #{$attachments-popover-width}) !important;
+  top: 58px !important;
+}

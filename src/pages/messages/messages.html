@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-navbar color="whatsapp" class="messages-page-navbar">
+    <ion-buttons>
+      <img class="chat-picture" [src]="picture">
+    </ion-buttons>
+
+    <ion-title class="chat-title">{{title}}</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only class="attach-button" (click)="showAttachments()"><ion-icon name="attach"></ion-icon></button>
+      <button ion-button icon-only class="options-button" (click)="showOptions()"><ion-icon name="more"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="messages-page-content">
+  <ion-scroll scrollY="true" class="messages">
+    <div *ngFor="let day of messagesDayGroups | async" class="day-wrapper">
+      <div *ngFor="let message of day.messages" class="message-wrapper">
+        <div [class]="'message message-' + message.ownership">
+          <div *ngIf="message.type == 'text'" class="message-content message-content-text">{{message.content}}</div>
+          <div *ngIf="message.type == 'location'" class="message-content message-content-text">
+            <sebm-google-map [zoom]="getLocation(message.content).zoom" [latitude]="getLocation(message.content).lat" [longitude]="getLocation(message.content).lng">
+              <sebm-google-map-marker [latitude]="getLocation(message.content).lat" [longitude]="getLocation(message.content).lng"></sebm-google-map-marker>
+            </sebm-google-map>
+          </div>
+          <img *ngIf="message.type == 'picture'" (click)="showPicture($event)" class="message-content message-content-picture" [src]="message.content">
+
+          <span class="message-timestamp">{{ message.createdAt | amDateFormat: 'HH:mm' }}</span>
+        </div>
+      </div>
+
+      <div *ngIf="!day.today" class="day-timestamp">{{day.timestamp}}</div>
+    </div>
+  </ion-scroll>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="whatsapp" class="messages-page-footer" position="bottom">
+    <ion-input [(ngModel)]="message" (keypress)="onInputKeypress($event)" class="message-editor" placeholder="Type a message"></ion-input>
+
+    <ion-buttons end>
+      <button ion-button icon-only *ngIf="message" class="message-editor-button" (click)="sendTextMessage()">
+        <ion-icon name="send"></ion-icon>
+      </button>
+
+      <button ion-button icon-only *ngIf="!message" class="message-editor-button">
+        <ion-icon name="mic"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-navbar color="whatsapp">
+    <ion-title>
+      Chats
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only class="add-chat-button" (click)="addChat()">
+        <ion-icon name="person-add"></ion-icon>
+      </button>
+      <button ion-button icon-only class="options-button" (click)="showOptions()">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="chats-page-content">
+  <ion-list class="chats">
+    <ion-item-sliding *ngFor="let chat of chats | async">
+      <button ion-item class="chat" (click)="showMessages(chat)">
+        <img class="chat-picture" [src]="chat.picture">
+        <div class="chat-info">
+          <h2 class="chat-title">{{chat.title}}</h2>
+
+          <span *ngIf="chat.lastMessage" class="last-message">
+            <p *ngIf="chat.lastMessage.type == 'text'" class="last-message-content last-message-content-text">{{chat.lastMessage.content}}</p>
+            <span class="last-message-timestamp">{{ chat.lastMessage.createdAt | amCalendar }}</span>
+          </span>
+        </div>
+      </button>
+      <ion-item-options class="chat-options">
+        <button ion-button color="danger" class="option option-remove" (click)="removeChat(chat)">Remove</button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>

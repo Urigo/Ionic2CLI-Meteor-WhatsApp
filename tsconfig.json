@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "dom",
+      "es2015"
+    ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "paths": {
+      "api/*": ["./api/server/*"]
+    },
+    "sourceMap": true,
+    "target": "es5",
+    "skipLibCheck": true,
+    "stripInternal": true,
+    "noImplicitAny": false,
+    "types": [
+      "meteor-typings",
+      "@types/underscore",
+      "@types/meteor-accounts-phone"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "api/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "api/node_modules",
+    "api"
+  ],
+  "compileOnSave": false,
+  "atom": {
+    "rewriteTsconfig": false
+  }
+}
