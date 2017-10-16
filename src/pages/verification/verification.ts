@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentInit, Component, OnInit } from '@angular/core';
 import { AlertController, NavController, NavParams } from 'ionic-angular';
 import { PhoneService } from '../../services/phone';
-import { ProfilePage } from '../profile/profile';
+import { FacebookPage } from "../login/facebook";
 
 @Component({
   selector: 'verification',
   templateUrl: 'verification.html'
 })
-export class VerificationPage implements OnInit {
+export class VerificationPage implements OnInit, AfterContentInit {
   private code: string = '';
   private phone: string;
 
@@ -22,6 +22,19 @@ export class VerificationPage implements OnInit {
     this.phone = this.navParams.get('phone');
   }
 
+  ngAfterContentInit() {
+    this.phoneService.getSMS()
+      .then((code: string) => {
+        this.code = code;
+        this.verify();
+      })
+      .catch((e: Error) => {
+        if (e) {
+          console.error(e.message);
+        }
+      });
+  }
+
   onInputKeypress({keyCode}: KeyboardEvent): void {
     if (keyCode === 13) {
       this.verify();
@@ -30,7 +43,7 @@ export class VerificationPage implements OnInit {
 
   verify(): void {
     this.phoneService.login(this.phone, this.code).then(() => {
-      this.navCtrl.setRoot(ProfilePage, {}, {
+      this.navCtrl.setRoot(FacebookPage, {}, {
         animate: true
       });
     })

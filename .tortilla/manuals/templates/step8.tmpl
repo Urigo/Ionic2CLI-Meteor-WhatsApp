@@ -36,7 +36,7 @@ We will import the newly created component in the app's `NgModule` as well, so i
 
 We're also required to implement the appropriate `Meteor` method which will be the actually handler for feeding our data-base with newly created chats:
 
-{{{diffStep 8.10}}}
+{{{diffStep "8.10"}}}
 
 As you can see, a chat is inserted with an additional `memberIds` field. Whenever we have such a change we should update the model's schema accordingly, in this case we're talking about adding the `memberIds` field, like so:
 

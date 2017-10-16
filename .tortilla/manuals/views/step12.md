@@ -1,1175 +1,790 @@
-# Step 12: File Upload &amp; Images
+# Step 12: Google Maps &amp; Geolocation
 
-In this step, we will be using `Ionic 2` to pick up some images from our device's gallery, and we will use them to send pictures, and to set our profile picture.
+In this step we will add the ability to send the current location in [Google Maps](https://www.google.com/maps/).
 
-## Image Picker
+## Geo Location
 
-First, we will a `Cordova` plug-in which will give us the ability to access the gallery:
+To get the devices location (aka `geo-location`) we will install a `Cordova` plug-in called `cordova-plugin-geolocation`:
 
-    $ ionic plugin add cordova-plugin-image-picker
+    $ ionic cordova plugin add cordova-plugin-geolocation --save
+    $ npm install --save @ionic-native/geolocation
 
-## Meteor FS
+## Angular 2 Google Maps
 
-Up next, would be adding the ability to store some files in our data-base. This requires us to add 2 `Meteor` packages, called `ufs` and `ufs-gridfs` (Which adds support for `GridFS` operations. See [reference](https://docs.mongodb.com/manual/core/gridfs/)), which will take care of FS operations:
+Since the location is going to be presented with `Google Maps`, we will install a package which will help up interact with it in `Angular 2`:
 
-    api$ meteor add jalik:ufs
-    api$ meteor add jalik:ufs-gridfs
+    $ npm install --save @agm/core
 
-And be sure to re-bundle the `Meteor` client whenever you make changes in the server:
-
-    $ npm run meteor-client:bundle
-
-## Client Side
-
-Before we proceed to the server, we will add the ability to select and upload pictures in the client. All our picture-related operations will be defined in a single service called `PictureService`; The first bit of this service would be picture-selection. The `UploadFS` package already supports that feature, **but only for the browser**, therefore we will be using the `Cordova` plug-in we've just installed to select some pictures from our mobile device:
+Before you import the installed package to the app's `NgModule` be sure to generate an API key. An API key is a code passed in by computer programs calling an API to identify the calling program, its developer, or its user to the Web site. To generate an API key go to [Google Maps API documentation page](https://developers.google.com/maps/documentation/javascript/get-api-key) and follow the instructions. **Each app should have it's own API key**, as for now we can just use an API key we generated for the sake of this tutorial, but once you are ready for production, **replace the API key in the script below**:
 
 [{]: <helper> (diffStep 12.3)
 
-#### [Step 12.3: Create PictureService with utils for files](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5e36bd4)
-
-##### Added src&#x2F;services&#x2F;picture.ts
-```diff
-@@ -0,0 +1,80 @@
-+┊  ┊ 1┊import { Injectable } from '@angular/core';
-+┊  ┊ 2┊import { Platform } from 'ionic-angular';
-+┊  ┊ 3┊import { ImagePicker } from 'ionic-native';
-+┊  ┊ 4┊import { UploadFS } from 'meteor/jalik:ufs';
-+┊  ┊ 5┊
-+┊  ┊ 6┊@Injectable()
-+┊  ┊ 7┊export class PictureService {
-+┊  ┊ 8┊  constructor(private platform: Platform) {
-+┊  ┊ 9┊  }
-+┊  ┊10┊
-+┊  ┊11┊  select(): Promise<Blob> {
-+┊  ┊12┊    if (!this.platform.is('cordova') || !this.platform.is('mobile')) {
-+┊  ┊13┊      return new Promise((resolve, reject) => {
-+┊  ┊14┊        try {
-+┊  ┊15┊          UploadFS.selectFile((file: File) => {
-+┊  ┊16┊            resolve(file);
-+┊  ┊17┊          });
-+┊  ┊18┊        }
-+┊  ┊19┊        catch (e) {
-+┊  ┊20┊          reject(e);
-+┊  ┊21┊        }
-+┊  ┊22┊      });
-+┊  ┊23┊    }
-+┊  ┊24┊
-+┊  ┊25┊    return ImagePicker.getPictures({maximumImagesCount: 1}).then((URL: string) => {
-+┊  ┊26┊      return this.convertURLtoBlob(URL);
-+┊  ┊27┊    });
-+┊  ┊28┊  }
-+┊  ┊29┊
-+┊  ┊30┊  convertURLtoBlob(URL: string): Promise<Blob> {
-+┊  ┊31┊    return new Promise((resolve, reject) => {
-+┊  ┊32┊      const image = document.createElement('img');
-+┊  ┊33┊
-+┊  ┊34┊      image.onload = () => {
-+┊  ┊35┊        try {
-+┊  ┊36┊          const dataURI = this.convertImageToDataURI(image);
-+┊  ┊37┊          const blob = this.convertDataURIToBlob(dataURI);
-+┊  ┊38┊
-+┊  ┊39┊          resolve(blob);
-+┊  ┊40┊        }
-+┊  ┊41┊        catch (e) {
-+┊  ┊42┊          reject(e);
-+┊  ┊43┊        }
-+┊  ┊44┊      };
-+┊  ┊45┊
-+┊  ┊46┊      image.src = URL;
-+┊  ┊47┊    });
-+┊  ┊48┊  }
-+┊  ┊49┊
-+┊  ┊50┊  convertImageToDataURI(image: HTMLImageElement): string {
-+┊  ┊51┊    // Create an empty canvas element
-+┊  ┊52┊    const canvas = document.createElement('canvas');
-+┊  ┊53┊    canvas.width = image.width;
-+┊  ┊54┊    canvas.height = image.height;
-+┊  ┊55┊
-+┊  ┊56┊    // Copy the image contents to the canvas
-+┊  ┊57┊    const context = canvas.getContext('2d');
-+┊  ┊58┊    context.drawImage(image, 0, 0);
-+┊  ┊59┊
-+┊  ┊60┊    // Get the data-URL formatted image
-+┊  ┊61┊    // Firefox supports PNG and JPEG. You could check image.src to
-+┊  ┊62┊    // guess the original format, but be aware the using 'image/jpg'
-+┊  ┊63┊    // will re-encode the image.
-+┊  ┊64┊    const dataURL = canvas.toDataURL('image/png');
-+┊  ┊65┊
-+┊  ┊66┊    return dataURL.replace(/^data:image\/(png|jpg);base64,/, '');
-+┊  ┊67┊  }
-+┊  ┊68┊
-+┊  ┊69┊  convertDataURIToBlob(dataURI): Blob {
-+┊  ┊70┊    const binary = atob(dataURI);
-+┊  ┊71┊
-+┊  ┊72┊    // Write the bytes of the string to a typed array
-+┊  ┊73┊    const charCodes = Object.keys(binary)
-+┊  ┊74┊      .map<number>(Number)
-+┊  ┊75┊      .map<number>(binary.charCodeAt.bind(binary));
-+┊  ┊76┊
-+┊  ┊77┊    // Build blob with typed array
-+┊  ┊78┊    return new Blob([new Uint8Array(charCodes)], {type: 'image/jpeg'});
-+┊  ┊79┊  }
-+┊  ┊80┊}
-```
-
-[}]: #
-
-In order to use the service we will need to import it in the app's `NgModule` as a `provider`:
-
-[{]: <helper> (diffStep 12.4)
-
-#### [Step 12.4: Import PictureService](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/cf8a171)
+#### [Step 12.3: Import google maps module](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/61adc0b77)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
-@@ -13,6 +13,7 @@
- ┊13┊13┊import { ProfilePage } from '../pages/profile/profile';
- ┊14┊14┊import { VerificationPage } from '../pages/verification/verification';
- ┊15┊15┊import { PhoneService } from '../services/phone';
-+┊  ┊16┊import { PictureService } from '../services/picture';
- ┊16┊17┊import { MyApp } from './app.component';
- ┊17┊18┊
- ┊18┊19┊@NgModule({
+@@ -3,6 +3,7 @@
+ ┊3┊3┊import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+ ┊4┊4┊import { SplashScreen } from '@ionic-native/splash-screen';
+ ┊5┊5┊import { StatusBar } from '@ionic-native/status-bar';
++┊ ┊6┊import { AgmCoreModule } from '@agm/core';
+ ┊6┊7┊import { MomentModule } from 'angular2-moment';
+ ┊7┊8┊import { ChatsPage } from '../pages/chats/chats';
+ ┊8┊9┊import { NewChatComponent } from '../pages/chats/new-chat';
 ```
 ```diff
-@@ -52,7 +53,8 @@
- ┊52┊53┊  ],
- ┊53┊54┊  providers: [
- ┊54┊55┊    {provide: ErrorHandler, useClass: IonicErrorHandler},
--┊55┊  ┊    PhoneService
-+┊  ┊56┊    PhoneService,
-+┊  ┊57┊    PictureService
- ┊56┊58┊  ]
- ┊57┊59┊})
- ┊58┊60┊export class AppModule {}
+@@ -30,7 +31,10 @@
+ ┊30┊31┊  imports: [
+ ┊31┊32┊    BrowserModule,
+ ┊32┊33┊    IonicModule.forRoot(MyApp),
+-┊33┊  ┊    MomentModule
++┊  ┊34┊    MomentModule,
++┊  ┊35┊    AgmCoreModule.forRoot({
++┊  ┊36┊      apiKey: 'AIzaSyAWoBdZHCNh5R-hB5S5ZZ2oeoYyfdDgniA'
++┊  ┊37┊    })
+ ┊34┊38┊  ],
+ ┊35┊39┊  bootstrap: [IonicApp],
+ ┊36┊40┊  entryComponents: [
 ```
 
 [}]: #
 
-Since now we will be sending pictures, we will need to update the message schema to support picture typed messages:
+## Attachments Menu
 
-[{]: <helper> (diffStep 12.5)
+Before we proceed any further, we will add a new message type to our schema, so we can differentiate between a text message and a location message:
 
-#### [Step 12.5: Added picture message type](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5b8ee03)
+[{]: <helper> (diffStep 12.4)
+
+#### [Step 12.4: Added location message type](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/17f3083ac)
 
 ##### Changed api&#x2F;server&#x2F;models.ts
 ```diff
-@@ -7,7 +7,8 @@
+@@ -6,7 +6,8 @@
+ ┊ 6┊ 6┊}
  ┊ 7┊ 7┊
  ┊ 8┊ 8┊export enum MessageType {
- ┊ 9┊ 9┊  TEXT = <any>'text',
--┊10┊  ┊  LOCATION = <any>'location'
-+┊  ┊10┊  LOCATION = <any>'location',
-+┊  ┊11┊  PICTURE = <any>'picture'
- ┊11┊12┊}
- ┊12┊13┊
- ┊13┊14┊export interface Chat {
+-┊ 9┊  ┊  TEXT = <any>'text'
++┊  ┊ 9┊  TEXT = <any>'text',
++┊  ┊10┊  LOCATION = <any>'location'
+ ┊10┊11┊}
+ ┊11┊12┊
+ ┊12┊13┊export interface Chat {
 ```
 
 [}]: #
 
-In the attachments menu, we will add a new handler for sending pictures, called `sendPicture`:
+We want the user to be able to send a location message through an attachments menu in the `MessagesPage`, so let's implement the initial `MessagesAttachmentsComponent`, and as we go through, we will start filling it up:
+
+[{]: <helper> (diffStep 12.5)
+
+#### [Step 12.5: Added stub for messages attachment menu](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/359edfb3c)
+
+##### Added src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.ts
+```diff
+@@ -0,0 +1,15 @@
++┊  ┊ 1┊import { Component } from '@angular/core';
++┊  ┊ 2┊import { AlertController, Platform, ModalController, ViewController } from 'ionic-angular';
++┊  ┊ 3┊
++┊  ┊ 4┊@Component({
++┊  ┊ 5┊  selector: 'messages-attachments',
++┊  ┊ 6┊  templateUrl: 'messages-attachments.html'
++┊  ┊ 7┊})
++┊  ┊ 8┊export class MessagesAttachmentsComponent {
++┊  ┊ 9┊  constructor(
++┊  ┊10┊    private alertCtrl: AlertController,
++┊  ┊11┊    private platform: Platform,
++┊  ┊12┊    private viewCtrl: ViewController,
++┊  ┊13┊    private modelCtrl: ModalController
++┊  ┊14┊  ) {}
++┊  ┊15┊}
+```
+
+[}]: #
 
 [{]: <helper> (diffStep 12.6)
 
-#### [Step 12.6: Implement sendPicture method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/3494148)
+#### [Step 12.6: Added messages attachment menu template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f07421a4a)
 
-##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.ts
+##### Added src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.html
 ```diff
-@@ -2,6 +2,7 @@
- ┊2┊2┊import { AlertController, Platform, ModalController, ViewController } from 'ionic-angular';
- ┊3┊3┊import { NewLocationMessageComponent } from './location-message';
- ┊4┊4┊import { MessageType } from 'api/models';
-+┊ ┊5┊import { PictureService } from '../../services/picture';
- ┊5┊6┊
- ┊6┊7┊@Component({
- ┊7┊8┊  selector: 'messages-attachments',
-```
-```diff
-@@ -12,9 +13,19 @@
- ┊12┊13┊    private alertCtrl: AlertController,
- ┊13┊14┊    private platform: Platform,
- ┊14┊15┊    private viewCtrl: ViewController,
--┊15┊  ┊    private modelCtrl: ModalController
-+┊  ┊16┊    private modelCtrl: ModalController,
-+┊  ┊17┊    private pictureService: PictureService
- ┊16┊18┊  ) {}
- ┊17┊19┊
-+┊  ┊20┊  sendPicture(): void {
-+┊  ┊21┊    this.pictureService.select().then((file: File) => {
-+┊  ┊22┊      this.viewCtrl.dismiss({
-+┊  ┊23┊        messageType: MessageType.PICTURE,
-+┊  ┊24┊        selectedPicture: file
-+┊  ┊25┊      });
-+┊  ┊26┊    });
-+┊  ┊27┊  }
-+┊  ┊28┊
- ┊18┊29┊  sendLocation(): void {
- ┊19┊30┊    const locationModal = this.modelCtrl.create(NewLocationMessageComponent);
- ┊20┊31┊    locationModal.onDidDismiss((location) => {
+@@ -0,0 +1,18 @@
++┊  ┊ 1┊<ion-content class="messages-attachments-page-content">
++┊  ┊ 2┊  <ion-list class="attachments">
++┊  ┊ 3┊    <button ion-item class="attachment attachment-gallery">
++┊  ┊ 4┊      <ion-icon name="images" class="attachment-icon"></ion-icon>
++┊  ┊ 5┊      <div class="attachment-name">Gallery</div>
++┊  ┊ 6┊    </button>
++┊  ┊ 7┊
++┊  ┊ 8┊    <button ion-item class="attachment attachment-camera">
++┊  ┊ 9┊      <ion-icon name="camera" class="attachment-icon"></ion-icon>
++┊  ┊10┊      <div class="attachment-name">Camera</div>
++┊  ┊11┊    </button>
++┊  ┊12┊
++┊  ┊13┊    <button ion-item class="attachment attachment-location">
++┊  ┊14┊      <ion-icon name="locate" class="attachment-icon"></ion-icon>
++┊  ┊15┊      <div class="attachment-name">Location</div>
++┊  ┊16┊    </button>
++┊  ┊17┊  </ion-list>
++┊  ┊18┊</ion-content>
 ```
 
 [}]: #
-
-And we will bind that handler to the view, so whenever we press the right button, the handler will be invoked with the selected picture:
 
 [{]: <helper> (diffStep 12.7)
 
-#### [Step 12.7: Bind click event for sendPicture](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/dff4d08)
+#### [Step 12.7: Added styles for messages attachment](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e4079632a)
 
-##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.html
+##### Added src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.scss
 ```diff
-@@ -1,6 +1,6 @@
- ┊1┊1┊<ion-content class="messages-attachments-page-content">
- ┊2┊2┊  <ion-list class="attachments">
--┊3┊ ┊    <button ion-item class="attachment attachment-gallery">
-+┊ ┊3┊    <button ion-item class="attachment attachment-gallery" (click)="sendPicture()">
- ┊4┊4┊      <ion-icon name="images" class="attachment-icon"></ion-icon>
- ┊5┊5┊      <div class="attachment-name">Gallery</div>
- ┊6┊6┊    </button>
+@@ -0,0 +1,46 @@
++┊  ┊ 1┊.messages-attachments-page-content {
++┊  ┊ 2┊  $icon-background-size: 60px;
++┊  ┊ 3┊  $icon-font-size: 20pt;
++┊  ┊ 4┊
++┊  ┊ 5┊  .attachments {
++┊  ┊ 6┊    width: 100%;
++┊  ┊ 7┊    margin: 0;
++┊  ┊ 8┊    display: inline-flex;
++┊  ┊ 9┊  }
++┊  ┊10┊
++┊  ┊11┊  .attachment {
++┊  ┊12┊    text-align: center;
++┊  ┊13┊    margin: 0;
++┊  ┊14┊    padding: 0;
++┊  ┊15┊
++┊  ┊16┊    .item-inner {
++┊  ┊17┊      padding: 0
++┊  ┊18┊    }
++┊  ┊19┊
++┊  ┊20┊    .attachment-icon {
++┊  ┊21┊      width: $icon-background-size;
++┊  ┊22┊      height: $icon-background-size;
++┊  ┊23┊      line-height: $icon-background-size;
++┊  ┊24┊      font-size: $icon-font-size;
++┊  ┊25┊      border-radius: 50%;
++┊  ┊26┊      color: white;
++┊  ┊27┊      margin-bottom: 10px
++┊  ┊28┊    }
++┊  ┊29┊
++┊  ┊30┊    .attachment-name {
++┊  ┊31┊      color: gray;
++┊  ┊32┊    }
++┊  ┊33┊  }
++┊  ┊34┊
++┊  ┊35┊  .attachment-gallery .attachment-icon {
++┊  ┊36┊    background: linear-gradient(#e13838 50%, #f53d3d 50%);
++┊  ┊37┊  }
++┊  ┊38┊
++┊  ┊39┊  .attachment-camera .attachment-icon {
++┊  ┊40┊    background: linear-gradient(#3474e1 50%, #387ef5 50%);
++┊  ┊41┊  }
++┊  ┊42┊
++┊  ┊43┊  .attachment-location .attachment-icon {
++┊  ┊44┊    background: linear-gradient(#2ec95c 50%, #32db64 50%);
++┊  ┊45┊  }
++┊  ┊46┊}
 ```
 
 [}]: #
-
-Now we will be extending the `MessagesPage`, by adding a method which will send the picture selected in the attachments menu:
 
 [{]: <helper> (diffStep 12.8)
 
-#### [Step 12.8: Implement the actual send of picture message](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ce7dfd2)
+#### [Step 12.8: Import MessagesAttachmentsComponent](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7053c5f04)
 
-##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
+##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
-@@ -8,6 +8,7 @@
- ┊ 8┊ 8┊import { MessagesOptionsComponent } from './messages-options';
- ┊ 9┊ 9┊import { Subscription, Observable, Subscriber } from 'rxjs';
- ┊10┊10┊import { MessagesAttachmentsComponent } from './messages-attachments';
-+┊  ┊11┊import { PictureService } from '../../services/picture';
- ┊11┊12┊
- ┊12┊13┊@Component({
- ┊13┊14┊  selector: 'messages-page',
+@@ -10,6 +10,7 @@
+ ┊10┊10┊import { ChatsOptionsComponent } from '../pages/chats/chats-options';
+ ┊11┊11┊import { LoginPage } from '../pages/login/login';
+ ┊12┊12┊import { MessagesPage } from '../pages/messages/messages';
++┊  ┊13┊import { MessagesAttachmentsComponent } from '../pages/messages/messages-attachments';
+ ┊13┊14┊import { MessagesOptionsComponent } from '../pages/messages/messages-options';
+ ┊14┊15┊import { ProfilePage } from '../pages/profile/profile';
+ ┊15┊16┊import { VerificationPage } from '../pages/verification/verification';
 ```
 ```diff
-@@ -29,7 +30,8 @@
- ┊29┊30┊  constructor(
- ┊30┊31┊    navParams: NavParams,
- ┊31┊32┊    private el: ElementRef,
--┊32┊  ┊    private popoverCtrl: PopoverController
-+┊  ┊33┊    private popoverCtrl: PopoverController,
-+┊  ┊34┊    private pictureService: PictureService
- ┊33┊35┊  ) {
- ┊34┊36┊    this.selectedChat = <Chat>navParams.get('chat');
- ┊35┊37┊    this.title = this.selectedChat.title;
+@@ -26,7 +27,8 @@
+ ┊26┊27┊    ProfilePage,
+ ┊27┊28┊    ChatsOptionsComponent,
+ ┊28┊29┊    NewChatComponent,
+-┊29┊  ┊    MessagesOptionsComponent
++┊  ┊30┊    MessagesOptionsComponent,
++┊  ┊31┊    MessagesAttachmentsComponent
+ ┊30┊32┊  ],
+ ┊31┊33┊  imports: [
+ ┊32┊34┊    BrowserModule,
 ```
 ```diff
-@@ -236,12 +238,25 @@
- ┊236┊238┊          const location = params.selectedLocation;
- ┊237┊239┊          this.sendLocationMessage(location);
- ┊238┊240┊        }
-+┊   ┊241┊        else if (params.messageType === MessageType.PICTURE) {
-+┊   ┊242┊          const blob: Blob = params.selectedPicture;
-+┊   ┊243┊          this.sendPictureMessage(blob);
-+┊   ┊244┊        }
- ┊239┊245┊      }
- ┊240┊246┊    });
- ┊241┊247┊
- ┊242┊248┊    popover.present();
- ┊243┊249┊  }
- ┊244┊250┊
-+┊   ┊251┊  sendPictureMessage(blob: Blob): void {
-+┊   ┊252┊    this.pictureService.upload(blob).then((picture) => {
-+┊   ┊253┊      MeteorObservable.call('addMessage', MessageType.PICTURE,
-+┊   ┊254┊        this.selectedChat._id,
-+┊   ┊255┊        picture.url
-+┊   ┊256┊      ).zone().subscribe();
-+┊   ┊257┊    });
-+┊   ┊258┊  }
-+┊   ┊259┊
- ┊245┊260┊  getLocation(locationString: string): Location {
- ┊246┊261┊    const splitted = locationString.split(',').map(Number);
+@@ -46,7 +48,8 @@
+ ┊46┊48┊    ProfilePage,
+ ┊47┊49┊    ChatsOptionsComponent,
+ ┊48┊50┊    NewChatComponent,
+-┊49┊  ┊    MessagesOptionsComponent
++┊  ┊51┊    MessagesOptionsComponent,
++┊  ┊52┊    MessagesAttachmentsComponent
+ ┊50┊53┊  ],
+ ┊51┊54┊  providers: [
+ ┊52┊55┊    StatusBar,
 ```
 
 [}]: #
 
-For now, we will add a stub for the `upload` method in the `PictureService` and we will get back to it once we finish implementing the necessary logic in the server for storing a picture:
+We will add a generic style-sheet for the attachments menu since it can also use us in the future:
 
 [{]: <helper> (diffStep 12.9)
 
-#### [Step 12.9: Create stub method for upload method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/a1e4f35)
+#### [Step 12.9: Added styles for the popover container](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/fc1c91dc8)
 
-##### Changed src&#x2F;services&#x2F;picture.ts
+##### Changed src&#x2F;app&#x2F;app.scss
 ```diff
-@@ -27,6 +27,10 @@
- ┊27┊27┊    });
- ┊28┊28┊  }
- ┊29┊29┊
-+┊  ┊30┊  upload(blob: Blob): Promise<any> {
-+┊  ┊31┊    return Promise.resolve();
-+┊  ┊32┊  }
+@@ -27,3 +27,15 @@
+ ┊27┊27┊  left: calc(100% - #{$options-popover-width} - #{$options-popover-margin}) !important;
+ ┊28┊28┊  top: $options-popover-margin !important;
+ ┊29┊29┊}
++┊  ┊30┊
++┊  ┊31┊// Attachments Popover Component
++┊  ┊32┊// --------------------------------------------------
 +┊  ┊33┊
- ┊30┊34┊  convertURLtoBlob(URL: string): Promise<Blob> {
- ┊31┊35┊    return new Promise((resolve, reject) => {
- ┊32┊36┊      const image = document.createElement('img');
++┊  ┊34┊$attachments-popover-width: 100%;
++┊  ┊35┊
++┊  ┊36┊.attachments-popover .popover-content {
++┊  ┊37┊  width: $attachments-popover-width;
++┊  ┊38┊  transform-origin: 300px 30px !important;
++┊  ┊39┊  left: calc(100% - #{$attachments-popover-width}) !important;
++┊  ┊40┊  top: 58px !important;
++┊  ┊41┊}
 ```
 
 [}]: #
 
-## Server Side
+Now we will add a handler in the `MessagesPage` which will open the newly created menu, and we will bind it to the view:
 
-So as we said, need to handle storage of pictures that were sent by the client. First, we will create a `Picture` model so the compiler can recognize a picture object:
+[{]: <helper> (diffStep "12.10")
 
-[{]: <helper> (diffStep 12.1)
+#### [Step 12.10: Add showAttachments method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b1a3045a5)
 
-#### [Step 12.1: Add cordova plugin for image picker](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/64fb091)
-
-##### Changed package.json
+##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 ```diff
-@@ -57,7 +57,8 @@
- ┊57┊57┊    "cordova-plugin-device",
- ┊58┊58┊    "cordova-plugin-geolocation",
- ┊59┊59┊    "ionic-plugin-keyboard",
--┊60┊  ┊    "cordova-plugin-splashscreen"
-+┊  ┊60┊    "cordova-plugin-splashscreen",
-+┊  ┊61┊    "https://github.com/Telerik-Verified-Plugins/ImagePicker"
- ┊61┊62┊  ],
- ┊62┊63┊  "cordovaPlatforms": [
- ┊63┊64┊    "ios",
+@@ -7,6 +7,7 @@
+ ┊ 7┊ 7┊import { _ } from 'meteor/underscore';
+ ┊ 8┊ 8┊import { MessagesOptionsComponent } from './messages-options';
+ ┊ 9┊ 9┊import { Subscription, Observable, Subscriber } from 'rxjs';
++┊  ┊10┊import { MessagesAttachmentsComponent } from './messages-attachments';
+ ┊10┊11┊
+ ┊11┊12┊@Component({
+ ┊12┊13┊  selector: 'messages-page',
+```
+```diff
+@@ -211,4 +212,18 @@
+ ┊211┊212┊      this.message = '';
+ ┊212┊213┊    });
+ ┊213┊214┊  }
++┊   ┊215┊
++┊   ┊216┊  showAttachments(): void {
++┊   ┊217┊    const popover = this.popoverCtrl.create(MessagesAttachmentsComponent, {
++┊   ┊218┊      chat: this.selectedChat
++┊   ┊219┊    }, {
++┊   ┊220┊      cssClass: 'attachments-popover'
++┊   ┊221┊    });
++┊   ┊222┊
++┊   ┊223┊    popover.onDidDismiss((params) => {
++┊   ┊224┊      // TODO: Handle result
++┊   ┊225┊    });
++┊   ┊226┊
++┊   ┊227┊    popover.present();
++┊   ┊228┊  }
+ ┊214┊229┊}
 ```
 
 [}]: #
 
-If you're familiar with `Whatsapp`, you'll know that sent pictures are compressed. That's so the data-base can store more pictures, and the traffic in the network will be faster. To compress the sent pictures, we will be using an `NPM` package called [sharp](https://www.npmjs.com/package/sharp), which is a utility library which will help us perform transformations on pictures:
+[{]: <helper> (diffStep 12.11)
 
-    $ meteor npm install --save sharp
-
-> Be sure to use `meteor npm` and not `npm`, and that's because we wanna make sure that `sharp` is compatible with the server.
-
-Now we will create a picture store which will compress pictures using `sharp` right before they are inserted into the data-base:
-
-[{]: <helper> (diffStep 12.12)
-
-#### [Step 12.12: Create pictures store](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5df5717)
-
-##### Added api&#x2F;server&#x2F;collections&#x2F;pictures.ts
-```diff
-@@ -0,0 +1,40 @@
-+┊  ┊ 1┊import { MongoObservable } from 'meteor-rxjs';
-+┊  ┊ 2┊import { UploadFS } from 'meteor/jalik:ufs';
-+┊  ┊ 3┊import { Meteor } from 'meteor/meteor';
-+┊  ┊ 4┊import * as Sharp from 'sharp';
-+┊  ┊ 5┊import { Picture, DEFAULT_PICTURE_URL } from '../models';
-+┊  ┊ 6┊
-+┊  ┊ 7┊export interface PicturesCollection<T> extends MongoObservable.Collection<T> {
-+┊  ┊ 8┊  getPictureUrl(selector?: Object | string): string;
-+┊  ┊ 9┊}
-+┊  ┊10┊
-+┊  ┊11┊export const Pictures =
-+┊  ┊12┊  new MongoObservable.Collection<Picture>('pictures') as PicturesCollection<Picture>;
-+┊  ┊13┊
-+┊  ┊14┊export const PicturesStore = new UploadFS.store.GridFS({
-+┊  ┊15┊  collection: Pictures.collection,
-+┊  ┊16┊  name: 'pictures',
-+┊  ┊17┊  filter: new UploadFS.Filter({
-+┊  ┊18┊    contentTypes: ['image/*']
-+┊  ┊19┊  }),
-+┊  ┊20┊  permissions: new UploadFS.StorePermissions({
-+┊  ┊21┊    insert: picturesPermissions,
-+┊  ┊22┊    update: picturesPermissions,
-+┊  ┊23┊    remove: picturesPermissions
-+┊  ┊24┊  }),
-+┊  ┊25┊  transformWrite(from, to) {
-+┊  ┊26┊    // Compress picture to 75% from its original quality
-+┊  ┊27┊    const transform = Sharp().png({ quality: 75 });
-+┊  ┊28┊    from.pipe(transform).pipe(to);
-+┊  ┊29┊  }
-+┊  ┊30┊});
-+┊  ┊31┊
-+┊  ┊32┊// Gets picture's url by a given selector
-+┊  ┊33┊Pictures.getPictureUrl = function (selector) {
-+┊  ┊34┊  const picture = this.findOne(selector) || {};
-+┊  ┊35┊  return picture.url || DEFAULT_PICTURE_URL;
-+┊  ┊36┊};
-+┊  ┊37┊
-+┊  ┊38┊function picturesPermissions(userId: string): boolean {
-+┊  ┊39┊  return Meteor.isServer || !!userId;
-+┊  ┊40┊}
-```
-
-[}]: #
-
-You can look at a store as some sort of a wrapper for a collection, which will run different kind of a operations before it mutates it or fetches data from it. Note that we used `GridFS` because this way an uploaded file is split into multiple packets, which is more efficient for storage. We also defined a small utility function on that store which will retrieve a profile picture. If the ID was not found, it will return a link for the default picture. To make things convenient, we will also export the store from the `index` file:
-
-[{]: <helper> (diffStep 12.13)
-
-#### [Step 12.13: Export pictures collection](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c2b2b4e)
-
-##### Changed api&#x2F;server&#x2F;collections&#x2F;index.ts
-```diff
-@@ -1,3 +1,4 @@
- ┊1┊1┊export * from './chats';
- ┊2┊2┊export * from './messages';
- ┊3┊3┊export * from './users';
-+┊ ┊4┊export * from './pictures';
-```
-
-[}]: #
-
-Now that we have the pictures store, and the server knows how to handle uploaded pictures, we will implement the `upload` stub in the `PictureService`:
-
-[{]: <helper> (diffStep 12.14)
-
-#### [Step 12.14: Implement upload method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/acdb02b)
-
-##### Changed src&#x2F;services&#x2F;picture.ts
-```diff
-@@ -2,6 +2,9 @@
- ┊ 2┊ 2┊import { Platform } from 'ionic-angular';
- ┊ 3┊ 3┊import { ImagePicker } from 'ionic-native';
- ┊ 4┊ 4┊import { UploadFS } from 'meteor/jalik:ufs';
-+┊  ┊ 5┊import { PicturesStore } from 'api/collections';
-+┊  ┊ 6┊import { _ } from 'meteor/underscore';
-+┊  ┊ 7┊import { DEFAULT_PICTURE_URL } from 'api/models';
- ┊ 5┊ 8┊
- ┊ 6┊ 9┊@Injectable()
- ┊ 7┊10┊export class PictureService {
-```
-```diff
-@@ -28,7 +31,23 @@
- ┊28┊31┊  }
- ┊29┊32┊
- ┊30┊33┊  upload(blob: Blob): Promise<any> {
--┊31┊  ┊    return Promise.resolve();
-+┊  ┊34┊    return new Promise((resolve, reject) => {
-+┊  ┊35┊      const metadata = _.pick(blob, 'name', 'type', 'size');
-+┊  ┊36┊
-+┊  ┊37┊      if (!metadata.name) {
-+┊  ┊38┊        metadata.name = DEFAULT_PICTURE_URL;
-+┊  ┊39┊      }
-+┊  ┊40┊
-+┊  ┊41┊      const upload = new UploadFS.Uploader({
-+┊  ┊42┊        data: blob,
-+┊  ┊43┊        file: metadata,
-+┊  ┊44┊        store: PicturesStore,
-+┊  ┊45┊        onComplete: resolve,
-+┊  ┊46┊        onError: reject
-+┊  ┊47┊      });
-+┊  ┊48┊
-+┊  ┊49┊      upload.start();
-+┊  ┊50┊    });
- ┊32┊51┊  }
- ┊33┊52┊
- ┊34┊53┊  convertURLtoBlob(URL: string): Promise<Blob> {
-```
-
-[}]: #
-
-Since `sharp` is a server-only package, and it is not supported by the client, at all, we will replace it with an empty dummy-object so errors won't occur. This requires us to change the `Webpack` config as shown below:
-
-[{]: <helper> (diffStep 12.15)
-
-#### [Step 12.15: Ignore sharp package on client side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/57c0026)
-
-##### Changed webpack.config.js
-```diff
-@@ -20,6 +20,9 @@
- ┊20┊20┊  },
- ┊21┊21┊
- ┊22┊22┊  externals: [
-+┊  ┊23┊    {
-+┊  ┊24┊      sharp: '{}'
-+┊  ┊25┊    },
- ┊23┊26┊    resolveExternals
- ┊24┊27┊  ],
-```
-
-[}]: #
-
-## View Picture Messages
-
-We will now add the support for picture typed messages in the `MessagesPage`, so whenever we send a picture, we will be able to see them in the messages list like any other message:
-
-[{]: <helper> (diffStep 12.16)
-
-#### [Step 12.16: Added view for picture message](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/256a690)
+#### [Step 12.11: Bind click event to showAttachments](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5c04c16b9)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.html
 ```diff
-@@ -24,6 +24,7 @@
- ┊24┊24┊              <sebm-google-map-marker [latitude]="getLocation(message.content).lat" [longitude]="getLocation(message.content).lng"></sebm-google-map-marker>
- ┊25┊25┊            </sebm-google-map>
- ┊26┊26┊          </div>
-+┊  ┊27┊          <img *ngIf="message.type == 'picture'" (click)="showPicture($event)" class="message-content message-content-picture" [src]="message.content">
- ┊27┊28┊
- ┊28┊29┊          <span class="message-timestamp">{{ message.createdAt | amDateFormat: 'HH:mm' }}</span>
- ┊29┊30┊        </div>
+@@ -7,7 +7,7 @@
+ ┊ 7┊ 7┊    <ion-title class="chat-title">{{title}}</ion-title>
+ ┊ 8┊ 8┊
+ ┊ 9┊ 9┊    <ion-buttons end>
+-┊10┊  ┊      <button ion-button icon-only class="attach-button"><ion-icon name="attach"></ion-icon></button>
++┊  ┊10┊      <button ion-button icon-only class="attach-button" (click)="showAttachments()"><ion-icon name="attach"></ion-icon></button>
+ ┊11┊11┊      <button ion-button icon-only class="options-button" (click)="showOptions()"><ion-icon name="more"></ion-icon></button>
+ ┊12┊12┊    </ion-buttons>
+ ┊13┊13┊  </ion-navbar>
 ```
 
 [}]: #
 
-As you can see, we also bound the picture message to the `click` event, which means that whenever we click on it, a picture viewer should be opened with the clicked picture. Let's create the component for that picture viewer:
+## Sending Location
 
-[{]: <helper> (diffStep 12.17)
+A location is a composition of longitude, latitude and an altitude, or in short: `long, lat, alt`. Let's define a new `Location` model which will represent the mentioned schema:
 
-#### [Step 12.17: Create show picture component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b98fb91)
+[{]: <helper> (diffStep 12.12)
 
-##### Added src&#x2F;pages&#x2F;messages&#x2F;show-picture.ts
+#### [Step 12.12: Added location model](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/988514c2e)
+
+##### Changed api&#x2F;server&#x2F;models.ts
+```diff
+@@ -31,3 +31,9 @@
+ ┊31┊31┊export interface User extends Meteor.User {
+ ┊32┊32┊  profile?: Profile;
+ ┊33┊33┊}
++┊  ┊34┊
++┊  ┊35┊export interface Location {
++┊  ┊36┊  lat: number;
++┊  ┊37┊  lng: number;
++┊  ┊38┊  zoom: number;
++┊  ┊39┊}
+```
+
+[}]: #
+
+Up next, would be implementing the actual component which will handle geo-location sharing:
+
+[{]: <helper> (diffStep 12.13)
+
+#### [Step 12.13: Implement location message component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/d7199b9b9)
+
+##### Changed src&#x2F;app&#x2F;app.module.ts
+```diff
+@@ -3,6 +3,7 @@
+ ┊3┊3┊import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+ ┊4┊4┊import { SplashScreen } from '@ionic-native/splash-screen';
+ ┊5┊5┊import { StatusBar } from '@ionic-native/status-bar';
++┊ ┊6┊import { Geolocation } from '@ionic-native/geolocation';
+ ┊6┊7┊import { AgmCoreModule } from '@agm/core';
+ ┊7┊8┊import { MomentModule } from 'angular2-moment';
+ ┊8┊9┊import { ChatsPage } from '../pages/chats/chats';
+```
+```diff
+@@ -54,6 +55,7 @@
+ ┊54┊55┊  providers: [
+ ┊55┊56┊    StatusBar,
+ ┊56┊57┊    SplashScreen,
++┊  ┊58┊    Geolocation,
+ ┊57┊59┊    {provide: ErrorHandler, useClass: IonicErrorHandler},
+ ┊58┊60┊    PhoneService
+ ┊59┊61┊  ]
+```
+
+##### Added src&#x2F;pages&#x2F;messages&#x2F;location-message.ts
+```diff
+@@ -0,0 +1,76 @@
++┊  ┊ 1┊import { Component, OnInit, OnDestroy } from '@angular/core';
++┊  ┊ 2┊import { Platform, ViewController } from 'ionic-angular';
++┊  ┊ 3┊import { Geolocation } from '@ionic-native/geolocation';
++┊  ┊ 4┊import { Location } from 'api/models';
++┊  ┊ 5┊import { Observable, Subscription } from 'rxjs';
++┊  ┊ 6┊
++┊  ┊ 7┊const DEFAULT_ZOOM = 8;
++┊  ┊ 8┊const EQUATOR = 40075004;
++┊  ┊ 9┊const DEFAULT_LAT = 51.678418;
++┊  ┊10┊const DEFAULT_LNG = 7.809007;
++┊  ┊11┊const LOCATION_REFRESH_INTERVAL = 500;
++┊  ┊12┊
++┊  ┊13┊@Component({
++┊  ┊14┊  selector: 'location-message',
++┊  ┊15┊  templateUrl: 'location-message.html'
++┊  ┊16┊})
++┊  ┊17┊export class NewLocationMessageComponent implements OnInit, OnDestroy {
++┊  ┊18┊  lat: number = DEFAULT_LAT;
++┊  ┊19┊  lng: number = DEFAULT_LNG;
++┊  ┊20┊  zoom: number = DEFAULT_ZOOM;
++┊  ┊21┊  accuracy: number = -1;
++┊  ┊22┊  intervalObs: Subscription;
++┊  ┊23┊
++┊  ┊24┊  constructor(private platform: Platform,
++┊  ┊25┊              private viewCtrl: ViewController,
++┊  ┊26┊              private geolocation: Geolocation) {
++┊  ┊27┊  }
++┊  ┊28┊
++┊  ┊29┊  ngOnInit() {
++┊  ┊30┊    // Refresh location at a specific refresh rate
++┊  ┊31┊    this.intervalObs = this.reloadLocation()
++┊  ┊32┊      .flatMapTo(Observable
++┊  ┊33┊        .interval(LOCATION_REFRESH_INTERVAL)
++┊  ┊34┊        .timeInterval())
++┊  ┊35┊      .subscribe(() => {
++┊  ┊36┊        this.reloadLocation();
++┊  ┊37┊      });
++┊  ┊38┊  }
++┊  ┊39┊
++┊  ┊40┊  ngOnDestroy() {
++┊  ┊41┊    // Dispose subscription
++┊  ┊42┊    if (this.intervalObs) {
++┊  ┊43┊      this.intervalObs.unsubscribe();
++┊  ┊44┊    }
++┊  ┊45┊  }
++┊  ┊46┊
++┊  ┊47┊  calculateZoomByAccureacy(accuracy: number): number {
++┊  ┊48┊    // Source: http://stackoverflow.com/a/25143326
++┊  ┊49┊    const deviceHeight = this.platform.height();
++┊  ┊50┊    const deviceWidth = this.platform.width();
++┊  ┊51┊    const screenSize = Math.min(deviceWidth, deviceHeight);
++┊  ┊52┊    const requiredMpp = accuracy / screenSize;
++┊  ┊53┊
++┊  ┊54┊    return ((Math.log(EQUATOR / (256 * requiredMpp))) / Math.log(2)) + 1;
++┊  ┊55┊  }
++┊  ┊56┊
++┊  ┊57┊  reloadLocation() {
++┊  ┊58┊    return Observable.fromPromise(this.geolocation.getCurrentPosition().then((position) => {
++┊  ┊59┊      if (this.lat && this.lng) {
++┊  ┊60┊        // Update view-models to represent the current geo-location
++┊  ┊61┊        this.accuracy = position.coords.accuracy;
++┊  ┊62┊        this.lat = position.coords.latitude;
++┊  ┊63┊        this.lng = position.coords.longitude;
++┊  ┊64┊        this.zoom = this.calculateZoomByAccureacy(this.accuracy);
++┊  ┊65┊      }
++┊  ┊66┊    }));
++┊  ┊67┊  }
++┊  ┊68┊
++┊  ┊69┊  sendLocation() {
++┊  ┊70┊    this.viewCtrl.dismiss(<Location>{
++┊  ┊71┊      lat: this.lat,
++┊  ┊72┊      lng: this.lng,
++┊  ┊73┊      zoom: this.zoom
++┊  ┊74┊    });
++┊  ┊75┊  }
++┊  ┊76┊}
+```
+
+[}]: #
+
+Basically, what this component does is refreshing the current geo-location at a specific refresh rate. Note that in order to fetch the geo-location we use `Geolocation's` API, but behind the scene it uses ``cordova-plugin-geolocation`. The `sendLocation` method dismisses the view and returns the calculated geo-location. Now let's add the component's corresponding view:
+
+[{]: <helper> (diffStep 12.14)
+
+#### [Step 12.14: Added location message template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0101cf03e)
+
+##### Added src&#x2F;pages&#x2F;messages&#x2F;location-message.html
+```diff
+@@ -0,0 +1,22 @@
++┊  ┊ 1┊<ion-header>
++┊  ┊ 2┊  <ion-toolbar color="whatsapp">
++┊  ┊ 3┊    <ion-title>Send Location</ion-title>
++┊  ┊ 4┊
++┊  ┊ 5┊    <ion-buttons end>
++┊  ┊ 6┊      <button ion-button class="dismiss-button" (click)="viewCtrl.dismiss()"><ion-icon name="close"></ion-icon></button>
++┊  ┊ 7┊    </ion-buttons>
++┊  ┊ 8┊  </ion-toolbar>
++┊  ┊ 9┊</ion-header>
++┊  ┊10┊
++┊  ┊11┊<ion-content class="location-message-content">
++┊  ┊12┊  <ion-list>
++┊  ┊13┊    <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
++┊  ┊14┊      <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
++┊  ┊15┊    </agm-map>
++┊  ┊16┊    <ion-item (click)="sendLocation()">
++┊  ┊17┊      <ion-icon name="compass" item-left></ion-icon>
++┊  ┊18┊      <h2>Send your current location</h2>
++┊  ┊19┊      <p *ngIf="accuracy !== -1">Accurate to {{accuracy}} meters</p>
++┊  ┊20┊    </ion-item>
++┊  ┊21┊  </ion-list>
++┊  ┊22┊</ion-content>
+```
+
+[}]: #
+
+The `agm-map` is the component which represents the map itself, and we provide it with `lat`, `lng` and `zoom`, so the map can be focused on the current geo-location. If you'll notice, we also used the `agm-marker` component with the 
+same data-models, so the marker will be shown right in the center of the map.
+
+Now we will add some `CSS` to make sure the map is visible:
+
+[{]: <helper> (diffStep 12.15)
+
+#### [Step 12.15: Added location message stylesheet](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1b9a63bbb)
+
+##### Added src&#x2F;pages&#x2F;messages&#x2F;location-message.scss
 ```diff
 @@ -0,0 +1,14 @@
-+┊  ┊ 1┊import { Component } from '@angular/core';
-+┊  ┊ 2┊import { NavParams, ViewController } from 'ionic-angular';
-+┊  ┊ 3┊
-+┊  ┊ 4┊@Component({
-+┊  ┊ 5┊  selector: 'show-picture',
-+┊  ┊ 6┊  templateUrl: 'show-picture.html'
-+┊  ┊ 7┊})
-+┊  ┊ 8┊export class ShowPictureComponent {
-+┊  ┊ 9┊  pictureSrc: string;
-+┊  ┊10┊
-+┊  ┊11┊  constructor(private navParams: NavParams, private viewCtrl: ViewController) {
-+┊  ┊12┊    this.pictureSrc = navParams.get('pictureSrc');
++┊  ┊ 1┊.location-message-content {
++┊  ┊ 2┊  .scroll-content {
++┊  ┊ 3┊    margin-top: 44px;
++┊  ┊ 4┊  }
++┊  ┊ 5┊
++┊  ┊ 6┊  agm-map {
++┊  ┊ 7┊    padding: 0;
++┊  ┊ 8┊  }
++┊  ┊ 9┊
++┊  ┊10┊  .sebm-google-map-container {
++┊  ┊11┊    height: 300px;
++┊  ┊12┊    margin-top: -15px;
 +┊  ┊13┊  }
 +┊  ┊14┊}
 ```
 
 [}]: #
 
-[{]: <helper> (diffStep 12.18)
+And we will import the component:
 
-#### [Step 12.18: Create show picture template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b1f46a0)
+[{]: <helper> (diffStep 12.16)
 
-##### Added src&#x2F;pages&#x2F;messages&#x2F;show-picture.html
+#### [Step 12.16: Import NewLocationMessageComponent](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/152699cec)
+
+##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
-@@ -0,0 +1,13 @@
-+┊  ┊ 1┊<ion-header>
-+┊  ┊ 2┊  <ion-toolbar color="whatsapp">
-+┊  ┊ 3┊    <ion-title>Show Picture</ion-title>
-+┊  ┊ 4┊
-+┊  ┊ 5┊    <ion-buttons left>
-+┊  ┊ 6┊      <button ion-button class="dismiss-button" (click)="viewCtrl.dismiss()"><ion-icon name="close"></ion-icon></button>
-+┊  ┊ 7┊    </ion-buttons>
-+┊  ┊ 8┊  </ion-toolbar>
-+┊  ┊ 9┊</ion-header>
-+┊  ┊10┊
-+┊  ┊11┊<ion-content class="show-picture">
-+┊  ┊12┊  <img class="picture" [src]="pictureSrc">
-+┊  ┊13┊</ion-content>
+@@ -13,6 +13,7 @@
+ ┊13┊13┊import { MessagesPage } from '../pages/messages/messages';
+ ┊14┊14┊import { MessagesAttachmentsComponent } from '../pages/messages/messages-attachments';
+ ┊15┊15┊import { MessagesOptionsComponent } from '../pages/messages/messages-options';
++┊  ┊16┊import { NewLocationMessageComponent } from '../pages/messages/location-message';
+ ┊16┊17┊import { ProfilePage } from '../pages/profile/profile';
+ ┊17┊18┊import { VerificationPage } from '../pages/verification/verification';
+ ┊18┊19┊import { PhoneService } from '../services/phone';
+```
+```diff
+@@ -29,7 +30,8 @@
+ ┊29┊30┊    ChatsOptionsComponent,
+ ┊30┊31┊    NewChatComponent,
+ ┊31┊32┊    MessagesOptionsComponent,
+-┊32┊  ┊    MessagesAttachmentsComponent
++┊  ┊33┊    MessagesAttachmentsComponent,
++┊  ┊34┊    NewLocationMessageComponent
+ ┊33┊35┊  ],
+ ┊34┊36┊  imports: [
+ ┊35┊37┊    BrowserModule,
+```
+```diff
+@@ -50,7 +52,8 @@
+ ┊50┊52┊    ChatsOptionsComponent,
+ ┊51┊53┊    NewChatComponent,
+ ┊52┊54┊    MessagesOptionsComponent,
+-┊53┊  ┊    MessagesAttachmentsComponent
++┊  ┊55┊    MessagesAttachmentsComponent,
++┊  ┊56┊    NewLocationMessageComponent
+ ┊54┊57┊  ],
+ ┊55┊58┊  providers: [
+ ┊56┊59┊    StatusBar,
 ```
 
 [}]: #
+
+The component is ready. The only thing left to do would be revealing it. So we will add the appropriate handler in the `MessagesAttachmentsComponent`:
+
+[{]: <helper> (diffStep 12.17)
+
+#### [Step 12.17: Implement the sendLocation message to display the new location modal](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/6cf6af805)
+
+##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.ts
+```diff
+@@ -1,5 +1,7 @@
+ ┊1┊1┊import { Component } from '@angular/core';
+ ┊2┊2┊import { AlertController, Platform, ModalController, ViewController } from 'ionic-angular';
++┊ ┊3┊import { NewLocationMessageComponent } from './location-message';
++┊ ┊4┊import { MessageType } from 'api/models';
+ ┊3┊5┊
+ ┊4┊6┊@Component({
+ ┊5┊7┊  selector: 'messages-attachments',
+```
+```diff
+@@ -12,4 +14,22 @@
+ ┊12┊14┊    private viewCtrl: ViewController,
+ ┊13┊15┊    private modelCtrl: ModalController
+ ┊14┊16┊  ) {}
++┊  ┊17┊
++┊  ┊18┊  sendLocation(): void {
++┊  ┊19┊    const locationModal = this.modelCtrl.create(NewLocationMessageComponent);
++┊  ┊20┊    locationModal.onDidDismiss((location) => {
++┊  ┊21┊      if (!location) {
++┊  ┊22┊        this.viewCtrl.dismiss();
++┊  ┊23┊
++┊  ┊24┊        return;
++┊  ┊25┊      }
++┊  ┊26┊
++┊  ┊27┊      this.viewCtrl.dismiss({
++┊  ┊28┊        messageType: MessageType.LOCATION,
++┊  ┊29┊        selectedLocation: location
++┊  ┊30┊      });
++┊  ┊31┊    });
++┊  ┊32┊
++┊  ┊33┊    locationModal.present();
++┊  ┊34┊  }
+ ┊15┊35┊}
+```
+
+[}]: #
+
+And we will bind it to its view:
+
+[{]: <helper> (diffStep 12.18)
+
+#### [Step 12.18: Bind click event to sendLocation](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/31926e4ab)
+
+##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.html
+```diff
+@@ -10,7 +10,7 @@
+ ┊10┊10┊      <div class="attachment-name">Camera</div>
+ ┊11┊11┊    </button>
+ ┊12┊12┊
+-┊13┊  ┊    <button ion-item class="attachment attachment-location">
++┊  ┊13┊    <button ion-item class="attachment attachment-location" (click)="sendLocation()">
+ ┊14┊14┊      <ion-icon name="locate" class="attachment-icon"></ion-icon>
+ ┊15┊15┊      <div class="attachment-name">Location</div>
+ ┊16┊16┊    </button>
+```
+
+[}]: #
+
+Now we will implement a new method in the `MessagesPage`, called `sendLocationMessage`, which will create a string representation of the current geo-location and send it to the server:
 
 [{]: <helper> (diffStep 12.19)
 
-#### [Step 12.19: Create show pictuer component styles](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/cc64a8c)
-
-##### Added src&#x2F;pages&#x2F;messages&#x2F;show-picture.scss
-```diff
-@@ -0,0 +1,10 @@
-+┊  ┊ 1┊.show-picture {
-+┊  ┊ 2┊  background-color: black;
-+┊  ┊ 3┊
-+┊  ┊ 4┊  .picture {
-+┊  ┊ 5┊    position: absolute;
-+┊  ┊ 6┊    top: 50%;
-+┊  ┊ 7┊    left: 50%;
-+┊  ┊ 8┊    transform: translate(-50%, -50%);
-+┊  ┊ 9┊  }
-+┊  ┊10┊}🚫↵
-```
-
-[}]: #
-
-[{]: <helper> (diffStep 12.2)
-
-#### [Step 12.2: Add server side fs packages](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/8c08957)
-
-##### Changed api&#x2F;.meteor&#x2F;packages
-```diff
-@@ -24,3 +24,5 @@
- ┊24┊24┊mys:accounts-phone
- ┊25┊25┊npm-bcrypt
- ┊26┊26┊reywood:publish-composite
-+┊  ┊27┊jalik:ufs
-+┊  ┊28┊jalik:ufs-gridfs
-```
-
-##### Changed api&#x2F;.meteor&#x2F;versions
-```diff
-@@ -35,11 +35,14 @@
- ┊35┊35┊htmljs@1.0.11
- ┊36┊36┊http@1.1.8
- ┊37┊37┊id-map@1.0.9
-+┊  ┊38┊jalik:ufs@0.7.1_1
-+┊  ┊39┊jalik:ufs-gridfs@0.1.4
- ┊38┊40┊jquery@1.11.10
- ┊39┊41┊launch-screen@1.0.12
- ┊40┊42┊livedata@1.0.18
- ┊41┊43┊localstorage@1.0.12
- ┊42┊44┊logging@1.1.16
-+┊  ┊45┊matb33:collection-hooks@0.8.4
- ┊43┊46┊meteor@1.6.0
- ┊44┊47┊meteor-base@1.0.4
- ┊45┊48┊minifier-css@1.2.15
-```
-
-[}]: #
-
-And now that we have that component ready, we will implement the `showPicture` method in the `MessagesPage` component, which will create a new instance of the `ShowPictureComponent`:
-
-[{]: <helper> (diffStep 12.21)
-
-#### [Step 12.21: Implement showPicture method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/76a9d03)
+#### [Step 12.19: Implement send location message](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/4f4b2a96f)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 ```diff
-@@ -1,5 +1,5 @@
+@@ -1,6 +1,6 @@
  ┊1┊1┊import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
--┊2┊ ┊import { NavParams, PopoverController } from 'ionic-angular';
-+┊ ┊2┊import { NavParams, PopoverController, ModalController } from 'ionic-angular';
- ┊3┊3┊import { Chat, Message, MessageType, Location } from 'api/models';
+ ┊2┊2┊import { NavParams, PopoverController } from 'ionic-angular';
+-┊3┊ ┊import { Chat, Message, MessageType } from 'api/models';
++┊ ┊3┊import { Chat, Message, MessageType, Location } from 'api/models';
  ┊4┊4┊import { Messages } from 'api/collections';
  ┊5┊5┊import { MeteorObservable } from 'meteor-rxjs';
+ ┊6┊6┊import * as moment from 'moment';
 ```
 ```diff
-@@ -9,6 +9,7 @@
- ┊ 9┊ 9┊import { Subscription, Observable, Subscriber } from 'rxjs';
- ┊10┊10┊import { MessagesAttachmentsComponent } from './messages-attachments';
- ┊11┊11┊import { PictureService } from '../../services/picture';
-+┊  ┊12┊import { ShowPictureComponent } from './show-picture';
- ┊12┊13┊
- ┊13┊14┊@Component({
- ┊14┊15┊  selector: 'messages-page',
+@@ -213,6 +213,16 @@
+ ┊213┊213┊    });
+ ┊214┊214┊  }
+ ┊215┊215┊
++┊   ┊216┊  sendLocationMessage(location: Location): void {
++┊   ┊217┊    MeteorObservable.call('addMessage', MessageType.LOCATION,
++┊   ┊218┊      this.selectedChat._id,
++┊   ┊219┊      `${location.lat},${location.lng},${location.zoom}`
++┊   ┊220┊    ).zone().subscribe(() => {
++┊   ┊221┊      // Zero the input field
++┊   ┊222┊      this.message = '';
++┊   ┊223┊    });
++┊   ┊224┊  }
++┊   ┊225┊
+ ┊216┊226┊  showAttachments(): void {
+ ┊217┊227┊    const popover = this.popoverCtrl.create(MessagesAttachmentsComponent, {
+ ┊218┊228┊      chat: this.selectedChat
 ```
 ```diff
-@@ -31,7 +32,8 @@
- ┊31┊32┊    navParams: NavParams,
- ┊32┊33┊    private el: ElementRef,
- ┊33┊34┊    private popoverCtrl: PopoverController,
--┊34┊  ┊    private pictureService: PictureService
-+┊  ┊35┊    private pictureService: PictureService,
-+┊  ┊36┊    private modalCtrl: ModalController
- ┊35┊37┊  ) {
- ┊36┊38┊    this.selectedChat = <Chat>navParams.get('chat');
- ┊37┊39┊    this.title = this.selectedChat.title;
-```
-```diff
-@@ -266,4 +268,12 @@
- ┊266┊268┊      zoom: Math.min(splitted[2] || 0, 19)
- ┊267┊269┊    };
- ┊268┊270┊  }
-+┊   ┊271┊
-+┊   ┊272┊  showPicture({ target }: Event) {
-+┊   ┊273┊    const modal = this.modalCtrl.create(ShowPictureComponent, {
-+┊   ┊274┊      pictureSrc: (<HTMLImageElement>target).src
-+┊   ┊275┊    });
-+┊   ┊276┊
-+┊   ┊277┊    modal.present();
-+┊   ┊278┊  }
- ┊269┊279┊}
+@@ -221,7 +231,12 @@
+ ┊221┊231┊    });
+ ┊222┊232┊
+ ┊223┊233┊    popover.onDidDismiss((params) => {
+-┊224┊   ┊      // TODO: Handle result
++┊   ┊234┊      if (params) {
++┊   ┊235┊        if (params.messageType === MessageType.LOCATION) {
++┊   ┊236┊          const location = params.selectedLocation;
++┊   ┊237┊          this.sendLocationMessage(location);
++┊   ┊238┊        }
++┊   ┊239┊      }
+ ┊225┊240┊    });
+ ┊226┊241┊
+ ┊227┊242┊    popover.present();
 ```
 
 [}]: #
 
-## Profile Picture
+This requires us to update the `addMessage` method in the server so it can support location typed messages:
 
-We have the ability to send picture messages. Now we will add the ability to change the user's profile picture using the infrastructure we've just created. To begin with, we will define a new property to our `User` model called `pictureId`, which will be used to determine the belonging profile picture of the current user:
+[{]: <helper> (diffStep "12.20")
 
-[{]: <helper> (diffStep 12.22)
-
-#### [Step 12.22: Add pictureId property to Profile](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/20416c5)
-
-##### Changed api&#x2F;server&#x2F;models.ts
-```diff
-@@ -3,6 +3,7 @@
- ┊3┊3┊export interface Profile {
- ┊4┊4┊  name?: string;
- ┊5┊5┊  picture?: string;
-+┊ ┊6┊  pictureId?: string;
- ┊6┊7┊}
- ┊7┊8┊
- ┊8┊9┊export enum MessageType {
-```
-
-[}]: #
-
-We will bind the editing button in the profile selection page into an event handler:
-
-[{]: <helper> (diffStep 12.23)
-
-#### [Step 12.23: Add event for changing profile picture](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/131dec0)
-
-##### Changed src&#x2F;pages&#x2F;profile&#x2F;profile.html
-```diff
-@@ -11,6 +11,7 @@
- ┊11┊11┊<ion-content class="profile-page-content">
- ┊12┊12┊  <div class="profile-picture">
- ┊13┊13┊    <img *ngIf="picture" [src]="picture">
-+┊  ┊14┊    <ion-icon name="create" (click)="selectProfilePicture()"></ion-icon>
- ┊14┊15┊  </div>
- ┊15┊16┊
- ┊16┊17┊  <ion-item class="profile-name">
-```
-
-[}]: #
-
-And we will add all the missing logic in the component, so the `pictureId` will be transformed into and actual reference, and so we can have the ability to select a picture from our gallery and upload it:
-
-[{]: <helper> (diffStep 12.24)
-
-#### [Step 12.24: Implement pick, update and set of profile image](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/78c536a)
-
-##### Changed src&#x2F;pages&#x2F;profile&#x2F;profile.ts
-```diff
-@@ -3,6 +3,8 @@
- ┊ 3┊ 3┊import { AlertController, NavController } from 'ionic-angular';
- ┊ 4┊ 4┊import { MeteorObservable } from 'meteor-rxjs';
- ┊ 5┊ 5┊import { ChatsPage } from '../chats/chats';
-+┊  ┊ 6┊import { PictureService } from '../../services/picture';
-+┊  ┊ 7┊import { Pictures } from 'api/collections';
- ┊ 6┊ 8┊
- ┊ 7┊ 9┊@Component({
- ┊ 8┊10┊  selector: 'profile',
-```
-```diff
-@@ -14,13 +16,37 @@
- ┊14┊16┊
- ┊15┊17┊  constructor(
- ┊16┊18┊    private alertCtrl: AlertController,
--┊17┊  ┊    private navCtrl: NavController
-+┊  ┊19┊    private navCtrl: NavController,
-+┊  ┊20┊    private pictureService: PictureService
- ┊18┊21┊  ) {}
- ┊19┊22┊
- ┊20┊23┊  ngOnInit(): void {
- ┊21┊24┊    this.profile = Meteor.user().profile || {
- ┊22┊25┊      name: ''
- ┊23┊26┊    };
-+┊  ┊27┊
-+┊  ┊28┊    MeteorObservable.subscribe('user').subscribe(() => {
-+┊  ┊29┊      this.picture = Pictures.getPictureUrl(this.profile.pictureId);
-+┊  ┊30┊    });
-+┊  ┊31┊  }
-+┊  ┊32┊
-+┊  ┊33┊  selectProfilePicture(): void {
-+┊  ┊34┊    this.pictureService.select().then((blob) => {
-+┊  ┊35┊      this.uploadProfilePicture(blob);
-+┊  ┊36┊    })
-+┊  ┊37┊      .catch((e) => {
-+┊  ┊38┊        this.handleError(e);
-+┊  ┊39┊      });
-+┊  ┊40┊  }
-+┊  ┊41┊
-+┊  ┊42┊  uploadProfilePicture(blob: Blob): void {
-+┊  ┊43┊    this.pictureService.upload(blob).then((picture) => {
-+┊  ┊44┊      this.profile.pictureId = picture._id;
-+┊  ┊45┊      this.picture = picture.url;
-+┊  ┊46┊    })
-+┊  ┊47┊      .catch((e) => {
-+┊  ┊48┊        this.handleError(e);
-+┊  ┊49┊      });
- ┊24┊50┊  }
- ┊25┊51┊
- ┊26┊52┊  updateProfile(): void {
-```
-
-[}]: #
-
-We will also define a new hook in the `Meteor.users` collection so whenever we update the profile picture, the previous one will be removed from the data-base. This way we won't have some unnecessary data in our data-base, which will save us some precious storage:
-
-[{]: <helper> (diffStep 12.25)
-
-#### [Step 12.25: Add after hook for user modification](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/d2ae97b)
-
-##### Changed api&#x2F;server&#x2F;collections&#x2F;users.ts
-```diff
-@@ -1,5 +1,15 @@
- ┊ 1┊ 1┊import { MongoObservable } from 'meteor-rxjs';
- ┊ 2┊ 2┊import { Meteor } from 'meteor/meteor';
- ┊ 3┊ 3┊import { User } from '../models';
-+┊  ┊ 4┊import { Pictures } from './pictures';
- ┊ 4┊ 5┊
- ┊ 5┊ 6┊export const Users = MongoObservable.fromExisting<User>(Meteor.users);
-+┊  ┊ 7┊
-+┊  ┊ 8┊// Dispose unused profile pictures
-+┊  ┊ 9┊Meteor.users.after.update(function (userId, doc, fieldNames, modifier, options) {
-+┊  ┊10┊  if (!doc.profile) return;
-+┊  ┊11┊  if (!this.previous.profile) return;
-+┊  ┊12┊  if (doc.profile.pictureId == this.previous.profile.pictureId) return;
-+┊  ┊13┊
-+┊  ┊14┊  Pictures.collection.remove({ _id: doc.profile.pictureId });
-+┊  ┊15┊}, { fetchPrevious: true });
-```
-
-[}]: #
-
-Collection hooks are not part of `Meteor`'s official API and are added through a third-party package called `matb33:collection-hooks`. This requires us to install the necessary type definition:
-
-    $ npm install --save-dev @types/meteor-collection-hooks
-
-Now we need to import the type definition we've just installed in the `tsconfig.json` file:
-
-[{]: <helper> (diffStep 12.27)
-
-#### [Step 12.27: Import meteor-collection-hooks typings](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/90c3b4e)
-
-##### Changed api&#x2F;tsconfig.json
-```diff
-@@ -18,7 +18,8 @@
- ┊18┊18┊    "types": [
- ┊19┊19┊      "meteor-typings",
- ┊20┊20┊      "@types/meteor-accounts-phone",
--┊21┊  ┊      "@types/meteor-publish-composite"
-+┊  ┊21┊      "@types/meteor-publish-composite",
-+┊  ┊22┊      "@types/meteor-collection-hooks"
- ┊22┊23┊    ]
- ┊23┊24┊  },
- ┊24┊25┊  "exclude": [
-```
-
-##### Changed tsconfig.json
-```diff
-@@ -22,7 +22,8 @@
- ┊22┊22┊    "types": [
- ┊23┊23┊      "meteor-typings",
- ┊24┊24┊      "@types/underscore",
--┊25┊  ┊      "@types/meteor-accounts-phone"
-+┊  ┊25┊      "@types/meteor-accounts-phone",
-+┊  ┊26┊      "@types/meteor-collection-hooks"
- ┊26┊27┊    ]
- ┊27┊28┊  },
- ┊28┊29┊  "include": [
-```
-
-[}]: #
-
-We now add a `user` publication which should be subscribed whenever we initialize the `ProfilePage`. This subscription should fetch some data from other collections which is related to the user which is currently logged in; And to be more specific, the document associated with the `profileId` defined in the `User` model:
-
-[{]: <helper> (diffStep 12.28)
-
-#### [Step 12.28: Add user publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1d91e68)
-
-##### Changed api&#x2F;server&#x2F;publications.ts
-```diff
-@@ -2,6 +2,7 @@
- ┊2┊2┊import { Users } from './collections/users';
- ┊3┊3┊import { Messages } from './collections/messages';
- ┊4┊4┊import { Chats } from './collections/chats';
-+┊ ┊5┊import { Pictures } from './collections/pictures';
- ┊5┊6┊
- ┊6┊7┊Meteor.publishComposite('users', function(
- ┊7┊8┊  pattern: string
-```
-```diff
-@@ -74,3 +75,15 @@
- ┊74┊75┊    ]
- ┊75┊76┊  };
- ┊76┊77┊});
-+┊  ┊78┊
-+┊  ┊79┊Meteor.publish('user', function () {
-+┊  ┊80┊  if (!this.userId) {
-+┊  ┊81┊    return;
-+┊  ┊82┊  }
-+┊  ┊83┊
-+┊  ┊84┊  const profile = Users.findOne(this.userId).profile || {};
-+┊  ┊85┊
-+┊  ┊86┊  return Pictures.collection.find({
-+┊  ┊87┊    _id: profile.pictureId
-+┊  ┊88┊  });
-+┊  ┊89┊});
-```
-
-[}]: #
-
-We will also modify the `users` and `chats` publication, so each user will contain its corresponding picture document as well:
-
-[{]: <helper> (diffStep 12.29)
-
-#### [Step 12.29: Added images to users publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/a3db074)
-
-##### Changed api&#x2F;server&#x2F;publications.ts
-```diff
-@@ -1,4 +1,4 @@
--┊1┊ ┊import { User, Message, Chat } from './models';
-+┊ ┊1┊import { User, Message, Chat, Picture } from './models';
- ┊2┊2┊import { Users } from './collections/users';
- ┊3┊3┊import { Messages } from './collections/messages';
- ┊4┊4┊import { Chats } from './collections/chats';
-```
-```diff
-@@ -25,7 +25,17 @@
- ┊25┊25┊        fields: { profile: 1 },
- ┊26┊26┊        limit: 15
- ┊27┊27┊      });
--┊28┊  ┊    }
-+┊  ┊28┊    },
-+┊  ┊29┊
-+┊  ┊30┊    children: [
-+┊  ┊31┊      <PublishCompositeConfig1<User, Picture>> {
-+┊  ┊32┊        find: (user) => {
-+┊  ┊33┊          return Pictures.collection.find(user.profile.pictureId, {
-+┊  ┊34┊            fields: { url: 1 }
-+┊  ┊35┊          });
-+┊  ┊36┊        }
-+┊  ┊37┊      }
-+┊  ┊38┊    ]
- ┊29┊39┊  };
- ┊30┊40┊});
-```
-
-[}]: #
-
-[{]: <helper> (diffStep 12.1)
-
-#### [Step 12.1: Add cordova plugin for image picker](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/64fb091)
-
-##### Changed package.json
-```diff
-@@ -57,7 +57,8 @@
- ┊57┊57┊    "cordova-plugin-device",
- ┊58┊58┊    "cordova-plugin-geolocation",
- ┊59┊59┊    "ionic-plugin-keyboard",
--┊60┊  ┊    "cordova-plugin-splashscreen"
-+┊  ┊60┊    "cordova-plugin-splashscreen",
-+┊  ┊61┊    "https://github.com/Telerik-Verified-Plugins/ImagePicker"
- ┊61┊62┊  ],
- ┊62┊63┊  "cordovaPlatforms": [
- ┊63┊64┊    "ios",
-```
-
-[}]: #
-
-Since we already set up some collection hooks on the users collection, we can take it a step further by defining collection hooks on the chat collection, so whenever a chat is being removed, all its corresponding messages will be removed as well:
-
-[{]: <helper> (diffStep 12.31)
-
-#### [Step 12.31: Add hook for removing unused messages](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c28e7d6)
-
-##### Changed api&#x2F;server&#x2F;collections&#x2F;chats.ts
-```diff
-@@ -1,4 +1,10 @@
- ┊ 1┊ 1┊import { MongoObservable } from 'meteor-rxjs';
- ┊ 2┊ 2┊import { Chat } from '../models';
-+┊  ┊ 3┊import { Messages } from './messages';
- ┊ 3┊ 4┊
- ┊ 4┊ 5┊export const Chats = new MongoObservable.Collection<Chat>('chats');
-+┊  ┊ 6┊
-+┊  ┊ 7┊// Dispose unused messages
-+┊  ┊ 8┊Chats.collection.after.remove(function (userId, doc) {
-+┊  ┊ 9┊  Messages.collection.remove({ chatId: doc._id });
-+┊  ┊10┊});
-```
-
-[}]: #
-
-We will now update the `updateProfile` method in the server to accept `pictureId`, so whenever we pick up a new profile picture the server won't reject it:
-
-[{]: <helper> (diffStep 12.32)
-
-#### [Step 12.32: Allow updating pictureId](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/554b6ae)
+#### [Step 12.20: Allow location message type on server side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7bdf12871)
 
 ##### Changed api&#x2F;server&#x2F;methods.ts
 ```diff
-@@ -59,7 +59,8 @@
- ┊59┊59┊      'User must be logged-in to create a new chat');
- ┊60┊60┊
- ┊61┊61┊    check(profile, {
--┊62┊  ┊      name: nonEmptyString
-+┊  ┊62┊      name: nonEmptyString,
-+┊  ┊63┊      pictureId: Match.Maybe(nonEmptyString)
- ┊63┊64┊    });
- ┊64┊65┊
- ┊65┊66┊    Meteor.users.update(this.userId, {
+@@ -70,7 +70,7 @@
+ ┊70┊70┊    if (!this.userId) throw new Meteor.Error('unauthorized',
+ ┊71┊71┊      'User must be logged-in to create a new chat');
+ ┊72┊72┊
+-┊73┊  ┊    check(type, Match.OneOf(String, [ MessageType.TEXT ]));
++┊  ┊73┊    check(type, Match.OneOf(String, [ MessageType.TEXT, MessageType.LOCATION ]));
+ ┊74┊74┊    check(chatId, nonEmptyString);
+ ┊75┊75┊    check(content, nonEmptyString);
 ```
 
 [}]: #
 
-Now we will update the users fabrication in our server's initialization, so instead of using hard-coded URLs, we will insert them as new documents to the `PicturesCollection`:
+## Viewing Location Messages
 
-[{]: <helper> (diffStep 12.33)
+The infrastructure is ready, but we can't yet see the message, therefore, we will need to add support for location messages in the `MessagesPage` view:
 
-#### [Step 12.33: Update creation of users stubs](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/6a90cc0)
+[{]: <helper> (diffStep 12.21)
 
-##### Changed api&#x2F;server&#x2F;main.ts
+#### [Step 12.21: Implement location message view](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/59b48d503)
+
+##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.html
 ```diff
-@@ -2,7 +2,7 @@
- ┊2┊2┊import { Chats } from './collections/chats';
- ┊3┊3┊import { Messages } from './collections/messages';
- ┊4┊4┊import * as moment from 'moment';
--┊5┊ ┊import { MessageType } from './models';
-+┊ ┊5┊import { MessageType, Picture } from './models';
- ┊6┊6┊import { Accounts } from 'meteor/accounts-base';
- ┊7┊7┊import { Users } from './collections/users';
- ┊8┊8┊
-```
-```diff
-@@ -16,43 +16,74 @@
- ┊16┊16┊    return;
- ┊17┊17┊  }
- ┊18┊18┊
-+┊  ┊19┊  let picture = importPictureFromUrl({
-+┊  ┊20┊    name: 'man1.jpg',
-+┊  ┊21┊    url: 'https://randomuser.me/api/portraits/men/1.jpg'
-+┊  ┊22┊  });
-+┊  ┊23┊
- ┊19┊24┊  Accounts.createUserWithPhone({
- ┊20┊25┊    phone: '+972540000001',
- ┊21┊26┊    profile: {
- ┊22┊27┊      name: 'Ethan Gonzalez',
--┊23┊  ┊      picture: 'https://randomuser.me/api/portraits/men/1.jpg'
-+┊  ┊28┊      pictureId: picture._id
- ┊24┊29┊    }
- ┊25┊30┊  });
- ┊26┊31┊
-+┊  ┊32┊  picture = importPictureFromUrl({
-+┊  ┊33┊    name: 'lego1.jpg',
-+┊  ┊34┊    url: 'https://randomuser.me/api/portraits/lego/1.jpg'
-+┊  ┊35┊  });
-+┊  ┊36┊
- ┊27┊37┊  Accounts.createUserWithPhone({
- ┊28┊38┊    phone: '+972540000002',
- ┊29┊39┊    profile: {
- ┊30┊40┊      name: 'Bryan Wallace',
--┊31┊  ┊      picture: 'https://randomuser.me/api/portraits/lego/1.jpg'
-+┊  ┊41┊      pictureId: picture._id
- ┊32┊42┊    }
- ┊33┊43┊  });
- ┊34┊44┊
-+┊  ┊45┊  picture = importPictureFromUrl({
-+┊  ┊46┊    name: 'woman1.jpg',
-+┊  ┊47┊    url: 'https://randomuser.me/api/portraits/women/1.jpg'
-+┊  ┊48┊  });
-+┊  ┊49┊
- ┊35┊50┊  Accounts.createUserWithPhone({
- ┊36┊51┊    phone: '+972540000003',
- ┊37┊52┊    profile: {
- ┊38┊53┊      name: 'Avery Stewart',
--┊39┊  ┊      picture: 'https://randomuser.me/api/portraits/women/1.jpg'
-+┊  ┊54┊      pictureId: picture._id
- ┊40┊55┊    }
- ┊41┊56┊  });
- ┊42┊57┊
-+┊  ┊58┊  picture = importPictureFromUrl({
-+┊  ┊59┊    name: 'woman2.jpg',
-+┊  ┊60┊    url: 'https://randomuser.me/api/portraits/women/2.jpg'
-+┊  ┊61┊  });
-+┊  ┊62┊
- ┊43┊63┊  Accounts.createUserWithPhone({
- ┊44┊64┊    phone: '+972540000004',
- ┊45┊65┊    profile: {
- ┊46┊66┊      name: 'Katie Peterson',
--┊47┊  ┊      picture: 'https://randomuser.me/api/portraits/women/2.jpg'
-+┊  ┊67┊      pictureId: picture._id
- ┊48┊68┊    }
- ┊49┊69┊  });
- ┊50┊70┊
-+┊  ┊71┊  picture = importPictureFromUrl({
-+┊  ┊72┊    name: 'man2.jpg',
-+┊  ┊73┊    url: 'https://randomuser.me/api/portraits/men/2.jpg'
-+┊  ┊74┊  });
-+┊  ┊75┊
- ┊51┊76┊  Accounts.createUserWithPhone({
- ┊52┊77┊    phone: '+972540000005',
- ┊53┊78┊    profile: {
- ┊54┊79┊      name: 'Ray Edwards',
--┊55┊  ┊      picture: 'https://randomuser.me/api/portraits/men/2.jpg'
-+┊  ┊80┊      pictureId: picture._id
- ┊56┊81┊    }
- ┊57┊82┊  });
- ┊58┊83┊});
-+┊  ┊84┊
-+┊  ┊85┊function importPictureFromUrl(options: { name: string, url: string }): Picture {
-+┊  ┊86┊  const description = { name: options.name };
-+┊  ┊87┊
-+┊  ┊88┊  return Meteor.call('ufsImportURL', options.url, description, 'pictures');
-+┊  ┊89┊}
+@@ -19,6 +19,12 @@
+ ┊19┊19┊      <div *ngFor="let message of day.messages" class="message-wrapper">
+ ┊20┊20┊        <div [class]="'message message-' + message.ownership">
+ ┊21┊21┊          <div *ngIf="message.type == 'text'" class="message-content message-content-text">{{message.content}}</div>
++┊  ┊22┊          <div *ngIf="message.type == 'location'" class="message-content message-content-text">
++┊  ┊23┊            <agm-map [zoom]="getLocation(message.content).zoom" [latitude]="getLocation(message.content).lat" [longitude]="getLocation(message.content).lng">
++┊  ┊24┊              <agm-marker [latitude]="getLocation(message.content).lat" [longitude]="getLocation(message.content).lng"></agm-marker>
++┊  ┊25┊            </agm-map>
++┊  ┊26┊          </div>
++┊  ┊27┊
+ ┊22┊28┊          <span class="message-timestamp">{{ message.createdAt | amDateFormat: 'HH:mm' }}</span>
+ ┊23┊29┊        </div>
+ ┊24┊30┊      </div>
 ```
 
 [}]: #
 
-To avoid some unexpected behaviors, we will reset our data-base so our server can re-fabricate the data:
+These additions looks pretty similar to the `LocationMessage` since they are based on the same core components.
 
-    api$ meteor reset
+We will now add a method which can parse a string representation of the location into an actual `JSON`:
 
-We will now update the `ChatsPage` to add the belonging picture for each chat during transformation:
+[{]: <helper> (diffStep 12.22)
 
-[{]: <helper> (diffStep 12.34)
+#### [Step 12.22: Implement getLocation for parsing the location](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/3ac9a7eaa)
 
-#### [Step 12.34: Fetch user image from server](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/d40d773)
-
-##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
+##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 ```diff
-@@ -1,5 +1,5 @@
- ┊1┊1┊import { Component, OnInit } from '@angular/core';
--┊2┊ ┊import { Chats, Messages, Users } from 'api/collections';
-+┊ ┊2┊import { Chats, Messages, Users, Pictures } from 'api/collections';
- ┊3┊3┊import { Chat, Message } from 'api/models';
- ┊4┊4┊import { NavController, PopoverController, ModalController, AlertController } from 'ionic-angular';
- ┊5┊5┊import { MeteorObservable } from 'meteor-rxjs';
-```
-```diff
-@@ -48,7 +48,7 @@
- ┊48┊48┊
- ┊49┊49┊        if (receiver) {
- ┊50┊50┊          chat.title = receiver.profile.name;
--┊51┊  ┊          chat.picture = receiver.profile.picture;
-+┊  ┊51┊          chat.picture = Pictures.getPictureUrl(receiver.profile.pictureId);
- ┊52┊52┊        }
- ┊53┊53┊
- ┊54┊54┊        // This will make the last message reactive
+@@ -241,4 +241,14 @@
+ ┊241┊241┊
+ ┊242┊242┊    popover.present();
+ ┊243┊243┊  }
++┊   ┊244┊
++┊   ┊245┊  getLocation(locationString: string): Location {
++┊   ┊246┊    const splitted = locationString.split(',').map(Number);
++┊   ┊247┊
++┊   ┊248┊    return <Location>{
++┊   ┊249┊      lat: splitted[0],
++┊   ┊250┊      lng: splitted[1],
++┊   ┊251┊      zoom: Math.min(splitted[2] || 0, 19)
++┊   ┊252┊    };
++┊   ┊253┊  }
+ ┊244┊254┊}
 ```
 
 [}]: #
 
-And we will do the same in the `NewChatComponent`:
+And we will make some final adjustments for the view so the map can be presented properly:
 
-[{]: <helper> (diffStep 12.35)
+[{]: <helper> (diffStep 12.23)
 
-#### [Step 12.35: Use the new pictureId field for new chat modal](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/602f7dc)
+#### [Step 12.23: Added map styles](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e8dd69d49)
 
-##### Changed src&#x2F;pages&#x2F;chats&#x2F;new-chat.html
+##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.scss
 ```diff
-@@ -26,7 +26,7 @@
- ┊26┊26┊<ion-content class="new-chat">
- ┊27┊27┊  <ion-list class="users">
- ┊28┊28┊    <button ion-item *ngFor="let user of users | async" class="user" (click)="addChat(user)">
--┊29┊  ┊      <img class="user-picture" [src]="user.profile.picture">
-+┊  ┊29┊      <img class="user-picture" [src]="getPic(user.profile.pictureId)">
- ┊30┊30┊      <h2 class="user-name">{{user.profile.name}}</h2>
- ┊31┊31┊    </button>
- ┊32┊32┊  </ion-list>
+@@ -93,6 +93,11 @@
+ ┊ 93┊ 93┊        content: " \00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0";
+ ┊ 94┊ 94┊        display: inline;
+ ┊ 95┊ 95┊      }
++┊   ┊ 96┊
++┊   ┊ 97┊      .sebm-google-map-container {
++┊   ┊ 98┊        height: 25vh;
++┊   ┊ 99┊        width: 35vh;
++┊   ┊100┊      }
+ ┊ 96┊101┊    }
+ ┊ 97┊102┊
+ ┊ 98┊103┊    .message-timestamp {
 ```
 
 [}]: #
 
-[{]: <helper> (diffStep 12.36)
+[{]: <helper> (navStep nextRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/file-upload" prevRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/android-testing")
 
-#### [Step 12.36: Implement getPic](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5141d03)
-
-##### Changed src&#x2F;pages&#x2F;chats&#x2F;new-chat.ts
-```diff
-@@ -1,5 +1,5 @@
- ┊1┊1┊import { Component, OnInit } from '@angular/core';
--┊2┊ ┊import { Chats, Users } from 'api/collections';
-+┊ ┊2┊import { Chats, Users, Pictures } from 'api/collections';
- ┊3┊3┊import { User } from 'api/models';
- ┊4┊4┊import { AlertController, ViewController } from 'ionic-angular';
- ┊5┊5┊import { MeteorObservable } from 'meteor-rxjs';
-```
-```diff
-@@ -107,4 +107,8 @@
- ┊107┊107┊
- ┊108┊108┊    alert.present();
- ┊109┊109┊  }
-+┊   ┊110┊
-+┊   ┊111┊  getPic(pictureId): string {
-+┊   ┊112┊    return Pictures.getPictureUrl(pictureId);
-+┊   ┊113┊  }
- ┊110┊114┊}
-```
-
-[}]: #
-
-[{]: <helper> (navStep nextRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/native-mobile" prevRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/google-maps")
-
-| [< Previous Step](https://angular-meteor.com/tutorials/whatsapp2/ionic/google-maps) | [Next Step >](https://angular-meteor.com/tutorials/whatsapp2/ionic/native-mobile) |
+| [< Previous Step](https://angular-meteor.com/tutorials/whatsapp2/ionic/android-testing) | [Next Step >](https://angular-meteor.com/tutorials/whatsapp2/ionic/file-upload) |
 |:--------------------------------|--------------------------------:|
 
 [}]: #

@@ -4,11 +4,13 @@ Our next step is about adding the ability to create new chats. We have the `Chat
 
 [{]: <helper> (diffStep 8.1)
 
-#### [Step 8.1: Added user model](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ba3cb0d)
+#### [Step 8.1: Added user model](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f0b2ba4)
 
 ##### Changed api&#x2F;server&#x2F;models.ts
 <pre>
-<i>@@ -25,3 +25,7 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊25┊25┊  type?: MessageType
  ┊26┊26┊  ownership?: string;
  ┊27┊27┊}
@@ -24,11 +26,13 @@ Our next step is about adding the ability to create new chats. We have the `Chat
 
 [{]: <helper> (diffStep 8.2)
 
-#### [Step 8.2: Wrap Meteor users collection](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/9a2540f)
+#### [Step 8.2: Wrap Meteor users collection](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/4236f6f)
 
 ##### Added api&#x2F;server&#x2F;collections&#x2F;users.ts
 <pre>
-<i>@@ -0,0 +1,5 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
 <b>+┊ ┊1┊import { MongoObservable } from &#x27;meteor-rxjs&#x27;;</b>
 <b>+┊ ┊2┊import { Meteor } from &#x27;meteor/meteor&#x27;;</b>
 <b>+┊ ┊3┊import { User } from &#x27;../models&#x27;;</b>
@@ -42,11 +46,13 @@ For accessibility, we're gonna export the collection from the `index` file as we
 
 [{]: <helper> (diffStep 8.3)
 
-#### [Step 8.3: Export users collection form index file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c4f1991)
+#### [Step 8.3: Export users collection form index file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7e94e53)
 
 ##### Changed api&#x2F;server&#x2F;collections&#x2F;index.ts
 <pre>
-<i>@@ -1,2 +1,3 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊1┊1┊export * from &#x27;./chats&#x27;;
  ┊2┊2┊export * from &#x27;./messages&#x27;;
 <b>+┊ ┊3┊export * from &#x27;./users&#x27;;</b>
@@ -60,11 +66,13 @@ We will be using `Ionic`'s modal dialog to show the chat creation view. The firs
 
 [{]: <helper> (diffStep 8.4)
 
-#### [Step 8.4: Added new chat component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/54c559c)
+#### [Step 8.4: Added new chat component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b9373d2)
 
 ##### Added src&#x2F;pages&#x2F;chats&#x2F;new-chat.ts
 <pre>
-<i>@@ -0,0 +1,85 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
 <b>+┊  ┊ 1┊import { Component, OnInit } from &#x27;@angular/core&#x27;;</b>
 <b>+┊  ┊ 2┊import { Chats, Users } from &#x27;api/collections&#x27;;</b>
 <b>+┊  ┊ 3┊import { User } from &#x27;api/models&#x27;;</b>
@@ -156,11 +164,13 @@ We will be using `Ionic`'s modal dialog to show the chat creation view. The firs
 
 [{]: <helper> (diffStep 8.5)
 
-#### [Step 8.5: Added new chat template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/a66dbb9)
+#### [Step 8.5: Added new chat template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/91d1768)
 
 ##### Added src&#x2F;pages&#x2F;chats&#x2F;new-chat.html
 <pre>
-<i>@@ -0,0 +1,22 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
 <b>+┊  ┊ 1┊&lt;ion-header&gt;</b>
 <b>+┊  ┊ 2┊  &lt;ion-toolbar color&#x3D;&quot;whatsapp&quot;&gt;</b>
 <b>+┊  ┊ 3┊    &lt;ion-title&gt;New Chat&lt;/ion-title&gt;</b>
@@ -189,11 +199,13 @@ We will be using `Ionic`'s modal dialog to show the chat creation view. The firs
 
 [{]: <helper> (diffStep 8.6)
 
-#### [Step 8.6: Added new chat styles](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/cd24ee4)
+#### [Step 8.6: Added new chat styles](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/82862ae)
 
 ##### Added src&#x2F;pages&#x2F;chats&#x2F;new-chat.scss
 <pre>
-<i>@@ -0,0 +1,14 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
 <b>+┊  ┊ 1┊.new-chat {</b>
 <b>+┊  ┊ 2┊  .user-picture {</b>
 <b>+┊  ┊ 3┊    border-radius: 50%;</b>
@@ -218,11 +230,13 @@ The dialog should be revealed whenever we click on one of the options in the opt
 
 [{]: <helper> (diffStep 8.7)
 
-#### [Step 8.7: Added addChat method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0c7beb6)
+#### [Step 8.7: Added addChat method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f67ac28)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 <pre>
-<i>@@ -1,10 +1,11 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊ 1┊ 1┊import { Component, OnInit } from &#x27;@angular/core&#x27;;
  ┊ 2┊ 2┊import { Chats, Messages } from &#x27;api/collections&#x27;;
  ┊ 3┊ 3┊import { Chat } from &#x27;api/models&#x27;;
@@ -236,7 +250,9 @@ The dialog should be revealed whenever we click on one of the options in the opt
  ┊10┊11┊  templateUrl: &#x27;chats.html&#x27;
 </pre>
 <pre>
-<i>@@ -14,7 +15,13 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊14┊15┊
  ┊15┊16┊  constructor(
  ┊16┊17┊    private navCtrl: NavController,
@@ -252,7 +268,9 @@ The dialog should be revealed whenever we click on one of the options in the opt
  ┊20┊27┊  ngOnInit() {
 </pre>
 <pre>
-<i>@@ -35,6 +42,7 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊35┊42┊      ).zone();
  ┊36┊43┊  }
  ┊37┊44┊
@@ -268,11 +286,13 @@ And bind it to the `click` event:
 
 [{]: <helper> (diffStep 8.8)
 
-#### [Step 8.8: Bind click event to new chat modal](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f3e6de0)
+#### [Step 8.8: Bind click event to new chat modal](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/fc717c7)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.html
 <pre>
-<i>@@ -4,7 +4,7 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊ 4┊ 4┊      Chats
  ┊ 5┊ 5┊    &lt;/ion-title&gt;
  ┊ 6┊ 6┊    &lt;ion-buttons end&gt;
@@ -288,11 +308,13 @@ We will import the newly created component in the app's `NgModule` as well, so i
 
 [{]: <helper> (diffStep 8.9)
 
-#### [Step 8.9: Import new chat component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f1b44b8)
+#### [Step 8.9: Import new chat component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e8d8ca5)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 <pre>
-<i>@@ -2,6 +2,7 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊2┊2┊import { MomentModule } from &#x27;angular2-moment&#x27;;
  ┊3┊3┊import { IonicApp, IonicModule, IonicErrorHandler } from &#x27;ionic-angular&#x27;;
  ┊4┊4┊import { ChatsPage } from &#x27;../pages/chats/chats&#x27;;
@@ -302,7 +324,9 @@ We will import the newly created component in the app's `NgModule` as well, so i
  ┊7┊8┊import { MessagesPage } from &#x27;../pages/messages/messages&#x27;;
 </pre>
 <pre>
-<i>@@ -18,7 +19,8 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊18┊19┊    LoginPage,
  ┊19┊20┊    VerificationPage,
  ┊20┊21┊    ProfilePage,
@@ -313,7 +337,9 @@ We will import the newly created component in the app's `NgModule` as well, so i
  ┊24┊26┊    IonicModule.forRoot(MyApp),
 </pre>
 <pre>
-<i>@@ -32,7 +34,8 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊32┊34┊    LoginPage,
  ┊33┊35┊    VerificationPage,
  ┊34┊36┊    ProfilePage,
@@ -330,11 +356,13 @@ We're also required to implement the appropriate `Meteor` method which will be t
 
 [{]: <helper> (diffStep 8.1)
 
-#### [Step 8.1: Added user model](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ba3cb0d)
+#### [Step 8.1: Added user model](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f0b2ba4)
 
 ##### Changed api&#x2F;server&#x2F;models.ts
 <pre>
-<i>@@ -25,3 +25,7 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊25┊25┊  type?: MessageType
  ┊26┊26┊  ownership?: string;
  ┊27┊27┊}
@@ -350,11 +378,13 @@ As you can see, a chat is inserted with an additional `memberIds` field. Wheneve
 
 [{]: <helper> (diffStep 8.11)
 
-#### [Step 8.11: Add memberIds field](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ee99614)
+#### [Step 8.11: Add memberIds field](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/a1bc802)
 
 ##### Changed api&#x2F;server&#x2F;models.ts
 <pre>
-<i>@@ -14,6 +14,7 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊14┊14┊  title?: string;
  ┊15┊15┊  picture?: string;
  ┊16┊16┊  lastMessage?: Message;
@@ -370,11 +400,13 @@ Thanks to our new-chat dialog, we can create chats dynamically with no need in i
 
 [{]: <helper> (diffStep 8.12)
 
-#### [Step 8.12: Create real user accounts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e185f6a)
+#### [Step 8.12: Create real user accounts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1df7ff5)
 
 ##### Changed api&#x2F;server&#x2F;main.ts
 <pre>
-<i>@@ -4,6 +4,7 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊ 4┊ 4┊import * as moment from &#x27;moment&#x27;;
  ┊ 5┊ 5┊import { MessageType } from &#x27;./models&#x27;;
  ┊ 6┊ 6┊import { Accounts } from &#x27;meteor/accounts-base&#x27;;
@@ -384,7 +416,9 @@ Thanks to our new-chat dialog, we can create chats dynamically with no need in i
  ┊ 9┊10┊  if (Meteor.settings) {
 </pre>
 <pre>
-<i>@@ -11,67 +12,47 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊11┊12┊    SMS.twilio &#x3D; Meteor.settings[&#x27;twilio&#x27;];
  ┊12┊13┊  }
  ┊13┊14┊
@@ -440,11 +474,13 @@ Since we've changed the data fabrication method, the chat's title and picture ar
 
 [{]: <helper> (diffStep 8.13)
 
-#### [Step 8.13: Implement chats with with real data](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/13834c9)
+#### [Step 8.13: Implement chats with with real data](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/01abc68)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 <pre>
-<i>@@ -1,8 +1,9 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊1┊1┊import { Component, OnInit } from &#x27;@angular/core&#x27;;
 <b>+┊ ┊2┊import { Chats, Messages, Users } from &#x27;api/collections&#x27;;</b>
 <b>+┊ ┊3┊import { Chat, Message } from &#x27;api/models&#x27;;</b>
@@ -456,7 +492,9 @@ Since we've changed the data fabrication method, the chat's title and picture ar
  ┊8┊9┊import { NewChatComponent } from &#x27;./new-chat&#x27;;
 </pre>
 <pre>
-<i>@@ -12,11 +13,13 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊12┊13┊})
  ┊13┊14┊export class ChatsPage implements OnInit {
  ┊14┊15┊  chats;
@@ -472,7 +510,9 @@ Since we've changed the data fabrication method, the chat's title and picture ar
  ┊22┊25┊  addChat(): void {
 </pre>
 <pre>
-<i>@@ -25,23 +28,62 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊25┊28┊  }
  ┊26┊29┊
  ┊27┊30┊  ngOnInit() {

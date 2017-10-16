@@ -11,5 +11,5 @@ Meteor.users.after.update(function (userId, doc, fieldNames, modifier, options) 
   if (!this.previous.profile) return;
   if (doc.profile.pictureId == this.previous.profile.pictureId) return;
 
-  Pictures.collection.remove({ _id: doc.profile.pictureId });
+  Pictures.collection.remove({ _id: this.previous.profile.pictureId });
 }, { fetchPrevious: true });

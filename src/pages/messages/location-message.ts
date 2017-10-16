@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Platform, ViewController } from 'ionic-angular';
-import { Geolocation } from 'ionic-native';
+import { Geolocation } from '@ionic-native/geolocation';
 import { Location } from 'api/models';
 import { Observable, Subscription } from 'rxjs';
 
@@ -21,7 +21,9 @@ export class NewLocationMessageComponent implements OnInit, OnDestroy {
   accuracy: number = -1;
   intervalObs: Subscription;
 
-  constructor(private platform: Platform, private viewCtrl: ViewController) {
+  constructor(private platform: Platform,
+              private viewCtrl: ViewController,
+              private geolocation: Geolocation) {
   }
 
   ngOnInit() {
@@ -53,7 +55,7 @@ export class NewLocationMessageComponent implements OnInit, OnDestroy {
   }
 
   reloadLocation() {
-    return Observable.fromPromise(Geolocation.getCurrentPosition().then((position) => {
+    return Observable.fromPromise(this.geolocation.getCurrentPosition().then((position) => {
       if (this.lat && this.lng) {
         // Update view-models to represent the current geo-location
         this.accuracy = position.coords.accuracy;

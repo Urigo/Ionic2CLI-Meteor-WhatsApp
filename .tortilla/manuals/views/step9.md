@@ -12,7 +12,7 @@ Since we enabled restrictions to run certain operations on data-collections dire
 
 [{]: <helper> (diffStep 9.2)
 
-#### [Step 9.2: Add removeChat method on server side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/eeef8d1)
+#### [Step 9.2: Add removeChat method on server side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e260e49cc)
 
 ##### Changed api&#x2F;server&#x2F;methods.ts
 ```diff
@@ -48,7 +48,7 @@ We will carefully replace the removal method invocation in the `ChatsPage` with 
 
 [{]: <helper> (diffStep 9.3)
 
-#### [Step 9.3: Use removeChat on client side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1617ae7)
+#### [Step 9.3: Use removeChat on client side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ae81f481e)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 ```diff
@@ -110,7 +110,7 @@ In the `MessagesPage` we have options icon presented as three periods at the rig
 
 [{]: <helper> (diffStep 9.4)
 
-#### [Step 9.4: Add message options component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5970c2e)
+#### [Step 9.4: Add message options component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f5cd1f090)
 
 ##### Added src&#x2F;pages&#x2F;messages&#x2F;messages-options.ts
 ```diff
@@ -197,7 +197,7 @@ In the `MessagesPage` we have options icon presented as three periods at the rig
 
 [{]: <helper> (diffStep 9.5)
 
-#### [Step 9.5: Add messages options template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/2cd9dd7)
+#### [Step 9.5: Add messages options template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/15610bc4e)
 
 ##### Added src&#x2F;pages&#x2F;messages&#x2F;messages-options.html
 ```diff
@@ -216,7 +216,7 @@ In the `MessagesPage` we have options icon presented as three periods at the rig
 
 [{]: <helper> (diffStep 9.6)
 
-#### [Step 9.6: Add message options styles](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/8faee88)
+#### [Step 9.6: Add message options styles](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/41d24c5b2)
 
 ##### Added src&#x2F;pages&#x2F;messages&#x2F;messages-options.scss
 ```diff
@@ -240,42 +240,42 @@ In the `MessagesPage` we have options icon presented as three periods at the rig
 
 [{]: <helper> (diffStep 9.7)
 
-#### [Step 9.7: Import messages options component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5fe7270)
+#### [Step 9.7: Import messages options component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/2deca8424)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
-@@ -6,6 +6,7 @@
- ┊ 6┊ 6┊import { ChatsOptionsComponent } from '../pages/chats/chats-options';
- ┊ 7┊ 7┊import { LoginPage } from '../pages/login/login';
- ┊ 8┊ 8┊import { MessagesPage } from '../pages/messages/messages';
-+┊  ┊ 9┊import { MessagesOptionsComponent } from '../pages/messages/messages-options';
- ┊ 9┊10┊import { ProfilePage } from '../pages/profile/profile';
- ┊10┊11┊import { VerificationPage } from '../pages/verification/verification';
- ┊11┊12┊import { PhoneService } from '../services/phone';
+@@ -9,6 +9,7 @@
+ ┊ 9┊ 9┊import { ChatsOptionsComponent } from '../pages/chats/chats-options';
+ ┊10┊10┊import { LoginPage } from '../pages/login/login';
+ ┊11┊11┊import { MessagesPage } from '../pages/messages/messages';
++┊  ┊12┊import { MessagesOptionsComponent } from '../pages/messages/messages-options';
+ ┊12┊13┊import { ProfilePage } from '../pages/profile/profile';
+ ┊13┊14┊import { VerificationPage } from '../pages/verification/verification';
+ ┊14┊15┊import { PhoneService } from '../services/phone';
 ```
 ```diff
-@@ -20,7 +21,8 @@
- ┊20┊21┊    VerificationPage,
- ┊21┊22┊    ProfilePage,
- ┊22┊23┊    ChatsOptionsComponent,
--┊23┊  ┊    NewChatComponent
-+┊  ┊24┊    NewChatComponent,
-+┊  ┊25┊    MessagesOptionsComponent
- ┊24┊26┊  ],
- ┊25┊27┊  imports: [
- ┊26┊28┊    IonicModule.forRoot(MyApp),
+@@ -23,7 +24,8 @@
+ ┊23┊24┊    VerificationPage,
+ ┊24┊25┊    ProfilePage,
+ ┊25┊26┊    ChatsOptionsComponent,
+-┊26┊  ┊    NewChatComponent
++┊  ┊27┊    NewChatComponent,
++┊  ┊28┊    MessagesOptionsComponent
+ ┊27┊29┊  ],
+ ┊28┊30┊  imports: [
+ ┊29┊31┊    BrowserModule,
 ```
 ```diff
-@@ -35,7 +37,8 @@
- ┊35┊37┊    VerificationPage,
- ┊36┊38┊    ProfilePage,
- ┊37┊39┊    ChatsOptionsComponent,
--┊38┊  ┊    NewChatComponent
-+┊  ┊40┊    NewChatComponent,
-+┊  ┊41┊    MessagesOptionsComponent
- ┊39┊42┊  ],
- ┊40┊43┊  providers: [
- ┊41┊44┊    {provide: ErrorHandler, useClass: IonicErrorHandler},
+@@ -39,7 +41,8 @@
+ ┊39┊41┊    VerificationPage,
+ ┊40┊42┊    ProfilePage,
+ ┊41┊43┊    ChatsOptionsComponent,
+-┊42┊  ┊    NewChatComponent
++┊  ┊44┊    NewChatComponent,
++┊  ┊45┊    MessagesOptionsComponent
+ ┊43┊46┊  ],
+ ┊44┊47┊  providers: [
+ ┊45┊48┊    StatusBar,
 ```
 
 [}]: #
@@ -284,7 +284,7 @@ Now that the component is ready, we will implement the handler in the `MessagesP
 
 [{]: <helper> (diffStep 9.8)
 
-#### [Step 9.8: Implemente showOptions method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/8524eb6)
+#### [Step 9.8: Implemente showOptions method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/6d5dff75a)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 ```diff
@@ -340,7 +340,7 @@ And we will bind the handler for the view so any time we press on the `options` 
 
 [{]: <helper> (diffStep 9.9)
 
-#### [Step 9.9: Bind showOptions to messages options button](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5ada401)
+#### [Step 9.9: Bind showOptions to messages options button](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c81d5bb4a)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.html
 ```diff
@@ -365,7 +365,7 @@ This requires us to explicitly define our publications. We will start with the `
 
 [{]: <helper> (diffStep 9.11)
 
-#### [Step 9.11: Add users publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/a35e91c)
+#### [Step 9.11: Add users publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/2934dac97)
 
 ##### Added api&#x2F;server&#x2F;publications.ts
 ```diff
@@ -392,7 +392,7 @@ The second publication we're going to implement would be the `messages` publicat
 
 [{]: <helper> (diffStep 9.12)
 
-#### [Step 9.12: Publish messages](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0eac43f)
+#### [Step 9.12: Publish messages](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/a7ceaa0ae)
 
 ##### Changed api&#x2F;server&#x2F;publications.ts
 ```diff
@@ -438,7 +438,7 @@ And we will import the declarations by adding the following field in the `tsconf
 
 [{]: <helper> (diffStep 9.15)
 
-#### [Step 9.15: Import @types/meteor-publish-composite](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0624af9)
+#### [Step 9.15: Import @types/meteor-publish-composite](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/2bc9d1937)
 
 ##### Changed api&#x2F;tsconfig.json
 ```diff
@@ -466,7 +466,7 @@ To implement this composite publication we will use the `Meteor.publishComposite
 
 [{]: <helper> (diffStep 9.16)
 
-#### [Step 9.16: Implement chats publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/d5dbafb)
+#### [Step 9.16: Implement chats publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/8db6bb917)
 
 ##### Changed api&#x2F;server&#x2F;publications.ts
 ```diff
@@ -529,7 +529,7 @@ The first subscription we're going to make would be the `users` subscription in 
 
 [{]: <helper> (diffStep 9.17)
 
-#### [Step 9.17: Subscribe to users](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f7ddefa)
+#### [Step 9.17: Subscribe to users](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/58d636b0a)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;new-chat.ts
 ```diff
@@ -556,7 +556,7 @@ The second subscription we're going to define would be the `chats` subscription 
 
 [{]: <helper> (diffStep 9.18)
 
-#### [Step 9.18: Subscribe to chats](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/3d165ed)
+#### [Step 9.18: Subscribe to chats](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/3c57f8579)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 ```diff
@@ -581,7 +581,7 @@ The `messages` publication is responsible for bringing all the relevant messages
 
 [{]: <helper> (diffStep 9.19)
 
-#### [Step 9.19: Subscribe to messages](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b303dee)
+#### [Step 9.19: Subscribe to messages](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/4a9e7d649)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 ```diff

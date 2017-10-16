@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Profile } from 'api/models';
-import { AlertController, NavController } from 'ionic-angular';
+import { AlertController, NavController, Platform } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import { ChatsPage } from '../chats/chats';
 import { PictureService } from '../../services/picture';
@@ -17,21 +17,27 @@ export class ProfilePage implements OnInit {
   constructor(
     private alertCtrl: AlertController,
     private navCtrl: NavController,
-    private pictureService: PictureService
+    private pictureService: PictureService,
+    private platform: Platform
   ) {}
 
   ngOnInit(): void {
-    this.profile = Meteor.user().profile || {
-      name: ''
-    };
+    this.profile = (({name = '', pictureId} = {}) => ({
+      name,
+      pictureId
+    }))(Meteor.user().profile);
 
     MeteorObservable.subscribe('user').subscribe(() => {
-      this.picture = Pictures.getPictureUrl(this.profile.pictureId);
+      let platform = this.platform.is('android') ? "android" :
+        this.platform.is('ios') ? "ios" : "";
+      platform = this.platform.is('cordova') ? platform : "";
+
+      this.picture = Pictures.getPictureUrl(this.profile.pictureId, platform);
     });
   }
 
   selectProfilePicture(): void {
-    this.pictureService.select().then((blob) => {
+    this.pictureService.getPicture(false, true).then((blob) => {
       this.uploadProfilePicture(blob);
     })
       .catch((e) => {
@@ -39,7 +45,7 @@ export class ProfilePage implements OnInit {
       });
   }
 
-  uploadProfilePicture(blob: Blob): void {
+  uploadProfilePicture(blob: File): void {
     this.pictureService.upload(blob).then((picture) => {
       this.profile.pictureId = picture._id;
       this.picture = picture.url;

@@ -5,9 +5,11 @@
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "downlevelIteration": true,
     "lib": [
       "dom",
-      "es2015"
+      "es2015",
+      "es2016"
     ],
     "module": "commonjs",
     "moduleResolution": "node",
@@ -20,7 +22,6 @@
     "stripInternal": true,
     "noImplicitAny": false,
     "types": [
-      "meteor-typings",
       "@types/underscore",
       "@types/meteor-accounts-phone",
       "@types/meteor-collection-hooks"

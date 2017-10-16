@@ -4,7 +4,7 @@ Our next step is about adding the ability to create new chats. We have the `Chat
 
 [{]: <helper> (diffStep 8.1)
 
-#### [Step 8.1: Added user model](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/2859cd1)
+#### [Step 8.1: Added user model](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/991340ff0)
 
 ##### Changed api&#x2F;server&#x2F;models.ts
 ```diff
@@ -24,7 +24,7 @@ Our next step is about adding the ability to create new chats. We have the `Chat
 
 [{]: <helper> (diffStep 8.2)
 
-#### [Step 8.2: Wrap Meteor users collection](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5058b6a)
+#### [Step 8.2: Wrap Meteor users collection](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/bdd9441db)
 
 ##### Added api&#x2F;server&#x2F;collections&#x2F;users.ts
 ```diff
@@ -42,7 +42,7 @@ For accessibility, we're gonna export the collection from the `index` file as we
 
 [{]: <helper> (diffStep 8.3)
 
-#### [Step 8.3: Export users collection form index file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/14f561b)
+#### [Step 8.3: Export users collection form index file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f5918b6d0)
 
 ##### Changed api&#x2F;server&#x2F;collections&#x2F;index.ts
 ```diff
@@ -60,7 +60,7 @@ We will be using `Ionic`'s modal dialog to show the chat creation view. The firs
 
 [{]: <helper> (diffStep 8.4)
 
-#### [Step 8.4: Added new chat component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/3ab3a80)
+#### [Step 8.4: Added new chat component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/94ec41a7f)
 
 ##### Added src&#x2F;pages&#x2F;chats&#x2F;new-chat.ts
 ```diff
@@ -156,7 +156,7 @@ We will be using `Ionic`'s modal dialog to show the chat creation view. The firs
 
 [{]: <helper> (diffStep 8.5)
 
-#### [Step 8.5: Added new chat template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f25f2b1)
+#### [Step 8.5: Added new chat template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/39573c869)
 
 ##### Added src&#x2F;pages&#x2F;chats&#x2F;new-chat.html
 ```diff
@@ -189,7 +189,7 @@ We will be using `Ionic`'s modal dialog to show the chat creation view. The firs
 
 [{]: <helper> (diffStep 8.6)
 
-#### [Step 8.6: Added new chat styles](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/3c59181)
+#### [Step 8.6: Added new chat styles](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/87b5c876a)
 
 ##### Added src&#x2F;pages&#x2F;chats&#x2F;new-chat.scss
 ```diff
@@ -218,7 +218,7 @@ The dialog should be revealed whenever we click on one of the options in the opt
 
 [{]: <helper> (diffStep 8.7)
 
-#### [Step 8.7: Added addChat method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/309a752)
+#### [Step 8.7: Added addChat method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0af89ddfc)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 ```diff
@@ -270,7 +270,7 @@ And bind it to the `click` event:
 
 [{]: <helper> (diffStep 8.8)
 
-#### [Step 8.8: Bind click event to new chat modal](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/3de0e71)
+#### [Step 8.8: Bind click event to new chat modal](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e08bb729c)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.html
 ```diff
@@ -291,62 +291,89 @@ We will import the newly created component in the app's `NgModule` as well, so i
 
 [{]: <helper> (diffStep 8.9)
 
-#### [Step 8.9: Import new chat component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/830fb6b)
+#### [Step 8.9: Import new chat component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/2d8e8e555)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
-@@ -2,6 +2,7 @@
- ┊2┊2┊import { MomentModule } from 'angular2-moment';
- ┊3┊3┊import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
- ┊4┊4┊import { ChatsPage } from '../pages/chats/chats';
-+┊ ┊5┊import { NewChatComponent } from '../pages/chats/new-chat';
- ┊5┊6┊import { ChatsOptionsComponent } from '../pages/chats/chats-options';
- ┊6┊7┊import { LoginPage } from '../pages/login/login';
- ┊7┊8┊import { MessagesPage } from '../pages/messages/messages';
+@@ -5,6 +5,7 @@
+ ┊ 5┊ 5┊import { StatusBar } from '@ionic-native/status-bar';
+ ┊ 6┊ 6┊import { MomentModule } from 'angular2-moment';
+ ┊ 7┊ 7┊import { ChatsPage } from '../pages/chats/chats';
++┊  ┊ 8┊import { NewChatComponent } from '../pages/chats/new-chat';
+ ┊ 8┊ 9┊import { ChatsOptionsComponent } from '../pages/chats/chats-options';
+ ┊ 9┊10┊import { LoginPage } from '../pages/login/login';
+ ┊10┊11┊import { MessagesPage } from '../pages/messages/messages';
 ```
 ```diff
-@@ -18,7 +19,8 @@
- ┊18┊19┊    LoginPage,
- ┊19┊20┊    VerificationPage,
- ┊20┊21┊    ProfilePage,
--┊21┊  ┊    ChatsOptionsComponent
-+┊  ┊22┊    ChatsOptionsComponent,
-+┊  ┊23┊    NewChatComponent
- ┊22┊24┊  ],
- ┊23┊25┊  imports: [
- ┊24┊26┊    IonicModule.forRoot(MyApp),
+@@ -21,7 +22,8 @@
+ ┊21┊22┊    LoginPage,
+ ┊22┊23┊    VerificationPage,
+ ┊23┊24┊    ProfilePage,
+-┊24┊  ┊    ChatsOptionsComponent
++┊  ┊25┊    ChatsOptionsComponent,
++┊  ┊26┊    NewChatComponent
+ ┊25┊27┊  ],
+ ┊26┊28┊  imports: [
+ ┊27┊29┊    BrowserModule,
 ```
 ```diff
-@@ -32,7 +34,8 @@
- ┊32┊34┊    LoginPage,
- ┊33┊35┊    VerificationPage,
- ┊34┊36┊    ProfilePage,
--┊35┊  ┊    ChatsOptionsComponent
-+┊  ┊37┊    ChatsOptionsComponent,
-+┊  ┊38┊    NewChatComponent
- ┊36┊39┊  ],
- ┊37┊40┊  providers: [
- ┊38┊41┊    {provide: ErrorHandler, useClass: IonicErrorHandler},
+@@ -36,7 +38,8 @@
+ ┊36┊38┊    LoginPage,
+ ┊37┊39┊    VerificationPage,
+ ┊38┊40┊    ProfilePage,
+-┊39┊  ┊    ChatsOptionsComponent
++┊  ┊41┊    ChatsOptionsComponent,
++┊  ┊42┊    NewChatComponent
+ ┊40┊43┊  ],
+ ┊41┊44┊  providers: [
+ ┊42┊45┊    StatusBar,
 ```
 
 [}]: #
 
 We're also required to implement the appropriate `Meteor` method which will be the actually handler for feeding our data-base with newly created chats:
 
-[{]: <helper> (diffStep 8.1)
+[{]: <helper> (diffStep "8.10")
 
-#### [Step 8.1: Added user model](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/2859cd1)
+#### [Step 8.10: Implement addChat method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/13d38061c)
 
-##### Changed api&#x2F;server&#x2F;models.ts
+##### Changed api&#x2F;server&#x2F;methods.ts
 ```diff
-@@ -25,3 +25,7 @@
- ┊25┊25┊  type?: MessageType
- ┊26┊26┊  ownership?: string;
- ┊27┊27┊}
+@@ -9,6 +9,34 @@
+ ┊ 9┊ 9┊});
+ ┊10┊10┊
+ ┊11┊11┊Meteor.methods({
++┊  ┊12┊  addChat(receiverId: string): void {
++┊  ┊13┊    if (!this.userId) {
++┊  ┊14┊      throw new Meteor.Error('unauthorized',
++┊  ┊15┊        'User must be logged-in to create a new chat');
++┊  ┊16┊    }
++┊  ┊17┊
++┊  ┊18┊    check(receiverId, nonEmptyString);
++┊  ┊19┊
++┊  ┊20┊    if (receiverId === this.userId) {
++┊  ┊21┊      throw new Meteor.Error('illegal-receiver',
++┊  ┊22┊        'Receiver must be different than the current logged in user');
++┊  ┊23┊    }
++┊  ┊24┊
++┊  ┊25┊    const chatExists = !!Chats.collection.find({
++┊  ┊26┊      memberIds: { $all: [this.userId, receiverId] }
++┊  ┊27┊    }).count();
 +┊  ┊28┊
-+┊  ┊29┊export interface User extends Meteor.User {
-+┊  ┊30┊  profile?: Profile;
-+┊  ┊31┊}
++┊  ┊29┊    if (chatExists) {
++┊  ┊30┊      throw new Meteor.Error('chat-exists',
++┊  ┊31┊        'Chat already exists');
++┊  ┊32┊    }
++┊  ┊33┊
++┊  ┊34┊    const chat = {
++┊  ┊35┊      memberIds: [this.userId, receiverId]
++┊  ┊36┊    };
++┊  ┊37┊
++┊  ┊38┊    Chats.insert(chat);
++┊  ┊39┊  },
+ ┊12┊40┊  updateProfile(profile: Profile): void {
+ ┊13┊41┊    if (!this.userId) throw new Meteor.Error('unauthorized',
+ ┊14┊42┊      'User must be logged-in to create a new chat');
 ```
 
 [}]: #
@@ -355,7 +382,7 @@ As you can see, a chat is inserted with an additional `memberIds` field. Wheneve
 
 [{]: <helper> (diffStep 8.11)
 
-#### [Step 8.11: Add memberIds field](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/2e0078b)
+#### [Step 8.11: Add memberIds field](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/87b8b1324)
 
 ##### Changed api&#x2F;server&#x2F;models.ts
 ```diff
@@ -375,24 +402,27 @@ Thanks to our new-chat dialog, we can create chats dynamically with no need in i
 
 [{]: <helper> (diffStep 8.12)
 
-#### [Step 8.12: Create real user accounts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7361a24)
+#### [Step 8.12: Create real user accounts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e939ef123)
 
 ##### Changed api&#x2F;server&#x2F;main.ts
 ```diff
-@@ -4,6 +4,7 @@
- ┊ 4┊ 4┊import * as moment from 'moment';
- ┊ 5┊ 5┊import { MessageType } from './models';
- ┊ 6┊ 6┊import { Accounts } from 'meteor/accounts-base';
-+┊  ┊ 7┊import { Users } from './collections/users';
- ┊ 7┊ 8┊
- ┊ 8┊ 9┊Meteor.startup(() => {
- ┊ 9┊10┊  if (Meteor.settings) {
+@@ -1,9 +1,6 @@
+ ┊1┊1┊import { Meteor } from 'meteor/meteor';
+-┊2┊ ┊import { Chats } from './collections/chats';
+-┊3┊ ┊import { Messages } from './collections/messages';
+-┊4┊ ┊import * as moment from 'moment';
+-┊5┊ ┊import { MessageType } from './models';
+ ┊6┊2┊import { Accounts } from 'meteor/accounts-base';
++┊ ┊3┊import { Users } from './collections/users';
+ ┊7┊4┊
+ ┊8┊5┊Meteor.startup(() => {
+ ┊9┊6┊  if (Meteor.settings) {
 ```
 ```diff
-@@ -11,67 +12,47 @@
- ┊11┊12┊    SMS.twilio = Meteor.settings['twilio'];
- ┊12┊13┊  }
- ┊13┊14┊
+@@ -11,67 +8,47 @@
+ ┊11┊ 8┊    SMS.twilio = Meteor.settings['twilio'];
+ ┊12┊ 9┊  }
+ ┊13┊10┊
 -┊14┊  ┊  if (Chats.find({}).cursor.count() === 0) {
 -┊15┊  ┊    let chatId;
 -┊16┊  ┊
@@ -455,50 +485,50 @@ Thanks to our new-chat dialog, we can create chats dynamically with no need in i
 -┊73┊  ┊      createdAt: moment().subtract(2, 'weeks').toDate(),
 -┊74┊  ┊      type: MessageType.TEXT
 -┊75┊  ┊    });
-+┊  ┊15┊  if (Users.collection.find().count() > 0) {
-+┊  ┊16┊    return;
- ┊76┊17┊  }
-+┊  ┊18┊
-+┊  ┊19┊  Accounts.createUserWithPhone({
-+┊  ┊20┊    phone: '+972540000001',
-+┊  ┊21┊    profile: {
-+┊  ┊22┊      name: 'Ethan Gonzalez',
-+┊  ┊23┊      picture: 'https://randomuser.me/api/portraits/men/1.jpg'
-+┊  ┊24┊    }
-+┊  ┊25┊  });
-+┊  ┊26┊
-+┊  ┊27┊  Accounts.createUserWithPhone({
-+┊  ┊28┊    phone: '+972540000002',
-+┊  ┊29┊    profile: {
-+┊  ┊30┊      name: 'Bryan Wallace',
-+┊  ┊31┊      picture: 'https://randomuser.me/api/portraits/lego/1.jpg'
-+┊  ┊32┊    }
-+┊  ┊33┊  });
-+┊  ┊34┊
-+┊  ┊35┊  Accounts.createUserWithPhone({
-+┊  ┊36┊    phone: '+972540000003',
-+┊  ┊37┊    profile: {
-+┊  ┊38┊      name: 'Avery Stewart',
-+┊  ┊39┊      picture: 'https://randomuser.me/api/portraits/women/1.jpg'
-+┊  ┊40┊    }
-+┊  ┊41┊  });
-+┊  ┊42┊
-+┊  ┊43┊  Accounts.createUserWithPhone({
-+┊  ┊44┊    phone: '+972540000004',
-+┊  ┊45┊    profile: {
-+┊  ┊46┊      name: 'Katie Peterson',
-+┊  ┊47┊      picture: 'https://randomuser.me/api/portraits/women/2.jpg'
-+┊  ┊48┊    }
-+┊  ┊49┊  });
-+┊  ┊50┊
-+┊  ┊51┊  Accounts.createUserWithPhone({
-+┊  ┊52┊    phone: '+972540000005',
-+┊  ┊53┊    profile: {
-+┊  ┊54┊      name: 'Ray Edwards',
-+┊  ┊55┊      picture: 'https://randomuser.me/api/portraits/men/2.jpg'
-+┊  ┊56┊    }
-+┊  ┊57┊  });
- ┊77┊58┊});
++┊  ┊11┊  if (Users.collection.find().count() > 0) {
++┊  ┊12┊    return;
+ ┊76┊13┊  }
++┊  ┊14┊
++┊  ┊15┊  Accounts.createUserWithPhone({
++┊  ┊16┊    phone: '+972540000001',
++┊  ┊17┊    profile: {
++┊  ┊18┊      name: 'Ethan Gonzalez',
++┊  ┊19┊      picture: 'https://randomuser.me/api/portraits/men/1.jpg'
++┊  ┊20┊    }
++┊  ┊21┊  });
++┊  ┊22┊
++┊  ┊23┊  Accounts.createUserWithPhone({
++┊  ┊24┊    phone: '+972540000002',
++┊  ┊25┊    profile: {
++┊  ┊26┊      name: 'Bryan Wallace',
++┊  ┊27┊      picture: 'https://randomuser.me/api/portraits/lego/1.jpg'
++┊  ┊28┊    }
++┊  ┊29┊  });
++┊  ┊30┊
++┊  ┊31┊  Accounts.createUserWithPhone({
++┊  ┊32┊    phone: '+972540000003',
++┊  ┊33┊    profile: {
++┊  ┊34┊      name: 'Avery Stewart',
++┊  ┊35┊      picture: 'https://randomuser.me/api/portraits/women/1.jpg'
++┊  ┊36┊    }
++┊  ┊37┊  });
++┊  ┊38┊
++┊  ┊39┊  Accounts.createUserWithPhone({
++┊  ┊40┊    phone: '+972540000004',
++┊  ┊41┊    profile: {
++┊  ┊42┊      name: 'Katie Peterson',
++┊  ┊43┊      picture: 'https://randomuser.me/api/portraits/women/2.jpg'
++┊  ┊44┊    }
++┊  ┊45┊  });
++┊  ┊46┊
++┊  ┊47┊  Accounts.createUserWithPhone({
++┊  ┊48┊    phone: '+972540000005',
++┊  ┊49┊    profile: {
++┊  ┊50┊      name: 'Ray Edwards',
++┊  ┊51┊      picture: 'https://randomuser.me/api/portraits/men/2.jpg'
++┊  ┊52┊    }
++┊  ┊53┊  });
+ ┊77┊54┊});
 ```
 
 [}]: #
@@ -507,7 +537,7 @@ Since we've changed the data fabrication method, the chat's title and picture ar
 
 [{]: <helper> (diffStep 8.13)
 
-#### [Step 8.13: Implement chats with with real data](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ef67922)
+#### [Step 8.13: Implement chats with with real data](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/45b40a911)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 ```diff

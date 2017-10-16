@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Chats, Users, Pictures } from 'api/collections';
 import { User } from 'api/models';
-import { AlertController, ViewController } from 'ionic-angular';
+import { AlertController, Platform, ViewController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import { _ } from 'meteor/underscore';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
+import { PhoneService } from "../../services/phone";
 
 @Component({
   selector: 'new-chat',
@@ -15,10 +16,14 @@ export class NewChatComponent implements OnInit {
   senderId: string;
   users: Observable<User[]>;
   usersSubscription: Subscription;
+  contacts: string[] = [];
+  contactsPromise: Promise<void>;
 
   constructor(
     private alertCtrl: AlertController,
-    private viewCtrl: ViewController
+    private viewCtrl: ViewController,
+    private platform: Platform,
+    private phoneService: PhoneService
   ) {
     this.senderId = Meteor.userId();
     this.searchPattern = new BehaviorSubject(undefined);
@@ -26,6 +31,13 @@ export class NewChatComponent implements OnInit {
 
   ngOnInit() {
     this.observeSearchBar();
+    this.contactsPromise = this.phoneService.getContactsFromAddressbook()
+      .then((phoneNumbers: string[]) => {
+        this.contacts = phoneNumbers;
+      })
+      .catch((e: Error) => {
+        console.error(e.message);
+      });
   }
 
   updateSubscription(newValue) {
@@ -41,7 +53,9 @@ export class NewChatComponent implements OnInit {
           this.usersSubscription.unsubscribe();
         }
 
-        this.usersSubscription = this.subscribeUsers();
+        this.contactsPromise.then(() => {
+          this.usersSubscription = this.subscribeUsers();
+        });
       });
   }
 
@@ -60,7 +74,7 @@ export class NewChatComponent implements OnInit {
 
   subscribeUsers(): Subscription {
     // Fetch all users matching search pattern
-    const subscription = MeteorObservable.subscribe('users', this.searchPattern.getValue());
+    const subscription = MeteorObservable.subscribe('users', this.searchPattern.getValue(), this.contacts);
     const autorun = MeteorObservable.autorun();
 
     return Observable.merge(subscription, autorun).subscribe(() => {
@@ -109,6 +123,10 @@ export class NewChatComponent implements OnInit {
   }
 
   getPic(pictureId): string {
-    return Pictures.getPictureUrl(pictureId);
+    let platform = this.platform.is('android') ? "android" :
+      this.platform.is('ios') ? "ios" : "";
+    platform = this.platform.is('cordova') ? platform : "";
+
+    return Pictures.getPictureUrl(pictureId, platform);
   }
 }

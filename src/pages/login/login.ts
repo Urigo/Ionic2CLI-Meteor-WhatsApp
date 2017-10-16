@@ -17,11 +17,9 @@ export class LoginPage implements AfterContentInit {
   ) {}
 
   ngAfterContentInit() {
-    this.phoneService.getNumber().then((phone) => {
-      if (phone) {
-        this.login(phone);
-      }
-    });
+    this.phoneService.getNumber()
+      .then((phone) => this.phone = phone)
+      .catch((e) => console.error(e.message));
   }
 
   onInputKeypress({keyCode}: KeyboardEvent): void {

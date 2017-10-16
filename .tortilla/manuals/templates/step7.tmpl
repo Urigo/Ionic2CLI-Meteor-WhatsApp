@@ -62,7 +62,7 @@ The `PhoneService` is not only packed with whatever functionality we need, but i
 
 Just so the `TypeScript` compiler will know how to digest it, we shall also specify the `accounts-phone` types in the client `tsconfig.json` as well:
 
-{{{diffStep 7.10}}}
+{{{diffStep "7.10"}}}
 
 ## UI
 
@@ -108,7 +108,7 @@ And add it to the `NgModule`:
 
 Now we can make sure that anytime we login, we will be promoted to the `VerificationPage` right after:
 
-{{{diffStep 7.20}}}
+{{{diffStep "7.20"}}}
 
 The last step in our authentication pattern is setting our profile. We will create a `Profile` interface so the compiler can recognize profile-data structures:
 
@@ -146,7 +146,7 @@ Now that our authentication flow is complete, we will need to edit the messages,
 
 This requires us to update the `Message` model as well so `TypeScript` will recognize the changes:
 
-{{{diffStep 7.30}}}
+{{{diffStep "7.30"}}}
 
 Now we can determine if a message is ours or not in the `MessagePage` thanks to the `senderId` field we've just added:
 

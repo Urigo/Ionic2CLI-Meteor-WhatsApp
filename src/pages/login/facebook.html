@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar color="whatsapp">
+    <ion-title>Link with Facebook</ion-title>
+
+    <ion-buttons end>
+      <button ion-button class="done-button" (click)="cancel()">Cancel</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="login-page-content">
+  <div class="instructions">
+    <div>
+      You can link your account with Facebook to chat with more friends.
+    </div>
+    <br>
+    <ion-item>
+      <ion-buttons>
+        <button ion-button (click)="linkFacebook()">Login with Facebook</button>
+      </ion-buttons>
+    </ion-item>
+  </div>
+</ion-content>

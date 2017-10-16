@@ -1,11 +1,11 @@
 import { MongoObservable } from 'meteor-rxjs';
 import { UploadFS } from 'meteor/jalik:ufs';
 import { Meteor } from 'meteor/meteor';
-import * as Sharp from 'sharp';
+import * as sharp from 'sharp';
 import { Picture, DEFAULT_PICTURE_URL } from '../models';
 
 export interface PicturesCollection<T> extends MongoObservable.Collection<T> {
-  getPictureUrl(selector?: Object | string): string;
+  getPictureUrl(selector?: Object | string, platform?: string): string;
 }
 
 export const Pictures =
@@ -23,16 +23,19 @@ export const PicturesStore = new UploadFS.store.GridFS({
     remove: picturesPermissions
   }),
   transformWrite(from, to) {
-    // Compress picture to 75% from its original quality
-    const transform = Sharp().png({ quality: 75 });
+    // Resize picture, then crop it to 1:1 aspect ratio, then compress it to 75% from its original quality
+    const transform = sharp().resize(800,800).min().crop().toFormat('jpeg', {quality: 75});
     from.pipe(transform).pipe(to);
   }
 });
 
 // Gets picture's url by a given selector
-Pictures.getPictureUrl = function (selector) {
+Pictures.getPictureUrl = function (selector, platform = "") {
+  const prefix = platform === "android" ? "/android_asset/www" :
+    platform === "ios" ? "" : "";
+
   const picture = this.findOne(selector) || {};
-  return picture.url || DEFAULT_PICTURE_URL;
+  return picture.url || prefix + DEFAULT_PICTURE_URL;
 };
 
 function picturesPermissions(userId: string): boolean {

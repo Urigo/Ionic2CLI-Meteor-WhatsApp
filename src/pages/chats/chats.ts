@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Chats, Messages, Users, Pictures } from 'api/collections';
 import { Chat, Message } from 'api/models';
-import { NavController, PopoverController, ModalController, AlertController } from 'ionic-angular';
+import { NavController, PopoverController, ModalController, AlertController, Platform } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Observable, Subscriber } from 'rxjs';
 import { MessagesPage } from '../messages/messages';
 import { ChatsOptionsComponent } from './chats-options';
 import { NewChatComponent } from './new-chat';
+import { FCM } from "@ionic-native/fcm";
 
 @Component({
   templateUrl: 'chats.html'
@@ -19,7 +20,9 @@ export class ChatsPage implements OnInit {
     private navCtrl: NavController,
     private popoverCtrl: PopoverController,
     private modalCtrl: ModalController,
-    private alertCtrl: AlertController) {
+    private alertCtrl: AlertController,
+    private platform: Platform,
+    private fcm: FCM) {
     this.senderId = Meteor.userId();
   }
 
@@ -34,6 +37,35 @@ export class ChatsPage implements OnInit {
         this.chats = this.findChats();
       });
     });
+
+    // Notifications
+    if (this.platform.is('cordova')) {
+      //this.fcm.subscribeToTopic('news');
+
+      this.fcm.getToken().then(token => {
+        console.log("Registering FCM token on backend");
+        MeteorObservable.call('saveFcmToken', token).subscribe({
+          next: () => console.log("FCM Token saved"),
+          error: err => console.error('Impossible to save FCM token: ', err)
+        });
+      });
+
+      this.fcm.onNotification().subscribe(data => {
+        if (data.wasTapped) {
+          console.log("Received FCM notification in background");
+        } else {
+          console.log("Received FCM notification in foreground");
+        }
+      });
+
+      this.fcm.onTokenRefresh().subscribe(token => {
+        console.log("Updating FCM token on backend");
+        MeteorObservable.call('saveFcmToken', token).subscribe({
+          next: () => console.log("FCM Token updated"),
+          error: err => console.error('Impossible to update FCM token: ' + err)
+        });
+      });
+    }
   }
 
   findChats(): Observable<Chat[]> {
@@ -48,7 +80,12 @@ export class ChatsPage implements OnInit {
 
         if (receiver) {
           chat.title = receiver.profile.name;
-          chat.picture = Pictures.getPictureUrl(receiver.profile.pictureId);
+
+          let platform = this.platform.is('android') ? "android" :
+            this.platform.is('ios') ? "ios" : "";
+          platform = this.platform.is('cordova') ? platform : "";
+
+          chat.picture = Pictures.getPictureUrl(receiver.profile.pictureId, platform);
         }
 
         // This will make the last message reactive

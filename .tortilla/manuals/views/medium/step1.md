@@ -39,11 +39,13 @@ The first thing we gonna do would be telling Ionic that we're using `Webpack` as
 
 [{]: <helper> (diffStep 1.1)
 
-#### [Step 1.1: Add webpack config declration in package.json](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/df435b0)
+#### [Step 1.1: Add webpack config declration in package.json](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/6f02d4c)
 
 ##### Changed package.json
 <pre>
-<i>@@ -51,5 +51,8 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊51┊51┊      &quot;locator&quot;: &quot;ios&quot;
  ┊52┊52┊    }
  ┊53┊53┊  ],
@@ -64,11 +66,13 @@ The configuration file should look like so:
 
 [{]: <helper> (diffStep 1.2)
 
-#### [Step 1.2: Add Ionic&#x27;s base webpack file to the project](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/4e94502)
+#### [Step 1.2: Add Ionic&#x27;s base webpack file to the project](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e7d021a)
 
 ##### Added webpack.config.js
 <pre>
-<i>@@ -0,0 +1,44 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
 <b>+┊  ┊ 1┊var path &#x3D; require(&#x27;path&#x27;);</b>
 <b>+┊  ┊ 2┊var webpack &#x3D; require(&#x27;webpack&#x27;);</b>
 <b>+┊  ┊ 3┊var ionicWebpackFactory &#x3D; require(process.env.IONIC_WEBPACK_FACTORY);</b>
@@ -127,11 +131,13 @@ To achieve these abilities, this is how our extension should look like:
 
 [{]: <helper> (diffStep 1.3)
 
-#### [Step 1.3: Updated webpack config file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c5ad4ec)
+#### [Step 1.3: Updated webpack config file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/222e605)
 
 ##### Changed webpack.config.js
 <pre>
-<i>@@ -13,9 +13,16 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊13┊13┊
  ┊14┊14┊  resolve: {
  ┊15┊15┊    extensions: [&#x27;.ts&#x27;, &#x27;.js&#x27;, &#x27;.json&#x27;],
@@ -150,7 +156,9 @@ To achieve these abilities, this is how our extension should look like:
  ┊21┊28┊      {
 </pre>
 <pre>
-<i>@@ -31,7 +38,10 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊31┊38┊  },
  ┊32┊39┊
  ┊33┊40┊  plugins: [
@@ -163,7 +171,9 @@ To achieve these abilities, this is how our extension should look like:
  ┊37┊47┊  // Some libraries import Node modules but don&#x27;t use them in the browser.
 </pre>
 <pre>
-<i>@@ -39,6 +49,22 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊39┊49┊  node: {
  ┊40┊50┊    fs: &#x27;empty&#x27;,
  ┊41┊51┊    net: &#x27;empty&#x27;,
@@ -194,11 +204,13 @@ In addition to the alias we've just created, we also need to tell the `TypesScri
 
 [{]: <helper> (diffStep 1.4)
 
-#### [Step 1.4: Updated TypeScript config file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0e98fa9)
+#### [Step 1.4: Updated TypeScript config file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/89c7605)
 
 ##### Changed tsconfig.json
 <pre>
-<i>@@ -14,13 +14,15 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊14┊14┊    &quot;target&quot;: &quot;es5&quot;
  ┊15┊15┊  },
  ┊16┊16┊  &quot;include&quot;: [
@@ -228,11 +240,13 @@ Now, we need to make some modifications for the `TypeScript` config so we can lo
 
 [{]: <helper> (diffStep 1.6)
 
-#### [Step 1.6: Updated typscript compiler config](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c9dba95)
+#### [Step 1.6: Updated typscript compiler config](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7b4ae0b)
 
 ##### Changed tsconfig.json
 <pre>
-<i>@@ -1,6 +1,7 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊1┊1┊{
  ┊2┊2┊  &quot;compilerOptions&quot;: {
  ┊3┊3┊    &quot;allowSyntheticDefaultImports&quot;: true,
@@ -242,7 +256,9 @@ Now, we need to make some modifications for the `TypeScript` config so we can lo
  ┊6┊7┊    &quot;experimentalDecorators&quot;: true,
 </pre>
 <pre>
-<i>@@ -8,10 +9,20 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊ 8┊ 9┊      &quot;dom&quot;,
  ┊ 9┊10┊      &quot;es2015&quot;
  ┊10┊11┊    ],
@@ -265,7 +281,9 @@ Now, we need to make some modifications for the `TypeScript` config so we can lo
  ┊17┊28┊    &quot;src/**/*.ts&quot;,
 </pre>
 <pre>
-<i>@@ -19,7 +30,8 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊19┊30┊  ],
  ┊20┊31┊  &quot;exclude&quot;: [
  ┊21┊32┊    &quot;node_modules&quot;,
@@ -294,11 +312,13 @@ This is caused due to expectation to be run in a mobile environment. To fix this
 
 [{]: <helper> (diffStep 1.8)
 
-#### [Step 1.8: Check if cordova exists](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c8d513b)
+#### [Step 1.8: Check if cordova exists](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/df88ffc)
 
 ##### Changed src&#x2F;app&#x2F;app.component.ts
 <pre>
-<i>@@ -15,8 +15,10 @@</i>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
  ┊15┊15┊    platform.ready().then(() &#x3D;&gt; {
  ┊16┊16┊      // Okay, so the platform is ready and our plugins are available.
  ┊17┊17┊      // Here you can do any higher level native things you might need.

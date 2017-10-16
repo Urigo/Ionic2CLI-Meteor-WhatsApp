@@ -1,36 +1,53 @@
 import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
-import { ImagePicker } from 'ionic-native';
 import { UploadFS } from 'meteor/jalik:ufs';
 import { PicturesStore } from 'api/collections';
 import { _ } from 'meteor/underscore';
 import { DEFAULT_PICTURE_URL } from 'api/models';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+import { Crop } from '@ionic-native/crop';
 
 @Injectable()
 export class PictureService {
-  constructor(private platform: Platform) {
+  constructor(private platform: Platform,
+              private camera: Camera,
+              private crop: Crop) {
   }
 
-  select(): Promise<Blob> {
-    if (!this.platform.is('cordova') || !this.platform.is('mobile')) {
+  getPicture(camera: boolean, crop: boolean): Promise<File> {
+    if (!this.platform.is('cordova')) {
       return new Promise((resolve, reject) => {
-        try {
-          UploadFS.selectFile((file: File) => {
-            resolve(file);
-          });
-        }
-        catch (e) {
-          reject(e);
+        //TODO: add javascript image crop
+        if (camera === true) {
+          reject(new Error("Can't access the camera on Browser"));
+        } else {
+          try {
+            UploadFS.selectFile((file: File) => {
+              resolve(file);
+            });
+          } catch (e) {
+            reject(e);
+          }
         }
       });
     }
 
-    return ImagePicker.getPictures({maximumImagesCount: 1}).then((URL: string) => {
-      return this.convertURLtoBlob(URL);
-    });
+    return this.camera.getPicture(<CameraOptions>{
+      destinationType: 1,
+      quality: 50,
+      correctOrientation: true,
+      saveToPhotoAlbum: false,
+      sourceType: camera ? 1 : 0
+    })
+      .then((fileURI) => {
+        return crop ? this.crop.crop(fileURI, {quality: 50}) : fileURI;
+      })
+      .then((croppedFileURI) => {
+        return this.convertURLtoBlob(croppedFileURI);
+      });
   }
 
-  upload(blob: Blob): Promise<any> {
+  upload(blob: File): Promise<any> {
     return new Promise((resolve, reject) => {
       const metadata = _.pick(blob, 'name', 'type', 'size');
 
@@ -50,35 +67,53 @@ export class PictureService {
     });
   }
 
-  convertURLtoBlob(URL: string): Promise<Blob> {
+  convertURLtoBlob(url: string, options = {}): Promise<File> {
     return new Promise((resolve, reject) => {
       const image = document.createElement('img');
 
       image.onload = () => {
         try {
-          const dataURI = this.convertImageToDataURI(image);
+          const dataURI = this.convertImageToDataURI(image, options);
           const blob = this.convertDataURIToBlob(dataURI);
+          const pathname = (new URL(url)).pathname;
+          const filename = pathname.substring(pathname.lastIndexOf('/') + 1);
+          const file = new File([blob], filename);
 
-          resolve(blob);
+          resolve(file);
         }
         catch (e) {
           reject(e);
         }
       };
 
-      image.src = URL;
+      image.src = url;
     });
   }
 
-  convertImageToDataURI(image: HTMLImageElement): string {
+  convertImageToDataURI(image: HTMLImageElement, {MAX_WIDTH = 400, MAX_HEIGHT = 400} = {}): string {
     // Create an empty canvas element
     const canvas = document.createElement('canvas');
-    canvas.width = image.width;
-    canvas.height = image.height;
+
+    var width = image.width, height = image.height;
+
+    if (width > height) {
+      if (width > MAX_WIDTH) {
+        height *= MAX_WIDTH / width;
+        width = MAX_WIDTH;
+      }
+    } else {
+      if (height > MAX_HEIGHT) {
+        width *= MAX_HEIGHT / height;
+        height = MAX_HEIGHT;
+      }
+    }
+
+    canvas.width = width;
+    canvas.height = height;
 
     // Copy the image contents to the canvas
     const context = canvas.getContext('2d');
-    context.drawImage(image, 0, 0);
+    context.drawImage(image, 0, 0, width, height);
 
     // Get the data-URL formatted image
     // Firefox supports PNG and JPEG. You could check image.src to

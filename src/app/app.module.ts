@@ -1,7 +1,18 @@
-import { NgModule, ErrorHandler } from '@angular/core';
-import { AgmCoreModule } from 'angular2-google-maps/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { ErrorHandler, NgModule } from '@angular/core';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
+import { Geolocation } from '@ionic-native/geolocation';
+import { ImagePicker } from '@ionic-native/image-picker';
+import { Sim } from '@ionic-native/sim';
+import { SmsReceiver } from "../ionic/sms-receiver";
+import { Camera } from '@ionic-native/camera';
+import { Crop } from '@ionic-native/crop';
+import { Contacts } from "@ionic-native/contacts";
+import { FCM } from "@ionic-native/fcm";
+import { AgmCoreModule } from '@agm/core';
 import { MomentModule } from 'angular2-moment';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { ChatsPage } from '../pages/chats/chats';
 import { NewChatComponent } from '../pages/chats/new-chat';
 import { ChatsOptionsComponent } from '../pages/chats/chats-options';
@@ -12,6 +23,7 @@ import { MessagesOptionsComponent } from '../pages/messages/messages-options';
 import { NewLocationMessageComponent } from '../pages/messages/location-message';
 import { ShowPictureComponent } from '../pages/messages/show-picture';
 import { ProfilePage } from '../pages/profile/profile';
+import { FacebookPage } from "../pages/login/facebook";
 import { VerificationPage } from '../pages/verification/verification';
 import { PhoneService } from '../services/phone';
 import { PictureService } from '../services/picture';
@@ -25,6 +37,7 @@ import { MyApp } from './app.component';
     LoginPage,
     VerificationPage,
     ProfilePage,
+    FacebookPage,
     ChatsOptionsComponent,
     NewChatComponent,
     MessagesOptionsComponent,
@@ -33,6 +46,7 @@ import { MyApp } from './app.component';
     ShowPictureComponent
   ],
   imports: [
+    BrowserModule,
     IonicModule.forRoot(MyApp),
     MomentModule,
     AgmCoreModule.forRoot({
@@ -47,6 +61,7 @@ import { MyApp } from './app.component';
     LoginPage,
     VerificationPage,
     ProfilePage,
+    FacebookPage,
     ChatsOptionsComponent,
     NewChatComponent,
     MessagesOptionsComponent,
@@ -55,9 +70,19 @@ import { MyApp } from './app.component';
     ShowPictureComponent
   ],
   providers: [
+    StatusBar,
+    SplashScreen,
+    Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     PhoneService,
-    PictureService
+    ImagePicker,
+    PictureService,
+    Sim,
+    SmsReceiver,
+    Camera,
+    Crop,
+    Contacts,
+    FCM
   ]
 })
 export class AppModule {}

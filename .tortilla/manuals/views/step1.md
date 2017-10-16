@@ -4,7 +4,7 @@
 
 Both [Meteor](https://meteor.com) and [Ionic](https://ionicframework.com) took their platform to the next level in tooling. They both provide CLI interfaces and build tools which will help you build a mobile-application.
 
-In this tutorial we will focus on the `Ionic` CLI; We will use it to serve the client and build the our project using [Cordova](https://cordova.apache.org/), and we will use `Meteor` as a platform for our server, so we will be able to use [Mongo collections](https://docs.meteor.com/api/collections.html) and [subscriptions](https://docs.meteor.com/api/pubsub.html).
+In this tutorial we will focus on the `Ionic` CLI; We will use it to serve the client and build our project using [Cordova](https://cordova.apache.org/), and we will use `Meteor` as a platform for our server, so we will be able to use [Mongo collections](https://docs.meteor.com/api/collections.html) and [subscriptions](https://docs.meteor.com/api/pubsub.html).
 
 > If you are interested in the [Meteor CLI](https://angular-meteor.com/tutorials/whatsapp2/meteor/setup), the steps needed to use it with Meteor are almost identical to the steps required by the Ionic CLI
 
@@ -16,7 +16,34 @@ We will start by installing Ionic and `Cordova` globally:
 
 We will create our `Whatsapp`-clone using the following command:
 
-    $ ionic start whatsapp --v2
+    $ ionic start whatsapp blank --cordova --skip-link
+
+Then we will add a declarations file with a wildcard module to allow third party libraries to be used in our app even if they don't provide their own type declarations:
+
+[{]: <helper> (diffStep 1.1)
+
+#### [Step 1.1: Add declarations file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/db5cbfb6a)
+
+##### Added src&#x2F;declarations.d.ts
+```diff
+@@ -0,0 +1,14 @@
++┊  ┊ 1┊/*
++┊  ┊ 2┊  Declaration files are how the Typescript compiler knows about the type information(or shape) of an object.
++┊  ┊ 3┊  They're what make intellisense work and make Typescript know all about your code.
++┊  ┊ 4┊
++┊  ┊ 5┊  A wildcard module is declared below to allow third party libraries to be used in an app even if they don't
++┊  ┊ 6┊  provide their own type declarations.
++┊  ┊ 7┊
++┊  ┊ 8┊  To learn more about using third party libraries in an Ionic app, check out the docs here:
++┊  ┊ 9┊  http://ionicframework.com/docs/v2/resources/third-party-libs/
++┊  ┊10┊
++┊  ┊11┊  For more info on type definition files, check out the Typescript docs here:
++┊  ┊12┊  https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html
++┊  ┊13┊*/
++┊  ┊14┊declare module '*';
+```
+
+[}]: #
 
 To start our app, simply type:
 
@@ -29,30 +56,30 @@ To start our app, simply type:
 - It prevents runtime errors.
 - Dependency injection is done automatically based on the provided data-types.
 
-In order to apply `TypeScript`, `Ionic`'s build system is built on top of a module bundler called [Rollup](http://rollupjs.org/).
+In order to apply `TypeScript`, `Ionic`'s build system is built on top of a module bundler called [Webpack](https://webpack.github.io).
 
-In this tutorial we will use a custom build-config, and replace `Rollup` with [Webpack](https://webpack.github.io). Both module-bundlers are great solutions for building our app, but `Webpack` provides us with some extra features like aliases and custom module-loaders which are crucial ingredients for our app to work properly.
+In this tutorial we will use a custom build-config for Webpack.
 
 ## Ionic 2 + Webpack
 
 The first thing we gonna do would be telling Ionic that we're using `Webpack` as our module-bundler. To specify it, add the following field in the `package.json` file:
 
-[{]: <helper> (diffStep 1.1)
+[{]: <helper> (diffStep 1.2)
 
-#### [Step 1.1: Add webpack config declration in package.json](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0e579fd)
+#### [Step 1.2: Add webpack config declaration in package.json](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/9773024a4)
 
 ##### Changed package.json
 ```diff
-@@ -51,5 +51,8 @@
- ┊51┊51┊      "locator": "ios"
- ┊52┊52┊    }
- ┊53┊53┊  ],
--┊54┊  ┊  "description": "whatsapp: An Ionic project"
-+┊  ┊54┊  "description": "whatsapp: An Ionic project",
-+┊  ┊55┊  "config": {
-+┊  ┊56┊    "ionic_webpack": "./webpack.config.js"
-+┊  ┊57┊  }
- ┊55┊58┊}
+@@ -40,5 +40,8 @@
+ ┊40┊40┊    "@ionic/cli-plugin-ionic-angular": "1.3.1",
+ ┊41┊41┊    "typescript": "2.3.3"
+ ┊42┊42┊  },
+-┊43┊  ┊  "description": "whatsapp: An Ionic project"
++┊  ┊43┊  "description": "whatsapp: An Ionic project",
++┊  ┊44┊  "config": {
++┊  ┊45┊    "ionic_webpack": "./webpack.config.js"
++┊  ┊46┊  }
+ ┊44┊47┊}
 ```
 
 [}]: #
@@ -63,13 +90,13 @@ Ionic provides us with a sample `Webpack` config file that we can extend later o
 
 The configuration file should look like so:
 
-[{]: <helper> (diffStep 1.2)
+[{]: <helper> (diffStep 1.3)
 
-#### [Step 1.2: Add Ionic&#x27;s base webpack file to the project](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5f75ed9)
+#### [Step 1.3: Add Ionic&#x27;s base webpack file to the project](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/a29329d7f)
 
 ##### Added webpack.config.js
 ```diff
-@@ -0,0 +1,44 @@
+@@ -0,0 +1,48 @@
 +┊  ┊ 1┊var path = require('path');
 +┊  ┊ 2┊var webpack = require('webpack');
 +┊  ┊ 3┊var ionicWebpackFactory = require(process.env.IONIC_WEBPACK_FACTORY);
@@ -78,42 +105,46 @@ The configuration file should look like so:
 +┊  ┊ 6┊  entry: process.env.IONIC_APP_ENTRY_POINT,
 +┊  ┊ 7┊  output: {
 +┊  ┊ 8┊    path: '{{BUILD}}',
-+┊  ┊ 9┊    filename: process.env.IONIC_OUTPUT_JS_FILE_NAME,
-+┊  ┊10┊    devtoolModuleFilenameTemplate: ionicWebpackFactory.getSourceMapperFunction(),
-+┊  ┊11┊  },
-+┊  ┊12┊  devtool: process.env.IONIC_GENERATE_SOURCE_MAP ? process.env.IONIC_SOURCE_MAP_TYPE : '',
-+┊  ┊13┊
-+┊  ┊14┊  resolve: {
-+┊  ┊15┊    extensions: ['.ts', '.js', '.json'],
-+┊  ┊16┊    modules: [path.resolve('node_modules')]
-+┊  ┊17┊  },
-+┊  ┊18┊
-+┊  ┊19┊  module: {
-+┊  ┊20┊    loaders: [
-+┊  ┊21┊      {
-+┊  ┊22┊        test: /\.json$/,
-+┊  ┊23┊        loader: 'json-loader'
-+┊  ┊24┊      },
-+┊  ┊25┊      {
-+┊  ┊26┊        //test: /\.(ts|ngfactory.js)$/,
++┊  ┊ 9┊    publicPath: 'build/',
++┊  ┊10┊    filename: process.env.IONIC_OUTPUT_JS_FILE_NAME,
++┊  ┊11┊    devtoolModuleFilenameTemplate: ionicWebpackFactory.getSourceMapperFunction(),
++┊  ┊12┊  },
++┊  ┊13┊  devtool: process.env.IONIC_SOURCE_MAP_TYPE,
++┊  ┊14┊
++┊  ┊15┊  resolve: {
++┊  ┊16┊    extensions: ['.ts', '.js', '.json'],
++┊  ┊17┊    modules: [path.resolve('node_modules')]
++┊  ┊18┊  },
++┊  ┊19┊
++┊  ┊20┊  module: {
++┊  ┊21┊    loaders: [
++┊  ┊22┊      {
++┊  ┊23┊        test: /\.json$/,
++┊  ┊24┊        loader: 'json-loader'
++┊  ┊25┊      },
++┊  ┊26┊      {
 +┊  ┊27┊        test: /\.ts$/,
 +┊  ┊28┊        loader: process.env.IONIC_WEBPACK_LOADER
-+┊  ┊29┊      }
-+┊  ┊30┊    ]
-+┊  ┊31┊  },
-+┊  ┊32┊
-+┊  ┊33┊  plugins: [
-+┊  ┊34┊    ionicWebpackFactory.getIonicEnvironmentPlugin()
-+┊  ┊35┊  ],
++┊  ┊29┊      },
++┊  ┊30┊      {
++┊  ┊31┊        test: /\.js$/,
++┊  ┊32┊        loader: process.env.IONIC_WEBPACK_TRANSPILE_LOADER
++┊  ┊33┊      }
++┊  ┊34┊    ]
++┊  ┊35┊  },
 +┊  ┊36┊
-+┊  ┊37┊  // Some libraries import Node modules but don't use them in the browser.
-+┊  ┊38┊  // Tell Webpack to provide empty mocks for them so importing them works.
-+┊  ┊39┊  node: {
-+┊  ┊40┊    fs: 'empty',
-+┊  ┊41┊    net: 'empty',
-+┊  ┊42┊    tls: 'empty'
-+┊  ┊43┊  }
-+┊  ┊44┊};
++┊  ┊37┊  plugins: [
++┊  ┊38┊    ionicWebpackFactory.getIonicEnvironmentPlugin(),
++┊  ┊39┊  ],
++┊  ┊40┊
++┊  ┊41┊  // Some libraries import Node modules but don't use them in the browser.
++┊  ┊42┊  // Tell Webpack to provide empty mocks for them so importing them works.
++┊  ┊43┊  node: {
++┊  ┊44┊    fs: 'empty',
++┊  ┊45┊    net: 'empty',
++┊  ┊46┊    tls: 'empty'
++┊  ┊47┊  }
++┊  ┊48┊};
 ```
 
 [}]: #
@@ -126,79 +157,77 @@ As we said earlier, this is only a base for our config. We would also like to ad
 
 To achieve these abilities, this is how our extension should look like:
 
-[{]: <helper> (diffStep 1.3)
+[{]: <helper> (diffStep 1.4)
 
-#### [Step 1.3: Updated webpack config file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/4a7dc24)
+#### [Step 1.4: Updated webpack config file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/51679eb66)
 
 ##### Changed webpack.config.js
 ```diff
-@@ -13,9 +13,16 @@
- ┊13┊13┊
- ┊14┊14┊  resolve: {
- ┊15┊15┊    extensions: ['.ts', '.js', '.json'],
--┊16┊  ┊    modules: [path.resolve('node_modules')]
-+┊  ┊16┊    modules: [path.resolve('node_modules')],
-+┊  ┊17┊    alias: {
-+┊  ┊18┊      'api': path.resolve(__dirname, 'api/server')
-+┊  ┊19┊    }
- ┊17┊20┊  },
- ┊18┊21┊
-+┊  ┊22┊  externals: [
-+┊  ┊23┊    resolveExternals
-+┊  ┊24┊  ],
-+┊  ┊25┊
- ┊19┊26┊  module: {
- ┊20┊27┊    loaders: [
- ┊21┊28┊      {
+@@ -14,9 +14,16 @@
+ ┊14┊14┊
+ ┊15┊15┊  resolve: {
+ ┊16┊16┊    extensions: ['.ts', '.js', '.json'],
+-┊17┊  ┊    modules: [path.resolve('node_modules')]
++┊  ┊17┊    modules: [path.resolve('node_modules')],
++┊  ┊18┊    alias: {
++┊  ┊19┊      'api': path.resolve(__dirname, 'api/server')
++┊  ┊20┊    }
+ ┊18┊21┊  },
+ ┊19┊22┊
++┊  ┊23┊  externals: [
++┊  ┊24┊    resolveExternals
++┊  ┊25┊  ],
++┊  ┊26┊
+ ┊20┊27┊  module: {
+ ┊21┊28┊    loaders: [
+ ┊22┊29┊      {
 ```
 ```diff
-@@ -31,7 +38,10 @@
- ┊31┊38┊  },
- ┊32┊39┊
- ┊33┊40┊  plugins: [
--┊34┊  ┊    ionicWebpackFactory.getIonicEnvironmentPlugin()
-+┊  ┊41┊    ionicWebpackFactory.getIonicEnvironmentPlugin(),
-+┊  ┊42┊    new webpack.ProvidePlugin({
-+┊  ┊43┊      __extends: 'typescript-extends'
-+┊  ┊44┊    })
- ┊35┊45┊  ],
- ┊36┊46┊
- ┊37┊47┊  // Some libraries import Node modules but don't use them in the browser.
+@@ -36,6 +43,9 @@
+ ┊36┊43┊
+ ┊37┊44┊  plugins: [
+ ┊38┊45┊    ionicWebpackFactory.getIonicEnvironmentPlugin(),
++┊  ┊46┊    new webpack.ProvidePlugin({
++┊  ┊47┊      __extends: 'typescript-extends'
++┊  ┊48┊    })
+ ┊39┊49┊  ],
+ ┊40┊50┊
+ ┊41┊51┊  // Some libraries import Node modules but don't use them in the browser.
 ```
 ```diff
-@@ -39,6 +49,22 @@
- ┊39┊49┊  node: {
- ┊40┊50┊    fs: 'empty',
- ┊41┊51┊    net: 'empty',
--┊42┊  ┊    tls: 'empty'
-+┊  ┊52┊    tls: 'empty',
-+┊  ┊53┊    __dirname: true
- ┊43┊54┊  }
- ┊44┊55┊};
-+┊  ┊56┊
-+┊  ┊57┊function resolveExternals(context, request, callback) {
-+┊  ┊58┊  return resolveMeteor(request, callback) ||
-+┊  ┊59┊    callback();
-+┊  ┊60┊}
-+┊  ┊61┊
-+┊  ┊62┊function resolveMeteor(request, callback) {
-+┊  ┊63┊  var match = request.match(/^meteor\/(.+)$/);
-+┊  ┊64┊  var pack = match && match[1];
+@@ -43,6 +53,22 @@
+ ┊43┊53┊  node: {
+ ┊44┊54┊    fs: 'empty',
+ ┊45┊55┊    net: 'empty',
+-┊46┊  ┊    tls: 'empty'
++┊  ┊56┊    tls: 'empty',
++┊  ┊57┊    __dirname: true
+ ┊47┊58┊  }
+ ┊48┊59┊};
++┊  ┊60┊
++┊  ┊61┊function resolveExternals(context, request, callback) {
++┊  ┊62┊  return resolveMeteor(request, callback) ||
++┊  ┊63┊    callback();
++┊  ┊64┊}
 +┊  ┊65┊
-+┊  ┊66┊  if (pack) {
-+┊  ┊67┊    callback(null, 'Package["' + pack + '"]');
-+┊  ┊68┊    return true;
-+┊  ┊69┊  }
-+┊  ┊70┊}
++┊  ┊66┊function resolveMeteor(request, callback) {
++┊  ┊67┊  var match = request.match(/^meteor\/(.+)$/);
++┊  ┊68┊  var pack = match && match[1];
++┊  ┊69┊
++┊  ┊70┊  if (pack) {
++┊  ┊71┊    callback(null, 'Package["' + pack + '"]');
++┊  ┊72┊    return true;
++┊  ┊73┊  }
++┊  ┊74┊}
 ```
 
 [}]: #
 
 In addition to the alias we've just created, we also need to tell the `TypesScript` compiler to include the `api` dir during the compilation process:
 
-[{]: <helper> (diffStep 1.4)
+[{]: <helper> (diffStep 1.5)
 
-#### [Step 1.4: Updated TypeScript config file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/35eaf07)
+#### [Step 1.5: Updated TypeScript config file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5461a2b60)
 
 ##### Changed tsconfig.json
 ```diff
@@ -233,9 +262,9 @@ And we will need to install the following dependencies so the `Webpack` config c
 
 Now, we need to make some modifications for the `TypeScript` config so we can load `Meteor` as an external dependency; One of the changes include the specification for `CommonJS`:
 
-[{]: <helper> (diffStep 1.6)
+[{]: <helper> (diffStep 1.7)
 
-#### [Step 1.6: Updated typscript compiler config](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/529881d)
+#### [Step 1.7: Updated typscript compiler config](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/d11f3cacd)
 
 ##### Changed tsconfig.json
 ```diff
@@ -300,27 +329,27 @@ By this point, you can run `ionic serve` and test how our application works with
     Native: tried calling StatusBar.styleDefault, but Cordova is not available. Make sure to include cordova.js or run in a device/simulator
     Native: tried calling Splashscreen.hide, but Cordova is not available. Make sure to include cordova.js or run in a device/simulator
 
-This is caused due to expectation to be run in a mobile environment. To fix this warning, simply check if the current platform supports `Cordova` before calling any methods related to it:
+This is caused due to the expectation to be run in a mobile environment. To fix this warning, simply check if the current platform supports `Cordova` before calling any methods related to it:
 
-[{]: <helper> (diffStep 1.8)
+[{]: <helper> (diffStep 1.9)
 
-#### [Step 1.8: Check if cordova exists](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0375f80)
+#### [Step 1.9: Check if cordova exists](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/973da4740)
 
 ##### Changed src&#x2F;app&#x2F;app.component.ts
 ```diff
-@@ -15,8 +15,10 @@
- ┊15┊15┊    platform.ready().then(() => {
- ┊16┊16┊      // Okay, so the platform is ready and our plugins are available.
- ┊17┊17┊      // Here you can do any higher level native things you might need.
--┊18┊  ┊      StatusBar.styleDefault();
--┊19┊  ┊      Splashscreen.hide();
-+┊  ┊18┊      if (platform.is('cordova')) {
-+┊  ┊19┊        StatusBar.styleDefault();
-+┊  ┊20┊        Splashscreen.hide();
-+┊  ┊21┊      }
- ┊20┊22┊    });
- ┊21┊23┊  }
- ┊22┊24┊}
+@@ -14,8 +14,10 @@
+ ┊14┊14┊    platform.ready().then(() => {
+ ┊15┊15┊      // Okay, so the platform is ready and our plugins are available.
+ ┊16┊16┊      // Here you can do any higher level native things you might need.
+-┊17┊  ┊      statusBar.styleDefault();
+-┊18┊  ┊      splashScreen.hide();
++┊  ┊17┊      if (platform.is('cordova')) {
++┊  ┊18┊        statusBar.styleDefault();
++┊  ┊19┊        splashScreen.hide();
++┊  ┊20┊      }
+ ┊19┊21┊    });
+ ┊20┊22┊  }
+ ┊21┊23┊}
 ```
 
 [}]: #

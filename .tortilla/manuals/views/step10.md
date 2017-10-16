@@ -6,7 +6,7 @@ In this step, we will implement a lazy-loading mechanism in the `MessagesPage`. 
 
 [{]: <helper> (diffStep 10.1)
 
-#### [Step 10.1: Added counter for messages publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/46be6a9)
+#### [Step 10.1: Added counter for messages publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/6e9ab8818)
 
 ##### Changed api&#x2F;server&#x2F;publications.ts
 ```diff
@@ -40,7 +40,7 @@ As we said, we will be fetching more and more messages gradually, so we will nee
 
 [{]: <helper> (diffStep 10.2)
 
-#### [Step 10.2: Add counter to client side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0da6596)
+#### [Step 10.2: Add counter to client side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0c48bb36b)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 ```diff
@@ -72,7 +72,7 @@ By now, whether you noticed or not, we have some sort of a limitation which we h
 
 [{]: <helper> (diffStep 10.3)
 
-#### [Step 10.3: Implement countMessages method on server side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/d45a4cb)
+#### [Step 10.3: Implement countMessages method on server side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7e23e05a9)
 
 ##### Changed api&#x2F;server&#x2F;methods.ts
 ```diff
@@ -93,7 +93,7 @@ Now, whenever we fetch a new messages-batch we will check if we reached the tota
 
 [{]: <helper> (diffStep 10.4)
 
-#### [Step 10.4: Implement actual load more logic](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/3260774)
+#### [Step 10.4: Implement actual load more logic](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/8d775f31d)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 ```diff
@@ -169,13 +169,13 @@ Now, whenever we fetch a new messages-batch we will check if we reached the tota
 
 ## Filter
 
-Now we're gonna implement the a search-bar, in the `NewChatComponent`.
+Now we're gonna implement a search-bar, in the `NewChatComponent`.
 
 Let's start by implementing the logic using `RxJS`. We will use a `BehaviorSubject` which will store the search pattern entered in the search bar, and we will be able to detect changes in its value using the `Observable` API; So whenever the search pattern is being changed, we will update the users list by re-subscribing to the `users` subscription:
 
 [{]: <helper> (diffStep 10.5)
 
-#### [Step 10.5: Implement the search bar logic with RxJS](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/68c796d)
+#### [Step 10.5: Implement the search bar logic with RxJS](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5782b82b4)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;new-chat.ts
 ```diff
@@ -253,7 +253,7 @@ Note how we used the `debounce` method to prevent subscription spamming. Let's a
 
 [{]: <helper> (diffStep 10.6)
 
-#### [Step 10.6: Update usage](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/8693a53)
+#### [Step 10.6: Update usage](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/da8c427b0)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;new-chat.html
 ```diff
@@ -294,7 +294,7 @@ Now we will modify the `users` subscription to accept the search-pattern, which 
 
 [{]: <helper> (diffStep 10.7)
 
-#### [Step 10.7: Add search pattern to the publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b20cd11)
+#### [Step 10.7: Add search pattern to the publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ff4471183)
 
 ##### Changed api&#x2F;server&#x2F;publications.ts
 ```diff
@@ -337,9 +337,9 @@ Now we will modify the `users` subscription to accept the search-pattern, which 
 
 [}]: #
 
-[{]: <helper> (navStep nextRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/google-maps" prevRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/privacy")
+[{]: <helper> (navStep nextRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/android-testing" prevRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/privacy")
 
-| [< Previous Step](https://angular-meteor.com/tutorials/whatsapp2/ionic/privacy) | [Next Step >](https://angular-meteor.com/tutorials/whatsapp2/ionic/google-maps) |
+| [< Previous Step](https://angular-meteor.com/tutorials/whatsapp2/ionic/privacy) | [Next Step >](https://angular-meteor.com/tutorials/whatsapp2/ionic/android-testing) |
 |:--------------------------------|--------------------------------:|
 
 [}]: #

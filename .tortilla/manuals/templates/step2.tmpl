@@ -8,14 +8,11 @@ An application created by `Ionic`'s CLI will have a very clear methodology. The 
 - `.scss` - A stylesheet file written in a `CSS` pre-process language called [SASS](https://sass-lang.com).
 - `.ts` - A script file written in `Typescript`.
 
-By default, the application will be created with 3 pages - `about`, `home` and `contact`. Since our app's flow doesn't contain any of them, we first gonna clean them up by running the following commands:
+By default, the application will be created with the `home` page. Since our app's flow doesn't contain it, we first gonna clean it up by running the following command:
 
-    $ rm -rf src/pages/about
     $ rm -rf src/pages/home
-    $ rm -rf src/pages/contact
-    $ rm -rf src/pages/tabs
 
-Second, we will remove their declaration in the app module:
+Second, we will remove its declaration in the app module:
 
 {{{diffStep 2.2}}}
 
@@ -59,9 +56,9 @@ Now, because we use `TypeScript`, we can define our own data-types and use them 
 
 {{{diffStep 2.9}}}
 
-Now that the models are up and set, we can use apply it to the `ChatsPage`:
+Now that the models are up and set, we can apply them to the `ChatsPage`:
 
-{{{diffStep 2.10}}}
+{{{diffStep "2.10"}}}
 
 ## Ionic's Theming System
 
@@ -71,7 +68,7 @@ Now that the models are up and set, we can use apply it to the `ChatsPage`:
 
 The `whatsapp` color can be used by adding an attribute called `color` with a value `whatsapp` to any Ionic component.
 
-To begin with, we can start by implementing the `ChatsView` and apply our newly defined theme into it. This view will contain a list representing all the available chats in the component's data-ser:
+To begin with, we can start by implementing the `ChatsView` and apply our newly defined theme into it. This view will contain a list representing all the available chats in the component's data-set:
 
 {{{diffStep 2.12}}}
 
