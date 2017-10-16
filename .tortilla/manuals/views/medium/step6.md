@@ -6,8 +6,8 @@ Before we implement anything related to the messages pages, we first have to mak
 
 [{]: <helper> (diffStep 6.1)
 
-#### [Step 6.1: Add showMessages](../../../../commit/133a10c)
-<br>
+#### [Step 6.1: Add showMessages](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ce5cf86)
+
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 <pre>
 <i>@@ -1,6 +1,7 @@</i>
@@ -49,8 +49,8 @@ And let's register the click event in the view:
 
 [{]: <helper> (diffStep 6.2)
 
-#### [Step 6.2: Bind click event to showMessages](../../../../commit/dbc4425)
-<br>
+#### [Step 6.2: Bind click event to showMessages](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/aede5a0)
+
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.html
 <pre>
 <i>@@ -17,7 +17,7 @@</i>
@@ -71,8 +71,8 @@ Let's go ahead and implement the messages component. We'll call it `MessagesPage
 
 [{]: <helper> (diffStep 6.3)
 
-#### [Step 6.3: Create a stub MessagesPage component](../../../../commit/da2b6ca)
-<br>
+#### [Step 6.3: Create a stub MessagesPage component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5c3225c)
+
 ##### Added src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 <pre>
 <i>@@ -0,0 +1,21 @@</i>
@@ -109,8 +109,8 @@ Don't forget that any component you create has to be imported in the app's modul
 
 [{]: <helper> (diffStep 6.4)
 
-#### [Step 6.4: Import MessagesPage in the NgModule](../../../../commit/ed6cf00)
-<br>
+#### [Step 6.4: Import MessagesPage in the NgModule](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/cbe7a13)
+
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 <pre>
 <i>@@ -2,12 +2,14 @@</i>
@@ -147,8 +147,8 @@ Now we can complete our `ChatsPage`'s navigation method by importing the `Messag
 
 [{]: <helper> (diffStep 6.5)
 
-#### [Step 6.5: Import MessagesPage to chats page](../../../../commit/fbe3f3c)
-<br>
+#### [Step 6.5: Import MessagesPage to chats page](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1354393)
+
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 <pre>
 <i>@@ -3,6 +3,7 @@</i>
@@ -167,8 +167,8 @@ We're missing some important details in the messages page. We don't know who we'
 
 [{]: <helper> (diffStep 6.6)
 
-#### [Step 6.6: Add basic messages component](../../../../commit/8bd644f)
-<br>
+#### [Step 6.6: Add basic messages component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ba744aa)
+
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 <pre>
 <i>@@ -1,21 +1,38 @@</i>
@@ -220,8 +220,8 @@ We will also have to update the message model to have an `ownership` property:
 
 [{]: <helper> (diffStep 6.7)
 
-#### [Step 6.7: Add ownership property to messages model](../../../../commit/fa5cb88)
-<br>
+#### [Step 6.7: Add ownership property to messages model](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/6bd57d6)
+
 ##### Changed api&#x2F;server&#x2F;models.ts
 <pre>
 <i>@@ -15,4 +15,5 @@</i>
@@ -238,8 +238,8 @@ Now that we have a basic component, let's implement a messages view as well:
 
 [{]: <helper> (diffStep 6.8)
 
-#### [Step 6.8: Add message page template](../../../../commit/0f2b2cc)
-<br>
+#### [Step 6.8: Add message page template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/25bb3fd)
+
 ##### Added src&#x2F;pages&#x2F;messages&#x2F;messages.html
 <pre>
 <i>@@ -0,0 +1,25 @@</i>
@@ -276,8 +276,8 @@ The template consists of a picture and a title inside the navigation bar. It als
 
 [{]: <helper> (diffStep 6.9)
 
-#### [Step 6.9: Style the message component](../../../../commit/f25f6a5)
-<br>
+#### [Step 6.9: Style the message component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/fcbba7a)
+
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.html
 <pre>
 <i>@@ -15,7 +15,7 @@</i>
@@ -326,7 +326,7 @@ The template consists of a picture and a title inside the navigation bar. It als
 <b>+┊   ┊ 31┊</b>
 <b>+┊   ┊ 32┊  .messages {</b>
 <b>+┊   ┊ 33┊    height: 100%;</b>
-<b>+┊   ┊ 34┊    background-image: url(/assets/chat-background.jpg);</b>
+<b>+┊   ┊ 34┊    background-image: url(../assets/chat-background.jpg);</b>
 <b>+┊   ┊ 35┊    background-color: #E0DAD6;</b>
 <b>+┊   ┊ 36┊    background-repeat: no-repeat;</b>
 <b>+┊   ┊ 37┊    background-size: cover;</b>
@@ -355,7 +355,7 @@ The template consists of a picture and a title inside the navigation bar. It als
 <b>+┊   ┊ 60┊</b>
 <b>+┊   ┊ 61┊      &amp;::before {</b>
 <b>+┊   ┊ 62┊        right: -11px;</b>
-<b>+┊   ┊ 63┊        background-image: url(/assets/message-mine.png)</b>
+<b>+┊   ┊ 63┊        background-image: url(../assets/message-mine.png)</b>
 <b>+┊   ┊ 64┊      }</b>
 <b>+┊   ┊ 65┊    }</b>
 <b>+┊   ┊ 66┊</b>
@@ -365,7 +365,7 @@ The template consists of a picture and a title inside the navigation bar. It als
 <b>+┊   ┊ 70┊</b>
 <b>+┊   ┊ 71┊      &amp;::before {</b>
 <b>+┊   ┊ 72┊        left: -11px;</b>
-<b>+┊   ┊ 73┊        background-image: url(/assets/message-other.png)</b>
+<b>+┊   ┊ 73┊        background-image: url(../assets/message-other.png)</b>
 <b>+┊   ┊ 74┊      }</b>
 <b>+┊   ┊ 75┊    }</b>
 <b>+┊   ┊ 76┊</b>
@@ -413,8 +413,8 @@ Now we need to take care of the message's timestamp and format it, then again we
 
 [{]: <helper> (diffStep 6.11)
 
-#### [Step 6.11: Use amDateFormat](../../../../commit/0babfe3)
-<br>
+#### [Step 6.11: Use amDateFormat](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e768de5)
+
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.html
 <pre>
 <i>@@ -18,7 +18,7 @@</i>
@@ -433,8 +433,8 @@ Our messages are set, but there is one really important feature missing: sending
 
 [{]: <helper> (diffStep 6.12)
 
-#### [Step 6.12: Add message editor to messages view template](../../../../commit/43a458b)
-<br>
+#### [Step 6.12: Add message editor to messages view template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/577dd87)
+
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.html
 <pre>
 <i>@@ -23,3 +23,19 @@</i>
@@ -465,8 +465,8 @@ Our stylesheet requires few adjustments as well:
 
 [{]: <helper> (diffStep 6.13)
 
-#### [Step 6.13: Add styles for message page footer](../../../../commit/71f0116)
-<br>
+#### [Step 6.13: Add styles for message page footer](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/a257460)
+
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.scss
 <pre>
 <i>@@ -104,3 +104,22 @@</i>
@@ -500,8 +500,8 @@ Now we can implement the handler for messages sending in the component:
 
 [{]: <helper> (diffStep 6.14)
 
-#### [Step 6.14: Implement sendTextMessage method](../../../../commit/c27c452)
-<br>
+#### [Step 6.14: Implement sendTextMessage method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/4a95f1c)
+
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 <pre>
 <i>@@ -1,8 +1,9 @@</i>
@@ -560,8 +560,8 @@ As you can see, we've used a `Meteor` method called `addMessage`, which is yet t
 
 [{]: <helper> (diffStep 6.15)
 
-#### [Step 6.15: Implement Meteor method for adding a new message](../../../../commit/f3b24b1)
-<br>
+#### [Step 6.15: Implement Meteor method for adding a new message](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e3d4ee1)
+
 ##### Added api&#x2F;server&#x2F;methods.ts
 <pre>
 <i>@@ -0,0 +1,23 @@</i>
@@ -602,8 +602,8 @@ And we're gonna use it in the `addMessage` method we've just defined:
 
 [{]: <helper> (diffStep 6.17)
 
-#### [Step 6.17: Use check to add validations](../../../../commit/5b36011)
-<br>
+#### [Step 6.17: Use check to add validations](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/11ac392)
+
 ##### Changed api&#x2F;server&#x2F;methods.ts
 <pre>
 <i>@@ -1,9 +1,19 @@</i>
@@ -636,8 +636,8 @@ In addition, we would like the view to auto-scroll down whenever a new message i
 
 [{]: <helper> (diffStep 6.18)
 
-#### [Step 6.18: Implement auto scroll](../../../../commit/eed1d52)
-<br>
+#### [Step 6.18: Implement auto scroll](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7f469c6)
+
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 <pre>
 <i>@@ -1,4 +1,4 @@</i>
@@ -732,8 +732,8 @@ We can group our messages right after being fetched by the `Observable` using th
 
 [{]: <helper> (diffStep 6.19)
 
-#### [Step 6.19: Add group by date to the UI](../../../../commit/d511a0d)
-<br>
+#### [Step 6.19: Add group by date to the UI](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/aa49d7c)
+
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 <pre>
 <i>@@ -1,9 +1,10 @@</i>
@@ -821,8 +821,8 @@ And now we will add a nested iteration in the messages view; The outer loop woul
 
 [{]: <helper> (diffStep 6.2)
 
-#### [Step 6.2: Bind click event to showMessages](../../../../commit/dbc4425)
-<br>
+#### [Step 6.2: Bind click event to showMessages](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/aede5a0)
+
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.html
 <pre>
 <i>@@ -17,7 +17,7 @@</i>

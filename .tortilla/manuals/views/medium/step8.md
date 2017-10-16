@@ -4,8 +4,8 @@ Our next step is about adding the ability to create new chats. We have the `Chat
 
 [{]: <helper> (diffStep 8.1)
 
-#### [Step 8.1: Added user model](../../../../commit/112cd82)
-<br>
+#### [Step 8.1: Added user model](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ba3cb0d)
+
 ##### Changed api&#x2F;server&#x2F;models.ts
 <pre>
 <i>@@ -25,3 +25,7 @@</i>
@@ -24,8 +24,8 @@ Our next step is about adding the ability to create new chats. We have the `Chat
 
 [{]: <helper> (diffStep 8.2)
 
-#### [Step 8.2: Wrap Meteor users collection](../../../../commit/302c8f5)
-<br>
+#### [Step 8.2: Wrap Meteor users collection](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/9a2540f)
+
 ##### Added api&#x2F;server&#x2F;collections&#x2F;users.ts
 <pre>
 <i>@@ -0,0 +1,5 @@</i>
@@ -42,8 +42,8 @@ For accessibility, we're gonna export the collection from the `index` file as we
 
 [{]: <helper> (diffStep 8.3)
 
-#### [Step 8.3: Export users collection form index file](../../../../commit/d494960)
-<br>
+#### [Step 8.3: Export users collection form index file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c4f1991)
+
 ##### Changed api&#x2F;server&#x2F;collections&#x2F;index.ts
 <pre>
 <i>@@ -1,2 +1,3 @@</i>
@@ -60,8 +60,8 @@ We will be using `Ionic`'s modal dialog to show the chat creation view. The firs
 
 [{]: <helper> (diffStep 8.4)
 
-#### [Step 8.4: Added new chat component](../../../../commit/648b3e2)
-<br>
+#### [Step 8.4: Added new chat component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/54c559c)
+
 ##### Added src&#x2F;pages&#x2F;chats&#x2F;new-chat.ts
 <pre>
 <i>@@ -0,0 +1,85 @@</i>
@@ -156,8 +156,8 @@ We will be using `Ionic`'s modal dialog to show the chat creation view. The firs
 
 [{]: <helper> (diffStep 8.5)
 
-#### [Step 8.5: Added new chat template](../../../../commit/9b65693)
-<br>
+#### [Step 8.5: Added new chat template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/a66dbb9)
+
 ##### Added src&#x2F;pages&#x2F;chats&#x2F;new-chat.html
 <pre>
 <i>@@ -0,0 +1,22 @@</i>
@@ -189,8 +189,8 @@ We will be using `Ionic`'s modal dialog to show the chat creation view. The firs
 
 [{]: <helper> (diffStep 8.6)
 
-#### [Step 8.6: Added new chat styles](../../../../commit/925baa6)
-<br>
+#### [Step 8.6: Added new chat styles](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/cd24ee4)
+
 ##### Added src&#x2F;pages&#x2F;chats&#x2F;new-chat.scss
 <pre>
 <i>@@ -0,0 +1,14 @@</i>
@@ -218,8 +218,8 @@ The dialog should be revealed whenever we click on one of the options in the opt
 
 [{]: <helper> (diffStep 8.7)
 
-#### [Step 8.7: Added addChat method](../../../../commit/e713f57)
-<br>
+#### [Step 8.7: Added addChat method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0c7beb6)
+
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 <pre>
 <i>@@ -1,10 +1,11 @@</i>
@@ -268,8 +268,8 @@ And bind it to the `click` event:
 
 [{]: <helper> (diffStep 8.8)
 
-#### [Step 8.8: Bind click event to new chat modal](../../../../commit/9a662f3)
-<br>
+#### [Step 8.8: Bind click event to new chat modal](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f3e6de0)
+
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.html
 <pre>
 <i>@@ -4,7 +4,7 @@</i>
@@ -288,8 +288,8 @@ We will import the newly created component in the app's `NgModule` as well, so i
 
 [{]: <helper> (diffStep 8.9)
 
-#### [Step 8.9: Import new chat component](../../../../commit/84a812d)
-<br>
+#### [Step 8.9: Import new chat component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f1b44b8)
+
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 <pre>
 <i>@@ -2,6 +2,7 @@</i>
@@ -330,8 +330,8 @@ We're also required to implement the appropriate `Meteor` method which will be t
 
 [{]: <helper> (diffStep 8.1)
 
-#### [Step 8.1: Added user model](../../../../commit/112cd82)
-<br>
+#### [Step 8.1: Added user model](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ba3cb0d)
+
 ##### Changed api&#x2F;server&#x2F;models.ts
 <pre>
 <i>@@ -25,3 +25,7 @@</i>
@@ -350,8 +350,8 @@ As you can see, a chat is inserted with an additional `memberIds` field. Wheneve
 
 [{]: <helper> (diffStep 8.11)
 
-#### [Step 8.11: Add memberIds field](../../../../commit/14c0931)
-<br>
+#### [Step 8.11: Add memberIds field](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ee99614)
+
 ##### Changed api&#x2F;server&#x2F;models.ts
 <pre>
 <i>@@ -14,6 +14,7 @@</i>
@@ -370,8 +370,8 @@ Thanks to our new-chat dialog, we can create chats dynamically with no need in i
 
 [{]: <helper> (diffStep 8.12)
 
-#### [Step 8.12: Create real user accounts](../../../../commit/0df9694)
-<br>
+#### [Step 8.12: Create real user accounts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e185f6a)
+
 ##### Changed api&#x2F;server&#x2F;main.ts
 <pre>
 <i>@@ -4,6 +4,7 @@</i>
@@ -440,8 +440,8 @@ Since we've changed the data fabrication method, the chat's title and picture ar
 
 [{]: <helper> (diffStep 8.13)
 
-#### [Step 8.13: Implement chats with with real data](../../../../commit/4c82729)
-<br>
+#### [Step 8.13: Implement chats with with real data](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/13834c9)
+
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 <pre>
 <i>@@ -1,8 +1,9 @@</i>

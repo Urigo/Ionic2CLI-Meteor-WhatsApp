@@ -18,7 +18,7 @@ For the sake of debugging we gonna write an authentication settings file (`api/p
 
 [{]: <helper> (diffStep 7.2)
 
-#### [Step 7.2: Add accounts-phone settings](../../../../commit/27e2f8f)
+#### [Step 7.2: Add accounts-phone settings](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/47f318d)
 
 ##### Added api&#x2F;private&#x2F;settings.json
 ```diff
@@ -43,18 +43,18 @@ To make it simpler we can add a script called `api` script to the `package.json`
 
 [{]: <helper> (diffStep 7.3)
 
-#### [Step 7.3: Updated NPM script](../../../../commit/41fdd9a)
+#### [Step 7.3: Updated NPM script](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ce934ac)
 
 ##### Changed package.json
 ```diff
-@@ -4,6 +4,7 @@
- ┊ 4┊ 4┊  "homepage": "http://ionicframework.com/",
- ┊ 5┊ 5┊  "private": true,
- ┊ 6┊ 6┊  "scripts": {
-+┊  ┊ 7┊    "api": "cd api && meteor run --settings private/settings.json",
- ┊ 7┊ 8┊    "clean": "ionic-app-scripts clean",
- ┊ 8┊ 9┊    "build": "ionic-app-scripts build",
- ┊ 9┊10┊    "ionic:build": "ionic-app-scripts build",
+@@ -8,6 +8,7 @@
+ ┊ 8┊ 8┊    "url": "https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp.git"
+ ┊ 9┊ 9┊  },
+ ┊10┊10┊  "scripts": {
++┊  ┊11┊    "api": "cd api && meteor run --settings private/settings.json",
+ ┊11┊12┊    "clean": "ionic-app-scripts clean",
+ ┊12┊13┊    "build": "ionic-app-scripts build",
+ ┊13┊14┊    "ionic:build": "ionic-app-scripts build",
 ```
 
 [}]: #
@@ -65,7 +65,7 @@ We will now apply the settings file we've just created so it can actually take e
 
 [{]: <helper> (diffStep 7.4)
 
-#### [Step 7.4: Added meteor accounts config](../../../../commit/41ba0af)
+#### [Step 7.4: Added meteor accounts config](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7830566)
 
 ##### Changed api&#x2F;server&#x2F;main.ts
 ```diff
@@ -95,7 +95,7 @@ And we will reference from the `tsconfig` like so:
 
 [{]: <helper> (diffStep 7.6)
 
-#### [Step 7.6: Updated tsconfig](../../../../commit/e610e24)
+#### [Step 7.6: Updated tsconfig](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/36b6df3)
 
 ##### Changed api&#x2F;tsconfig.json
 ```diff
@@ -121,7 +121,7 @@ Now, we will use the `Meteor`'s accounts system in the client. Our first use cas
 
 [{]: <helper> (diffStep 7.7)
 
-#### [Step 7.7: Wait for user if logging in](../../../../commit/fdfca8b)
+#### [Step 7.7: Wait for user if logging in](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b09f6cc)
 
 ##### Changed src&#x2F;app&#x2F;main.ts
 ```diff
@@ -154,7 +154,7 @@ To make things easier, we're going to organize all authentication related functi
 
 [{]: <helper> (diffStep 7.8)
 
-#### [Step 7.8: Added phone service](../../../../commit/cd6eced)
+#### [Step 7.8: Added phone service](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/308035e)
 
 ##### Added src&#x2F;services&#x2F;phone.ts
 ```diff
@@ -214,7 +214,7 @@ And we gonna require it in the app's `NgModule` so it can be recognized:
 
 [{]: <helper> (diffStep 7.9)
 
-#### [Step 7.9: Added phone service to NgModule](../../../../commit/2a32cfd)
+#### [Step 7.9: Added phone service to NgModule](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1dfe357)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -253,7 +253,7 @@ Just so the `TypeScript` compiler will know how to digest it, we shall also spec
 
 [{]: <helper> (diffStep 7.1)
 
-#### [Step 7.1: Add meteor packages to server side](../../../../commit/31d36bb)
+#### [Step 7.1: Add meteor packages to server side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/27f1985)
 
 ##### Changed api&#x2F;.meteor&#x2F;packages
 ```diff
@@ -343,7 +343,7 @@ Let's start by creating the `LoginComponent`. In this component we will request 
 
 [{]: <helper> (diffStep 7.11)
 
-#### [Step 7.11: Add login component](../../../../commit/19199b4)
+#### [Step 7.11: Add login component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/4314cef)
 
 ##### Added src&#x2F;pages&#x2F;login&#x2F;login.ts
 ```diff
@@ -424,7 +424,7 @@ Hopefully that the component's logic is clear now, let's move to the template:
 
 [{]: <helper> (diffStep 7.12)
 
-#### [Step 7.12: Add login template](../../../../commit/2216749)
+#### [Step 7.12: Add login template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7b165f8)
 
 ##### Added src&#x2F;pages&#x2F;login&#x2F;login.html
 ```diff
@@ -462,7 +462,7 @@ And add some style into it:
 
 [{]: <helper> (diffStep 7.13)
 
-#### [Step 7.13: Add login component styles](../../../../commit/d2d3d15)
+#### [Step 7.13: Add login component styles](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f28beee)
 
 ##### Added src&#x2F;pages&#x2F;login&#x2F;login.scss
 ```diff
@@ -486,7 +486,7 @@ And as usual, newly created components should be imported in the app's module:
 
 [{]: <helper> (diffStep 7.14)
 
-#### [Step 7.14: Import login component](../../../../commit/3b89623)
+#### [Step 7.14: Import login component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/35369e1)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -530,7 +530,7 @@ We will also need to identify if the user is logged in or not once the app is la
 
 [{]: <helper> (diffStep 7.15)
 
-#### [Step 7.15: Add user identification in app&#x27;s main component](../../../../commit/85cf7d8)
+#### [Step 7.15: Add user identification in app&#x27;s main component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/d26653f)
 
 ##### Changed src&#x2F;app&#x2F;app.component.ts
 ```diff
@@ -562,7 +562,7 @@ Let's proceed and implement the verification page. We will start by creating its
 
 [{]: <helper> (diffStep 7.16)
 
-#### [Step 7.16: Added verification component](../../../../commit/e978111)
+#### [Step 7.16: Added verification component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/bee5cc8)
 
 ##### Added src&#x2F;pages&#x2F;verification&#x2F;verification.ts
 ```diff
@@ -621,7 +621,7 @@ Let's proceed and implement the verification page. We will start by creating its
 
 [{]: <helper> (diffStep 7.17)
 
-#### [Step 7.17: Added verification template](../../../../commit/ce8cae5)
+#### [Step 7.17: Added verification template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/82a54ed)
 
 ##### Added src&#x2F;pages&#x2F;verification&#x2F;verification.html
 ```diff
@@ -657,7 +657,7 @@ Let's proceed and implement the verification page. We will start by creating its
 
 [{]: <helper> (diffStep 7.18)
 
-#### [Step 7.18: Added stylesheet for verification component](../../../../commit/d49bd21)
+#### [Step 7.18: Added stylesheet for verification component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b771861)
 
 ##### Added src&#x2F;pages&#x2F;verification&#x2F;verification.scss
 ```diff
@@ -681,7 +681,7 @@ And add it to the `NgModule`:
 
 [{]: <helper> (diffStep 7.19)
 
-#### [Step 7.19: Import verification component](../../../../commit/1818a1d)
+#### [Step 7.19: Import verification component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1a24241)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -725,7 +725,7 @@ Now we can make sure that anytime we login, we will be promoted to the `Verifica
 
 [{]: <helper> (diffStep 7.2)
 
-#### [Step 7.2: Add accounts-phone settings](../../../../commit/27e2f8f)
+#### [Step 7.2: Add accounts-phone settings](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/47f318d)
 
 ##### Added api&#x2F;private&#x2F;settings.json
 ```diff
@@ -746,7 +746,7 @@ The last step in our authentication pattern is setting our profile. We will crea
 
 [{]: <helper> (diffStep 7.21)
 
-#### [Step 7.21: Add profile interface](../../../../commit/b9ba322)
+#### [Step 7.21: Add profile interface](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/a01474f)
 
 ##### Changed api&#x2F;server&#x2F;models.ts
 ```diff
@@ -773,7 +773,7 @@ Now we can safely proceed to implementing the `ProfileComponent`:
 
 [{]: <helper> (diffStep 7.23)
 
-#### [Step 7.23: Add profile component](../../../../commit/b1fd7ee)
+#### [Step 7.23: Add profile component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0dd44aa)
 
 ##### Added src&#x2F;pages&#x2F;profile&#x2F;profile.ts
 ```diff
@@ -832,7 +832,7 @@ Now we can safely proceed to implementing the `ProfileComponent`:
 
 [{]: <helper> (diffStep 7.24)
 
-#### [Step 7.24: Add profile template](../../../../commit/bb44d74)
+#### [Step 7.24: Add profile template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/8f0a6f5)
 
 ##### Added src&#x2F;pages&#x2F;profile&#x2F;profile.html
 ```diff
@@ -863,7 +863,7 @@ Now we can safely proceed to implementing the `ProfileComponent`:
 
 [{]: <helper> (diffStep 7.25)
 
-#### [Step 7.25: Add profile component style](../../../../commit/0d69e73)
+#### [Step 7.25: Add profile component style](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/117ebd8)
 
 ##### Added src&#x2F;pages&#x2F;profile&#x2F;profile.scss
 ```diff
@@ -896,7 +896,7 @@ Let's redirect users who passed the verification stage to the newly created `Pro
 
 [{]: <helper> (diffStep 7.26)
 
-#### [Step 7.26: Use profile component in verification page](../../../../commit/24da850)
+#### [Step 7.26: Use profile component in verification page](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/aece374)
 
 ##### Changed src&#x2F;pages&#x2F;verification&#x2F;verification.ts
 ```diff
@@ -931,7 +931,7 @@ We will also need to import the `ProfileComponent` in the app's `NgModule` so it
 
 [{]: <helper> (diffStep 7.27)
 
-#### [Step 7.27: Import profile component](../../../../commit/9857638)
+#### [Step 7.27: Import profile component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/9b7b437)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -975,7 +975,7 @@ The core logic behind this component actually lies within the invocation of the 
 
 [{]: <helper> (diffStep 7.28)
 
-#### [Step 7.28: Added updateProfile method](../../../../commit/af61812)
+#### [Step 7.28: Added updateProfile method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/68d404d)
 
 ##### Changed api&#x2F;server&#x2F;methods.ts
 ```diff
@@ -1018,7 +1018,7 @@ Now that our authentication flow is complete, we will need to edit the messages,
 
 [{]: <helper> (diffStep 7.29)
 
-#### [Step 7.29: Added restriction on new message method](../../../../commit/be2b892)
+#### [Step 7.29: Added restriction on new message method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/165dc11)
 
 ##### Changed api&#x2F;server&#x2F;methods.ts
 ```diff
@@ -1050,18 +1050,18 @@ This requires us to update the `Message` model as well so `TypeScript` will reco
 
 [{]: <helper> (diffStep 7.3)
 
-#### [Step 7.3: Updated NPM script](../../../../commit/41fdd9a)
+#### [Step 7.3: Updated NPM script](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ce934ac)
 
 ##### Changed package.json
 ```diff
-@@ -4,6 +4,7 @@
- ┊ 4┊ 4┊  "homepage": "http://ionicframework.com/",
- ┊ 5┊ 5┊  "private": true,
- ┊ 6┊ 6┊  "scripts": {
-+┊  ┊ 7┊    "api": "cd api && meteor run --settings private/settings.json",
- ┊ 7┊ 8┊    "clean": "ionic-app-scripts clean",
- ┊ 8┊ 9┊    "build": "ionic-app-scripts build",
- ┊ 9┊10┊    "ionic:build": "ionic-app-scripts build",
+@@ -8,6 +8,7 @@
+ ┊ 8┊ 8┊    "url": "https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp.git"
+ ┊ 9┊ 9┊  },
+ ┊10┊10┊  "scripts": {
++┊  ┊11┊    "api": "cd api && meteor run --settings private/settings.json",
+ ┊11┊12┊    "clean": "ionic-app-scripts clean",
+ ┊12┊13┊    "build": "ionic-app-scripts build",
+ ┊13┊14┊    "ionic:build": "ionic-app-scripts build",
 ```
 
 [}]: #
@@ -1070,7 +1070,7 @@ Now we can determine if a message is ours or not in the `MessagePage` thanks to 
 
 [{]: <helper> (diffStep 7.31)
 
-#### [Step 7.31: Use actual ownership of the message](../../../../commit/da62f55)
+#### [Step 7.31: Use actual ownership of the message](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/56599c4)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 ```diff
@@ -1127,7 +1127,7 @@ A popover, just like a page in our app, consists of a component, view, and style
 
 [{]: <helper> (diffStep 7.32)
 
-#### [Step 7.32: Add chat options component](../../../../commit/98c55a5)
+#### [Step 7.32: Add chat options component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f01801b)
 
 ##### Added src&#x2F;pages&#x2F;chats&#x2F;chats-options.ts
 ```diff
@@ -1213,7 +1213,7 @@ A popover, just like a page in our app, consists of a component, view, and style
 
 [{]: <helper> (diffStep 7.33)
 
-#### [Step 7.33: Added chats options template](../../../../commit/559ac71)
+#### [Step 7.33: Added chats options template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/3d12595)
 
 ##### Added src&#x2F;pages&#x2F;chats&#x2F;chats-options.html
 ```diff
@@ -1237,7 +1237,7 @@ A popover, just like a page in our app, consists of a component, view, and style
 
 [{]: <helper> (diffStep 7.34)
 
-#### [Step 7.34: Added chat options stylesheets](../../../../commit/7cc76f2)
+#### [Step 7.34: Added chat options stylesheets](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/980a107)
 
 ##### Added src&#x2F;pages&#x2F;chats&#x2F;chats-options.scss
 ```diff
@@ -1263,7 +1263,7 @@ It requires us to import it in the `NgModule` as well:
 
 [{]: <helper> (diffStep 7.35)
 
-#### [Step 7.35: Import chat options](../../../../commit/240c4e3)
+#### [Step 7.35: Import chat options](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f652cee)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -1307,7 +1307,7 @@ Now we will implement the method in the `ChatsPage` which will initialize the `C
 
 [{]: <helper> (diffStep 7.36)
 
-#### [Step 7.36: Added showOptions method](../../../../commit/bdf11f3)
+#### [Step 7.36: Added showOptions method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/35132b2)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 ```diff
@@ -1359,7 +1359,7 @@ The method is invoked thanks to the following binding in the chats view:
 
 [{]: <helper> (diffStep 7.37)
 
-#### [Step 7.37: Bind click event to showOptions method](../../../../commit/3b95327)
+#### [Step 7.37: Bind click event to showOptions method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c5ca4a9)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.html
 ```diff
@@ -1380,7 +1380,7 @@ As for now, once you click on the options icon in the chats view, the popover sh
 
 [{]: <helper> (diffStep 7.38)
 
-#### [Step 7.38: Added chat options popover stylesheet](../../../../commit/08e1829)
+#### [Step 7.38: Added chat options popover stylesheet](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/a683401)
 
 ##### Changed src&#x2F;app&#x2F;app.scss
 ```diff

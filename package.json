@@ -3,6 +3,10 @@
   "author": "Ionic Framework",
   "homepage": "http://ionicframework.com/",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp.git"
+  },
   "scripts": {
     "api": "cd api && meteor run --settings private/settings.json",
     "clean": "ionic-app-scripts clean",

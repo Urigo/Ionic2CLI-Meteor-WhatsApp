@@ -6,8 +6,8 @@ In this step, we will implement a lazy-loading mechanism in the `MessagesPage`. 
 
 [{]: <helper> (diffStep 10.1)
 
-#### [Step 10.1: Added counter for messages publication](../../../../commit/9014d74)
-<br>
+#### [Step 10.1: Added counter for messages publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/06b4de9)
+
 ##### Changed api&#x2F;server&#x2F;publications.ts
 <pre>
 <i>@@ -15,7 +15,9 @@</i>
@@ -38,8 +38,8 @@ As we said, we will be fetching more and more messages gradually, so we will nee
 
 [{]: <helper> (diffStep 10.2)
 
-#### [Step 10.2: Add counter to client side](../../../../commit/139b415)
-<br>
+#### [Step 10.2: Add counter to client side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/4125c60)
+
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 <pre>
 <i>@@ -23,6 +23,7 @@</i>
@@ -69,8 +69,8 @@ By now, whether you noticed or not, we have some sort of a limitation which we h
 
 [{]: <helper> (diffStep 10.3)
 
-#### [Step 10.3: Implement countMessages method on server side](../../../../commit/cbe9ab9)
-<br>
+#### [Step 10.3: Implement countMessages method on server side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/bec489d)
+
 ##### Changed api&#x2F;server&#x2F;methods.ts
 <pre>
 <i>@@ -90,5 +90,8 @@</i>
@@ -90,8 +90,8 @@ Now, whenever we fetch a new messages-batch we will check if we reached the tota
 
 [{]: <helper> (diffStep 10.4)
 
-#### [Step 10.4: Implement actual load more logic](../../../../commit/9c39e6c)
-<br>
+#### [Step 10.4: Implement actual load more logic](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/d21d569)
+
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 <pre>
 <i>@@ -6,7 +6,7 @@</i>
@@ -171,8 +171,8 @@ Let's start by implementing the logic using `RxJS`. We will use a `BehaviorSubje
 
 [{]: <helper> (diffStep 10.5)
 
-#### [Step 10.5: Implement the search bar logic with RxJS](../../../../commit/e64b47d)
-<br>
+#### [Step 10.5: Implement the search bar logic with RxJS](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/215ba18)
+
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;new-chat.ts
 <pre>
 <i>@@ -4,13 +4,14 @@</i>
@@ -244,8 +244,8 @@ Note how we used the `debounce` method to prevent subscription spamming. Let's a
 
 [{]: <helper> (diffStep 10.6)
 
-#### [Step 10.6: Update usage](../../../../commit/aa30be9)
-<br>
+#### [Step 10.6: Update usage](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/30b4147)
+
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;new-chat.html
 <pre>
 <i>@@ -1,5 +1,16 @@</i>
@@ -283,8 +283,8 @@ Now we will modify the `users` subscription to accept the search-pattern, which 
 
 [{]: <helper> (diffStep 10.7)
 
-#### [Step 10.7: Add search pattern to the publication](../../../../commit/f9ac9d0)
-<br>
+#### [Step 10.7: Add search pattern to the publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b1fd143)
+
 ##### Changed api&#x2F;server&#x2F;publications.ts
 <pre>
 <i>@@ -3,16 +3,29 @@</i>

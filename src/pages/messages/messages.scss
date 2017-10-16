@@ -31,7 +31,7 @@
 
   .messages {
     height: 100%;
-    background-image: url(/assets/chat-background.jpg);
+    background-image: url(../assets/chat-background.jpg);
     background-color: #E0DAD6;
     background-repeat: no-repeat;
     background-size: cover;
@@ -60,7 +60,7 @@
 
       &::before {
         right: -11px;
-        background-image: url(/assets/message-mine.png)
+        background-image: url(../assets/message-mine.png)
       }
     }
 
@@ -70,7 +70,7 @@
 
       &::before {
         left: -11px;
-        background-image: url(/assets/message-other.png)
+        background-image: url(../assets/message-other.png)
       }
     }
 

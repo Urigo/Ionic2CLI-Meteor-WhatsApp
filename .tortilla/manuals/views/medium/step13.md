@@ -8,8 +8,8 @@ In this step, we will be implementing additional native features, to enhance the
 
 [{]: <helper> (diffStep 13.1)
 
-#### [Step 13.1: Implement getNumber with native ionic](../../../../commit/a86d4b1)
-<br>
+#### [Step 13.1: Implement getNumber with native ionic](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/004c193)
+
 ##### Changed src&#x2F;services&#x2F;phone.ts
 <pre>
 <i>@@ -2,6 +2,7 @@</i>
@@ -48,8 +48,8 @@ And we will use it inside the `LoginPage`:
 
 [{]: <helper> (diffStep 13.2)
 
-#### [Step 13.2: Use getNumber native method](../../../../commit/f635a64)
-<br>
+#### [Step 13.2: Use getNumber native method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b707e54)
+
 ##### Changed src&#x2F;pages&#x2F;login&#x2F;login.ts
 <pre>
 <i>@@ -1,4 +1,4 @@</i>
@@ -104,8 +104,8 @@ We will bind the `click` event in the `MessagesAttachmentsComponent`:
 
 [{]: <helper> (diffStep 13.5)
 
-#### [Step 13.5: Added click event for takePicture](../../../../commit/502deb8)
-<br>
+#### [Step 13.5: Added click event for takePicture](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/eb0d624)
+
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.html
 <pre>
 <i>@@ -5,7 +5,7 @@</i>
@@ -124,8 +124,8 @@ And we will use the recently installed `Cordova` plug-in in the event handler to
 
 [{]: <helper> (diffStep 13.6)
 
-#### [Step 13.6: Implement takePicture](../../../../commit/48a4f0a)
-<br>
+#### [Step 13.6: Implement takePicture](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/fc78777)
+
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.ts
 <pre>
 <i>@@ -3,6 +3,7 @@</i>

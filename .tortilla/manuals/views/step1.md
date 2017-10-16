@@ -39,20 +39,20 @@ The first thing we gonna do would be telling Ionic that we're using `Webpack` as
 
 [{]: <helper> (diffStep 1.1)
 
-#### [Step 1.1: Add webpack config declration in package.json](../../../../commit/0c38a3f)
+#### [Step 1.1: Add webpack config declration in package.json](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0e579fd)
 
 ##### Changed package.json
 ```diff
-@@ -47,5 +47,8 @@
- ┊47┊47┊      "locator": "ios"
- ┊48┊48┊    }
- ┊49┊49┊  ],
--┊50┊  ┊  "description": "whatsapp: An Ionic project"
-+┊  ┊50┊  "description": "whatsapp: An Ionic project",
-+┊  ┊51┊  "config": {
-+┊  ┊52┊    "ionic_webpack": "./webpack.config.js"
-+┊  ┊53┊  }
- ┊51┊54┊}
+@@ -51,5 +51,8 @@
+ ┊51┊51┊      "locator": "ios"
+ ┊52┊52┊    }
+ ┊53┊53┊  ],
+-┊54┊  ┊  "description": "whatsapp: An Ionic project"
++┊  ┊54┊  "description": "whatsapp: An Ionic project",
++┊  ┊55┊  "config": {
++┊  ┊56┊    "ionic_webpack": "./webpack.config.js"
++┊  ┊57┊  }
+ ┊55┊58┊}
 ```
 
 [}]: #
@@ -65,7 +65,7 @@ The configuration file should look like so:
 
 [{]: <helper> (diffStep 1.2)
 
-#### [Step 1.2: Add Ionic&#x27;s base webpack file to the project](../../../../commit/c880789)
+#### [Step 1.2: Add Ionic&#x27;s base webpack file to the project](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5f75ed9)
 
 ##### Added webpack.config.js
 ```diff
@@ -128,7 +128,7 @@ To achieve these abilities, this is how our extension should look like:
 
 [{]: <helper> (diffStep 1.3)
 
-#### [Step 1.3: Updated webpack config file](../../../../commit/df775c9)
+#### [Step 1.3: Updated webpack config file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/4a7dc24)
 
 ##### Changed webpack.config.js
 ```diff
@@ -198,7 +198,7 @@ In addition to the alias we've just created, we also need to tell the `TypesScri
 
 [{]: <helper> (diffStep 1.4)
 
-#### [Step 1.4: Updated TypeScript config file](../../../../commit/4f4d293)
+#### [Step 1.4: Updated TypeScript config file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/35eaf07)
 
 ##### Changed tsconfig.json
 ```diff
@@ -235,7 +235,7 @@ Now, we need to make some modifications for the `TypeScript` config so we can lo
 
 [{]: <helper> (diffStep 1.6)
 
-#### [Step 1.6: Updated typscript compiler config](../../../../commit/ff3530c)
+#### [Step 1.6: Updated typscript compiler config](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/529881d)
 
 ##### Changed tsconfig.json
 ```diff
@@ -304,7 +304,7 @@ This is caused due to expectation to be run in a mobile environment. To fix this
 
 [{]: <helper> (diffStep 1.8)
 
-#### [Step 1.8: Check if cordova exists](../../../../commit/2c05ab4)
+#### [Step 1.8: Check if cordova exists](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0375f80)
 
 ##### Changed src&#x2F;app&#x2F;app.component.ts
 ```diff
