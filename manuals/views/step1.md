@@ -1,12 +1,12 @@
 # Step 1: Bootstrapping
 
-> If you got directly into here, please read the whole [intro section](/tutorials/whatsapp2-tutorial) explaining the goals for this tutorial and project.
+> If you got directly into here, please read the whole [intro section](https://angular-meteor.com/tutorials/whatsapp2-tutorial) explaining the goals for this tutorial and project.
 
 Both [Meteor](https://meteor.com) and [Ionic](https://ionicframework.com) took their platform to the next level in tooling. They both provide CLI interfaces and build tools which will help you build a mobile-application.
 
 In this tutorial we will focus on the `Ionic` CLI; We will use it to serve the client and build the our project using [Cordova](https://cordova.apache.org/), and we will use `Meteor` as a platform for our server, so we will be able to use [Mongo collections](https://docs.meteor.com/api/collections.html) and [subscriptions](https://docs.meteor.com/api/pubsub.html).
 
-> If you are interested in the Angular CLI, the steps needed to use it with Meteor are almost identical to the steps required by the Ionic CLI
+> If you are interested in the [Meteor CLI](https://angular-meteor.com/tutorials/whatsapp2/meteor/setup), the steps needed to use it with Meteor are almost identical to the steps required by the Ionic CLI
 
 The only pre-requirements for this tutorial is for you to have `Node.JS` version 5 or above installed. If you haven't already installed it, you can download it from its official website over [here](https://nodejs.org/en/).
 
