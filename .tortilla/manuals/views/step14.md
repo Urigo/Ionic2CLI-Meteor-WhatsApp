@@ -13,9 +13,9 @@ Let's start installing the `Sim` `Cordova` plug-in:
 
 Then let's add it to `app.module.ts`:
 
-[{]: <helper> (diffStep 14.2)
+[{]: <helper> (diffStep "14.2")
 
-#### [Step 14.2: Add Sim to app.module.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1abde3300)
+#### [Step 14.2: Add Sim to app.module.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/61d70f41)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -45,9 +45,9 @@ Then let's add it to `app.module.ts`:
 
 Let's add the appropriate handler in the `PhoneService`, we will use it inside the `LoginPage`:
 
-[{]: <helper> (diffStep 14.3)
+[{]: <helper> (diffStep "14.3")
 
-#### [Step 14.3: Use getNumber native method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/fc5748c6b)
+#### [Step 14.3: Use getNumber native method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f52922c2)
 
 ##### Changed src&#x2F;pages&#x2F;login&#x2F;login.ts
 ```diff
@@ -87,26 +87,26 @@ Let's add the appropriate handler in the `PhoneService`, we will use it inside t
 
 [}]: #
 
-[{]: <helper> (diffStep 14.4)
+[{]: <helper> (diffStep "14.4")
 
-#### [Step 14.4: Implement getNumber with native ionic](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/d9f5a7a31)
+#### [Step 14.4: Implement getNumber with native ionic](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7a017df5)
 
 ##### Changed src&#x2F;services&#x2F;phone.ts
 ```diff
-@@ -2,13 +2,31 @@
+@@ -1,9 +1,32 @@
+ ┊ 1┊ 1┊import { Injectable } from '@angular/core';
  ┊ 2┊ 2┊import { Accounts } from 'meteor/accounts-base';
  ┊ 3┊ 3┊import { Meteor } from 'meteor/meteor';
- ┊ 4┊ 4┊import { Platform } from 'ionic-angular';
++┊  ┊ 4┊import { Platform } from 'ionic-angular';
 +┊  ┊ 5┊import { Sim } from '@ionic-native/sim';
- ┊ 5┊ 6┊
- ┊ 6┊ 7┊@Injectable()
- ┊ 7┊ 8┊export class PhoneService {
--┊ 8┊  ┊  constructor(private platform: Platform) {
+ ┊ 4┊ 6┊
+ ┊ 5┊ 7┊@Injectable()
+ ┊ 6┊ 8┊export class PhoneService {
 +┊  ┊ 9┊  constructor(private platform: Platform,
 +┊  ┊10┊              private sim: Sim) {
- ┊ 9┊11┊
- ┊10┊12┊  }
- ┊11┊13┊
++┊  ┊11┊
++┊  ┊12┊  }
++┊  ┊13┊
 +┊  ┊14┊  async getNumber(): Promise<string> {
 +┊  ┊15┊    if (!this.platform.is('cordova')) {
 +┊  ┊16┊      throw new Error('Cannot read SIM, platform is not Cordova.')
@@ -123,17 +123,9 @@ Let's add the appropriate handler in the `PhoneService`, we will use it inside t
 +┊  ┊27┊    return '+' + (await this.sim.getSimInfo()).phoneNumber;
 +┊  ┊28┊  }
 +┊  ┊29┊
- ┊12┊30┊  verify(phoneNumber: string): Promise<void> {
- ┊13┊31┊    return new Promise<void>((resolve, reject) => {
- ┊14┊32┊      Accounts.requestPhoneVerification(phoneNumber, (e: Error) => {
-```
-```diff
-@@ -44,4 +62,4 @@
- ┊44┊62┊      });
- ┊45┊63┊    });
- ┊46┊64┊  }
--┊47┊  ┊}🚫↵
-+┊  ┊65┊}
+ ┊ 7┊30┊  verify(phoneNumber: string): Promise<void> {
+ ┊ 8┊31┊    return new Promise<void>((resolve, reject) => {
+ ┊ 9┊32┊      Accounts.requestPhoneVerification(phoneNumber, (e: Error) => {
 ```
 
 [}]: #
@@ -144,51 +136,13 @@ On supported platforms (`Android`) it would be nice to automatically detect the 
 
 We need to add the `Cordova` plugin first:
 
-[{]: <helper> (diffStep 14.5)
-
-#### [Step 14.5: Added cordova plugin for reading SMS OTP](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/153177e74)
-
-##### Changed config.xml
-```diff
-@@ -87,4 +87,5 @@
- ┊87┊87┊    <plugin name="cordova-plugin-geolocation" spec="^2.4.3" />
- ┊88┊88┊    <plugin name="com.synconset.imagepicker" spec="git+https://github.com/darkbasic/ImagePicker.git" />
- ┊89┊89┊    <plugin name="cordova-plugin-sim" spec="^1.3.3" />
-+┊  ┊90┊    <plugin name="cordova-plugin-sms-receiver" spec="^0.1.6" />
- ┊90┊91┊</widget>
-```
-
-##### Changed package.json
-```diff
-@@ -44,6 +44,7 @@
- ┊44┊44┊    "cordova-plugin-device": "^1.1.4",
- ┊45┊45┊    "cordova-plugin-geolocation": "^2.4.3",
- ┊46┊46┊    "cordova-plugin-sim": "^1.3.3",
-+┊  ┊47┊    "cordova-plugin-sms-receiver": "^0.1.6",
- ┊47┊48┊    "cordova-plugin-splashscreen": "^4.0.3",
- ┊48┊49┊    "cordova-plugin-statusbar": "^2.2.2",
- ┊49┊50┊    "cordova-plugin-whitelist": "^1.3.1",
-```
-```diff
-@@ -86,7 +87,8 @@
- ┊86┊87┊      "ionic-plugin-keyboard": {},
- ┊87┊88┊      "cordova-plugin-geolocation": {},
- ┊88┊89┊      "com.synconset.imagepicker": {},
--┊89┊  ┊      "cordova-plugin-sim": {}
-+┊  ┊90┊      "cordova-plugin-sim": {},
-+┊  ┊91┊      "cordova-plugin-sms-receiver": {}
- ┊90┊92┊    },
- ┊91┊93┊    "platforms": [
- ┊92┊94┊      "android"
-```
-
-[}]: #
+    $ ionic cordova plugin add cordova-plugin-sms-receiver --save
 
 Then we must create the corresponding `ionic-native` plugin, since no one created it:
 
-[{]: <helper> (diffStep 14.6)
+[{]: <helper> (diffStep "14.6")
 
-#### [Step 14.6: Added ionic-native plugin for reading SMS OTP](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/d3c4b47d2)
+#### [Step 14.6: Added ionic-native plugin for reading SMS OTP](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/07c874e7)
 
 ##### Added src&#x2F;ionic&#x2F;sms-receiver&#x2F;index.ts
 ```diff
@@ -198,33 +152,33 @@ Then we must create the corresponding `ionic-native` plugin, since no one create
 +┊  ┊ 3┊
 +┊  ┊ 4┊
 +┊  ┊ 5┊/**
-+┊  ┊ 6┊ * @name Sim
++┊  ┊ 6┊ * @name SmsReceiver
 +┊  ┊ 7┊ * @description
-+┊  ┊ 8┊ * Gets info from the Sim card like the carrier name, mcc, mnc and country code and other system dependent info.
++┊  ┊ 8┊ * Allows you to receive incoming SMS. You have the possibility to start and stop the message broadcasting.
 +┊  ┊ 9┊ *
-+┊  ┊10┊ * Requires Cordova plugin: `cordova-plugin-sim`. For more info, please see the [Cordova Sim docs](https://github.com/pbakondy/cordova-plugin-sim).
++┊  ┊10┊ * Requires Cordova plugin: `cordova-plugin-smsreceiver`. For more info, please see the [Cordova SmsReceiver docs](https://github.com/ahmedwahba/cordova-plugin-smsreceiver).
 +┊  ┊11┊ *
 +┊  ┊12┊ * @usage
 +┊  ┊13┊ * ```typescript
-+┊  ┊14┊ * import { Sim } from '@ionic-native/sim';
++┊  ┊14┊ * import { SmsReceiver } from '@ionic-native/smsreceiver';
 +┊  ┊15┊ *
 +┊  ┊16┊ *
-+┊  ┊17┊ * constructor(private sim: Sim) { }
++┊  ┊17┊ * constructor(private smsReceiver: SmsReceiver) { }
 +┊  ┊18┊ *
 +┊  ┊19┊ * ...
 +┊  ┊20┊ *
-+┊  ┊21┊ * this.sim.getSimInfo().then(
-+┊  ┊22┊ *   (info) => console.log('Sim info: ', info),
-+┊  ┊23┊ *   (err) => console.log('Unable to get sim info: ', err)
++┊  ┊21┊ * this.smsReceiver.isSupported().then(
++┊  ┊22┊ *   (supported) => console.log('Permission granted'),
++┊  ┊23┊ *   (err) => console.log('Permission denied: ', err)
 +┊  ┊24┊ * );
 +┊  ┊25┊ *
-+┊  ┊26┊ * this.sim.hasReadPermission().then(
-+┊  ┊27┊ *   (info) => console.log('Has permission: ', info)
++┊  ┊26┊ * this.smsReceiver.startReceiving().then(
++┊  ┊27┊ *   (msg) => console.log('Message received: ', msg)
 +┊  ┊28┊ * );
 +┊  ┊29┊ *
-+┊  ┊30┊ * this.sim.requestReadPermission().then(
-+┊  ┊31┊ *   () => console.log('Permission granted'),
-+┊  ┊32┊ *   () => console.log('Permission denied')
++┊  ┊30┊ * this.smsReceiver.stopReceiving().then(
++┊  ┊31┊ *   () => console.log('Stopped receiving'),
++┊  ┊32┊ *   (err) => console.log('Error: ', err)
 +┊  ┊33┊ * );
 +┊  ┊34┊ * ```
 +┊  ┊35┊ */
@@ -277,9 +231,9 @@ Then we must create the corresponding `ionic-native` plugin, since no one create
 
 Last but not the least we must import it into `app.module.ts` as usual:
 
-[{]: <helper> (diffStep 14.7)
+[{]: <helper> (diffStep "14.7")
 
-#### [Step 14.7: Add SmsReceiver to app.module.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/cf0e4f49a)
+#### [Step 14.7: Add SmsReceiver to app.module.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c5c0569f)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -309,9 +263,9 @@ Last but not the least we must import it into `app.module.ts` as usual:
 
 Let's start by using the yet-to-be-created method in the `verification` page:
 
-[{]: <helper> (diffStep 14.8)
+[{]: <helper> (diffStep "14.8")
 
-#### [Step 14.8: Use getSMS method in verification.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/065be0128)
+#### [Step 14.8: Use getSMS method in verification.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/8d866c2f)
 
 ##### Changed src&#x2F;pages&#x2F;verification&#x2F;verification.ts
 ```diff
@@ -367,7 +321,7 @@ We will need to add support for `es2016` in Typescript, because we will use `Arr
 
 [{]: <helper> (diffStep "14.10")
 
-#### [Step 14.10: Added support for es2016 in Typescript](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/a3540a2c9)
+#### [Step 14.10: Added support for es2016 in Typescript](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5bfacffb)
 
 ##### Changed tsconfig.json
 ```diff
@@ -387,9 +341,9 @@ We will need to add support for `es2016` in Typescript, because we will use `Arr
 
 Now we can implement the method in the `phone` service:
 
-[{]: <helper> (diffStep 14.11)
+[{]: <helper> (diffStep "14.11")
 
-#### [Step 14.11: Add getSMS method to phone.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/36cbc805d)
+#### [Step 14.11: Add getSMS method to phone.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/fa0c05f9)
 
 ##### Changed api&#x2F;server&#x2F;models.ts
 ```diff
@@ -410,7 +364,7 @@ Now we can implement the method in the `phone` service:
 +┊  ┊ 6┊import { SmsReceiver } from "../ionic/sms-receiver";
 +┊  ┊ 7┊import * as Bluebird from "bluebird";
 +┊  ┊ 8┊import { TWILIO_SMS_NUMBERS } from "api/models";
-+┊  ┊ 9┊import { Observable } from "rxjs/Observable";
++┊  ┊ 9┊import { Observable } from "rxjs";
  ┊ 6┊10┊
  ┊ 7┊11┊@Injectable()
  ┊ 8┊12┊export class PhoneService {
@@ -482,9 +436,9 @@ We will start by adding the appropriate `Cordova` plug-ins:
 
 Then let's add them to `app.module.ts`:
 
-[{]: <helper> (diffStep 14.13)
+[{]: <helper> (diffStep "14.13")
 
-#### [Step 14.13: Add Camera and Crop to app.module.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/aaa2dc3c2)
+#### [Step 14.13: Add Camera and Crop to app.module.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ced77414)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -516,9 +470,9 @@ Then let's add them to `app.module.ts`:
 
 We will bind the `click` event in the view:
 
-[{]: <helper> (diffStep 14.14)
+[{]: <helper> (diffStep "14.14")
 
-#### [Step 14.14: Use the new sendPicture method in the template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7f1b4eaa1)
+#### [Step 14.14: Use the new sendPicture method in the template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f9c30f9b)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.html
 ```diff
@@ -542,21 +496,36 @@ We will bind the `click` event in the view:
 
 And we will create the event handler in `MessagesAttachmentsComponent`:
 
-[{]: <helper> (diffStep 14.15)
+[{]: <helper> (diffStep "14.15")
 
-#### [Step 14.15: Use the getPicture method into messages-attachment.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b5db0894a)
+#### [Step 14.15: Use the getPicture method into messages-attachment.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f7cd71f3)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.ts
 ```diff
-@@ -17,13 +17,21 @@
- ┊17┊17┊    private pictureService: PictureService
- ┊18┊18┊  ) {}
- ┊19┊19┊
--┊20┊  ┊  sendPicture(): void {
--┊21┊  ┊    this.pictureService.select().then((file: File) => {
--┊22┊  ┊      this.viewCtrl.dismiss({
--┊23┊  ┊        messageType: MessageType.PICTURE,
--┊24┊  ┊        selectedPicture: file
+@@ -1,5 +1,5 @@
+ ┊1┊1┊import { Component } from '@angular/core';
+-┊2┊ ┊import { ModalController, ViewController } from 'ionic-angular';
++┊ ┊2┊import { AlertController, ModalController, Platform, ViewController } from 'ionic-angular';
+ ┊3┊3┊import { NewLocationMessageComponent } from './location-message';
+ ┊4┊4┊import { MessageType } from 'api/models';
+ ┊5┊5┊import { PictureService } from '../../services/picture';
+```
+```diff
+@@ -12,16 +12,26 @@
+ ┊12┊12┊  constructor(
+ ┊13┊13┊    private viewCtrl: ViewController,
+ ┊14┊14┊    private modelCtrl: ModalController,
+-┊15┊  ┊    private pictureService: PictureService
++┊  ┊15┊    private pictureService: PictureService,
++┊  ┊16┊    private platform: Platform,
++┊  ┊17┊    private alertCtrl: AlertController
+ ┊16┊18┊  ) {}
+ ┊17┊19┊
+-┊18┊  ┊  sendPicture(): void {
+-┊19┊  ┊    this.pictureService.select().then((file: File) => {
+-┊20┊  ┊      this.viewCtrl.dismiss({
+-┊21┊  ┊        messageType: MessageType.PICTURE,
+-┊22┊  ┊        selectedPicture: file
 +┊  ┊20┊  sendPicture(camera: boolean): void {
 +┊  ┊21┊    if (camera && !this.platform.is('cordova')) {
 +┊  ┊22┊      return console.warn('Device must run cordova in order to take pictures');
@@ -571,17 +540,17 @@ And we will create the event handler in `MessagesAttachmentsComponent`:
 +┊  ┊31┊      })
 +┊  ┊32┊      .catch((e) => {
 +┊  ┊33┊        this.handleError(e);
- ┊25┊34┊      });
--┊26┊  ┊    });
- ┊27┊35┊  }
- ┊28┊36┊
- ┊29┊37┊  sendLocation(): void {
+ ┊23┊34┊      });
+-┊24┊  ┊    });
+ ┊25┊35┊  }
+ ┊26┊36┊
+ ┊27┊37┊  sendLocation(): void {
 ```
 ```diff
-@@ -43,4 +51,16 @@
- ┊43┊51┊
- ┊44┊52┊    locationModal.present();
- ┊45┊53┊  }
+@@ -41,4 +51,16 @@
+ ┊41┊51┊
+ ┊42┊52┊    locationModal.present();
+ ┊43┊53┊  }
 +┊  ┊54┊
 +┊  ┊55┊  handleError(e: Error): void {
 +┊  ┊56┊    console.error(e);
@@ -594,16 +563,16 @@ And we will create the event handler in `MessagesAttachmentsComponent`:
 +┊  ┊63┊
 +┊  ┊64┊    alert.present();
 +┊  ┊65┊  }
- ┊46┊66┊}
+ ┊44┊66┊}
 ```
 
 [}]: #
 
 Finally we can create a new method in the `PictureService` to take some pictures and remove the old method which used `ImagePicker`:
 
-[{]: <helper> (diffStep 14.16)
+[{]: <helper> (diffStep "14.16")
 
-#### [Step 14.16: Implement getPicture method in picture service](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5af423ae0)
+#### [Step 14.16: Implement getPicture method in picture service](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/71e5652c)
 
 ##### Changed src&#x2F;services&#x2F;picture.ts
 ```diff
@@ -613,7 +582,7 @@ Finally we can create a new method in the `PictureService` to take some pictures
 -┊ 3┊  ┊import { ImagePicker } from '@ionic-native/image-picker';
  ┊ 4┊ 3┊import { UploadFS } from 'meteor/jalik:ufs';
  ┊ 5┊ 4┊import { PicturesStore } from 'api/collections';
- ┊ 6┊ 5┊import { _ } from 'meteor/underscore';
+ ┊ 6┊ 5┊import * as _ from 'lodash';
  ┊ 7┊ 6┊import { DEFAULT_PICTURE_URL } from 'api/models';
 +┊  ┊ 7┊import { Camera, CameraOptions } from '@ionic-native/camera';
 +┊  ┊ 8┊import { Crop } from '@ionic-native/crop';
@@ -682,9 +651,9 @@ Choosing to take the picture from the camera instead of the gallery is as simple
 
 We will also have to update `selectProfilePicture` in the profile `Page` to use `getPicture`:
 
-[{]: <helper> (diffStep 14.17)
+[{]: <helper> (diffStep "14.17")
 
-#### [Step 14.17: Update selectProfilePicture in profile.ts to use getPicture](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c0a05e8cb)
+#### [Step 14.17: Update selectProfilePicture in profile.ts to use getPicture](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c21c48e3)
 
 ##### Changed src&#x2F;pages&#x2F;profile&#x2F;profile.ts
 ```diff

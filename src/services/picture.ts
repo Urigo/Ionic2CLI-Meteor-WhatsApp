@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { UploadFS } from 'meteor/jalik:ufs';
 import { PicturesStore } from 'api/collections';
-import { _ } from 'meteor/underscore';
+import * as _ from 'lodash';
 import { DEFAULT_PICTURE_URL } from 'api/models';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Crop } from '@ionic-native/crop';
@@ -49,7 +49,7 @@ export class PictureService {
 
   upload(blob: File): Promise<any> {
     return new Promise((resolve, reject) => {
-      const metadata = _.pick(blob, 'name', 'type', 'size');
+      const metadata: any = _.pick(blob, 'name', 'type', 'size');
 
       if (!metadata.name) {
         metadata.name = DEFAULT_PICTURE_URL;

@@ -1,68 +1,53 @@
-# Step 11: Google Maps &amp; Geolocation
+# Step 12: Google Maps &amp; Geolocation
 
 In this step we will add the ability to send the current location in [Google Maps](https://www.google.com/maps/).
 
-[{]: <helper> (diffStep 11.1)
-
-#### [Step 11.1: Add cordova plugin for geolocation](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/903b524)
-
-##### Changed package.json
-<pre>
-<i>╔══════╗</i>
-<i>║ diff ║</i>
-<i>╚══════╝</i>
- ┊54┊54┊    &quot;cordova-plugin-console&quot;,
- ┊55┊55┊    &quot;cordova-plugin-statusbar&quot;,
- ┊56┊56┊    &quot;cordova-plugin-device&quot;,
-<b>+┊  ┊57┊    &quot;cordova-plugin-geolocation&quot;,</b>
- ┊57┊58┊    &quot;ionic-plugin-keyboard&quot;,
- ┊58┊59┊    &quot;cordova-plugin-splashscreen&quot;
- ┊59┊60┊  ],
-</pre>
-
-[}]: #
-
 ## Geo Location
 
-To get the devices location (aka `geo-location`) we will install a `Cordova` plug-in called `cordova-plugin-geolocation` which will provide us with these abilities:
+To get the devices location (aka `geo-location`) we will install a `Cordova` plug-in called `cordova-plugin-geolocation`:
+
+    $ ionic cordova plugin add cordova-plugin-geolocation --save
+    $ npm install --save @ionic-native/geolocation
 
 ## Angular 2 Google Maps
 
 Since the location is going to be presented with `Google Maps`, we will install a package which will help up interact with it in `Angular 2`:
 
-    $ npm install --save angular2-google-maps
+    $ npm install --save @agm/core
 
 Before you import the installed package to the app's `NgModule` be sure to generate an API key. An API key is a code passed in by computer programs calling an API to identify the calling program, its developer, or its user to the Web site. To generate an API key go to [Google Maps API documentation page](https://developers.google.com/maps/documentation/javascript/get-api-key) and follow the instructions. **Each app should have it's own API key**, as for now we can just use an API key we generated for the sake of this tutorial, but once you are ready for production, **replace the API key in the script below**:
 
-[{]: <helper> (diffStep 11.3)
+[{]: <helper> (diffStep 12.3)
 
-#### [Step 11.3: Import google maps module](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b8645c6)
+#### [Step 12.3: Import google maps module](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/25dd4dc)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 <pre>
 <i>╔══════╗</i>
 <i>║ diff ║</i>
 <i>╚══════╝</i>
- ┊1┊1┊import { NgModule, ErrorHandler } from &#x27;@angular/core&#x27;;
-<b>+┊ ┊2┊import { AgmCoreModule } from &#x27;angular2-google-maps/core&#x27;;</b>
- ┊2┊3┊import { MomentModule } from &#x27;angular2-moment&#x27;;
- ┊3┊4┊import { IonicApp, IonicModule, IonicErrorHandler } from &#x27;ionic-angular&#x27;;
- ┊4┊5┊import { ChatsPage } from &#x27;../pages/chats/chats&#x27;;
+ ┊3┊3┊import { IonicApp, IonicErrorHandler, IonicModule } from &#x27;ionic-angular&#x27;;
+ ┊4┊4┊import { SplashScreen } from &#x27;@ionic-native/splash-screen&#x27;;
+ ┊5┊5┊import { StatusBar } from &#x27;@ionic-native/status-bar&#x27;;
+<b>+┊ ┊6┊import { AgmCoreModule } from &#x27;@agm/core&#x27;;</b>
+ ┊6┊7┊import { MomentModule } from &#x27;angular2-moment&#x27;;
+ ┊7┊8┊import { ChatsPage } from &#x27;../pages/chats/chats&#x27;;
+ ┊8┊9┊import { NewChatComponent } from &#x27;../pages/chats/new-chat&#x27;;
 </pre>
 <pre>
 <i>╔══════╗</i>
 <i>║ diff ║</i>
 <i>╚══════╝</i>
- ┊26┊27┊  ],
- ┊27┊28┊  imports: [
- ┊28┊29┊    IonicModule.forRoot(MyApp),
-<b>+┊  ┊30┊    MomentModule,</b>
-<b>+┊  ┊31┊    AgmCoreModule.forRoot({</b>
-<b>+┊  ┊32┊      apiKey: &#x27;AIzaSyAWoBdZHCNh5R-hB5S5ZZ2oeoYyfdDgniA&#x27;</b>
-<b>+┊  ┊33┊    })</b>
- ┊30┊34┊  ],
- ┊31┊35┊  bootstrap: [IonicApp],
- ┊32┊36┊  entryComponents: [
+ ┊30┊31┊  imports: [
+ ┊31┊32┊    BrowserModule,
+ ┊32┊33┊    IonicModule.forRoot(MyApp),
+<b>+┊  ┊34┊    MomentModule,</b>
+<b>+┊  ┊35┊    AgmCoreModule.forRoot({</b>
+<b>+┊  ┊36┊      apiKey: &#x27;AIzaSyAWoBdZHCNh5R-hB5S5ZZ2oeoYyfdDgniA&#x27;</b>
+<b>+┊  ┊37┊    })</b>
+ ┊34┊38┊  ],
+ ┊35┊39┊  bootstrap: [IonicApp],
+ ┊36┊40┊  entryComponents: [
 </pre>
 
 [}]: #
@@ -71,9 +56,9 @@ Before you import the installed package to the app's `NgModule` be sure to gener
 
 Before we proceed any further, we will add a new message type to our schema, so we can differentiate between a text message and a location message:
 
-[{]: <helper> (diffStep 11.4)
+[{]: <helper> (diffStep 12.4)
 
-#### [Step 11.4: Added location message type](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c313996)
+#### [Step 12.4: Added location message type](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/479286a)
 
 ##### Changed api&#x2F;server&#x2F;models.ts
 <pre>
@@ -94,9 +79,9 @@ Before we proceed any further, we will add a new message type to our schema, so 
 
 We want the user to be able to send a location message through an attachments menu in the `MessagesPage`, so let's implement the initial `MessagesAttachmentsComponent`, and as we go through, we will start filling it up:
 
-[{]: <helper> (diffStep 11.5)
+[{]: <helper> (diffStep 12.5)
 
-#### [Step 11.5: Added stub for messages attachment menu](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e69abdd)
+#### [Step 12.5: Added stub for messages attachment menu](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e7fa24f)
 
 ##### Added src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.ts
 <pre>
@@ -122,9 +107,9 @@ We want the user to be able to send a location message through an attachments me
 
 [}]: #
 
-[{]: <helper> (diffStep 11.6)
+[{]: <helper> (diffStep 12.6)
 
-#### [Step 11.6: Added messages attachment menu template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e365d0a)
+#### [Step 12.6: Added messages attachment menu template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0141b97)
 
 ##### Added src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.html
 <pre>
@@ -153,9 +138,9 @@ We want the user to be able to send a location message through an attachments me
 
 [}]: #
 
-[{]: <helper> (diffStep 11.7)
+[{]: <helper> (diffStep 12.7)
 
-#### [Step 11.7: Added styles for messages attachment](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/25698d7)
+#### [Step 12.7: Added styles for messages attachment](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/17dfb3e)
 
 ##### Added src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.scss
 <pre>
@@ -212,57 +197,57 @@ We want the user to be able to send a location message through an attachments me
 
 [}]: #
 
-[{]: <helper> (diffStep 11.8)
+[{]: <helper> (diffStep 12.8)
 
-#### [Step 11.8: Import MessagesAttachmentsComponent](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/28d9b96)
+#### [Step 12.8: Import MessagesAttachmentsComponent](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b450c24)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 <pre>
 <i>╔══════╗</i>
 <i>║ diff ║</i>
 <i>╚══════╝</i>
- ┊ 7┊ 7┊import { ChatsOptionsComponent } from &#x27;../pages/chats/chats-options&#x27;;
- ┊ 8┊ 8┊import { LoginPage } from &#x27;../pages/login/login&#x27;;
- ┊ 9┊ 9┊import { MessagesPage } from &#x27;../pages/messages/messages&#x27;;
-<b>+┊  ┊10┊import { MessagesAttachmentsComponent } from &#x27;../pages/messages/messages-attachments&#x27;;</b>
- ┊10┊11┊import { MessagesOptionsComponent } from &#x27;../pages/messages/messages-options&#x27;;
- ┊11┊12┊import { ProfilePage } from &#x27;../pages/profile/profile&#x27;;
- ┊12┊13┊import { VerificationPage } from &#x27;../pages/verification/verification&#x27;;
+ ┊10┊10┊import { ChatsOptionsComponent } from &#x27;../pages/chats/chats-options&#x27;;
+ ┊11┊11┊import { LoginPage } from &#x27;../pages/login/login&#x27;;
+ ┊12┊12┊import { MessagesPage } from &#x27;../pages/messages/messages&#x27;;
+<b>+┊  ┊13┊import { MessagesAttachmentsComponent } from &#x27;../pages/messages/messages-attachments&#x27;;</b>
+ ┊13┊14┊import { MessagesOptionsComponent } from &#x27;../pages/messages/messages-options&#x27;;
+ ┊14┊15┊import { ProfilePage } from &#x27;../pages/profile/profile&#x27;;
+ ┊15┊16┊import { VerificationPage } from &#x27;../pages/verification/verification&#x27;;
 </pre>
 <pre>
 <i>╔══════╗</i>
 <i>║ diff ║</i>
 <i>╚══════╝</i>
- ┊23┊24┊    ProfilePage,
- ┊24┊25┊    ChatsOptionsComponent,
- ┊25┊26┊    NewChatComponent,
-<b>+┊  ┊27┊    MessagesOptionsComponent,</b>
-<b>+┊  ┊28┊    MessagesAttachmentsComponent</b>
- ┊27┊29┊  ],
- ┊28┊30┊  imports: [
- ┊29┊31┊    IonicModule.forRoot(MyApp),
+ ┊26┊27┊    ProfilePage,
+ ┊27┊28┊    ChatsOptionsComponent,
+ ┊28┊29┊    NewChatComponent,
+<b>+┊  ┊30┊    MessagesOptionsComponent,</b>
+<b>+┊  ┊31┊    MessagesAttachmentsComponent</b>
+ ┊30┊32┊  ],
+ ┊31┊33┊  imports: [
+ ┊32┊34┊    BrowserModule,
 </pre>
 <pre>
 <i>╔══════╗</i>
 <i>║ diff ║</i>
 <i>╚══════╝</i>
- ┊42┊44┊    ProfilePage,
- ┊43┊45┊    ChatsOptionsComponent,
- ┊44┊46┊    NewChatComponent,
-<b>+┊  ┊47┊    MessagesOptionsComponent,</b>
-<b>+┊  ┊48┊    MessagesAttachmentsComponent</b>
- ┊46┊49┊  ],
- ┊47┊50┊  providers: [
- ┊48┊51┊    {provide: ErrorHandler, useClass: IonicErrorHandler},
+ ┊46┊48┊    ProfilePage,
+ ┊47┊49┊    ChatsOptionsComponent,
+ ┊48┊50┊    NewChatComponent,
+<b>+┊  ┊51┊    MessagesOptionsComponent,</b>
+<b>+┊  ┊52┊    MessagesAttachmentsComponent</b>
+ ┊50┊53┊  ],
+ ┊51┊54┊  providers: [
+ ┊52┊55┊    StatusBar,
 </pre>
 
 [}]: #
 
 We will add a generic style-sheet for the attachments menu since it can also use us in the future:
 
-[{]: <helper> (diffStep 11.9)
+[{]: <helper> (diffStep 12.9)
 
-#### [Step 11.9: Added styles for the popover container](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/bac1531)
+#### [Step 12.9: Added styles for the popover container](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/53248ea)
 
 ##### Changed src&#x2F;app&#x2F;app.scss
 <pre>
@@ -290,29 +275,52 @@ We will add a generic style-sheet for the attachments menu since it can also use
 
 Now we will add a handler in the `MessagesPage` which will open the newly created menu, and we will bind it to the view:
 
-[{]: <helper> (diffStep 11.1)
+[{]: <helper> (diffStep "12.10")
 
-#### [Step 11.1: Add cordova plugin for geolocation](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/903b524)
+#### [Step 12.10: Add showAttachments method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/00fb798)
 
-##### Changed package.json
+##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 <pre>
 <i>╔══════╗</i>
 <i>║ diff ║</i>
 <i>╚══════╝</i>
- ┊54┊54┊    &quot;cordova-plugin-console&quot;,
- ┊55┊55┊    &quot;cordova-plugin-statusbar&quot;,
- ┊56┊56┊    &quot;cordova-plugin-device&quot;,
-<b>+┊  ┊57┊    &quot;cordova-plugin-geolocation&quot;,</b>
- ┊57┊58┊    &quot;ionic-plugin-keyboard&quot;,
- ┊58┊59┊    &quot;cordova-plugin-splashscreen&quot;
- ┊59┊60┊  ],
+ ┊ 7┊ 7┊import { _ } from &#x27;meteor/underscore&#x27;;
+ ┊ 8┊ 8┊import { MessagesOptionsComponent } from &#x27;./messages-options&#x27;;
+ ┊ 9┊ 9┊import { Subscription, Observable, Subscriber } from &#x27;rxjs&#x27;;
+<b>+┊  ┊10┊import { MessagesAttachmentsComponent } from &#x27;./messages-attachments&#x27;;</b>
+ ┊10┊11┊
+ ┊11┊12┊@Component({
+ ┊12┊13┊  selector: &#x27;messages-page&#x27;,
+</pre>
+<pre>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
+ ┊211┊212┊      this.message &#x3D; &#x27;&#x27;;
+ ┊212┊213┊    });
+ ┊213┊214┊  }
+<b>+┊   ┊215┊</b>
+<b>+┊   ┊216┊  showAttachments(): void {</b>
+<b>+┊   ┊217┊    const popover &#x3D; this.popoverCtrl.create(MessagesAttachmentsComponent, {</b>
+<b>+┊   ┊218┊      chat: this.selectedChat</b>
+<b>+┊   ┊219┊    }, {</b>
+<b>+┊   ┊220┊      cssClass: &#x27;attachments-popover&#x27;</b>
+<b>+┊   ┊221┊    });</b>
+<b>+┊   ┊222┊</b>
+<b>+┊   ┊223┊    popover.onDidDismiss((params) &#x3D;&gt; {</b>
+<b>+┊   ┊224┊      // TODO: Handle result</b>
+<b>+┊   ┊225┊    });</b>
+<b>+┊   ┊226┊</b>
+<b>+┊   ┊227┊    popover.present();</b>
+<b>+┊   ┊228┊  }</b>
+ ┊214┊229┊}
 </pre>
 
 [}]: #
 
-[{]: <helper> (diffStep 11.11)
+[{]: <helper> (diffStep 12.11)
 
-#### [Step 11.11: Bind click event to showAttachments](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7004e5c)
+#### [Step 12.11: Bind click event to showAttachments](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b212ae1)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.html
 <pre>
@@ -334,9 +342,9 @@ Now we will add a handler in the `MessagesPage` which will open the newly create
 
 A location is a composition of longitude, latitude and an altitude, or in short: `long, lat, alt`. Let's define a new `Location` model which will represent the mentioned schema:
 
-[{]: <helper> (diffStep 11.12)
+[{]: <helper> (diffStep 12.12)
 
-#### [Step 11.12: Added location model](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/160e1cc)
+#### [Step 12.12: Added location model](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/4300ace)
 
 ##### Changed api&#x2F;server&#x2F;models.ts
 <pre>
@@ -358,9 +366,35 @@ A location is a composition of longitude, latitude and an altitude, or in short:
 
 Up next, would be implementing the actual component which will handle geo-location sharing:
 
-[{]: <helper> (diffStep 11.13)
+[{]: <helper> (diffStep 12.13)
 
-#### [Step 11.13: Implement location message component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7668816)
+#### [Step 12.13: Implement location message component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5a94696)
+
+##### Changed src&#x2F;app&#x2F;app.module.ts
+<pre>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
+ ┊3┊3┊import { IonicApp, IonicErrorHandler, IonicModule } from &#x27;ionic-angular&#x27;;
+ ┊4┊4┊import { SplashScreen } from &#x27;@ionic-native/splash-screen&#x27;;
+ ┊5┊5┊import { StatusBar } from &#x27;@ionic-native/status-bar&#x27;;
+<b>+┊ ┊6┊import { Geolocation } from &#x27;@ionic-native/geolocation&#x27;;</b>
+ ┊6┊7┊import { AgmCoreModule } from &#x27;@agm/core&#x27;;
+ ┊7┊8┊import { MomentModule } from &#x27;angular2-moment&#x27;;
+ ┊8┊9┊import { ChatsPage } from &#x27;../pages/chats/chats&#x27;;
+</pre>
+<pre>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
+ ┊54┊55┊  providers: [
+ ┊55┊56┊    StatusBar,
+ ┊56┊57┊    SplashScreen,
+<b>+┊  ┊58┊    Geolocation,</b>
+ ┊57┊59┊    {provide: ErrorHandler, useClass: IonicErrorHandler},
+ ┊58┊60┊    PhoneService
+ ┊59┊61┊  ]
+</pre>
 
 ##### Added src&#x2F;pages&#x2F;messages&#x2F;location-message.ts
 <pre>
@@ -369,7 +403,7 @@ Up next, would be implementing the actual component which will handle geo-locati
 <i>╚══════╝</i>
 <b>+┊  ┊ 1┊import { Component, OnInit, OnDestroy } from &#x27;@angular/core&#x27;;</b>
 <b>+┊  ┊ 2┊import { Platform, ViewController } from &#x27;ionic-angular&#x27;;</b>
-<b>+┊  ┊ 3┊import { Geolocation } from &#x27;ionic-native&#x27;;</b>
+<b>+┊  ┊ 3┊import { Geolocation } from &#x27;@ionic-native/geolocation&#x27;;</b>
 <b>+┊  ┊ 4┊import { Location } from &#x27;api/models&#x27;;</b>
 <b>+┊  ┊ 5┊import { Observable, Subscription } from &#x27;rxjs&#x27;;</b>
 <b>+┊  ┊ 6┊</b>
@@ -390,66 +424,68 @@ Up next, would be implementing the actual component which will handle geo-locati
 <b>+┊  ┊21┊  accuracy: number &#x3D; -1;</b>
 <b>+┊  ┊22┊  intervalObs: Subscription;</b>
 <b>+┊  ┊23┊</b>
-<b>+┊  ┊24┊  constructor(private platform: Platform, private viewCtrl: ViewController) {</b>
-<b>+┊  ┊25┊  }</b>
-<b>+┊  ┊26┊</b>
-<b>+┊  ┊27┊  ngOnInit() {</b>
-<b>+┊  ┊28┊    // Refresh location at a specific refresh rate</b>
-<b>+┊  ┊29┊    this.intervalObs &#x3D; this.reloadLocation()</b>
-<b>+┊  ┊30┊      .flatMapTo(Observable</b>
-<b>+┊  ┊31┊        .interval(LOCATION_REFRESH_INTERVAL)</b>
-<b>+┊  ┊32┊        .timeInterval())</b>
-<b>+┊  ┊33┊      .subscribe(() &#x3D;&gt; {</b>
-<b>+┊  ┊34┊        this.reloadLocation();</b>
-<b>+┊  ┊35┊      });</b>
-<b>+┊  ┊36┊  }</b>
-<b>+┊  ┊37┊</b>
-<b>+┊  ┊38┊  ngOnDestroy() {</b>
-<b>+┊  ┊39┊    // Dispose subscription</b>
-<b>+┊  ┊40┊    if (this.intervalObs) {</b>
-<b>+┊  ┊41┊      this.intervalObs.unsubscribe();</b>
-<b>+┊  ┊42┊    }</b>
-<b>+┊  ┊43┊  }</b>
-<b>+┊  ┊44┊</b>
-<b>+┊  ┊45┊  calculateZoomByAccureacy(accuracy: number): number {</b>
-<b>+┊  ┊46┊    // Source: http://stackoverflow.com/a/25143326</b>
-<b>+┊  ┊47┊    const deviceHeight &#x3D; this.platform.height();</b>
-<b>+┊  ┊48┊    const deviceWidth &#x3D; this.platform.width();</b>
-<b>+┊  ┊49┊    const screenSize &#x3D; Math.min(deviceWidth, deviceHeight);</b>
-<b>+┊  ┊50┊    const requiredMpp &#x3D; accuracy / screenSize;</b>
-<b>+┊  ┊51┊</b>
-<b>+┊  ┊52┊    return ((Math.log(EQUATOR / (256 * requiredMpp))) / Math.log(2)) + 1;</b>
-<b>+┊  ┊53┊  }</b>
-<b>+┊  ┊54┊</b>
-<b>+┊  ┊55┊  reloadLocation() {</b>
-<b>+┊  ┊56┊    return Observable.fromPromise(Geolocation.getCurrentPosition().then((position) &#x3D;&gt; {</b>
-<b>+┊  ┊57┊      if (this.lat &amp;&amp; this.lng) {</b>
-<b>+┊  ┊58┊        // Update view-models to represent the current geo-location</b>
-<b>+┊  ┊59┊        this.accuracy &#x3D; position.coords.accuracy;</b>
-<b>+┊  ┊60┊        this.lat &#x3D; position.coords.latitude;</b>
-<b>+┊  ┊61┊        this.lng &#x3D; position.coords.longitude;</b>
-<b>+┊  ┊62┊        this.zoom &#x3D; this.calculateZoomByAccureacy(this.accuracy);</b>
-<b>+┊  ┊63┊      }</b>
-<b>+┊  ┊64┊    }));</b>
-<b>+┊  ┊65┊  }</b>
-<b>+┊  ┊66┊</b>
-<b>+┊  ┊67┊  sendLocation() {</b>
-<b>+┊  ┊68┊    this.viewCtrl.dismiss(&lt;Location&gt;{</b>
-<b>+┊  ┊69┊      lat: this.lat,</b>
-<b>+┊  ┊70┊      lng: this.lng,</b>
-<b>+┊  ┊71┊      zoom: this.zoom</b>
-<b>+┊  ┊72┊    });</b>
-<b>+┊  ┊73┊  }</b>
-<b>+┊  ┊74┊}</b>
+<b>+┊  ┊24┊  constructor(private platform: Platform,</b>
+<b>+┊  ┊25┊              private viewCtrl: ViewController,</b>
+<b>+┊  ┊26┊              private geolocation: Geolocation) {</b>
+<b>+┊  ┊27┊  }</b>
+<b>+┊  ┊28┊</b>
+<b>+┊  ┊29┊  ngOnInit() {</b>
+<b>+┊  ┊30┊    // Refresh location at a specific refresh rate</b>
+<b>+┊  ┊31┊    this.intervalObs &#x3D; this.reloadLocation()</b>
+<b>+┊  ┊32┊      .flatMapTo(Observable</b>
+<b>+┊  ┊33┊        .interval(LOCATION_REFRESH_INTERVAL)</b>
+<b>+┊  ┊34┊        .timeInterval())</b>
+<b>+┊  ┊35┊      .subscribe(() &#x3D;&gt; {</b>
+<b>+┊  ┊36┊        this.reloadLocation();</b>
+<b>+┊  ┊37┊      });</b>
+<b>+┊  ┊38┊  }</b>
+<b>+┊  ┊39┊</b>
+<b>+┊  ┊40┊  ngOnDestroy() {</b>
+<b>+┊  ┊41┊    // Dispose subscription</b>
+<b>+┊  ┊42┊    if (this.intervalObs) {</b>
+<b>+┊  ┊43┊      this.intervalObs.unsubscribe();</b>
+<b>+┊  ┊44┊    }</b>
+<b>+┊  ┊45┊  }</b>
+<b>+┊  ┊46┊</b>
+<b>+┊  ┊47┊  calculateZoomByAccureacy(accuracy: number): number {</b>
+<b>+┊  ┊48┊    // Source: http://stackoverflow.com/a/25143326</b>
+<b>+┊  ┊49┊    const deviceHeight &#x3D; this.platform.height();</b>
+<b>+┊  ┊50┊    const deviceWidth &#x3D; this.platform.width();</b>
+<b>+┊  ┊51┊    const screenSize &#x3D; Math.min(deviceWidth, deviceHeight);</b>
+<b>+┊  ┊52┊    const requiredMpp &#x3D; accuracy / screenSize;</b>
+<b>+┊  ┊53┊</b>
+<b>+┊  ┊54┊    return ((Math.log(EQUATOR / (256 * requiredMpp))) / Math.log(2)) + 1;</b>
+<b>+┊  ┊55┊  }</b>
+<b>+┊  ┊56┊</b>
+<b>+┊  ┊57┊  reloadLocation() {</b>
+<b>+┊  ┊58┊    return Observable.fromPromise(this.geolocation.getCurrentPosition().then((position) &#x3D;&gt; {</b>
+<b>+┊  ┊59┊      if (this.lat &amp;&amp; this.lng) {</b>
+<b>+┊  ┊60┊        // Update view-models to represent the current geo-location</b>
+<b>+┊  ┊61┊        this.accuracy &#x3D; position.coords.accuracy;</b>
+<b>+┊  ┊62┊        this.lat &#x3D; position.coords.latitude;</b>
+<b>+┊  ┊63┊        this.lng &#x3D; position.coords.longitude;</b>
+<b>+┊  ┊64┊        this.zoom &#x3D; this.calculateZoomByAccureacy(this.accuracy);</b>
+<b>+┊  ┊65┊      }</b>
+<b>+┊  ┊66┊    }));</b>
+<b>+┊  ┊67┊  }</b>
+<b>+┊  ┊68┊</b>
+<b>+┊  ┊69┊  sendLocation() {</b>
+<b>+┊  ┊70┊    this.viewCtrl.dismiss(&lt;Location&gt;{</b>
+<b>+┊  ┊71┊      lat: this.lat,</b>
+<b>+┊  ┊72┊      lng: this.lng,</b>
+<b>+┊  ┊73┊      zoom: this.zoom</b>
+<b>+┊  ┊74┊    });</b>
+<b>+┊  ┊75┊  }</b>
+<b>+┊  ┊76┊}</b>
 </pre>
 
 [}]: #
 
-Basically, what this component does is refreshing the current geo-location at a specific refresh rate. Note that in order to fetch the geo-location we use `Geolocation's` API, but behind the scene it uses ``cordova-plugin-geolocation`. The `sendLocation` method dismisses the view and returns the calculated geo-location. Now let's added the component's corresponding view:
+Basically, what this component does is refreshing the current geo-location at a specific refresh rate. Note that in order to fetch the geo-location we use `Geolocation's` API, but behind the scene it uses ``cordova-plugin-geolocation`. The `sendLocation` method dismisses the view and returns the calculated geo-location. Now let's add the component's corresponding view:
 
-[{]: <helper> (diffStep 11.14)
+[{]: <helper> (diffStep 12.14)
 
-#### [Step 11.14: Added location message template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ee7008f)
+#### [Step 12.14: Added location message template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/54bc227)
 
 ##### Added src&#x2F;pages&#x2F;messages&#x2F;location-message.html
 <pre>
@@ -468,9 +504,9 @@ Basically, what this component does is refreshing the current geo-location at a 
 <b>+┊  ┊10┊</b>
 <b>+┊  ┊11┊&lt;ion-content class&#x3D;&quot;location-message-content&quot;&gt;</b>
 <b>+┊  ┊12┊  &lt;ion-list&gt;</b>
-<b>+┊  ┊13┊    &lt;sebm-google-map [latitude]&#x3D;&quot;lat&quot; [longitude]&#x3D;&quot;lng&quot; [zoom]&#x3D;&quot;zoom&quot;&gt;</b>
-<b>+┊  ┊14┊      &lt;sebm-google-map-marker [latitude]&#x3D;&quot;lat&quot; [longitude]&#x3D;&quot;lng&quot;&gt;&lt;/sebm-google-map-marker&gt;</b>
-<b>+┊  ┊15┊    &lt;/sebm-google-map&gt;</b>
+<b>+┊  ┊13┊    &lt;agm-map [latitude]&#x3D;&quot;lat&quot; [longitude]&#x3D;&quot;lng&quot; [zoom]&#x3D;&quot;zoom&quot;&gt;</b>
+<b>+┊  ┊14┊      &lt;agm-marker [latitude]&#x3D;&quot;lat&quot; [longitude]&#x3D;&quot;lng&quot;&gt;&lt;/agm-marker&gt;</b>
+<b>+┊  ┊15┊    &lt;/agm-map&gt;</b>
 <b>+┊  ┊16┊    &lt;ion-item (click)&#x3D;&quot;sendLocation()&quot;&gt;</b>
 <b>+┊  ┊17┊      &lt;ion-icon name&#x3D;&quot;compass&quot; item-left&gt;&lt;/ion-icon&gt;</b>
 <b>+┊  ┊18┊      &lt;h2&gt;Send your current location&lt;/h2&gt;</b>
@@ -482,13 +518,14 @@ Basically, what this component does is refreshing the current geo-location at a 
 
 [}]: #
 
-The `sebm-google-map` is the component which represents the map itself, and we provide it with `lat`, `lng` and `zoom`, so the map can be focused on the current geo-location. If you'll notice, we also used the `sebm-google-map-marker` component with the same data-models, so the marker will be shown right in the center of the map.
+The `agm-map` is the component which represents the map itself, and we provide it with `lat`, `lng` and `zoom`, so the map can be focused on the current geo-location. If you'll notice, we also used the `agm-marker` component with the 
+same data-models, so the marker will be shown right in the center of the map.
 
 Now we will add some `CSS` to make sure the map is visible:
 
-[{]: <helper> (diffStep 11.15)
+[{]: <helper> (diffStep 12.15)
 
-#### [Step 11.15: Added location message stylesheet](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7a8fa38)
+#### [Step 12.15: Added location message stylesheet](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/8bb2d51)
 
 ##### Added src&#x2F;pages&#x2F;messages&#x2F;location-message.scss
 <pre>
@@ -500,7 +537,7 @@ Now we will add some `CSS` to make sure the map is visible:
 <b>+┊  ┊ 3┊    margin-top: 44px;</b>
 <b>+┊  ┊ 4┊  }</b>
 <b>+┊  ┊ 5┊</b>
-<b>+┊  ┊ 6┊  sebm-google-map {</b>
+<b>+┊  ┊ 6┊  agm-map {</b>
 <b>+┊  ┊ 7┊    padding: 0;</b>
 <b>+┊  ┊ 8┊  }</b>
 <b>+┊  ┊ 9┊</b>
@@ -515,57 +552,57 @@ Now we will add some `CSS` to make sure the map is visible:
 
 And we will import the component:
 
-[{]: <helper> (diffStep 11.16)
+[{]: <helper> (diffStep 12.16)
 
-#### [Step 11.16: Import NewLocationMessageComponent](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ffc735e)
+#### [Step 12.16: Import NewLocationMessageComponent](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c1c3133)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 <pre>
 <i>╔══════╗</i>
 <i>║ diff ║</i>
 <i>╚══════╝</i>
- ┊ 9┊ 9┊import { MessagesPage } from &#x27;../pages/messages/messages&#x27;;
- ┊10┊10┊import { MessagesAttachmentsComponent } from &#x27;../pages/messages/messages-attachments&#x27;;
- ┊11┊11┊import { MessagesOptionsComponent } from &#x27;../pages/messages/messages-options&#x27;;
-<b>+┊  ┊12┊import { NewLocationMessageComponent } from &#x27;../pages/messages/location-message&#x27;;</b>
- ┊12┊13┊import { ProfilePage } from &#x27;../pages/profile/profile&#x27;;
- ┊13┊14┊import { VerificationPage } from &#x27;../pages/verification/verification&#x27;;
- ┊14┊15┊import { PhoneService } from &#x27;../services/phone&#x27;;
+ ┊13┊13┊import { MessagesPage } from &#x27;../pages/messages/messages&#x27;;
+ ┊14┊14┊import { MessagesAttachmentsComponent } from &#x27;../pages/messages/messages-attachments&#x27;;
+ ┊15┊15┊import { MessagesOptionsComponent } from &#x27;../pages/messages/messages-options&#x27;;
+<b>+┊  ┊16┊import { NewLocationMessageComponent } from &#x27;../pages/messages/location-message&#x27;;</b>
+ ┊16┊17┊import { ProfilePage } from &#x27;../pages/profile/profile&#x27;;
+ ┊17┊18┊import { VerificationPage } from &#x27;../pages/verification/verification&#x27;;
+ ┊18┊19┊import { PhoneService } from &#x27;../services/phone&#x27;;
 </pre>
 <pre>
 <i>╔══════╗</i>
 <i>║ diff ║</i>
 <i>╚══════╝</i>
- ┊25┊26┊    ChatsOptionsComponent,
- ┊26┊27┊    NewChatComponent,
- ┊27┊28┊    MessagesOptionsComponent,
-<b>+┊  ┊29┊    MessagesAttachmentsComponent,</b>
-<b>+┊  ┊30┊    NewLocationMessageComponent</b>
- ┊29┊31┊  ],
- ┊30┊32┊  imports: [
- ┊31┊33┊    IonicModule.forRoot(MyApp),
+ ┊29┊30┊    ChatsOptionsComponent,
+ ┊30┊31┊    NewChatComponent,
+ ┊31┊32┊    MessagesOptionsComponent,
+<b>+┊  ┊33┊    MessagesAttachmentsComponent,</b>
+<b>+┊  ┊34┊    NewLocationMessageComponent</b>
+ ┊33┊35┊  ],
+ ┊34┊36┊  imports: [
+ ┊35┊37┊    BrowserModule,
 </pre>
 <pre>
 <i>╔══════╗</i>
 <i>║ diff ║</i>
 <i>╚══════╝</i>
- ┊45┊47┊    ChatsOptionsComponent,
- ┊46┊48┊    NewChatComponent,
- ┊47┊49┊    MessagesOptionsComponent,
-<b>+┊  ┊50┊    MessagesAttachmentsComponent,</b>
-<b>+┊  ┊51┊    NewLocationMessageComponent</b>
- ┊49┊52┊  ],
- ┊50┊53┊  providers: [
- ┊51┊54┊    {provide: ErrorHandler, useClass: IonicErrorHandler},
+ ┊50┊52┊    ChatsOptionsComponent,
+ ┊51┊53┊    NewChatComponent,
+ ┊52┊54┊    MessagesOptionsComponent,
+<b>+┊  ┊55┊    MessagesAttachmentsComponent,</b>
+<b>+┊  ┊56┊    NewLocationMessageComponent</b>
+ ┊54┊57┊  ],
+ ┊55┊58┊  providers: [
+ ┊56┊59┊    StatusBar,
 </pre>
 
 [}]: #
 
 The component is ready. The only thing left to do would be revealing it. So we will add the appropriate handler in the `MessagesAttachmentsComponent`:
 
-[{]: <helper> (diffStep 11.17)
+[{]: <helper> (diffStep 12.17)
 
-#### [Step 11.17: Implement the sendLocation message to display the new location modal](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b4a6afb)
+#### [Step 12.17: Implement the sendLocation message to display the new location modal](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/4d4c167)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.ts
 <pre>
@@ -612,9 +649,9 @@ The component is ready. The only thing left to do would be revealing it. So we w
 
 And we will bind it to its view:
 
-[{]: <helper> (diffStep 11.18)
+[{]: <helper> (diffStep 12.18)
 
-#### [Step 11.18: Bind click event to sendLocation](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/efc8621)
+#### [Step 12.18: Bind click event to sendLocation](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/55a3aea)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.html
 <pre>
@@ -634,9 +671,9 @@ And we will bind it to its view:
 
 Now we will implement a new method in the `MessagesPage`, called `sendLocationMessage`, which will create a string representation of the current geo-location and send it to the server:
 
-[{]: <helper> (diffStep 11.19)
+[{]: <helper> (diffStep 12.19)
 
-#### [Step 11.19: Implement send location message](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0012341)
+#### [Step 12.19: Implement send location message](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/d03b612)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 <pre>
@@ -693,22 +730,21 @@ Now we will implement a new method in the `MessagesPage`, called `sendLocationMe
 
 This requires us to update the `addMessage` method in the server so it can support location typed messages:
 
-[{]: <helper> (diffStep 11.2)
+[{]: <helper> (diffStep "12.20")
 
-#### [Step 11.2: Add angular 2 google maps package](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/4259102)
+#### [Step 12.20: Allow location message type on server side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/9cce041)
 
-##### Changed package.json
+##### Changed api&#x2F;server&#x2F;methods.ts
 <pre>
 <i>╔══════╗</i>
 <i>║ diff ║</i>
 <i>╚══════╝</i>
- ┊26┊26┊    &quot;@angular/platform-browser-dynamic&quot;: &quot;2.2.1&quot;,
- ┊27┊27┊    &quot;@angular/platform-server&quot;: &quot;2.2.1&quot;,
- ┊28┊28┊    &quot;@ionic/storage&quot;: &quot;1.1.7&quot;,
-<b>+┊  ┊29┊    &quot;angular2-google-maps&quot;: &quot;^0.17.0&quot;,</b>
- ┊29┊30┊    &quot;angular2-moment&quot;: &quot;^1.1.0&quot;,
- ┊30┊31┊    &quot;babel-runtime&quot;: &quot;^6.22.0&quot;,
- ┊31┊32┊    &quot;ionic-angular&quot;: &quot;2.0.0-rc.5&quot;,
+ ┊70┊70┊    if (!this.userId) throw new Meteor.Error(&#x27;unauthorized&#x27;,
+ ┊71┊71┊      &#x27;User must be logged-in to create a new chat&#x27;);
+ ┊72┊72┊
+<b>+┊  ┊73┊    check(type, Match.OneOf(String, [ MessageType.TEXT, MessageType.LOCATION ]));</b>
+ ┊74┊74┊    check(chatId, nonEmptyString);
+ ┊75┊75┊    check(content, nonEmptyString);
 </pre>
 
 [}]: #
@@ -717,9 +753,9 @@ This requires us to update the `addMessage` method in the server so it can suppo
 
 The infrastructure is ready, but we can't yet see the message, therefore, we will need to add support for location messages in the `MessagesPage` view:
 
-[{]: <helper> (diffStep 11.21)
+[{]: <helper> (diffStep 12.21)
 
-#### [Step 11.21: Implement location message view](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ab1f404)
+#### [Step 12.21: Implement location message view](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/013aef5)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.html
 <pre>
@@ -730,9 +766,9 @@ The infrastructure is ready, but we can't yet see the message, therefore, we wil
  ┊20┊20┊        &lt;div [class]&#x3D;&quot;&#x27;message message-&#x27; + message.ownership&quot;&gt;
  ┊21┊21┊          &lt;div *ngIf&#x3D;&quot;message.type &#x3D;&#x3D; &#x27;text&#x27;&quot; class&#x3D;&quot;message-content message-content-text&quot;&gt;{{message.content}}&lt;/div&gt;
 <b>+┊  ┊22┊          &lt;div *ngIf&#x3D;&quot;message.type &#x3D;&#x3D; &#x27;location&#x27;&quot; class&#x3D;&quot;message-content message-content-text&quot;&gt;</b>
-<b>+┊  ┊23┊            &lt;sebm-google-map [zoom]&#x3D;&quot;getLocation(message.content).zoom&quot; [latitude]&#x3D;&quot;getLocation(message.content).lat&quot; [longitude]&#x3D;&quot;getLocation(message.content).lng&quot;&gt;</b>
-<b>+┊  ┊24┊              &lt;sebm-google-map-marker [latitude]&#x3D;&quot;getLocation(message.content).lat&quot; [longitude]&#x3D;&quot;getLocation(message.content).lng&quot;&gt;&lt;/sebm-google-map-marker&gt;</b>
-<b>+┊  ┊25┊            &lt;/sebm-google-map&gt;</b>
+<b>+┊  ┊23┊            &lt;agm-map [zoom]&#x3D;&quot;getLocation(message.content).zoom&quot; [latitude]&#x3D;&quot;getLocation(message.content).lat&quot; [longitude]&#x3D;&quot;getLocation(message.content).lng&quot;&gt;</b>
+<b>+┊  ┊24┊              &lt;agm-marker [latitude]&#x3D;&quot;getLocation(message.content).lat&quot; [longitude]&#x3D;&quot;getLocation(message.content).lng&quot;&gt;&lt;/agm-marker&gt;</b>
+<b>+┊  ┊25┊            &lt;/agm-map&gt;</b>
 <b>+┊  ┊26┊          &lt;/div&gt;</b>
 <b>+┊  ┊27┊</b>
  ┊22┊28┊          &lt;span class&#x3D;&quot;message-timestamp&quot;&gt;{{ message.createdAt | amDateFormat: &#x27;HH:mm&#x27; }}&lt;/span&gt;
@@ -746,9 +782,9 @@ These additions looks pretty similar to the `LocationMessage` since they are bas
 
 We will now add a method which can parse a string representation of the location into an actual `JSON`:
 
-[{]: <helper> (diffStep 11.22)
+[{]: <helper> (diffStep 12.22)
 
-#### [Step 11.22: Implement getLocation for parsing the location](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f6ac1ae)
+#### [Step 12.22: Implement getLocation for parsing the location](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/6042da3)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 <pre>
@@ -775,9 +811,9 @@ We will now add a method which can parse a string representation of the location
 
 And we will make some final adjustments for the view so the map can be presented properly:
 
-[{]: <helper> (diffStep 11.23)
+[{]: <helper> (diffStep 12.23)
 
-#### [Step 11.23: Added map styles](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/cc67bf1)
+#### [Step 12.23: Added map styles](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/498a143)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.scss
 <pre>
@@ -799,9 +835,9 @@ And we will make some final adjustments for the view so the map can be presented
 
 [}]: #
 
-[{]: <helper> (navStep nextRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/file-upload" prevRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/filter-and-pagination")
+[{]: <helper> (navStep nextRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/file-upload" prevRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/android-testing")
 
-⟸ <a href="https://angular-meteor.com/tutorials/whatsapp2/ionic/filter-and-pagination">PREVIOUS STEP</a> <b>║</b> <a href="https://angular-meteor.com/tutorials/whatsapp2/ionic/file-upload">NEXT STEP</a> ⟹
+⟸ <a href="https://angular-meteor.com/tutorials/whatsapp2/ionic/android-testing">PREVIOUS STEP</a> <b>║</b> <a href="https://angular-meteor.com/tutorials/whatsapp2/ionic/file-upload">NEXT STEP</a> ⟹
 
 [}]: #
 

@@ -6,7 +6,7 @@ In this step we're going to test our application on `Android` using `Cordova`.
 
 Firt we will need to install `Gradle` system wide, becuase the latest `Cordova` framework cannot use `Gradle` from `Android Studio`. On `Arch Linux` just install the `gradle` package.
 
-Then we're going to install the `Android SDK`. I suggest you to install `Android Studio` and use the [SDK Manager](https://developer.android.com/studio/intro/update.html#sdk-manager) to download it. On `Arch Linux` just install `android-studio` 
+Then we're going to install the `Android SDK`. I suggest you to install `Android Studio` and use the [SDK Manager](https://developer.android.com/studio/intro/update.html#sdk-manager) to download it. On `Arch Linux` just install `android-studio`
 form `AUR`.
 
 The `SDK Manager` will install the `Android SDK` into ```~/Android/Sdk/```.
@@ -32,6 +32,37 @@ Now we can add the `Android` platform to `Cordova`:
 
     $ cordova platform add android
 
+We will have to fix the failed-to-restore-cordova-plugin-statusbar issue:
+
+[{]: <helper> (diffStep "11.2")
+
+#### [Step 11.2: Fix failed-to-restore-cordova-plugin-statusbar issue](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b50cb175)
+
+##### Changed package.json
+```diff
+@@ -36,7 +36,7 @@
+ ┊36┊36┊    "cordova-plugin-device": "^1.1.4",
+ ┊37┊37┊    "cordova-plugin-ionic-webview": "^1.1.15",
+ ┊38┊38┊    "cordova-plugin-splashscreen": "^4.0.3",
+-┊39┊  ┊    "cordova-plugin-statusbar": "git+https://github.com/apache/cordova-plugin-statusbar.git",
++┊  ┊39┊    "cordova-plugin-statusbar": "https://github.com/apache/cordova-plugin-statusbar.git",
+ ┊40┊40┊    "cordova-plugin-whitelist": "^1.3.1",
+ ┊41┊41┊    "ionic-angular": "3.7.1",
+ ┊42┊42┊    "ionic-plugin-keyboard": "^2.2.1",
+```
+```diff
+@@ -76,4 +76,4 @@
+ ┊76┊76┊      "android"
+ ┊77┊77┊    ]
+ ┊78┊78┊  }
+-┊79┊  ┊}🚫↵
++┊  ┊79┊}
+```
+
+[}]: #
+
+> Next time we will run `cordova platform add android` it will overwrite our `package.json` and we will have to re-edit it.
+
 Finally we can launch the application on the smartphone:
 
     $ cordova run android
@@ -51,16 +82,16 @@ If you open the `Network` tab you will also notice a couple of failed requests t
 
 Since our `DDP` server doesn't run on the smartphone we will have to tell the `Meteor Client` where to find it:
 
-[{]: <helper> (diffStep 11.2)
+[{]: <helper> (diffStep "11.3")
 
-#### [Step 11.2: Add meteor-client config](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f57e22543)
+#### [Step 11.3: Add meteor-client config](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1c7d1c54)
 
 ##### Added meteor-client.config.json
 ```diff
 @@ -0,0 +1,8 @@
 +┊ ┊1┊{
 +┊ ┊2┊  "runtime": {
-+┊ ┊3┊    "DDP_DEFAULT_CONNECTION_URL": "http://192.168.1.156:3000"
++┊ ┊3┊    "DDP_DEFAULT_CONNECTION_URL": "http://meteor.linuxsystems.it:3000"
 +┊ ┊4┊  },
 +┊ ┊5┊  "import": [
 +┊ ┊6┊
@@ -70,9 +101,11 @@ Since our `DDP` server doesn't run on the smartphone we will have to tell the `M
 
 [}]: #
 
-[{]: <helper> (diffStep 11.3)
+> You will have to change `meteor.linuxsystems.it` with your own IP or at least put an entry for it into your `/etc/hosts` file.
 
-#### [Step 11.3: Update meteor-client:bundle script](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/821217f9b)
+[{]: <helper> (diffStep "11.4")
+
+#### [Step 11.4: Update meteor-client:bundle script](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/09ce2371)
 
 ##### Changed package.json
 ```diff
@@ -84,7 +117,7 @@ Since our `DDP` server doesn't run on the smartphone we will have to tell the `M
 +┊  ┊18┊    "meteor-client:bundle": "meteor-client bundle -s api -c meteor-client.config.json"
  ┊19┊19┊  },
  ┊20┊20┊  "dependencies": {
- ┊21┊21┊    "@angular/common": "4.1.2",
+ ┊21┊21┊    "@angular/common": "4.4.3",
 ```
 
 [}]: #

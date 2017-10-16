@@ -8,7 +8,7 @@ First make sure that you have `Meteor` installed. If not, install it by typing t
 
 We will start by creating the `Meteor` project which will be placed inside the `api` dir:
 
-    $ meteor create api
+    $ meteor create api --release 1.6-rc.7
     $ rm -rf api/node_modules
 
 A `Meteor` project will contain the following dirs by default:
@@ -20,9 +20,11 @@ These scripts should be loaded automatically by their alphabetic order on their 
 
     api$ rm -rf client
 
-Since we don't wanna have duplicate resources between the client and the server, we will remove the `package.json` file in the `api` dir:
+Since we don't wanna have duplicate resources between the client and the server, we will remove the `package.json` and `package-lock.json` files in the `api` dir:
 
-    api$ rm package.json
+    api$ rm package.json package-lock.json
+    api$ ln -s ../package.json
+    api$ ln -s ../package-lock.json
 
 And we will add a symbolic link between Ionic's `node_modules` and Meteor's `node_modules`:
 
@@ -34,9 +36,9 @@ Since we will be writing our app using `Typescript`, we will need to support it 
 
 We will also need to add a configuration file for the `TypeScript` compiler in the `Meteor` server, which is derived from our `Ionic` app's config:
 
-[{]: <helper> (diffStep 4.6)
+[{]: <helper> (diffStep "4.6")
 
-#### [Step 4.6: Add server&#x27;s tsconfig file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/d671d00b0)
+#### [Step 4.6: Add server&#x27;s tsconfig file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e1ef14ab)
 
 ##### Added api&#x2F;tsconfig.json
 ```diff
@@ -59,7 +61,7 @@ We will also need to add a configuration file for the `TypeScript` compiler in t
 +┊  ┊16┊    "stripInternal": true,
 +┊  ┊17┊    "noImplicitAny": false,
 +┊  ┊18┊    "types": [
-+┊  ┊19┊      "meteor-typings"
++┊  ┊19┊      "@types/meteor"
 +┊  ┊20┊    ]
 +┊  ┊21┊  },
 +┊  ┊22┊  "exclude": [
@@ -93,9 +95,9 @@ Now we'll have to move our models interfaces to the `api` dir so the server will
 
 This requires us to update its reference in the declarations file as well:
 
-[{]: <helper> (diffStep 4.11)
+[{]: <helper> (diffStep "4.11")
 
-#### [Step 4.11: Update the models import path](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/4e20e6b93)
+#### [Step 4.11: Update the models import path](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/fc56da25)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 ```diff
@@ -115,27 +117,6 @@ This requires us to update its reference in the declarations file as well:
 We will also install the `meteor-rxjs` package so we can define collections and data streams and TypeScript definitions for Meteor:
 
     $ npm install --save meteor-rxjs
-    $ npm install --save-dev @types/meteor
-
-To avoid duplicate identifier errors in Ionic we will have to remove meteor-typings from the root's tsconfig.json types array:
-
-[{]: <helper> (diffStep 4.13)
-
-#### [Step 4.13: Remove meteor-typings from root&#x27;s tsconfig.json types array](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ea10dde0e)
-
-##### Changed tsconfig.json
-```diff
-@@ -20,7 +20,6 @@
- ┊20┊20┊    "stripInternal": true,
- ┊21┊21┊    "noImplicitAny": false,
- ┊22┊22┊    "types": [
--┊23┊  ┊      "meteor-typings",
- ┊24┊23┊      "@types/underscore"
- ┊25┊24┊    ]
- ┊26┊25┊  },
-```
-
-[}]: #
 
 ## Collections
 
@@ -143,9 +124,9 @@ This collection is actually a reference to a [MongoDB](http://mongodb.com) colle
 
 Our initial collections are gonna be the chats and messages collection, the one is going to store some chats-models, and the other is going to store messages-models:
 
-[{]: <helper> (diffStep 4.14)
+[{]: <helper> (diffStep "4.13")
 
-#### [Step 4.14: Create chats collection](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/934ff28a7)
+#### [Step 4.13: Create chats collection](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/cb876e01)
 
 ##### Added api&#x2F;server&#x2F;collections&#x2F;chats.ts
 ```diff
@@ -158,9 +139,9 @@ Our initial collections are gonna be the chats and messages collection, the one 
 
 [}]: #
 
-[{]: <helper> (diffStep 4.15)
+[{]: <helper> (diffStep "4.14")
 
-#### [Step 4.15: Added messages collection](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/cd2459cde)
+#### [Step 4.14: Added messages collection](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/d2d9183f)
 
 ##### Added api&#x2F;server&#x2F;collections&#x2F;messages.ts
 ```diff
@@ -175,9 +156,9 @@ Our initial collections are gonna be the chats and messages collection, the one 
 
 We chose to create a dedicated module for each collection, because in the near future there might be more logic added into each one of them. To make importation convenient, we will export all collections from a single file:
 
-[{]: <helper> (diffStep 4.16)
+[{]: <helper> (diffStep "4.15")
 
-#### [Step 4.16: Added main export file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b9c70126c)
+#### [Step 4.15: Added main export file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/53cf7be8)
 
 ##### Added api&#x2F;server&#x2F;collections&#x2F;index.ts
 ```diff
@@ -194,9 +175,9 @@ Now instead of requiring each collection individually, we can just require them 
 
 Since we have real collections now, and not dummy ones, we will need to fill them up with some data in case they are empty, so we can test our application properly. Let's create our data fixtures in the server:
 
-[{]: <helper> (diffStep 4.17)
+[{]: <helper> (diffStep "4.16")
 
-#### [Step 4.17: Move stubs data to the server side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1b3b12cd7)
+#### [Step 4.16: Move stubs data to the server side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/004c6192)
 
 ##### Changed api&#x2F;server&#x2F;main.ts
 ```diff
@@ -289,9 +270,9 @@ In order to connect to the `Meteor` server, we need a client which is capable of
 
 Now we'll add a bundling script to the `package.json` as followed:
 
-[{]: <helper> (diffStep 4.18)
+[{]: <helper> (diffStep "4.17")
 
-#### [Step 4.18: Created a script for generating the Meteor client bundle](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/bbb58d351)
+#### [Step 4.17: Created a script for generating the Meteor client bundle](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/edfddfda)
 
 ##### Changed package.json
 ```diff
@@ -304,14 +285,14 @@ Now we'll add a bundling script to the `package.json` as followed:
 +┊  ┊17┊    "meteor-client:bundle": "meteor-client bundle -s api"
  ┊17┊18┊  },
  ┊18┊19┊  "dependencies": {
- ┊19┊20┊    "@angular/common": "4.1.2",
+ ┊19┊20┊    "@angular/common": "4.4.3",
 ```
 
 [}]: #
 
 We will also need to install the `tmp` package:
 
-    $ sudo npm install --save-dev tmp
+    $ npm install --save-dev tmp
 
 To execute the bundler, simply run:
 
@@ -319,9 +300,9 @@ To execute the bundler, simply run:
 
 This will generate a file called `meteor-client.js` under the `node_modules` dir, which needs to be imported in our application like so:
 
-[{]: <helper> (diffStep "4.20")
+[{]: <helper> (diffStep "4.19")
 
-#### [Step 4.20: Import meteor client bundle](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/263472333)
+#### [Step 4.19: Import meteor client bundle](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/bc95b5aa)
 
 ##### Changed src&#x2F;app&#x2F;main.ts
 ```diff
@@ -339,9 +320,9 @@ This will generate a file called `meteor-client.js` under the `node_modules` dir
 
 The client we've just imported gives us the ability to interact with the server. Let's replace the local chats-data with a data which is fetched from the `Meteor` server:
 
-[{]: <helper> (diffStep 4.21)
+[{]: <helper> (diffStep "4.20")
 
-#### [Step 4.21: Use server side data](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/3e8760910)
+#### [Step 4.20: Use server side data](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/aebc08f2)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 ```diff
@@ -444,9 +425,9 @@ The client we've just imported gives us the ability to interact with the server.
 
 And re-implement the `removeChat` method using the actual `Meteor` collection:
 
-[{]: <helper> (diffStep 4.22)
+[{]: <helper> (diffStep "4.21")
 
-#### [Step 4.22: Implement remove chat with the Collection](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f4b31d871)
+#### [Step 4.21: Implement remove chat with the Collection](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/326f7c5c)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 ```diff

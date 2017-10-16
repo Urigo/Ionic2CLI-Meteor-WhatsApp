@@ -10,41 +10,43 @@ An application created by `Ionic`'s CLI will have a very clear methodology. The 
 - `.scss` - A stylesheet file written in a `CSS` pre-process language called [SASS](https://sass-lang.com).
 - `.ts` - A script file written in `Typescript`.
 
-By default, the application will be created with 3 pages - `about`, `home` and `contact`. Since our app's flow doesn't contain any of them, we first gonna clean them up by running the following commands:
+By default, the application will be created with the `home` page. Since our app's flow doesn't contain it, we first gonna clean it up by running the following command:
 
-    $ rm -rf src/pages/about
     $ rm -rf src/pages/home
-    $ rm -rf src/pages/contact
-    $ rm -rf src/pages/tabs
 
-Second, we will remove their declaration in the app module:
+Second, we will remove its declaration in the app module:
 
 [{]: <helper> (diffStep 2.2)
 
-#### [Step 2.2: Removed tabs components from the module declaration](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ffcba38)
+#### [Step 2.2: Removed tabs components from the module declaration](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1c9a68f)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 <pre>
 <i>╔══════╗</i>
 <i>║ diff ║</i>
 <i>╚══════╝</i>
- ┊ 1┊ 1┊import { NgModule, ErrorHandler } from &#x27;@angular/core&#x27;;
- ┊ 2┊ 2┊import { IonicApp, IonicModule, IonicErrorHandler } from &#x27;ionic-angular&#x27;;
- ┊ 3┊ 3┊import { MyApp } from &#x27;./app.component&#x27;;
- ┊ 8┊ 4┊
- ┊ 9┊ 5┊@NgModule({
- ┊10┊ 6┊  declarations: [
-<b>+┊  ┊ 7┊    MyApp</b>
- ┊16┊ 8┊  ],
- ┊17┊ 9┊  imports: [
- ┊18┊10┊    IonicModule.forRoot(MyApp)
- ┊19┊11┊  ],
- ┊20┊12┊  bootstrap: [IonicApp],
- ┊21┊13┊  entryComponents: [
-<b>+┊  ┊14┊    MyApp</b>
- ┊27┊15┊  ],
- ┊28┊16┊  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
- ┊29┊17┊})
+ ┊ 5┊ 5┊import { StatusBar } from &#x27;@ionic-native/status-bar&#x27;;
+ ┊ 6┊ 6┊
+ ┊ 7┊ 7┊import { MyApp } from &#x27;./app.component&#x27;;
+ ┊ 9┊ 8┊
+ ┊10┊ 9┊@NgModule({
+ ┊11┊10┊  declarations: [
+<b>+┊  ┊11┊    MyApp</b>
+ ┊14┊12┊  ],
+ ┊15┊13┊  imports: [
+ ┊16┊14┊    BrowserModule,
+</pre>
+<pre>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
+ ┊18┊16┊  ],
+ ┊19┊17┊  bootstrap: [IonicApp],
+ ┊20┊18┊  entryComponents: [
+<b>+┊  ┊19┊    MyApp</b>
+ ┊23┊20┊  ],
+ ┊24┊21┊  providers: [
+ ┊25┊22┊    StatusBar,
 </pre>
 
 [}]: #
@@ -53,7 +55,7 @@ Now, let's create our new `Component`, we'll call it `ChatsPage`:
 
 [{]: <helper> (diffStep 2.3)
 
-#### [Step 2.3: Create Chats page component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/d539dd4)
+#### [Step 2.3: Create Chats page component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1b14019)
 
 ##### Added src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 <pre>
@@ -78,7 +80,7 @@ Now, let's create our new `Component`, we'll call it `ChatsPage`:
 
 [{]: <helper> (diffStep 2.4)
 
-#### [Step 2.4: Added chats page template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/eaf1390)
+#### [Step 2.4: Added chats page template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/987fcea)
 
 ##### Added src&#x2F;pages&#x2F;chats&#x2F;chats.html
 <pre>
@@ -110,33 +112,40 @@ Now, we need to add a declaration for this new `Component` in our `NgModule` def
 
 [{]: <helper> (diffStep 2.5)
 
-#### [Step 2.5: Add chats page to the NgModule](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/4e3c9e2)
+#### [Step 2.5: Add chats page to the NgModule](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5b0013b)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 <pre>
 <i>╔══════╗</i>
 <i>║ diff ║</i>
 <i>╚══════╝</i>
- ┊ 1┊ 1┊import { NgModule, ErrorHandler } from &#x27;@angular/core&#x27;;
- ┊ 2┊ 2┊import { IonicApp, IonicModule, IonicErrorHandler } from &#x27;ionic-angular&#x27;;
-<b>+┊  ┊ 3┊import { ChatsPage } from &#x27;../pages/chats/chats&#x27;;</b>
- ┊ 3┊ 4┊import { MyApp } from &#x27;./app.component&#x27;;
- ┊ 4┊ 5┊
- ┊ 5┊ 6┊@NgModule({
- ┊ 6┊ 7┊  declarations: [
-<b>+┊  ┊ 8┊    MyApp,</b>
-<b>+┊  ┊ 9┊    ChatsPage</b>
- ┊ 8┊10┊  ],
- ┊ 9┊11┊  imports: [
- ┊10┊12┊    IonicModule.forRoot(MyApp)
- ┊11┊13┊  ],
- ┊12┊14┊  bootstrap: [IonicApp],
- ┊13┊15┊  entryComponents: [
-<b>+┊  ┊16┊    MyApp,</b>
-<b>+┊  ┊17┊    ChatsPage</b>
- ┊15┊18┊  ],
- ┊16┊19┊  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
- ┊17┊20┊})
+ ┊ 3┊ 3┊import { IonicApp, IonicErrorHandler, IonicModule } from &#x27;ionic-angular&#x27;;
+ ┊ 4┊ 4┊import { SplashScreen } from &#x27;@ionic-native/splash-screen&#x27;;
+ ┊ 5┊ 5┊import { StatusBar } from &#x27;@ionic-native/status-bar&#x27;;
+<b>+┊  ┊ 6┊import { ChatsPage } from &#x27;../pages/chats/chats&#x27;;</b>
+ ┊ 6┊ 7┊
+ ┊ 7┊ 8┊import { MyApp } from &#x27;./app.component&#x27;;
+ ┊ 8┊ 9┊
+ ┊ 9┊10┊@NgModule({
+ ┊10┊11┊  declarations: [
+<b>+┊  ┊12┊    MyApp,</b>
+<b>+┊  ┊13┊    ChatsPage</b>
+ ┊12┊14┊  ],
+ ┊13┊15┊  imports: [
+ ┊14┊16┊    BrowserModule,
+</pre>
+<pre>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
+ ┊16┊18┊  ],
+ ┊17┊19┊  bootstrap: [IonicApp],
+ ┊18┊20┊  entryComponents: [
+<b>+┊  ┊21┊    MyApp,</b>
+<b>+┊  ┊22┊    ChatsPage</b>
+ ┊20┊23┊  ],
+ ┊21┊24┊  providers: [
+ ┊22┊25┊    StatusBar,
 </pre>
 
 [}]: #
@@ -147,26 +156,26 @@ We will define the `ChatsPage` as the initial component of our app by setting th
 
 [{]: <helper> (diffStep 2.6)
 
-#### [Step 2.6: Use the chats page as the main root page](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ef565d6)
+#### [Step 2.6: Use the chats page as the main root page](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/de829e2)
 
 ##### Changed src&#x2F;app&#x2F;app.component.ts
 <pre>
 <i>╔══════╗</i>
 <i>║ diff ║</i>
 <i>╚══════╝</i>
- ┊ 1┊ 1┊import { Component } from &#x27;@angular/core&#x27;;
  ┊ 2┊ 2┊import { Platform } from &#x27;ionic-angular&#x27;;
- ┊ 3┊ 3┊import { StatusBar, Splashscreen } from &#x27;ionic-native&#x27;;
-<b>+┊  ┊ 4┊import { ChatsPage } from &#x27;../pages/chats/chats&#x27;;</b>
- ┊ 7┊ 5┊
- ┊ 8┊ 6┊@Component({
- ┊ 9┊ 7┊  templateUrl: &#x27;app.html&#x27;
- ┊10┊ 8┊})
- ┊11┊ 9┊export class MyApp {
-<b>+┊  ┊10┊  rootPage &#x3D; ChatsPage;</b>
- ┊13┊11┊
- ┊14┊12┊  constructor(platform: Platform) {
- ┊15┊13┊    platform.ready().then(() &#x3D;&gt; {
+ ┊ 3┊ 3┊import { StatusBar } from &#x27;@ionic-native/status-bar&#x27;;
+ ┊ 4┊ 4┊import { SplashScreen } from &#x27;@ionic-native/splash-screen&#x27;;
+<b>+┊  ┊ 5┊import { ChatsPage } from &#x27;../pages/chats/chats&#x27;;</b>
+ ┊ 5┊ 6┊
+ ┊ 7┊ 7┊@Component({
+ ┊ 8┊ 8┊  templateUrl: &#x27;app.html&#x27;
+ ┊ 9┊ 9┊})
+ ┊10┊10┊export class MyApp {
+<b>+┊  ┊11┊  rootPage:any &#x3D; ChatsPage;</b>
+ ┊12┊12┊
+ ┊13┊13┊  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+ ┊14┊14┊    platform.ready().then(() &#x3D;&gt; {
 </pre>
 
 [}]: #
@@ -175,7 +184,7 @@ Let's add some code to our `Component` with a simple logic; Once the component i
 
 [{]: <helper> (diffStep 2.7)
 
-#### [Step 2.7: Add stubs for chats objects](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/fe26211)
+#### [Step 2.7: Add stubs for chats objects](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/60d6ae6)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 <pre>
@@ -262,7 +271,7 @@ Now, because we use `TypeScript`, we can define our own data-types and use them 
 
 [{]: <helper> (diffStep 2.9)
 
-#### [Step 2.9: Create models file with declarations of Chat, Message and MessageType](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ab3f637)
+#### [Step 2.9: Create models file with declarations of Chat, Message and MessageType](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/9cfbf85)
 
 ##### Added src&#x2F;models.ts
 <pre>
@@ -291,87 +300,101 @@ Now, because we use `TypeScript`, we can define our own data-types and use them 
 
 [}]: #
 
-Now that the models are up and set, we can use apply it to the `ChatsPage`:
+Now that the models are up and set, we can apply them to the `ChatsPage`:
 
-[{]: <helper> (diffStep 2.1)
+[{]: <helper> (diffStep "2.10")
 
-#### [Step 2.1: Removed default tabs app](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f77dcc8)
+#### [Step 2.10: Use TypeScript models](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/9e7dc4d)
 
-##### Deleted src&#x2F;pages&#x2F;about&#x2F;about.html
+##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 <pre>
 <i>╔══════╗</i>
 <i>║ diff ║</i>
 <i>╚══════╝</i>
+ ┊ 1┊ 1┊import { Component } from &#x27;@angular/core&#x27;;
+ ┊ 2┊ 2┊import { Observable } from &#x27;rxjs&#x27;;
+ ┊ 3┊ 3┊import * as moment from &#x27;moment&#x27;;
+<b>+┊  ┊ 4┊import { Chat, MessageType } from &#x27;../../models&#x27;;</b>
+ ┊ 4┊ 5┊
+ ┊ 5┊ 6┊@Component({
+ ┊ 6┊ 7┊  templateUrl: &#x27;chats.html&#x27;
+ ┊ 7┊ 8┊})
+ ┊ 8┊ 9┊export class ChatsPage {
+<b>+┊  ┊10┊  chats: Observable&lt;Chat[]&gt;;</b>
+ ┊10┊11┊
+ ┊11┊12┊  constructor() {
+ ┊12┊13┊    this.chats &#x3D; this.findChats();
+ ┊13┊14┊  }
+ ┊14┊15┊
+<b>+┊  ┊16┊  private findChats(): Observable&lt;Chat[]&gt; {</b>
+ ┊16┊17┊    return Observable.of([
+ ┊17┊18┊      {
+ ┊18┊19┊        _id: &#x27;0&#x27;,
 </pre>
-
-##### Deleted src&#x2F;pages&#x2F;about&#x2F;about.scss
 <pre>
 <i>╔══════╗</i>
 <i>║ diff ║</i>
 <i>╚══════╝</i>
+ ┊20┊21┊        picture: &#x27;https://randomuser.me/api/portraits/thumb/men/1.jpg&#x27;,
+ ┊21┊22┊        lastMessage: {
+ ┊22┊23┊          content: &#x27;You on your way?&#x27;,
+<b>+┊  ┊24┊          createdAt: moment().subtract(1, &#x27;hours&#x27;).toDate(),</b>
+<b>+┊  ┊25┊          type: MessageType.TEXT</b>
+ ┊24┊26┊        }
+ ┊25┊27┊      },
+ ┊26┊28┊      {
 </pre>
-
-##### Deleted src&#x2F;pages&#x2F;about&#x2F;about.ts
 <pre>
 <i>╔══════╗</i>
 <i>║ diff ║</i>
 <i>╚══════╝</i>
+ ┊29┊31┊        picture: &#x27;https://randomuser.me/api/portraits/thumb/lego/1.jpg&#x27;,
+ ┊30┊32┊        lastMessage: {
+ ┊31┊33┊          content: &#x27;Hey, it\&#x27;s me&#x27;,
+<b>+┊  ┊34┊          createdAt: moment().subtract(2, &#x27;hours&#x27;).toDate(),</b>
+<b>+┊  ┊35┊          type: MessageType.TEXT</b>
+ ┊33┊36┊        }
+ ┊34┊37┊      },
+ ┊35┊38┊      {
 </pre>
-
-##### Deleted src&#x2F;pages&#x2F;contact&#x2F;contact.html
 <pre>
 <i>╔══════╗</i>
 <i>║ diff ║</i>
 <i>╚══════╝</i>
+ ┊38┊41┊        picture: &#x27;https://randomuser.me/api/portraits/thumb/women/1.jpg&#x27;,
+ ┊39┊42┊        lastMessage: {
+ ┊40┊43┊          content: &#x27;I should buy a boat&#x27;,
+<b>+┊  ┊44┊          createdAt: moment().subtract(1, &#x27;days&#x27;).toDate(),</b>
+<b>+┊  ┊45┊          type: MessageType.TEXT</b>
+ ┊42┊46┊        }
+ ┊43┊47┊      },
+ ┊44┊48┊      {
 </pre>
-
-##### Deleted src&#x2F;pages&#x2F;contact&#x2F;contact.scss
 <pre>
 <i>╔══════╗</i>
 <i>║ diff ║</i>
 <i>╚══════╝</i>
+ ┊47┊51┊        picture: &#x27;https://randomuser.me/api/portraits/thumb/women/2.jpg&#x27;,
+ ┊48┊52┊        lastMessage: {
+ ┊49┊53┊          content: &#x27;Look at my mukluks!&#x27;,
+<b>+┊  ┊54┊          createdAt: moment().subtract(4, &#x27;days&#x27;).toDate(),</b>
+<b>+┊  ┊55┊          type: MessageType.TEXT</b>
+ ┊51┊56┊        }
+ ┊52┊57┊      },
+ ┊53┊58┊      {
 </pre>
-
-##### Deleted src&#x2F;pages&#x2F;contact&#x2F;contact.ts
 <pre>
 <i>╔══════╗</i>
 <i>║ diff ║</i>
 <i>╚══════╝</i>
-</pre>
-
-##### Deleted src&#x2F;pages&#x2F;home&#x2F;home.html
-<pre>
-<i>╔══════╗</i>
-<i>║ diff ║</i>
-<i>╚══════╝</i>
-</pre>
-
-##### Deleted src&#x2F;pages&#x2F;home&#x2F;home.scss
-<pre>
-<i>╔══════╗</i>
-<i>║ diff ║</i>
-<i>╚══════╝</i>
-</pre>
-
-##### Deleted src&#x2F;pages&#x2F;home&#x2F;home.ts
-<pre>
-<i>╔══════╗</i>
-<i>║ diff ║</i>
-<i>╚══════╝</i>
-</pre>
-
-##### Deleted src&#x2F;pages&#x2F;tabs&#x2F;tabs.html
-<pre>
-<i>╔══════╗</i>
-<i>║ diff ║</i>
-<i>╚══════╝</i>
-</pre>
-
-##### Deleted src&#x2F;pages&#x2F;tabs&#x2F;tabs.ts
-<pre>
-<i>╔══════╗</i>
-<i>║ diff ║</i>
-<i>╚══════╝</i>
+ ┊56┊61┊        picture: &#x27;https://randomuser.me/api/portraits/thumb/men/2.jpg&#x27;,
+ ┊57┊62┊        lastMessage: {
+ ┊58┊63┊          content: &#x27;This is wicked good ice cream.&#x27;,
+<b>+┊  ┊64┊          createdAt: moment().subtract(2, &#x27;weeks&#x27;).toDate(),</b>
+<b>+┊  ┊65┊          type: MessageType.TEXT</b>
+ ┊60┊66┊        }
+ ┊61┊67┊      }
+ ┊62┊68┊    ]);
 </pre>
 
 [}]: #
@@ -382,7 +405,7 @@ Now that the models are up and set, we can use apply it to the `ChatsPage`:
 
 [{]: <helper> (diffStep 2.11)
 
-#### [Step 2.11: Add whatsapp color to the app theme](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/2b4a7e3)
+#### [Step 2.11: Add whatsapp color to the app theme](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/3c23e61)
 
 ##### Changed src&#x2F;theme&#x2F;variables.scss
 <pre>
@@ -401,11 +424,11 @@ Now that the models are up and set, we can use apply it to the `ChatsPage`:
 
 The `whatsapp` color can be used by adding an attribute called `color` with a value `whatsapp` to any Ionic component.
 
-To begin with, we can start by implementing the `ChatsView` and apply our newly defined theme into it. This view will contain a list representing all the available chats in the component's data-ser:
+To begin with, we can start by implementing the `ChatsView` and apply our newly defined theme into it. This view will contain a list representing all the available chats in the component's data-set:
 
 [{]: <helper> (diffStep 2.12)
 
-#### [Step 2.12: Add the layout of the chats page](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/506dae1)
+#### [Step 2.12: Add the layout of the chats page](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/8594871)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.html
 <pre>
@@ -460,7 +483,7 @@ Now, in order to finish our theming and styling, let's create a stylesheet file 
 
 [{]: <helper> (diffStep 2.13)
 
-#### [Step 2.13: Create SCSS file for chats page](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1147f7e)
+#### [Step 2.13: Create SCSS file for chats page](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/4d8971f)
 
 ##### Added src&#x2F;pages&#x2F;chats&#x2F;chats.scss
 <pre>
@@ -505,31 +528,33 @@ Now we will need to declare this module in the app's main component:
 
 [{]: <helper> (diffStep 2.15)
 
-#### [Step 2.15: Import MomentModule into our app module](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/488eb14)
+#### [Step 2.15: Import MomentModule into our app module](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0160c4c)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 <pre>
 <i>╔══════╗</i>
 <i>║ diff ║</i>
 <i>╚══════╝</i>
- ┊1┊1┊import { NgModule, ErrorHandler } from &#x27;@angular/core&#x27;;
-<b>+┊ ┊2┊import { MomentModule } from &#x27;angular2-moment&#x27;;</b>
- ┊2┊3┊import { IonicApp, IonicModule, IonicErrorHandler } from &#x27;ionic-angular&#x27;;
- ┊3┊4┊import { ChatsPage } from &#x27;../pages/chats/chats&#x27;;
- ┊4┊5┊import { MyApp } from &#x27;./app.component&#x27;;
+ ┊3┊3┊import { IonicApp, IonicErrorHandler, IonicModule } from &#x27;ionic-angular&#x27;;
+ ┊4┊4┊import { SplashScreen } from &#x27;@ionic-native/splash-screen&#x27;;
+ ┊5┊5┊import { StatusBar } from &#x27;@ionic-native/status-bar&#x27;;
+<b>+┊ ┊6┊import { MomentModule } from &#x27;angular2-moment&#x27;;</b>
+ ┊6┊7┊import { ChatsPage } from &#x27;../pages/chats/chats&#x27;;
+ ┊7┊8┊
+ ┊8┊9┊import { MyApp } from &#x27;./app.component&#x27;;
 </pre>
 <pre>
 <i>╔══════╗</i>
 <i>║ diff ║</i>
 <i>╚══════╝</i>
- ┊ 9┊10┊    ChatsPage
- ┊10┊11┊  ],
- ┊11┊12┊  imports: [
-<b>+┊  ┊13┊    IonicModule.forRoot(MyApp),</b>
-<b>+┊  ┊14┊    MomentModule</b>
- ┊13┊15┊  ],
- ┊14┊16┊  bootstrap: [IonicApp],
- ┊15┊17┊  entryComponents: [
+ ┊14┊15┊  ],
+ ┊15┊16┊  imports: [
+ ┊16┊17┊    BrowserModule,
+<b>+┊  ┊18┊    IonicModule.forRoot(MyApp),</b>
+<b>+┊  ┊19┊    MomentModule</b>
+ ┊18┊20┊  ],
+ ┊19┊21┊  bootstrap: [IonicApp],
+ ┊20┊22┊  entryComponents: [
 </pre>
 
 [}]: #
@@ -538,7 +563,7 @@ Which will make `moment` available as a pack of pipes, as mentioned earlier:
 
 [{]: <helper> (diffStep 2.16)
 
-#### [Step 2.16: Use amCalendar pipe](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1c2a7a1)
+#### [Step 2.16: Use amCalendar pipe](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/cb9d236)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.html
 <pre>
@@ -564,7 +589,7 @@ Right now this button is not hooked to anything. It requires us to bind it into 
 
 [{]: <helper> (diffStep 2.17)
 
-#### [Step 2.17: Add remove chat event](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b8f37b8)
+#### [Step 2.17: Add remove chat event](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/21001eb)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.html
 <pre>
@@ -586,7 +611,7 @@ And now that it is bound to the component we can safely implement its handler:
 
 [{]: <helper> (diffStep 2.18)
 
-#### [Step 2.18: Implement removeChat method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5bede51)
+#### [Step 2.18: Implement removeChat method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/daa701e)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 <pre>
@@ -598,14 +623,16 @@ And now that it is bound to the component we can safely implement its handler:
  ┊69┊69┊  }
 <b>+┊  ┊70┊</b>
 <b>+┊  ┊71┊  removeChat(chat: Chat): void {</b>
-<b>+┊  ┊72┊    this.chats &#x3D; this.chats.map&lt;Chat[]&gt;(chatsArray &#x3D;&gt; {</b>
+<b>+┊  ┊72┊    this.chats &#x3D; this.chats.map((chatsArray: Chat[]) &#x3D;&gt; {</b>
 <b>+┊  ┊73┊      const chatIndex &#x3D; chatsArray.indexOf(chat);</b>
-<b>+┊  ┊74┊      chatsArray.splice(chatIndex, 1);</b>
-<b>+┊  ┊75┊</b>
-<b>+┊  ┊76┊      return chatsArray;</b>
-<b>+┊  ┊77┊    });</b>
-<b>+┊  ┊78┊  }</b>
- ┊70┊79┊}
+<b>+┊  ┊74┊      if (chatIndex !&#x3D;&#x3D; -1) {</b>
+<b>+┊  ┊75┊        chatsArray.splice(chatIndex, 1);</b>
+<b>+┊  ┊76┊      }</b>
+<b>+┊  ┊77┊</b>
+<b>+┊  ┊78┊      return chatsArray;</b>
+<b>+┊  ┊79┊    });</b>
+<b>+┊  ┊80┊  }</b>
+ ┊70┊81┊}
 </pre>
 
 [}]: #

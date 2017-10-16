@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, ViewController } from 'ionic-angular';
+import { NavParams } from 'ionic-angular';
 
 @Component({
   selector: 'show-picture',
@@ -8,7 +8,7 @@ import { NavParams, ViewController } from 'ionic-angular';
 export class ShowPictureComponent {
   pictureSrc: string;
 
-  constructor(private navParams: NavParams, private viewCtrl: ViewController) {
-    this.pictureSrc = navParams.get('pictureSrc');
+  constructor(private navParams: NavParams) {
+    this.pictureSrc = this.navParams.get('pictureSrc');
   }
 }

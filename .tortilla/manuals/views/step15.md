@@ -11,9 +11,9 @@ Let's start by installing the `Contacts` `Cordova` plug-in:
 
 Then let's add it to `app.module.ts`:
 
-[{]: <helper> (diffStep 15.2)
+[{]: <helper> (diffStep "15.2")
 
-#### [Step 15.2: Add Contacts to app.module.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/def90572a)
+#### [Step 15.2: Add Contacts to app.module.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/4f6ae793)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -43,9 +43,9 @@ Then let's add it to `app.module.ts`:
 
 Since we're going to use `Sets` in our code, we will have to set the `Typescript` target to `es6` or enable `downlevelIteration`:
 
-[{]: <helper> (diffStep 15.3)
+[{]: <helper> (diffStep "15.3")
 
-#### [Step 15.3: We need to set downlevelIteration or target es6 in order to use Sets](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/374b43ccd)
+#### [Step 15.3: We need to set downlevelIteration or target es6 in order to use Sets](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/364c8646)
 
 ##### Changed tsconfig.json
 ```diff
@@ -63,9 +63,9 @@ Since we're going to use `Sets` in our code, we will have to set the `Typescript
 
 Now we can create the appropriate handler in the `PhoneService`, we will use it inside the `NewChatPage`:
 
-[{]: <helper> (diffStep 15.4)
+[{]: <helper> (diffStep "15.4")
 
-#### [Step 15.4: Implement getContactsFromAddressbook in the phone service](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f22105e6f)
+#### [Step 15.4: Implement getContactsFromAddressbook in the phone service](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/55e66f92)
 
 ##### Changed src&#x2F;services&#x2F;phone.ts
 ```diff
@@ -158,15 +158,15 @@ Now we can create the appropriate handler in the `PhoneService`, we will use it 
 
 [}]: #
 
-[{]: <helper> (diffStep 15.5)
+[{]: <helper> (diffStep "15.5")
 
-#### [Step 15.5: Use getContactsFromAddressbook in new-chat.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7e749aef6)
+#### [Step 15.5: Use getContactsFromAddressbook in new-chat.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/91a9dfc1)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;new-chat.ts
 ```diff
 @@ -5,6 +5,7 @@
  ┊ 5┊ 5┊import { MeteorObservable } from 'meteor-rxjs';
- ┊ 6┊ 6┊import { _ } from 'meteor/underscore';
+ ┊ 6┊ 6┊import * as _ from 'lodash';
  ┊ 7┊ 7┊import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 +┊  ┊ 8┊import { PhoneService } from "../../services/phone";
  ┊ 8┊ 9┊
@@ -236,9 +236,9 @@ Now we can create the appropriate handler in the `PhoneService`, we will use it 
 
 We will have to update the `users` publication to filter our results:
 
-[{]: <helper> (diffStep 15.6)
+[{]: <helper> (diffStep "15.6")
 
-#### [Step 15.6: Update users publication to handle addressbook contacts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/72fda5019)
+#### [Step 15.6: Update users publication to handle addressbook contacts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1aed5169)
 
 ##### Changed api&#x2F;server&#x2F;publications.ts
 ```diff
@@ -273,9 +273,9 @@ We will have to update the `users` publication to filter our results:
 
 Since they are now useless, we can finally remove our fake users from the db initialization:
 
-[{]: <helper> (diffStep 15.7)
+[{]: <helper> (diffStep "15.7")
 
-#### [Step 15.7: Removing db initialization in main.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/4bceed0b5)
+#### [Step 15.7: Removing db initialization in main.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/2ea13438)
 
 ##### Changed api&#x2F;server&#x2F;main.ts
 ```diff
@@ -375,6 +375,130 @@ Obviously we will have to reset the database to see any effect:
     $ npm run api:reset
 
 To test if everything works properly I suggest to create a test user on your PC using a phone number which is already present in your phone's address book.
+
+Let's re-add our fake users and whitelist them in the `users` publication for the moment:
+
+[{]: <helper> (diffStep "15.8")
+
+#### [Step 15.8: Re-add fake users and whitelist them in the publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/346ab5c8)
+
+##### Changed api&#x2F;server&#x2F;main.ts
+```diff
+@@ -1,9 +1,86 @@
+ ┊ 1┊ 1┊import { Meteor } from 'meteor/meteor';
++┊  ┊ 2┊import { Picture } from './models';
+ ┊ 2┊ 3┊import { Accounts } from 'meteor/accounts-base';
++┊  ┊ 4┊import { Users } from './collections/users';
+ ┊ 3┊ 5┊
+ ┊ 4┊ 6┊Meteor.startup(() => {
+ ┊ 5┊ 7┊  if (Meteor.settings) {
+ ┊ 6┊ 8┊    Object.assign(Accounts._options, Meteor.settings['accounts-phone']);
+ ┊ 7┊ 9┊    SMS.twilio = Meteor.settings['twilio'];
+ ┊ 8┊10┊  }
++┊  ┊11┊
++┊  ┊12┊  if (Users.collection.find().count() > 0) {
++┊  ┊13┊    return;
++┊  ┊14┊  }
++┊  ┊15┊
++┊  ┊16┊  let picture = importPictureFromUrl({
++┊  ┊17┊    name: 'man1.jpg',
++┊  ┊18┊    url: 'https://randomuser.me/api/portraits/men/1.jpg'
++┊  ┊19┊  });
++┊  ┊20┊
++┊  ┊21┊  Accounts.createUserWithPhone({
++┊  ┊22┊    phone: '+972540000001',
++┊  ┊23┊    profile: {
++┊  ┊24┊      name: 'Ethan Gonzalez',
++┊  ┊25┊      pictureId: picture._id
++┊  ┊26┊    }
++┊  ┊27┊  });
++┊  ┊28┊
++┊  ┊29┊  picture = importPictureFromUrl({
++┊  ┊30┊    name: 'lego1.jpg',
++┊  ┊31┊    url: 'https://randomuser.me/api/portraits/lego/1.jpg'
++┊  ┊32┊  });
++┊  ┊33┊
++┊  ┊34┊  Accounts.createUserWithPhone({
++┊  ┊35┊    phone: '+972540000002',
++┊  ┊36┊    profile: {
++┊  ┊37┊      name: 'Bryan Wallace',
++┊  ┊38┊      pictureId: picture._id
++┊  ┊39┊    }
++┊  ┊40┊  });
++┊  ┊41┊
++┊  ┊42┊  picture = importPictureFromUrl({
++┊  ┊43┊    name: 'woman1.jpg',
++┊  ┊44┊    url: 'https://randomuser.me/api/portraits/women/1.jpg'
++┊  ┊45┊  });
++┊  ┊46┊
++┊  ┊47┊  Accounts.createUserWithPhone({
++┊  ┊48┊    phone: '+972540000003',
++┊  ┊49┊    profile: {
++┊  ┊50┊      name: 'Avery Stewart',
++┊  ┊51┊      pictureId: picture._id
++┊  ┊52┊    }
++┊  ┊53┊  });
++┊  ┊54┊
++┊  ┊55┊  picture = importPictureFromUrl({
++┊  ┊56┊    name: 'woman2.jpg',
++┊  ┊57┊    url: 'https://randomuser.me/api/portraits/women/2.jpg'
++┊  ┊58┊  });
++┊  ┊59┊
++┊  ┊60┊  Accounts.createUserWithPhone({
++┊  ┊61┊    phone: '+972540000004',
++┊  ┊62┊    profile: {
++┊  ┊63┊      name: 'Katie Peterson',
++┊  ┊64┊      pictureId: picture._id
++┊  ┊65┊    }
++┊  ┊66┊  });
++┊  ┊67┊
++┊  ┊68┊  picture = importPictureFromUrl({
++┊  ┊69┊    name: 'man2.jpg',
++┊  ┊70┊    url: 'https://randomuser.me/api/portraits/men/2.jpg'
++┊  ┊71┊  });
++┊  ┊72┊
++┊  ┊73┊  Accounts.createUserWithPhone({
++┊  ┊74┊    phone: '+972540000005',
++┊  ┊75┊    profile: {
++┊  ┊76┊      name: 'Ray Edwards',
++┊  ┊77┊      pictureId: picture._id
++┊  ┊78┊    }
++┊  ┊79┊  });
+ ┊ 9┊80┊});
++┊  ┊81┊
++┊  ┊82┊function importPictureFromUrl(options: { name: string, url: string }): Picture {
++┊  ┊83┊  const description = { name: options.name };
++┊  ┊84┊
++┊  ┊85┊  return Meteor.call('ufsImportURL', options.url, description, 'pictures');
++┊  ┊86┊}
+```
+
+##### Changed api&#x2F;server&#x2F;publications.ts
+```diff
+@@ -17,10 +17,18 @@
+ ┊17┊17┊  if (pattern) {
+ ┊18┊18┊    selector = {
+ ┊19┊19┊      'profile.name': { $regex: pattern, $options: 'i' },
+-┊20┊  ┊      'phone.number': {$in: contacts}
++┊  ┊20┊      $or: [
++┊  ┊21┊        {'phone.number': {$in: contacts}},
++┊  ┊22┊        {'profile.name': {$in: ['Ethan Gonzalez', 'Bryan Wallace', 'Avery Stewart', 'Katie Peterson', 'Ray Edwards']}}
++┊  ┊23┊      ]
+ ┊21┊24┊    };
+ ┊22┊25┊  } else {
+-┊23┊  ┊    selector = {'phone.number': {$in: contacts}}
++┊  ┊26┊    selector = {
++┊  ┊27┊      $or: [
++┊  ┊28┊        {'phone.number': {$in: contacts}},
++┊  ┊29┊        {'profile.name': {$in: ['Ethan Gonzalez', 'Bryan Wallace', 'Avery Stewart', 'Katie Peterson', 'Ray Edwards']}}
++┊  ┊30┊      ]
++┊  ┊31┊    }
+ ┊24┊32┊  }
+ ┊25┊33┊
+ ┊26┊34┊  return {
+```
+
+[}]: #
 
 [{]: <helper> (navStep nextRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/push-notifications" prevRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/native-mobile")
 

@@ -16,13 +16,17 @@ We will create our `Whatsapp`-clone using the following command:
 
     $ ionic start whatsapp blank --cordova --skip-link
 
-Then we will add a declarations file with a wildcard module to allow third party libraries to be used in our app even if they don't provide their own type declarations:
+Then we will add an empty declarations file, to later allow third party libraries to be used in our app even if they don't provide their own type declarations:
 
-{{{diffStep 1.1}}}
+{{{diffStep "1.1"}}}
 
 To start our app, simply type:
 
     $ ionic serve
+
+To prevent [ionic-app-scripts bug #1052](https://github.com/ionic-team/ionic-app-scripts/issues/1052) let's upgrade Typescript to 2.4:
+
+    $ npm install --save typescript@~2.4
 
 > For more information on how to run an Ionic-app on a mobile device, see the following link: https://ionicframework.com/docs/v2/getting-started/installation/.
 
@@ -39,7 +43,7 @@ In this tutorial we will use a custom build-config for Webpack.
 
 The first thing we gonna do would be telling Ionic that we're using `Webpack` as our module-bundler. To specify it, add the following field in the `package.json` file:
 
-{{{diffStep 1.2}}}
+{{{diffStep "1.3"}}}
 
 Ionic provides us with a sample `Webpack` config file that we can extend later on, and it's located under the path `node_modules/@ionic/app-scripts/config/webpack.config.js`. We will copy it to a newly created `config` dir using the following command:
 
@@ -47,7 +51,7 @@ Ionic provides us with a sample `Webpack` config file that we can extend later o
 
 The configuration file should look like so:
 
-{{{diffStep 1.3}}}
+{{{diffStep "1.4"}}}
 
 As we said earlier, this is only a base for our config. We would also like to add the following abilities while bundling our project:
 
@@ -57,11 +61,11 @@ As we said earlier, this is only a base for our config. We would also like to ad
 
 To achieve these abilities, this is how our extension should look like:
 
-{{{diffStep 1.4}}}
+{{{diffStep "1.5"}}}
 
 In addition to the alias we've just created, we also need to tell the `TypesScript` compiler to include the `api` dir during the compilation process:
 
-{{{diffStep 1.5}}}
+{{{diffStep "1.6"}}}
 
 And we will need to install the following dependencies so the `Webpack` config can be registered properly:
 
@@ -71,12 +75,11 @@ And we will need to install the following dependencies so the `Webpack` config c
 
 Now, we need to make some modifications for the `TypeScript` config so we can load `Meteor` as an external dependency; One of the changes include the specification for `CommonJS`:
 
-{{{diffStep 1.7}}}
+{{{diffStep "1.8"}}}
 
 This configuration requires us to install the declaration files specified under the `types` field:
 
-    $ npm install --save-dev @types/underscore
-    $ npm install --save-dev meteor-typings
+    $ npm install --save-dev @types/meteor
 
 ## Trying It Out
 
@@ -87,6 +90,6 @@ By this point, you can run `ionic serve` and test how our application works with
 
 This is caused due to the expectation to be run in a mobile environment. To fix this warning, simply check if the current platform supports `Cordova` before calling any methods related to it:
 
-{{{diffStep 1.9}}}
+{{{diffStep "1.10"}}}
 
 {{{navStep prevRef="https://angular-meteor.com/tutorials/whatsapp2-tutorial" nextRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/chats-page"}}}

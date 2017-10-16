@@ -7,7 +7,7 @@ import { Contact, ContactFieldType, Contacts, IContactField, IContactFindOptions
 import { SmsReceiver } from "../ionic/sms-receiver";
 import * as Bluebird from "bluebird";
 import { TWILIO_SMS_NUMBERS } from "api/models";
-import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs";
 
 @Injectable()
 export class PhoneService {

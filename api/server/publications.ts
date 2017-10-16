@@ -30,14 +30,16 @@ Meteor.publishComposite('users', function(
       'profile.name': { $regex: pattern, $options: 'i' },
       $or: [
         {'phone.number': {$in: contacts}},
-        {'services.facebook.id': {$in: facebookFriendsIds}}
+        {'services.facebook.id': {$in: facebookFriendsIds}},
+        {'profile.name': {$in: ['Ethan Gonzalez', 'Bryan Wallace', 'Avery Stewart', 'Katie Peterson', 'Ray Edwards']}}
       ]
     };
   } else {
     selector = {
       $or: [
         {'phone.number': {$in: contacts}},
-        {'services.facebook.id': {$in: facebookFriendsIds}}
+        {'services.facebook.id': {$in: facebookFriendsIds}},
+        {'profile.name': {$in: ['Ethan Gonzalez', 'Bryan Wallace', 'Avery Stewart', 'Katie Peterson', 'Ray Edwards']}}
       ]
     }
   }

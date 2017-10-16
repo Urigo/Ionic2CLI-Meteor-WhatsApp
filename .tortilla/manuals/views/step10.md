@@ -4,9 +4,9 @@
 
 In this step, we will implement a lazy-loading mechanism in the `MessagesPage`. Lazy loading means that only the necessary data will be loaded once we're promoted to the corresponding view, and it will keep loading, but gradually. In the `MessagesPage` case, we will only be provided with several messages once we enter the view, enough messages to fill all of it, and as we scroll up, we will provided with more messages. This way we can have a smooth experience, without the cost of fetching the entire messages collection. We will start by limiting our `messages` subscription into 30 documents:
 
-[{]: <helper> (diffStep 10.1)
+[{]: <helper> (diffStep "10.1")
 
-#### [Step 10.1: Added counter for messages publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/6e9ab8818)
+#### [Step 10.1: Added counter for messages publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/8403d1ba)
 
 ##### Changed api&#x2F;server&#x2F;publications.ts
 ```diff
@@ -38,9 +38,9 @@ In this step, we will implement a lazy-loading mechanism in the `MessagesPage`. 
 
 As we said, we will be fetching more and more messages gradually, so we will need to have a counter in the component which will tell us the number of the batch we would like to fetch in our next scroll:
 
-[{]: <helper> (diffStep 10.2)
+[{]: <helper> (diffStep "10.2")
 
-#### [Step 10.2: Add counter to client side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0c48bb36b)
+#### [Step 10.2: Add counter to client side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/51fb49dc)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 ```diff
@@ -70,9 +70,9 @@ As we said, we will be fetching more and more messages gradually, so we will nee
 
 By now, whether you noticed or not, we have some sort of a limitation which we have to solve. Let's say we've fetched all the messages available for the current chat, and we keep scrolling up, the component will keep attempting to fetch more messages, but it doesn't know that it reached the limit. Because of that, we will need to know the total number of messages so we will know when to stop the lazy-loading mechanism. To solve this issue, we will begin with implementing a method which will retrieve the number of total messages for a provided chat:
 
-[{]: <helper> (diffStep 10.3)
+[{]: <helper> (diffStep "10.3")
 
-#### [Step 10.3: Implement countMessages method on server side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7e23e05a9)
+#### [Step 10.3: Implement countMessages method on server side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/58a37b3d)
 
 ##### Changed api&#x2F;server&#x2F;methods.ts
 ```diff
@@ -91,15 +91,15 @@ By now, whether you noticed or not, we have some sort of a limitation which we h
 
 Now, whenever we fetch a new messages-batch we will check if we reached the total messages limit, and if so, we will stop listening to the scroll event:
 
-[{]: <helper> (diffStep 10.4)
+[{]: <helper> (diffStep "10.4")
 
-#### [Step 10.4: Implement actual load more logic](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/8d775f31d)
+#### [Step 10.4: Implement actual load more logic](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/8a04a943)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 ```diff
 @@ -6,7 +6,7 @@
  ┊ 6┊ 6┊import * as moment from 'moment';
- ┊ 7┊ 7┊import { _ } from 'meteor/underscore';
+ ┊ 7┊ 7┊import * as _ from 'lodash';
  ┊ 8┊ 8┊import { MessagesOptionsComponent } from './messages-options';
 -┊ 9┊  ┊import { Subscription } from 'rxjs';
 +┊  ┊ 9┊import { Subscription, Observable, Subscriber } from 'rxjs';
@@ -173,16 +173,16 @@ Now we're gonna implement a search-bar, in the `NewChatComponent`.
 
 Let's start by implementing the logic using `RxJS`. We will use a `BehaviorSubject` which will store the search pattern entered in the search bar, and we will be able to detect changes in its value using the `Observable` API; So whenever the search pattern is being changed, we will update the users list by re-subscribing to the `users` subscription:
 
-[{]: <helper> (diffStep 10.5)
+[{]: <helper> (diffStep "10.5")
 
-#### [Step 10.5: Implement the search bar logic with RxJS](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5782b82b4)
+#### [Step 10.5: Implement the search bar logic with RxJS](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/9aeb402a)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;new-chat.ts
 ```diff
 @@ -4,13 +4,14 @@
  ┊ 4┊ 4┊import { AlertController, ViewController } from 'ionic-angular';
  ┊ 5┊ 5┊import { MeteorObservable } from 'meteor-rxjs';
- ┊ 6┊ 6┊import { _ } from 'meteor/underscore';
+ ┊ 6┊ 6┊import * as _ from 'lodash';
 -┊ 7┊  ┊import { Observable, Subscription } from 'rxjs';
 +┊  ┊ 7┊import { Observable, Subscription, BehaviorSubject } from 'rxjs';
  ┊ 8┊ 8┊
@@ -251,9 +251,9 @@ Let's start by implementing the logic using `RxJS`. We will use a `BehaviorSubje
 
 Note how we used the `debounce` method to prevent subscription spamming. Let's add the template for the search-bar in the `NewChat` view, and bind it to the corresponding data-models and methods in the component:
 
-[{]: <helper> (diffStep 10.6)
+[{]: <helper> (diffStep "10.6")
 
-#### [Step 10.6: Update usage](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/da8c427b0)
+#### [Step 10.6: Update usage](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/2256b727)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;new-chat.html
 ```diff
@@ -292,9 +292,9 @@ Note how we used the `debounce` method to prevent subscription spamming. Let's a
 
 Now we will modify the `users` subscription to accept the search-pattern, which will be used as a filter for the result-set;
 
-[{]: <helper> (diffStep 10.7)
+[{]: <helper> (diffStep "10.7")
 
-#### [Step 10.7: Add search pattern to the publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ff4471183)
+#### [Step 10.7: Add search pattern to the publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/de521cc0)
 
 ##### Changed api&#x2F;server&#x2F;publications.ts
 ```diff

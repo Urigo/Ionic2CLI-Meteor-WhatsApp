@@ -3,7 +3,7 @@ import { Chats, Users, Pictures } from 'api/collections';
 import { User } from 'api/models';
 import { AlertController, Platform, ViewController } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
-import { _ } from 'meteor/underscore';
+import * as _ from 'lodash';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { PhoneService } from "../../services/phone";
 
@@ -96,7 +96,7 @@ export class NewChatComponent implements OnInit {
     .mergeMap((chats) => {
       // Get all userIDs who we're chatting with
       const receiverIds = _.chain(chats)
-        .pluck('memberIds')
+        .map('memberIds')
         .flatten()
         .concat(this.senderId)
         .value();

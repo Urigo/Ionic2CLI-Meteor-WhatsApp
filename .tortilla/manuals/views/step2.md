@@ -16,9 +16,9 @@ By default, the application will be created with the `home` page. Since our app'
 
 Second, we will remove its declaration in the app module:
 
-[{]: <helper> (diffStep 2.2)
+[{]: <helper> (diffStep "2.2")
 
-#### [Step 2.2: Removed tabs components from the module declaration](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c33a848e0)
+#### [Step 2.2: Removed tabs components from the module declaration](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1c24b764)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -54,9 +54,9 @@ Second, we will remove its declaration in the app module:
 
 Now, let's create our new `Component`, we'll call it `ChatsPage`:
 
-[{]: <helper> (diffStep 2.3)
+[{]: <helper> (diffStep "2.3")
 
-#### [Step 2.3: Create Chats page component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/450c68c0e)
+#### [Step 2.3: Create Chats page component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/fe57cdbe)
 
 ##### Added src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 ```diff
@@ -77,9 +77,9 @@ Now, let's create our new `Component`, we'll call it `ChatsPage`:
 
 `Angular 2` uses decorators to declare `Component`s, and we use `ES2016` classes to create the actual component, and the `templateUrl` declares the template file for the component. So now let's create this template file, next to the component file:
 
-[{]: <helper> (diffStep 2.4)
+[{]: <helper> (diffStep "2.4")
 
-#### [Step 2.4: Added chats page template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c4954e428)
+#### [Step 2.4: Added chats page template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5d59ff00)
 
 ##### Added src&#x2F;pages&#x2F;chats&#x2F;chats.html
 ```diff
@@ -107,9 +107,9 @@ Once creating an Ionic page it's recommended to use the following layout:
 
 Now, we need to add a declaration for this new `Component` in our `NgModule` definition:
 
-[{]: <helper> (diffStep 2.5)
+[{]: <helper> (diffStep "2.5")
 
-#### [Step 2.5: Add chats page to the NgModule](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/909d9832c)
+#### [Step 2.5: Add chats page to the NgModule](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/05fad725)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -149,9 +149,9 @@ Now, we need to add a declaration for this new `Component` in our `NgModule` def
 
 We will define the `ChatsPage` as the initial component of our app by setting the `rootPage` property in the main app component:
 
-[{]: <helper> (diffStep 2.6)
+[{]: <helper> (diffStep "2.6")
 
-#### [Step 2.6: Use the chats page as the main root page](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f72452786)
+#### [Step 2.6: Use the chats page as the main root page](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7c2c12f4)
 
 ##### Changed src&#x2F;app&#x2F;app.component.ts
 ```diff
@@ -177,9 +177,9 @@ We will define the `ChatsPage` as the initial component of our app by setting th
 
 Let's add some code to our `Component` with a simple logic; Once the component is created we gonna define some dummy chats, using the `Observable.of`, so we can have some data to test our view against:
 
-[{]: <helper> (diffStep 2.7)
+[{]: <helper> (diffStep "2.7")
 
-#### [Step 2.7: Add stubs for chats objects](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/d7d09a978)
+#### [Step 2.7: Add stubs for chats objects](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e1f6dee4)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 ```diff
@@ -262,9 +262,9 @@ Let's add some code to our `Component` with a simple logic; Once the component i
 
 Now, because we use `TypeScript`, we can define our own data-types and use them in our app, which will give you a better auto-complete and developing experience in most IDEs. In our application, we have 2 models: a `chat` model and a `message` model. We will define their interfaces in a file located under the path `src/models.ts`:
 
-[{]: <helper> (diffStep 2.9)
+[{]: <helper> (diffStep "2.9")
 
-#### [Step 2.9: Create models file with declarations of Chat, Message and MessageType](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/603053877)
+#### [Step 2.9: Create models file with declarations of Chat, Message and MessageType](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/6bfe06b2)
 
 ##### Added src&#x2F;models.ts
 ```diff
@@ -295,7 +295,7 @@ Now that the models are up and set, we can apply them to the `ChatsPage`:
 
 [{]: <helper> (diffStep "2.10")
 
-#### [Step 2.10: Use TypeScript models](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/58dbe2f5e)
+#### [Step 2.10: Use TypeScript models](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f70633a0)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 ```diff
@@ -389,20 +389,20 @@ Now that the models are up and set, we can apply them to the `ChatsPage`:
 
 `Ionic 2` provides us with a comfortable theming system which is based on `SASS` variables. The theme definition file is located in `src/theme/variable.scss`. Since we want our app to have a "Whatsappish" look, we will define a new `SASS` variable called `whatsapp` in the variables file:
 
-[{]: <helper> (diffStep 2.11)
+[{]: <helper> (diffStep "2.11")
 
-#### [Step 2.11: Add whatsapp color to the app theme](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/683f3a6b5)
+#### [Step 2.11: Add whatsapp color to the app theme](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/d21d9509)
 
 ##### Changed src&#x2F;theme&#x2F;variables.scss
 ```diff
-@@ -28,7 +28,8 @@
- ┊28┊28┊  secondary:  #32db64,
- ┊29┊29┊  danger:     #f53d3d,
- ┊30┊30┊  light:      #f4f4f4,
--┊31┊  ┊  dark:       #222
-+┊  ┊31┊  dark:       #222,
-+┊  ┊32┊  whatsapp:   #075E54
- ┊32┊33┊);
+@@ -38,7 +38,8 @@
+ ┊38┊38┊  secondary:  #32db64,
+ ┊39┊39┊  danger:     #f53d3d,
+ ┊40┊40┊  light:      #f4f4f4,
+-┊41┊  ┊  dark:       #222
++┊  ┊41┊  dark:       #222,
++┊  ┊42┊  whatsapp:   #075E54
+ ┊42┊43┊);
 ```
 
 [}]: #
@@ -411,9 +411,9 @@ The `whatsapp` color can be used by adding an attribute called `color` with a va
 
 To begin with, we can start by implementing the `ChatsView` and apply our newly defined theme into it. This view will contain a list representing all the available chats in the component's data-set:
 
-[{]: <helper> (diffStep 2.12)
+[{]: <helper> (diffStep "2.12")
 
-#### [Step 2.12: Add the layout of the chats page](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/be64beb86)
+#### [Step 2.12: Add the layout of the chats page](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e25dff41)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.html
 ```diff
@@ -467,9 +467,9 @@ We use `ion-list` which Ionic translates into a list, and we use `ion-item` to r
 
 Now, in order to finish our theming and styling, let's create a stylesheet file for our component:
 
-[{]: <helper> (diffStep 2.13)
+[{]: <helper> (diffStep "2.13")
 
-#### [Step 2.13: Create SCSS file for chats page](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e36050a61)
+#### [Step 2.13: Create SCSS file for chats page](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c24a1525)
 
 ##### Added src&#x2F;pages&#x2F;chats&#x2F;chats.scss
 ```diff
@@ -510,9 +510,9 @@ It requires us to install `angular2-moment` module using the following command:
 
 Now we will need to declare this module in the app's main component:
 
-[{]: <helper> (diffStep 2.15)
+[{]: <helper> (diffStep "2.15")
 
-#### [Step 2.15: Import MomentModule into our app module](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7b1fa7153)
+#### [Step 2.15: Import MomentModule into our app module](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/94114978)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -542,9 +542,9 @@ Now we will need to declare this module in the app's main component:
 
 Which will make `moment` available as a pack of pipes, as mentioned earlier:
 
-[{]: <helper> (diffStep 2.16)
+[{]: <helper> (diffStep "2.16")
 
-#### [Step 2.16: Use amCalendar pipe](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/20185957c)
+#### [Step 2.16: Use amCalendar pipe](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e02f429f)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.html
 ```diff
@@ -567,9 +567,9 @@ Ionic provides us with components which can handle mobile events like: slide, ta
 
 Right now this button is not hooked to anything. It requires us to bind it into the component:
 
-[{]: <helper> (diffStep 2.17)
+[{]: <helper> (diffStep "2.17")
 
-#### [Step 2.17: Add remove chat event](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/93015e0d6)
+#### [Step 2.17: Add remove chat event](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/afd6b4a0)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.html
 ```diff
@@ -588,9 +588,9 @@ Right now this button is not hooked to anything. It requires us to bind it into 
 
 And now that it is bound to the component we can safely implement its handler:
 
-[{]: <helper> (diffStep 2.18)
+[{]: <helper> (diffStep "2.18")
 
-#### [Step 2.18: Implement removeChat method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/6e80ea539)
+#### [Step 2.18: Implement removeChat method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/713f5144)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 ```diff

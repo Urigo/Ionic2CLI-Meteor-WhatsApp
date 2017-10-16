@@ -4,7 +4,7 @@ import { Chat, Message, MessageType, Location } from 'api/models';
 import { Messages } from 'api/collections';
 import { MeteorObservable } from 'meteor-rxjs';
 import * as moment from 'moment';
-import { _ } from 'meteor/underscore';
+import * as _ from 'lodash';
 import { MessagesOptionsComponent } from './messages-options';
 import { Subscription, Observable, Subscriber } from 'rxjs';
 import { MessagesAttachmentsComponent } from './messages-attachments';

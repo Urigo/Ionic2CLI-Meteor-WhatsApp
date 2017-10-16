@@ -3,33 +3,33 @@ import {Cordova, Plugin, IonicNativePlugin} from '@ionic-native/core';
 
 
 /**
- * @name Sim
+ * @name SmsReceiver
  * @description
- * Gets info from the Sim card like the carrier name, mcc, mnc and country code and other system dependent info.
+ * Allows you to receive incoming SMS. You have the possibility to start and stop the message broadcasting.
  *
- * Requires Cordova plugin: `cordova-plugin-sim`. For more info, please see the [Cordova Sim docs](https://github.com/pbakondy/cordova-plugin-sim).
+ * Requires Cordova plugin: `cordova-plugin-smsreceiver`. For more info, please see the [Cordova SmsReceiver docs](https://github.com/ahmedwahba/cordova-plugin-smsreceiver).
  *
  * @usage
  * ```typescript
- * import { Sim } from '@ionic-native/sim';
+ * import { SmsReceiver } from '@ionic-native/smsreceiver';
  *
  *
- * constructor(private sim: Sim) { }
+ * constructor(private smsReceiver: SmsReceiver) { }
  *
  * ...
  *
- * this.sim.getSimInfo().then(
- *   (info) => console.log('Sim info: ', info),
- *   (err) => console.log('Unable to get sim info: ', err)
+ * this.smsReceiver.isSupported().then(
+ *   (supported) => console.log('Permission granted'),
+ *   (err) => console.log('Permission denied: ', err)
  * );
  *
- * this.sim.hasReadPermission().then(
- *   (info) => console.log('Has permission: ', info)
+ * this.smsReceiver.startReceiving().then(
+ *   (msg) => console.log('Message received: ', msg)
  * );
  *
- * this.sim.requestReadPermission().then(
- *   () => console.log('Permission granted'),
- *   () => console.log('Permission denied')
+ * this.smsReceiver.stopReceiving().then(
+ *   () => console.log('Stopped receiving'),
+ *   (err) => console.log('Error: ', err)
  * );
  * ```
  */

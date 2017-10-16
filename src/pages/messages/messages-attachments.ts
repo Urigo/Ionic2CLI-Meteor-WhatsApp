@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, Platform, ModalController, ViewController } from 'ionic-angular';
+import { AlertController, ModalController, Platform, ViewController } from 'ionic-angular';
 import { NewLocationMessageComponent } from './location-message';
 import { MessageType } from 'api/models';
 import { PictureService } from '../../services/picture';
@@ -10,11 +10,11 @@ import { PictureService } from '../../services/picture';
 })
 export class MessagesAttachmentsComponent {
   constructor(
-    private alertCtrl: AlertController,
-    private platform: Platform,
     private viewCtrl: ViewController,
     private modelCtrl: ModalController,
-    private pictureService: PictureService
+    private pictureService: PictureService,
+    private platform: Platform,
+    private alertCtrl: AlertController
   ) {}
 
   sendPicture(camera: boolean): void {

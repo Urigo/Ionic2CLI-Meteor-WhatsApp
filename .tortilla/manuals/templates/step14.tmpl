@@ -11,13 +11,13 @@ Let's start installing the `Sim` `Cordova` plug-in:
 
 Then let's add it to `app.module.ts`:
 
-{{{diffStep 14.2}}}
+{{{diffStep "14.2"}}}
 
 Let's add the appropriate handler in the `PhoneService`, we will use it inside the `LoginPage`:
 
-{{{diffStep 14.3}}}
+{{{diffStep "14.3"}}}
 
-{{{diffStep 14.4}}}
+{{{diffStep "14.4"}}}
 
 ## SMS OTP autofill
 
@@ -25,19 +25,19 @@ On supported platforms (`Android`) it would be nice to automatically detect the 
 
 We need to add the `Cordova` plugin first:
 
-{{{diffStep 14.5}}}
+    $ ionic cordova plugin add cordova-plugin-sms-receiver --save
 
 Then we must create the corresponding `ionic-native` plugin, since no one created it:
 
-{{{diffStep 14.6}}}
+{{{diffStep "14.6"}}}
 
 Last but not the least we must import it into `app.module.ts` as usual:
 
-{{{diffStep 14.7}}}
+{{{diffStep "14.7"}}}
 
 Let's start by using the yet-to-be-created method in the `verification` page:
 
-{{{diffStep 14.8}}}
+{{{diffStep "14.8"}}}
 
 We will need `bluebird` to promisify `sms-receiver`:
 
@@ -50,7 +50,7 @@ We will need to add support for `es2016` in Typescript, because we will use `Arr
 
 Now we can implement the method in the `phone` service:
 
-{{{diffStep 14.11}}}
+{{{diffStep "14.11"}}}
 
 ## Camera
 
@@ -66,19 +66,19 @@ We will start by adding the appropriate `Cordova` plug-ins:
 
 Then let's add them to `app.module.ts`:
 
-{{{diffStep 14.13}}}
+{{{diffStep "14.13"}}}
 
 We will bind the `click` event in the view:
 
-{{{diffStep 14.14}}}
+{{{diffStep "14.14"}}}
 
 And we will create the event handler in `MessagesAttachmentsComponent`:
 
-{{{diffStep 14.15}}}
+{{{diffStep "14.15"}}}
 
 Finally we can create a new method in the `PictureService` to take some pictures and remove the old method which used `ImagePicker`:
 
-{{{diffStep 14.16}}}
+{{{diffStep "14.16"}}}
 
 Choosing to take the picture from the camera instead of the gallery is as simple as passing a boolean parameter to the method. The same is true for cropping.
 
@@ -86,6 +86,6 @@ Choosing to take the picture from the camera instead of the gallery is as simple
 
 We will also have to update `selectProfilePicture` in the profile `Page` to use `getPicture`:
 
-{{{diffStep 14.17}}}
+{{{diffStep "14.17"}}}
 
 {{{navStep prevRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/file-upload" nextRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/addressbook"}}}

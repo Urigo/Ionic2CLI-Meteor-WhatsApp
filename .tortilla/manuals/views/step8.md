@@ -2,9 +2,9 @@
 
 Our next step is about adding the ability to create new chats. We have the `ChatsPage` and the authentication system, but we need to hook them up some how. Let's define the initial `User` schema which will be used to retrieve its relevant information in our application:
 
-[{]: <helper> (diffStep 8.1)
+[{]: <helper> (diffStep "8.1")
 
-#### [Step 8.1: Added user model](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/991340ff0)
+#### [Step 8.1: Added user model](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/69cd2d87)
 
 ##### Changed api&#x2F;server&#x2F;models.ts
 ```diff
@@ -22,9 +22,9 @@ Our next step is about adding the ability to create new chats. We have the `Chat
 
 `Meteor` comes with a built-in users collection, defined as `Meteor.users`, but since we're using `Observables` vastly, we will wrap our collection with one:
 
-[{]: <helper> (diffStep 8.2)
+[{]: <helper> (diffStep "8.2")
 
-#### [Step 8.2: Wrap Meteor users collection](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/bdd9441db)
+#### [Step 8.2: Wrap Meteor users collection](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/242d0b8d)
 
 ##### Added api&#x2F;server&#x2F;collections&#x2F;users.ts
 ```diff
@@ -40,9 +40,9 @@ Our next step is about adding the ability to create new chats. We have the `Chat
 
 For accessibility, we're gonna export the collection from the `index` file as well:
 
-[{]: <helper> (diffStep 8.3)
+[{]: <helper> (diffStep "8.3")
 
-#### [Step 8.3: Export users collection form index file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f5918b6d0)
+#### [Step 8.3: Export users collection form index file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/19742872)
 
 ##### Changed api&#x2F;server&#x2F;collections&#x2F;index.ts
 ```diff
@@ -58,9 +58,9 @@ For accessibility, we're gonna export the collection from the `index` file as we
 
 We will be using `Ionic`'s modal dialog to show the chat creation view. The first thing we're gonna do would be implementing the component itself, along with its view and stylesheet:
 
-[{]: <helper> (diffStep 8.4)
+[{]: <helper> (diffStep "8.4")
 
-#### [Step 8.4: Added new chat component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/94ec41a7f)
+#### [Step 8.4: Added new chat component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ecc4b48f)
 
 ##### Added src&#x2F;pages&#x2F;chats&#x2F;new-chat.ts
 ```diff
@@ -70,7 +70,7 @@ We will be using `Ionic`'s modal dialog to show the chat creation view. The firs
 +┊  ┊ 3┊import { User } from 'api/models';
 +┊  ┊ 4┊import { AlertController, ViewController } from 'ionic-angular';
 +┊  ┊ 5┊import { MeteorObservable } from 'meteor-rxjs';
-+┊  ┊ 6┊import { _ } from 'meteor/underscore';
++┊  ┊ 6┊import * as _ from 'lodash';
 +┊  ┊ 7┊import { Observable, Subscription } from 'rxjs';
 +┊  ┊ 8┊
 +┊  ┊ 9┊@Component({
@@ -124,7 +124,7 @@ We will be using `Ionic`'s modal dialog to show the chat creation view. The firs
 +┊  ┊57┊    .mergeMap((chats) => {
 +┊  ┊58┊      // Get all userIDs who we're chatting with
 +┊  ┊59┊      const receiverIds = _.chain(chats)
-+┊  ┊60┊        .pluck('memberIds')
++┊  ┊60┊        .map('memberIds')
 +┊  ┊61┊        .flatten()
 +┊  ┊62┊        .concat(this.senderId)
 +┊  ┊63┊        .value();
@@ -154,9 +154,9 @@ We will be using `Ionic`'s modal dialog to show the chat creation view. The firs
 
 [}]: #
 
-[{]: <helper> (diffStep 8.5)
+[{]: <helper> (diffStep "8.5")
 
-#### [Step 8.5: Added new chat template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/39573c869)
+#### [Step 8.5: Added new chat template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/04582f6b)
 
 ##### Added src&#x2F;pages&#x2F;chats&#x2F;new-chat.html
 ```diff
@@ -187,9 +187,9 @@ We will be using `Ionic`'s modal dialog to show the chat creation view. The firs
 
 [}]: #
 
-[{]: <helper> (diffStep 8.6)
+[{]: <helper> (diffStep "8.6")
 
-#### [Step 8.6: Added new chat styles](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/87b5c876a)
+#### [Step 8.6: Added new chat styles](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/982cbddb)
 
 ##### Added src&#x2F;pages&#x2F;chats&#x2F;new-chat.scss
 ```diff
@@ -216,9 +216,9 @@ The dialog should contain a list of all the users whose chat does not exist yet.
 
 The dialog should be revealed whenever we click on one of the options in the options pop-over, therefore, we will implement the necessary handler:
 
-[{]: <helper> (diffStep 8.7)
+[{]: <helper> (diffStep "8.7")
 
-#### [Step 8.7: Added addChat method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0af89ddfc)
+#### [Step 8.7: Added addChat method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/55e539e5)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 ```diff
@@ -268,9 +268,9 @@ The dialog should be revealed whenever we click on one of the options in the opt
 
 And bind it to the `click` event:
 
-[{]: <helper> (diffStep 8.8)
+[{]: <helper> (diffStep "8.8")
 
-#### [Step 8.8: Bind click event to new chat modal](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e08bb729c)
+#### [Step 8.8: Bind click event to new chat modal](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/edc0f066)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.html
 ```diff
@@ -289,9 +289,9 @@ And bind it to the `click` event:
 
 We will import the newly created component in the app's `NgModule` as well, so it can be recognized properly:
 
-[{]: <helper> (diffStep 8.9)
+[{]: <helper> (diffStep "8.9")
 
-#### [Step 8.9: Import new chat component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/2d8e8e555)
+#### [Step 8.9: Import new chat component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/2228b156)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -335,7 +335,7 @@ We're also required to implement the appropriate `Meteor` method which will be t
 
 [{]: <helper> (diffStep "8.10")
 
-#### [Step 8.10: Implement addChat method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/13d38061c)
+#### [Step 8.10: Implement addChat method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0fa76bc1)
 
 ##### Changed api&#x2F;server&#x2F;methods.ts
 ```diff
@@ -380,9 +380,9 @@ We're also required to implement the appropriate `Meteor` method which will be t
 
 As you can see, a chat is inserted with an additional `memberIds` field. Whenever we have such a change we should update the model's schema accordingly, in this case we're talking about adding the `memberIds` field, like so:
 
-[{]: <helper> (diffStep 8.11)
+[{]: <helper> (diffStep "8.11")
 
-#### [Step 8.11: Add memberIds field](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/87b8b1324)
+#### [Step 8.11: Add memberIds field](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/760fa3e3)
 
 ##### Changed api&#x2F;server&#x2F;models.ts
 ```diff
@@ -400,9 +400,9 @@ As you can see, a chat is inserted with an additional `memberIds` field. Wheneve
 
 Thanks to our new-chat dialog, we can create chats dynamically with no need in initial fabrication. Let's replace the chats fabrication with users fabrication in the Meteor server:
 
-[{]: <helper> (diffStep 8.12)
+[{]: <helper> (diffStep "8.12")
 
-#### [Step 8.12: Create real user accounts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e939ef123)
+#### [Step 8.12: Create real user accounts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0ce2d7cb)
 
 ##### Changed api&#x2F;server&#x2F;main.ts
 ```diff
@@ -535,9 +535,9 @@ Thanks to our new-chat dialog, we can create chats dynamically with no need in i
 
 Since we've changed the data fabrication method, the chat's title and picture are not hard-coded anymore, therefore, any additional data should be fetched in the components themselves:
 
-[{]: <helper> (diffStep 8.13)
+[{]: <helper> (diffStep "8.13")
 
-#### [Step 8.13: Implement chats with with real data](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/45b40a911)
+#### [Step 8.13: Implement chats with with real data](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7cbddd57)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 ```diff

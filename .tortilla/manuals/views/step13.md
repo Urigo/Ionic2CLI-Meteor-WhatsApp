@@ -11,9 +11,9 @@ First, we will a `Cordova` plug-in which will give us the ability to access the 
 
 Then let's add it to `app.module.ts`:
 
-[{]: <helper> (diffStep 13.2)
+[{]: <helper> (diffStep "13.2")
 
-#### [Step 13.2: Add Image Picker to app.module.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/3fafa2837)
+#### [Step 13.2: Add Image Picker to app.module.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/dfe46058)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -48,6 +48,23 @@ Up next, would be adding the ability to store some files in our data-base. This 
     api$ meteor add jalik:ufs
     api$ meteor add jalik:ufs-gridfs
 
+Since there are no declarations available for `jalik:ufs`, let's create a fake one to at least get rid of the warnings:
+
+[{]: <helper> (diffStep "13.4")
+
+#### [Step 13.4: Add declarations for meteor/jalik:ufs](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/683fc89b)
+
+##### Changed src&#x2F;declarations.d.ts
+```diff
+@@ -8,3 +8,4 @@
+ ┊ 8┊ 8┊  For more info on type definition files, check out the Typescript docs here:
+ ┊ 9┊ 9┊  https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html
+ ┊10┊10┊*/
++┊  ┊11┊declare module 'meteor/jalik:ufs';
+```
+
+[}]: #
+
 And be sure to re-bundle the `Meteor` client whenever you make changes in the server:
 
     $ npm run meteor-client:bundle
@@ -56,9 +73,9 @@ And be sure to re-bundle the `Meteor` client whenever you make changes in the se
 
 Before we proceed to the server, we will add the ability to select and upload pictures in the client. All our picture-related operations will be defined in a single service called `PictureService`; The first bit of this service would be picture-selection. The `UploadFS` package already supports that feature, **but only for the browser**, therefore we will be using the `Cordova` plug-in we've just installed to select some pictures from our mobile device:
 
-[{]: <helper> (diffStep 13.4)
+[{]: <helper> (diffStep "13.5")
 
-#### [Step 13.4: Create PictureService with utils for files](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/a7dd074a7)
+#### [Step 13.5: Create PictureService with utils for files](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/cae0d194)
 
 ##### Added src&#x2F;services&#x2F;picture.ts
 ```diff
@@ -168,9 +185,9 @@ Before we proceed to the server, we will add the ability to select and upload pi
 
 In order to use the service we will need to import it in the app's `NgModule` as a `provider`:
 
-[{]: <helper> (diffStep 13.5)
+[{]: <helper> (diffStep "13.6")
 
-#### [Step 13.5: Import PictureService](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c78d6e955)
+#### [Step 13.6: Import PictureService](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5bc95c06)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -200,9 +217,9 @@ In order to use the service we will need to import it in the app's `NgModule` as
 
 Since now we will be sending pictures, we will need to update the message schema to support picture typed messages:
 
-[{]: <helper> (diffStep 13.6)
+[{]: <helper> (diffStep "13.7")
 
-#### [Step 13.6: Added picture message type](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e327176b7)
+#### [Step 13.7: Added picture message type](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f0f0bd9e)
 
 ##### Changed api&#x2F;server&#x2F;models.ts
 ```diff
@@ -222,14 +239,14 @@ Since now we will be sending pictures, we will need to update the message schema
 
 In the attachments menu, we will add a new handler for sending pictures, called `sendPicture`:
 
-[{]: <helper> (diffStep 13.7)
+[{]: <helper> (diffStep "13.8")
 
-#### [Step 13.7: Implement sendPicture method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/90582ba67)
+#### [Step 13.8: Implement sendPicture method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/9fb2f78c)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.ts
 ```diff
 @@ -2,6 +2,7 @@
- ┊2┊2┊import { AlertController, Platform, ModalController, ViewController } from 'ionic-angular';
+ ┊2┊2┊import { ModalController, ViewController } from 'ionic-angular';
  ┊3┊3┊import { NewLocationMessageComponent } from './location-message';
  ┊4┊4┊import { MessageType } from 'api/models';
 +┊ ┊5┊import { PictureService } from '../../services/picture';
@@ -238,36 +255,36 @@ In the attachments menu, we will add a new handler for sending pictures, called 
  ┊7┊8┊  selector: 'messages-attachments',
 ```
 ```diff
-@@ -12,9 +13,19 @@
- ┊12┊13┊    private alertCtrl: AlertController,
- ┊13┊14┊    private platform: Platform,
- ┊14┊15┊    private viewCtrl: ViewController,
--┊15┊  ┊    private modelCtrl: ModalController
-+┊  ┊16┊    private modelCtrl: ModalController,
-+┊  ┊17┊    private pictureService: PictureService
- ┊16┊18┊  ) {}
- ┊17┊19┊
-+┊  ┊20┊  sendPicture(): void {
-+┊  ┊21┊    this.pictureService.select().then((file: File) => {
-+┊  ┊22┊      this.viewCtrl.dismiss({
-+┊  ┊23┊        messageType: MessageType.PICTURE,
-+┊  ┊24┊        selectedPicture: file
-+┊  ┊25┊      });
-+┊  ┊26┊    });
-+┊  ┊27┊  }
-+┊  ┊28┊
- ┊18┊29┊  sendLocation(): void {
- ┊19┊30┊    const locationModal = this.modelCtrl.create(NewLocationMessageComponent);
- ┊20┊31┊    locationModal.onDidDismiss((location) => {
+@@ -10,9 +11,19 @@
+ ┊10┊11┊export class MessagesAttachmentsComponent {
+ ┊11┊12┊  constructor(
+ ┊12┊13┊    private viewCtrl: ViewController,
+-┊13┊  ┊    private modelCtrl: ModalController
++┊  ┊14┊    private modelCtrl: ModalController,
++┊  ┊15┊    private pictureService: PictureService
+ ┊14┊16┊  ) {}
+ ┊15┊17┊
++┊  ┊18┊  sendPicture(): void {
++┊  ┊19┊    this.pictureService.select().then((file: File) => {
++┊  ┊20┊      this.viewCtrl.dismiss({
++┊  ┊21┊        messageType: MessageType.PICTURE,
++┊  ┊22┊        selectedPicture: file
++┊  ┊23┊      });
++┊  ┊24┊    });
++┊  ┊25┊  }
++┊  ┊26┊
+ ┊16┊27┊  sendLocation(): void {
+ ┊17┊28┊    const locationModal = this.modelCtrl.create(NewLocationMessageComponent);
+ ┊18┊29┊    locationModal.onDidDismiss((location) => {
 ```
 
 [}]: #
 
 And we will bind that handler to the view, so whenever we press the right button, the handler will be invoked with the selected picture:
 
-[{]: <helper> (diffStep 13.8)
+[{]: <helper> (diffStep "13.9")
 
-#### [Step 13.8: Bind click event for sendPicture](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/86ddc1ccf)
+#### [Step 13.9: Bind click event for sendPicture](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1fc5ce61)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.html
 ```diff
@@ -285,9 +302,9 @@ And we will bind that handler to the view, so whenever we press the right button
 
 Now we will be extending the `MessagesPage`, by adding a method which will send the picture selected in the attachments menu:
 
-[{]: <helper> (diffStep 13.9)
+[{]: <helper> (diffStep "13.10")
 
-#### [Step 13.9: Implement the actual send of picture message](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/110e84888)
+#### [Step 13.10: Implement the actual send of picture message](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1faee976)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 ```diff
@@ -344,9 +361,9 @@ Now we will be extending the `MessagesPage`, by adding a method which will send 
 
 For now, we will add a stub for the `upload` method in the `PictureService` and we will get back to it once we finish implementing the necessary logic in the server for storing a picture:
 
-[{]: <helper> (diffStep "13.10")
+[{]: <helper> (diffStep "13.11")
 
-#### [Step 13.10: Create stub method for upload method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c34851056)
+#### [Step 13.11: Create stub method for upload method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/6bc7bb6a)
 
 ##### Changed src&#x2F;services&#x2F;picture.ts
 ```diff
@@ -369,9 +386,9 @@ For now, we will add a stub for the `upload` method in the `PictureService` and 
 
 So as we said, need to handle storage of pictures that were sent by the client. First, we will create a `Picture` model so the compiler can recognize a picture object:
 
-[{]: <helper> (diffStep 13.11)
+[{]: <helper> (diffStep "13.12")
 
-#### [Step 13.11: Create Picture model](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/70f432900)
+#### [Step 13.12: Create Picture model](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/45fc321e)
 
 ##### Changed api&#x2F;server&#x2F;models.ts
 ```diff
@@ -401,18 +418,20 @@ So as we said, need to handle storage of pictures that were sent by the client. 
 
 If you're familiar with `Whatsapp`, you'll know that sent pictures are compressed. That's so the data-base can store more pictures, and the traffic in the network will be faster. To compress the sent pictures, we will be using an `NPM` package called [sharp](https://www.npmjs.com/package/sharp), which is a utility library which will help us perform transformations on pictures:
 
-    $ meteor npm install --save sharp
+    $ npm install --save sharp
 
-> Be sure to use `meteor npm` and not `npm`, and that's because we wanna make sure that `sharp` is compatible with the server.
+> We used to use `meteor npm` and not `npm` because we wanted to make sure that `sharp` is compatible with the server. Unfortunately it recently started to break `Ionic`: `Error: Cannot find module '@angular/tsc-wrapped/src/tsc'`. If you use a `node` version compatible with our Meteor version (`node` 1.8 should be compatible with Meteor 1.6) then everything will be fine, otherwise it will break `sharp`.
+
+> We also used to run the previous command from the `api` directory, otherwise Meteor would have compiled `sharp` for the system Meteor version and not the project one. Since we cannot use `meteor npm` anymore let's stick to the root directory instead.
 
 > Since `sharp` bundles a binary version of `libvips`, depending on your distro you may need to install a packaged version of `vips` in order to get it working.
 > For example on Arch Linux you will need to install `vips` from AUR.
 
 Now we will create a picture store which will compress pictures using `sharp` right before they are inserted into the data-base:
 
-[{]: <helper> (diffStep 13.13)
+[{]: <helper> (diffStep "13.14")
 
-#### [Step 13.13: Create pictures store](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5fef8e543)
+#### [Step 13.14: Create pictures store](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c39b9805)
 
 ##### Added api&#x2F;server&#x2F;collections&#x2F;pictures.ts
 ```diff
@@ -466,9 +485,9 @@ Now we will create a picture store which will compress pictures using `sharp` ri
 
 You can look at a store as some sort of a wrapper for a collection, which will run different kind of a operations before it mutates it or fetches data from it. Note that we used `GridFS` because this way an uploaded file is split into multiple packets, which is more efficient for storage. We also defined a small utility function on that store which will retrieve a profile picture. If the ID was not found, it will return a link for the default picture. To make things convenient, we will also export the store from the `index` file:
 
-[{]: <helper> (diffStep 13.14)
+[{]: <helper> (diffStep "13.15")
 
-#### [Step 13.14: Export pictures collection](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/38b68172c)
+#### [Step 13.15: Export pictures collection](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5a6b0391)
 
 ##### Changed api&#x2F;server&#x2F;collections&#x2F;index.ts
 ```diff
@@ -483,9 +502,9 @@ You can look at a store as some sort of a wrapper for a collection, which will r
 
 Now that we have the pictures store, and the server knows how to handle uploaded pictures, we will implement the `upload` stub in the `PictureService`:
 
-[{]: <helper> (diffStep 13.15)
+[{]: <helper> (diffStep "13.16")
 
-#### [Step 13.15: Implement upload method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/02b582a2e)
+#### [Step 13.16: Implement upload method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/45667b67)
 
 ##### Changed src&#x2F;services&#x2F;picture.ts
 ```diff
@@ -494,7 +513,7 @@ Now that we have the pictures store, and the server knows how to handle uploaded
  ┊ 3┊ 3┊import { ImagePicker } from '@ionic-native/image-picker';
  ┊ 4┊ 4┊import { UploadFS } from 'meteor/jalik:ufs';
 +┊  ┊ 5┊import { PicturesStore } from 'api/collections';
-+┊  ┊ 6┊import { _ } from 'meteor/underscore';
++┊  ┊ 6┊import * as _ from 'lodash';
 +┊  ┊ 7┊import { DEFAULT_PICTURE_URL } from 'api/models';
  ┊ 5┊ 8┊
  ┊ 6┊ 9┊@Injectable()
@@ -507,7 +526,7 @@ Now that we have the pictures store, and the server knows how to handle uploaded
  ┊31┊34┊  upload(blob: File): Promise<any> {
 -┊32┊  ┊    return Promise.resolve();
 +┊  ┊35┊    return new Promise((resolve, reject) => {
-+┊  ┊36┊      const metadata = _.pick(blob, 'name', 'type', 'size');
++┊  ┊36┊      const metadata: any = _.pick(blob, 'name', 'type', 'size');
 +┊  ┊37┊
 +┊  ┊38┊      if (!metadata.name) {
 +┊  ┊39┊        metadata.name = DEFAULT_PICTURE_URL;
@@ -532,21 +551,21 @@ Now that we have the pictures store, and the server knows how to handle uploaded
 
 Since `sharp` is a server-only package, and it is not supported by the client, at all, we will replace it with an empty dummy-object so errors won't occur. This requires us to change the `Webpack` config as shown below:
 
-[{]: <helper> (diffStep 13.16)
+[{]: <helper> (diffStep "13.17")
 
-#### [Step 13.16: Ignore sharp package on client side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/3ce9b04b5)
+#### [Step 13.17: Ignore sharp package on client side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/3cd5fde8)
 
 ##### Changed webpack.config.js
 ```diff
-@@ -21,6 +21,9 @@
- ┊21┊21┊  },
- ┊22┊22┊
- ┊23┊23┊  externals: [
-+┊  ┊24┊    {
-+┊  ┊25┊      sharp: '{}'
-+┊  ┊26┊    },
- ┊24┊27┊    resolveExternals
- ┊25┊28┊  ],
+@@ -81,6 +81,9 @@
+ ┊81┊81┊  },
+ ┊82┊82┊
+ ┊83┊83┊  externals: [
++┊  ┊84┊    {
++┊  ┊85┊      sharp: '{}'
++┊  ┊86┊    },
+ ┊84┊87┊    resolveExternals
+ ┊85┊88┊  ],
 ```
 
 [}]: #
@@ -555,9 +574,9 @@ Since `sharp` is a server-only package, and it is not supported by the client, a
 
 We will now add the support for picture typed messages in the `MessagesPage`, so whenever we send a picture, we will be able to see them in the messages list like any other message:
 
-[{]: <helper> (diffStep 13.17)
+[{]: <helper> (diffStep "13.18")
 
-#### [Step 13.17: Added view for picture message](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/de4156c65)
+#### [Step 13.18: Added view for picture message](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/55c5fd20)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.html
 ```diff
@@ -575,15 +594,15 @@ We will now add the support for picture typed messages in the `MessagesPage`, so
 
 As you can see, we also bound the picture message to the `click` event, which means that whenever we click on it, a picture viewer should be opened with the clicked picture. Let's create the component for that picture viewer:
 
-[{]: <helper> (diffStep 13.18)
+[{]: <helper> (diffStep "13.19")
 
-#### [Step 13.18: Create show picture component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/9669c4994)
+#### [Step 13.19: Create show picture component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/8f0696ba)
 
 ##### Added src&#x2F;pages&#x2F;messages&#x2F;show-picture.ts
 ```diff
 @@ -0,0 +1,14 @@
 +┊  ┊ 1┊import { Component } from '@angular/core';
-+┊  ┊ 2┊import { NavParams, ViewController } from 'ionic-angular';
++┊  ┊ 2┊import { NavParams } from 'ionic-angular';
 +┊  ┊ 3┊
 +┊  ┊ 4┊@Component({
 +┊  ┊ 5┊  selector: 'show-picture',
@@ -592,17 +611,17 @@ As you can see, we also bound the picture message to the `click` event, which me
 +┊  ┊ 8┊export class ShowPictureComponent {
 +┊  ┊ 9┊  pictureSrc: string;
 +┊  ┊10┊
-+┊  ┊11┊  constructor(private navParams: NavParams, private viewCtrl: ViewController) {
-+┊  ┊12┊    this.pictureSrc = navParams.get('pictureSrc');
++┊  ┊11┊  constructor(private navParams: NavParams) {
++┊  ┊12┊    this.pictureSrc = this.navParams.get('pictureSrc');
 +┊  ┊13┊  }
 +┊  ┊14┊}
 ```
 
 [}]: #
 
-[{]: <helper> (diffStep 13.19)
+[{]: <helper> (diffStep "13.20")
 
-#### [Step 13.19: Create show picture template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c3c34bd86)
+#### [Step 13.20: Create show picture template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/14a705ef)
 
 ##### Added src&#x2F;pages&#x2F;messages&#x2F;show-picture.html
 ```diff
@@ -624,9 +643,9 @@ As you can see, we also bound the picture message to the `click` event, which me
 
 [}]: #
 
-[{]: <helper> (diffStep "13.20")
+[{]: <helper> (diffStep "13.21")
 
-#### [Step 13.20: Create show pictuer component styles](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ac398a1d9)
+#### [Step 13.21: Create show pictuer component styles](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b87fe46b)
 
 ##### Added src&#x2F;pages&#x2F;messages&#x2F;show-picture.scss
 ```diff
@@ -645,9 +664,9 @@ As you can see, we also bound the picture message to the `click` event, which me
 
 [}]: #
 
-[{]: <helper> (diffStep 13.21)
+[{]: <helper> (diffStep "13.22")
 
-#### [Step 13.21: Import ShowPictureComponent](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/490aaaa26)
+#### [Step 13.22: Import ShowPictureComponent](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/04a4979e)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -689,9 +708,9 @@ As you can see, we also bound the picture message to the `click` event, which me
 
 And now that we have that component ready, we will implement the `showPicture` method in the `MessagesPage` component, which will create a new instance of the `ShowPictureComponent`:
 
-[{]: <helper> (diffStep 13.22)
+[{]: <helper> (diffStep "13.23")
 
-#### [Step 13.22: Implement showPicture method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/07599b6a7)
+#### [Step 13.23: Implement showPicture method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/eda3c470)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 ```diff
@@ -747,9 +766,9 @@ And now that we have that component ready, we will implement the `showPicture` m
 
 We have the ability to send picture messages. Now we will add the ability to change the user's profile picture using the infrastructure we've just created. To begin with, we will define a new property to our `User` model called `pictureId`, which will be used to determine the belonging profile picture of the current user:
 
-[{]: <helper> (diffStep 13.23)
+[{]: <helper> (diffStep "13.24")
 
-#### [Step 13.23: Add pictureId property to Profile](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/6f97256c8)
+#### [Step 13.24: Add pictureId property to Profile](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5b491fcd)
 
 ##### Changed api&#x2F;server&#x2F;models.ts
 ```diff
@@ -767,9 +786,9 @@ We have the ability to send picture messages. Now we will add the ability to cha
 
 We will bind the editing button in the profile selection page into an event handler:
 
-[{]: <helper> (diffStep 13.24)
+[{]: <helper> (diffStep "13.25")
 
-#### [Step 13.24: Add event for changing profile picture](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/06b41f964)
+#### [Step 13.25: Add event for changing profile picture](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/21a97432)
 
 ##### Changed src&#x2F;pages&#x2F;profile&#x2F;profile.html
 ```diff
@@ -787,9 +806,9 @@ We will bind the editing button in the profile selection page into an event hand
 
 And we will add all the missing logic in the component, so the `pictureId` will be transformed into and actual reference, and so we can have the ability to select a picture from our gallery and upload it:
 
-[{]: <helper> (diffStep 13.25)
+[{]: <helper> (diffStep "13.26")
 
-#### [Step 13.25: Implement pick, update and set of profile image](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ddf3990a1)
+#### [Step 13.26: Implement pick, update and set of profile image](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/56e36f36)
 
 ##### Changed src&#x2F;pages&#x2F;profile&#x2F;profile.ts
 ```diff
@@ -857,9 +876,9 @@ And we will add all the missing logic in the component, so the `pictureId` will 
 
 We will also define a new hook in the `Meteor.users` collection so whenever we update the profile picture, the previous one will be removed from the data-base. This way we won't have some unnecessary data in our data-base, which will save us some precious storage:
 
-[{]: <helper> (diffStep 13.26)
+[{]: <helper> (diffStep "13.27")
 
-#### [Step 13.26: Add after hook for user modification](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/9c47bdb78)
+#### [Step 13.27: Add after hook for user modification](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/accbc980)
 
 ##### Changed api&#x2F;server&#x2F;collections&#x2F;users.ts
 ```diff
@@ -889,15 +908,15 @@ Collection hooks are not part of `Meteor`'s official API and are added through a
 
 Now we need to import the type definition we've just installed in the `tsconfig.json` file:
 
-[{]: <helper> (diffStep 13.28)
+[{]: <helper> (diffStep "13.29")
 
-#### [Step 13.28: Import meteor-collection-hooks typings](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5a0186d8e)
+#### [Step 13.29: Import meteor-collection-hooks typings](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b423126f)
 
 ##### Changed api&#x2F;tsconfig.json
 ```diff
 @@ -18,7 +18,8 @@
  ┊18┊18┊    "types": [
- ┊19┊19┊      "meteor-typings",
+ ┊19┊19┊      "@types/meteor",
  ┊20┊20┊      "@types/meteor-accounts-phone",
 -┊21┊  ┊      "@types/meteor-publish-composite"
 +┊  ┊21┊      "@types/meteor-publish-composite",
@@ -912,7 +931,7 @@ Now we need to import the type definition we've just installed in the `tsconfig.
 @@ -21,7 +21,8 @@
  ┊21┊21┊    "noImplicitAny": false,
  ┊22┊22┊    "types": [
- ┊23┊23┊      "@types/underscore",
+ ┊23┊23┊      "@types/meteor",
 -┊24┊  ┊      "@types/meteor-accounts-phone"
 +┊  ┊24┊      "@types/meteor-accounts-phone",
 +┊  ┊25┊      "@types/meteor-collection-hooks"
@@ -925,9 +944,9 @@ Now we need to import the type definition we've just installed in the `tsconfig.
 
 We now add a `user` publication which should be subscribed whenever we initialize the `ProfilePage`. This subscription should fetch some data from other collections which is related to the user which is currently logged in; And to be more specific, the document associated with the `profileId` defined in the `User` model:
 
-[{]: <helper> (diffStep 13.29)
+[{]: <helper> (diffStep "13.30")
 
-#### [Step 13.29: Add user publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0c4f9d861)
+#### [Step 13.30: Add user publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c9c399c7)
 
 ##### Changed api&#x2F;server&#x2F;publications.ts
 ```diff
@@ -963,9 +982,9 @@ We now add a `user` publication which should be subscribed whenever we initializ
 
 We will also modify the `users` and `chats` publication, so each user will contain its corresponding picture document as well:
 
-[{]: <helper> (diffStep "13.30")
+[{]: <helper> (diffStep "13.31")
 
-#### [Step 13.30: Added images to users publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5e86f86cc)
+#### [Step 13.31: Added images to users publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c78dc90e)
 
 ##### Changed api&#x2F;server&#x2F;publications.ts
 ```diff
@@ -999,9 +1018,9 @@ We will also modify the `users` and `chats` publication, so each user will conta
 
 [}]: #
 
-[{]: <helper> (diffStep 13.31)
+[{]: <helper> (diffStep "13.32")
 
-#### [Step 13.31: Add images to chats publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/8c2fdbe25)
+#### [Step 13.32: Add images to chats publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ef93e4bb)
 
 ##### Changed api&#x2F;server&#x2F;publications.ts
 ```diff
@@ -1029,9 +1048,9 @@ We will also modify the `users` and `chats` publication, so each user will conta
 
 Since we already set up some collection hooks on the users collection, we can take it a step further by defining collection hooks on the chat collection, so whenever a chat is being removed, all its corresponding messages will be removed as well:
 
-[{]: <helper> (diffStep 13.32)
+[{]: <helper> (diffStep "13.33")
 
-#### [Step 13.32: Add hook for removing unused messages](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5862e999a)
+#### [Step 13.33: Add hook for removing unused messages](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/d924f6c6)
 
 ##### Changed api&#x2F;server&#x2F;collections&#x2F;chats.ts
 ```diff
@@ -1052,9 +1071,9 @@ Since we already set up some collection hooks on the users collection, we can ta
 
 We will now update the `updateProfile` method in the server to accept `pictureId`, so whenever we pick up a new profile picture the server won't reject it:
 
-[{]: <helper> (diffStep 13.33)
+[{]: <helper> (diffStep "13.34")
 
-#### [Step 13.33: Allow updating pictureId](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/a8dbbffa3)
+#### [Step 13.34: Allow updating pictureId](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/04c11173)
 
 ##### Changed api&#x2F;server&#x2F;methods.ts
 ```diff
@@ -1074,9 +1093,9 @@ We will now update the `updateProfile` method in the server to accept `pictureId
 
 Now we will update the users fabrication in our server's initialization, so instead of using hard-coded URLs, we will insert them as new documents to the `PicturesCollection`:
 
-[{]: <helper> (diffStep 13.34)
+[{]: <helper> (diffStep "13.35")
 
-#### [Step 13.34: Update creation of users stubs](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f241d4414)
+#### [Step 13.35: Update creation of users stubs](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/fb416e3d)
 
 ##### Changed api&#x2F;server&#x2F;main.ts
 ```diff
@@ -1174,9 +1193,9 @@ Now we will update the users fabrication in our server's initialization, so inst
 
 In order for `ufs-gridfs` to work properly on Android we need to specify how the client is supposed to reach the backend and how to generate the URLs when importing the images:
 
-[{]: <helper> (diffStep 13.35)
+[{]: <helper> (diffStep "13.36")
 
-#### [Step 13.35: Set ROOT_URL environmental parameter before launching Meteor](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e1db60d57)
+#### [Step 13.36: Set ROOT_URL environmental parameter before launching Meteor](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/9c7ff55c)
 
 ##### Changed package.json
 ```diff
@@ -1185,14 +1204,16 @@ In order for `ufs-gridfs` to work properly on Android we need to specify how the
  ┊10┊10┊  },
  ┊11┊11┊  "scripts": {
 -┊12┊  ┊    "api": "cd api && meteor run --settings private/settings.json",
-+┊  ┊12┊    "api": "cd api && export ROOT_URL=http://192.168.1.156:3000 && meteor run --settings private/settings.json",
-+┊  ┊13┊    "api:reset": "cd api && export ROOT_URL=http://192.168.1.156:3000 && meteor reset",
++┊  ┊12┊    "api": "cd api && export ROOT_URL=http://meteor.linuxsystems.it:3000 && meteor run --settings private/settings.json",
++┊  ┊13┊    "api:reset": "cd api && meteor reset",
  ┊13┊14┊    "clean": "ionic-app-scripts clean",
  ┊14┊15┊    "build": "ionic-app-scripts build",
  ┊15┊16┊    "lint": "ionic-app-scripts lint",
 ```
 
 [}]: #
+
+> You will have to change `meteor.linuxsystems.it` with your own IP or at least put an entry for it into your `/etc/hosts`.
 
 To avoid some unexpected behaviors, we will reset our data-base so our server can re-fabricate the data:
 
@@ -1202,9 +1223,9 @@ To avoid some unexpected behaviors, we will reset our data-base so our server ca
 
 We will now update the `ChatsPage` to add the belonging picture for each chat during transformation:
 
-[{]: <helper> (diffStep 13.36)
+[{]: <helper> (diffStep "13.37")
 
-#### [Step 13.36: Fetch user image from server](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5d4dba946)
+#### [Step 13.37: Fetch user image from server](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5a7e0cf0)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 ```diff
@@ -1252,9 +1273,9 @@ We will now update the `ChatsPage` to add the belonging picture for each chat du
 
 And we will do the same in the `NewChatComponent`:
 
-[{]: <helper> (diffStep 13.37)
+[{]: <helper> (diffStep "13.38")
 
-#### [Step 13.37: Use the new pictureId field for new chat modal](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e5d1e339e)
+#### [Step 13.38: Use the new pictureId field for new chat modal](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/9c7066dd)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;new-chat.html
 ```diff
@@ -1271,9 +1292,9 @@ And we will do the same in the `NewChatComponent`:
 
 [}]: #
 
-[{]: <helper> (diffStep 13.38)
+[{]: <helper> (diffStep "13.39")
 
-#### [Step 13.38: Implement getPic](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/4f4a08548)
+#### [Step 13.39: Implement getPic](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/73dbbdc8)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;new-chat.ts
 ```diff
@@ -1285,7 +1306,7 @@ And we will do the same in the `NewChatComponent`:
 -┊4┊ ┊import { AlertController, ViewController } from 'ionic-angular';
 +┊ ┊4┊import { AlertController, Platform, ViewController } from 'ionic-angular';
  ┊5┊5┊import { MeteorObservable } from 'meteor-rxjs';
- ┊6┊6┊import { _ } from 'meteor/underscore';
+ ┊6┊6┊import * as _ from 'lodash';
  ┊7┊7┊import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 ```
 ```diff

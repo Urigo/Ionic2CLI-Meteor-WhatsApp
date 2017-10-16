@@ -14,15 +14,15 @@ By default, the application will be created with the `home` page. Since our app'
 
 Second, we will remove its declaration in the app module:
 
-{{{diffStep 2.2}}}
+{{{diffStep "2.2"}}}
 
 Now, let's create our new `Component`, we'll call it `ChatsPage`:
 
-{{{diffStep 2.3}}}
+{{{diffStep "2.3"}}}
 
 `Angular 2` uses decorators to declare `Component`s, and we use `ES2016` classes to create the actual component, and the `templateUrl` declares the template file for the component. So now let's create this template file, next to the component file:
 
-{{{diffStep 2.4}}}
+{{{diffStep "2.4"}}}
 
 Once creating an Ionic page it's recommended to use the following layout:
 
@@ -32,17 +32,17 @@ Once creating an Ionic page it's recommended to use the following layout:
 
 Now, we need to add a declaration for this new `Component` in our `NgModule` definition:
 
-{{{diffStep 2.5}}}
+{{{diffStep "2.5"}}}
 
 > You can read more about [Angular 2 NgModule here](https://angular.io/docs/ts/latest/guide/ngmodule.html).
 
 We will define the `ChatsPage` as the initial component of our app by setting the `rootPage` property in the main app component:
 
-{{{diffStep 2.6}}}
+{{{diffStep "2.6"}}}
 
 Let's add some code to our `Component` with a simple logic; Once the component is created we gonna define some dummy chats, using the `Observable.of`, so we can have some data to test our view against:
 
-{{{diffStep 2.7}}}
+{{{diffStep "2.7"}}}
 
 > Further explanation regards `RxJS` can be found in [step 3](./step3.md)
 
@@ -54,7 +54,7 @@ Let's add some code to our `Component` with a simple logic; Once the component i
 
 Now, because we use `TypeScript`, we can define our own data-types and use them in our app, which will give you a better auto-complete and developing experience in most IDEs. In our application, we have 2 models: a `chat` model and a `message` model. We will define their interfaces in a file located under the path `src/models.ts`:
 
-{{{diffStep 2.9}}}
+{{{diffStep "2.9"}}}
 
 Now that the models are up and set, we can apply them to the `ChatsPage`:
 
@@ -64,13 +64,13 @@ Now that the models are up and set, we can apply them to the `ChatsPage`:
 
 `Ionic 2` provides us with a comfortable theming system which is based on `SASS` variables. The theme definition file is located in `src/theme/variable.scss`. Since we want our app to have a "Whatsappish" look, we will define a new `SASS` variable called `whatsapp` in the variables file:
 
-{{{diffStep 2.11}}}
+{{{diffStep "2.11"}}}
 
 The `whatsapp` color can be used by adding an attribute called `color` with a value `whatsapp` to any Ionic component.
 
 To begin with, we can start by implementing the `ChatsView` and apply our newly defined theme into it. This view will contain a list representing all the available chats in the component's data-set:
 
-{{{diffStep 2.12}}}
+{{{diffStep "2.12"}}}
 
 We use `ion-list` which Ionic translates into a list, and we use `ion-item` to represent a single item in that list. A chat item includes an image, the receiver's name, and its recent message.
 
@@ -78,7 +78,7 @@ We use `ion-list` which Ionic translates into a list, and we use `ion-item` to r
 
 Now, in order to finish our theming and styling, let's create a stylesheet file for our component:
 
-{{{diffStep 2.13}}}
+{{{diffStep "2.13"}}}
 
 Ionic will load newly defined stylesheet files automatically, so you shouldn't be worried for importations.
 
@@ -92,11 +92,11 @@ It requires us to install `angular2-moment` module using the following command:
 
 Now we will need to declare this module in the app's main component:
 
-{{{diffStep 2.15}}}
+{{{diffStep "2.15"}}}
 
 Which will make `moment` available as a pack of pipes, as mentioned earlier:
 
-{{{diffStep 2.16}}}
+{{{diffStep "2.16"}}}
 
 ## Ionic Touch Events
 
@@ -104,10 +104,10 @@ Ionic provides us with components which can handle mobile events like: slide, ta
 
 Right now this button is not hooked to anything. It requires us to bind it into the component:
 
-{{{diffStep 2.17}}}
+{{{diffStep "2.17"}}}
 
 And now that it is bound to the component we can safely implement its handler:
 
-{{{diffStep 2.18}}}
+{{{diffStep "2.18"}}}
 
 {{{navStep prevRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/setup" nextRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/rxjs"}}}

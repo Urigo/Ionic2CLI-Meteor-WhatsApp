@@ -1,10 +1,12 @@
+# Step 11: Testing on Android
+
 ## Testing on Android
 
 In this step we're going to test our application on `Android` using `Cordova`.
 
 Firt we will need to install `Gradle` system wide, becuase the latest `Cordova` framework cannot use `Gradle` from `Android Studio`. On `Arch Linux` just install the `gradle` package.
 
-Then we're going to install the `Android SDK`. I suggest you to install `Android Studio` and use the [SDK Manager](https://developer.android.com/studio/intro/update.html#sdk-manager) to download it. On `Arch Linux` just install `android-studio`
+Then we're going to install the `Android SDK`. I suggest you to install `Android Studio` and use the [SDK Manager](https://developer.android.com/studio/intro/update.html#sdk-manager) to download it. On `Arch Linux` just install `android-studio` 
 form `AUR`.
 
 The `SDK Manager` will install the `Android SDK` into ```~/Android/Sdk/```.
@@ -30,12 +32,6 @@ Now we can add the `Android` platform to `Cordova`:
 
     $ cordova platform add android
 
-We will have to fix the failed-to-restore-cordova-plugin-statusbar issue:
-
-{{{diffStep "11.2"}}}
-
-> Next time we will run `cordova platform add android` it will overwrite our `package.json` and we will have to re-edit it.
-
 Finally we can launch the application on the smartphone:
 
     $ cordova run android
@@ -55,11 +51,46 @@ If you open the `Network` tab you will also notice a couple of failed requests t
 
 Since our `DDP` server doesn't run on the smartphone we will have to tell the `Meteor Client` where to find it:
 
-{{{diffStep "11.3"}}}
+[{]: <helper> (diffStep 11.2)
 
-> You will have to change `meteor.linuxsystems.it` with your own IP or at least put an entry for it into your `/etc/hosts` file.
+#### [Step 11.2: Add meteor-client config](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5b1c6fe)
 
-{{{diffStep "11.4"}}}
+##### Added meteor-client.config.json
+<pre>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
+<b>+┊ ┊1┊{</b>
+<b>+┊ ┊2┊  &quot;runtime&quot;: {</b>
+<b>+┊ ┊3┊    &quot;DDP_DEFAULT_CONNECTION_URL&quot;: &quot;http://192.168.1.156:3000&quot;</b>
+<b>+┊ ┊4┊  },</b>
+<b>+┊ ┊5┊  &quot;import&quot;: [</b>
+<b>+┊ ┊6┊</b>
+<b>+┊ ┊7┊  ]</b>
+<b>+┊ ┊8┊}</b>
+</pre>
+
+[}]: #
+
+[{]: <helper> (diffStep 11.3)
+
+#### [Step 11.3: Update meteor-client:bundle script](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/572abd7)
+
+##### Changed package.json
+<pre>
+<i>╔══════╗</i>
+<i>║ diff ║</i>
+<i>╚══════╝</i>
+ ┊15┊15┊    &quot;lint&quot;: &quot;ionic-app-scripts lint&quot;,
+ ┊16┊16┊    &quot;ionic:build&quot;: &quot;ionic-app-scripts build&quot;,
+ ┊17┊17┊    &quot;ionic:serve&quot;: &quot;ionic-app-scripts serve&quot;,
+<b>+┊  ┊18┊    &quot;meteor-client:bundle&quot;: &quot;meteor-client bundle -s api -c meteor-client.config.json&quot;</b>
+ ┊19┊19┊  },
+ ┊20┊20┊  &quot;dependencies&quot;: {
+ ┊21┊21┊    &quot;@angular/common&quot;: &quot;4.1.2&quot;,
+</pre>
+
+[}]: #
 
 Now let's rebuild the `meteor-client`:
 
@@ -67,4 +98,9 @@ Now let's rebuild the `meteor-client`:
 
 Next time we will run `cordova run android` everything will work as expected.
 
-{{{navStep prevRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/filter-and-pagination" nextRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/google-maps"}}}
+[{]: <helper> (navStep nextRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/google-maps" prevRef="https://angular-meteor.com/tutorials/whatsapp2/ionic/filter-and-pagination")
+
+⟸ <a href="https://angular-meteor.com/tutorials/whatsapp2/ionic/filter-and-pagination">PREVIOUS STEP</a> <b>║</b> <a href="https://angular-meteor.com/tutorials/whatsapp2/ionic/google-maps">NEXT STEP</a> ⟹
+
+[}]: #
+
