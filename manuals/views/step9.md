@@ -414,7 +414,7 @@ As you see, all our publications so far are only focused on fetching data from a
 
 We will install the package's declarations as well so the compiler can recognize the extensions made in `Meteor`'s API:
 
-    $ npm install --save @types/meteor-publish-composite
+    $ npm install --save-dev @types/meteor-publish-composite
 
 And we will import the declarations by adding the following field in the `tsconfig` file:
 

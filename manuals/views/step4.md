@@ -109,9 +109,10 @@ This requires us to update its reference in the declarations file as well:
 ```
 [}]: #
 
-We will also install the `meteor-rxjs` package so we can define collections and data streams:
+We will also install the `meteor-rxjs` package so we can define collections and data streams and TypeScript definitions for Meteor:
 
     $ npm install --save meteor-rxjs
+    $ npm install --save-dev @types/meteor
 
 ## Collections
 
@@ -251,75 +252,14 @@ Note how we use the `.collection` property to get the actual `Mongo.Collection` 
 
 ## Preparing the Meteor client
 
-In order to connect to the `Meteor` server, we need a client which is capable of doing so. To create a `Meteor` client, we will use a bundler called [meteor-client-bundler](https://github.com/Urigo/meteor-client-bundler). This bundler, bundles all the necessary `Meteor` client script files into a single module, based on a config file. This is very useful when we want to interact with [Atmosphere](https://atmospherejs.com/) packages integrate them our client. To install `meteor-client-bundler`, run the following command:
+In order to connect to the `Meteor` server, we need a client which is capable of doing so. To create a `Meteor` client, we will use a bundler called [meteor-client-bundler](https://github.com/Urigo/meteor-client-bundler). This bundler, bundles all the necessary `Meteor` client script files into a single module. This is very useful when we want to interact with [Atmosphere](https://atmospherejs.com/) packages integrate them our client. To install `meteor-client-bundler`, run the following command:
 
     $ sudo npm install -g meteor-client-bundler
 
-As said earlier, it is based on a config file. Our initial `Meteor` client config should look like so:
+Now we'll add a bundling script to the `package.json` as followed:
 
 [{]: <helper> (diff_step 4.17)
-#### Step 4.17: Added meteor-client config files
-
-##### Added meteor-client.config.json
-```diff
-@@ -0,0 +1,44 @@
-+┊  ┊ 1┊{
-+┊  ┊ 2┊  "run-time": {
-+┊  ┊ 3┊    "meteorEnv": {},
-+┊  ┊ 4┊    "DDP_DEFAULT_CONNECTION_URL": "http://localhost:3000"
-+┊  ┊ 5┊  },
-+┊  ┊ 6┊  "import": {
-+┊  ┊ 7┊    "meteor-base@1.0.4": [
-+┊  ┊ 8┊      "underscore",
-+┊  ┊ 9┊      "meteor",
-+┊  ┊10┊      "modules-runtime",
-+┊  ┊11┊      "modules",
-+┊  ┊12┊      "promise",
-+┊  ┊13┊      "babel-runtime",
-+┊  ┊14┊      "ecmascript-runtime",
-+┊  ┊15┊      "ecmascript",
-+┊  ┊16┊      "base64",
-+┊  ┊17┊      "ejson",
-+┊  ┊18┊      "jquery",
-+┊  ┊19┊      "check",
-+┊  ┊20┊      "random",
-+┊  ┊21┊      "tracker",
-+┊  ┊22┊      "retry",
-+┊  ┊23┊      "id-map",
-+┊  ┊24┊      "ordered-dict",
-+┊  ┊25┊      "geojson-utils",
-+┊  ┊26┊      "diff-sequence",
-+┊  ┊27┊      "mongo-id",
-+┊  ┊28┊      "minimongo",
-+┊  ┊29┊      "ddp-common",
-+┊  ┊30┊      "ddp-client",
-+┊  ┊31┊      "ddp",
-+┊  ┊32┊      "allow-deny",
-+┊  ┊33┊      "reactive-var",
-+┊  ┊34┊      "mongo"
-+┊  ┊35┊    ]
-+┊  ┊36┊  },
-+┊  ┊37┊  "export": {
-+┊  ┊38┊    "ddp": ["DDP"],
-+┊  ┊39┊    "meteor": ["Meteor"],
-+┊  ┊40┊    "mongo": ["Mongo"],
-+┊  ┊41┊    "tracker": ["Tracker"],
-+┊  ┊42┊    "underscore": ["_"]
-+┊  ┊43┊  }
-+┊  ┊44┊}
-```
-[}]: #
-
-Here's a brief explanation regards the config's fields:
-
-- **run-time** - Includes the run-time config for our `Meteor` cleint.
-- **import** - A list of all the packages and their dependencies and we're interested in bundling.
-- **export** - All the objects that we would like to expose on the global score form the imported packages.
-
-Let's add a bundling script as followed:
-
-[{]: <helper> (diff_step 4.18)
-#### Step 4.18: Created a script for generating the Meteor client bundle
+#### Step 4.17: Created a script for generating the Meteor client bundle
 
 ##### Changed package.json
 ```diff
@@ -329,31 +269,31 @@ Let's add a bundling script as followed:
  ┊ 9┊ 9┊    "ionic:build": "ionic-app-scripts build",
 -┊10┊  ┊    "ionic:serve": "ionic-app-scripts serve"
 +┊  ┊10┊    "ionic:serve": "ionic-app-scripts serve",
-+┊  ┊11┊    "meteor-client:bundle": "meteor-client bundle"
++┊  ┊11┊    "meteor-client:bundle": "meteor-client bundle -s api"
  ┊11┊12┊  },
  ┊12┊13┊  "dependencies": {
  ┊13┊14┊    "@angular/common": "2.2.1",
 ```
 ```diff
-@@ -38,6 +39,7 @@
- ┊38┊39┊    "@types/moment": "^2.13.0",
- ┊39┊40┊    "@types/underscore": "^1.7.36",
- ┊40┊41┊    "meteor-typings": "^1.3.1",
-+┊  ┊42┊    "tmp": "0.0.31",
- ┊41┊43┊    "typescript": "2.0.9",
- ┊42┊44┊    "typescript-extends": "^1.0.1"
- ┊43┊45┊  },
+@@ -37,6 +38,7 @@
+ ┊37┊38┊    "@types/meteor": "^1.3.31",
+ ┊38┊39┊    "@types/underscore": "^1.7.36",
+ ┊39┊40┊    "meteor-typings": "^1.3.1",
++┊  ┊41┊    "tmp": "0.0.31",
+ ┊40┊42┊    "typescript": "2.0.9",
+ ┊41┊43┊    "typescript-extends": "^1.0.1"
+ ┊42┊44┊  },
 ```
 [}]: #
 
-And to execute it, simply run:
+To execute it, simply run:
 
     $ npm run meteor-client:bundle
 
-This will generate a file called `meteor-client.js` file under the `node_modules` dir, which needs to be imported in our application like so:
+This will generate a file called `meteor-client.js` under the `node_modules` dir, which needs to be imported in our application like so:
 
-[{]: <helper> (diff_step 4.19)
-#### Step 4.19: Import meteor client bundle
+[{]: <helper> (diff_step 4.18)
+#### Step 4.18: Import meteor client bundle
 
 ##### Changed src/app/main.ts
 ```diff
@@ -366,10 +306,12 @@ This will generate a file called `meteor-client.js` file under the `node_modules
 ```
 [}]: #
 
+> By default, the client will assume that the server is running at `localhost:3000`. If you'd like to change that, you can simply specify a `--url` option in the `NPM` script. Further information can be found [here](https://github.com/Urigo/meteor-client-bundler).
+
 The client we've just imported gives us the ability to interact with the server. Let's replace the local chats-data with a data which is fetched from the `Meteor` server:
 
-[{]: <helper> (diff_step 4.20)
-#### Step 4.20: Use server side data
+[{]: <helper> (diff_step 4.19)
+#### Step 4.19: Use server side data
 
 ##### Changed src/pages/chats/chats.ts
 ```diff
@@ -475,8 +417,8 @@ The client we've just imported gives us the ability to interact with the server.
 
 And re-implement the `removeChat` method using the actual `Meteor` collection:
 
-[{]: <helper> (diff_step 4.21)
-#### Step 4.21: Implement remove chat with the Collection
+[{]: <helper> (diff_step 4.20)
+#### Step 4.20: Implement remove chat with the Collection
 
 ##### Changed src/pages/chats/chats.ts
 ```diff

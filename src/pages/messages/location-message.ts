@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ViewController } from 'ionic-angular';
+import { Platform, ViewController } from 'ionic-angular';
 import { Geolocation } from 'ionic-native';
 import { Location } from 'api/models';
 import { Observable, Subscription } from 'rxjs';
@@ -21,7 +21,7 @@ export class NewLocationMessageComponent implements OnInit, OnDestroy {
   accuracy: number = -1;
   intervalObs: Subscription;
 
-  constructor(private viewCtrl: ViewController) {
+  constructor(private platform: Platform, private viewCtrl: ViewController) {
   }
 
   ngOnInit() {

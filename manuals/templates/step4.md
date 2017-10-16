@@ -54,9 +54,10 @@ This requires us to update its reference in the declarations file as well:
 
 {{{diff_step 4.11}}}
 
-We will also install the `meteor-rxjs` package so we can define collections and data streams:
+We will also install the `meteor-rxjs` package so we can define collections and data streams and TypeScript definitions for Meteor:
 
     $ npm install --save meteor-rxjs
+    $ npm install --save-dev @types/meteor
 
 ## Collections
 
@@ -86,36 +87,28 @@ Note how we use the `.collection` property to get the actual `Mongo.Collection` 
 
 ## Preparing the Meteor client
 
-In order to connect to the `Meteor` server, we need a client which is capable of doing so. To create a `Meteor` client, we will use a bundler called [meteor-client-bundler](https://github.com/Urigo/meteor-client-bundler). This bundler, bundles all the necessary `Meteor` client script files into a single module, based on a config file. This is very useful when we want to interact with [Atmosphere](https://atmospherejs.com/) packages integrate them our client. To install `meteor-client-bundler`, run the following command:
+In order to connect to the `Meteor` server, we need a client which is capable of doing so. To create a `Meteor` client, we will use a bundler called [meteor-client-bundler](https://github.com/Urigo/meteor-client-bundler). This bundler, bundles all the necessary `Meteor` client script files into a single module. This is very useful when we want to interact with [Atmosphere](https://atmospherejs.com/) packages integrate them our client. To install `meteor-client-bundler`, run the following command:
 
     $ sudo npm install -g meteor-client-bundler
 
-As said earlier, it is based on a config file. Our initial `Meteor` client config should look like so:
+Now we'll add a bundling script to the `package.json` as followed:
 
 {{{diff_step 4.17}}}
 
-Here's a brief explanation regards the config's fields:
-
-- **run-time** - Includes the run-time config for our `Meteor` cleint.
-- **import** - A list of all the packages and their dependencies and we're interested in bundling.
-- **export** - All the objects that we would like to expose on the global score form the imported packages.
-
-Let's add a bundling script as followed:
-
-{{{diff_step 4.18}}}
-
-And to execute it, simply run:
+To execute it, simply run:
 
     $ npm run meteor-client:bundle
 
-This will generate a file called `meteor-client.js` file under the `node_modules` dir, which needs to be imported in our application like so:
+This will generate a file called `meteor-client.js` under the `node_modules` dir, which needs to be imported in our application like so:
 
-{{{diff_step 4.19}}}
+{{{diff_step 4.18}}}
+
+> By default, the client will assume that the server is running at `localhost:3000`. If you'd like to change that, you can simply specify a `--url` option in the `NPM` script. Further information can be found [here](https://github.com/Urigo/meteor-client-bundler).
 
 The client we've just imported gives us the ability to interact with the server. Let's replace the local chats-data with a data which is fetched from the `Meteor` server:
 
-{{{diff_step 4.20}}}
+{{{diff_step 4.19}}}
 
 And re-implement the `removeChat` method using the actual `Meteor` collection:
 
-{{{diff_step 4.21}}}
+{{{diff_step 4.20}}}

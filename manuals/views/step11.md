@@ -9,14 +9,14 @@ In this step we will add the ability to send the current location in [Google Map
 
 ##### Changed package.json
 ```diff
-@@ -51,6 +51,7 @@
- ┊51┊51┊    "cordova-plugin-console",
- ┊52┊52┊    "cordova-plugin-statusbar",
- ┊53┊53┊    "cordova-plugin-device",
-+┊  ┊54┊    "cordova-plugin-geolocation",
- ┊54┊55┊    "ionic-plugin-keyboard",
- ┊55┊56┊    "cordova-plugin-splashscreen"
- ┊56┊57┊  ],
+@@ -50,6 +50,7 @@
+ ┊50┊50┊    "cordova-plugin-console",
+ ┊51┊51┊    "cordova-plugin-statusbar",
+ ┊52┊52┊    "cordova-plugin-device",
++┊  ┊53┊    "cordova-plugin-geolocation",
+ ┊53┊54┊    "ionic-plugin-keyboard",
+ ┊54┊55┊    "cordova-plugin-splashscreen"
+ ┊55┊56┊  ],
 ```
 [}]: #
 
@@ -343,7 +343,7 @@ Up next, would be implementing the actual component which will handle geo-locati
 ```diff
 @@ -0,0 +1,74 @@
 +┊  ┊ 1┊import { Component, OnInit, OnDestroy } from '@angular/core';
-+┊  ┊ 2┊import { ViewController } from 'ionic-angular';
++┊  ┊ 2┊import { Platform, ViewController } from 'ionic-angular';
 +┊  ┊ 3┊import { Geolocation } from 'ionic-native';
 +┊  ┊ 4┊import { Location } from 'api/models';
 +┊  ┊ 5┊import { Observable, Subscription } from 'rxjs';
@@ -365,7 +365,7 @@ Up next, would be implementing the actual component which will handle geo-locati
 +┊  ┊21┊  accuracy: number = -1;
 +┊  ┊22┊  intervalObs: Subscription;
 +┊  ┊23┊
-+┊  ┊24┊  constructor(private viewCtrl: ViewController) {
++┊  ┊24┊  constructor(private platform: Platform, private viewCtrl: ViewController) {
 +┊  ┊25┊  }
 +┊  ┊26┊
 +┊  ┊27┊  ngOnInit() {

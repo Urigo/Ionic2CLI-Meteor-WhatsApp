@@ -17,37 +17,7 @@ Up next, would be adding the ability to store some files in our data-base. This 
     api$ meteor add jalik:ufs
     api$ meteor add jalik:ufs-gridfs
 
-We also want these packages to be available on our client; And it requires us to update the `meteor-client-bundler`'s config:
-
-[{]: <helper> (diff_step 12.3)
-#### Step 12.3: Add meteor client side bundle config for fs packages
-
-##### Changed meteor-client.config.json
-```diff
-@@ -44,6 +44,19 @@
- ┊44┊44┊      "sha",
- ┊45┊45┊      "srp",
- ┊46┊46┊      "mys_accounts-phone"
-+┊  ┊47┊    ],
-+┊  ┊48┊    "jalik:ufs": [
-+┊  ┊49┊      "observe-sequence",
-+┊  ┊50┊      "htmljs",
-+┊  ┊51┊      "blaze",
-+┊  ┊52┊      "spacebars",
-+┊  ┊53┊      "templating-runtime",
-+┊  ┊54┊      "templating",
-+┊  ┊55┊      "matb33_collection-hooks",
-+┊  ┊56┊      "jalik_ufs"
-+┊  ┊57┊    ],
-+┊  ┊58┊    "jalik:ufs-gridfs": [
-+┊  ┊59┊      "jalik_ufs-gridfs"
- ┊47┊60┊    ]
- ┊48┊61┊  },
- ┊49┊62┊  "export": {
-```
-[}]: #
-
-Be sure to re-bundle the `Meteor` client whenever you make changes to the config:
+And be sure to re-bundle the `Meteor` client whenever you make changes in the server:
 
     $ npm run meteor-client:bundle
 
@@ -55,8 +25,8 @@ Be sure to re-bundle the `Meteor` client whenever you make changes to the config
 
 Before we proceed to the server, we will add the ability to select and upload pictures in the client. All our picture-related operations will be defined in a single service called `PictureService`; The first bit of this service would be picture-selection. The `UploadFS` package already supports that feature, **but only for the browser**, therefore we will be using the `Cordova` plug-in we've just installed to select some pictures from our mobile device:
 
-[{]: <helper> (diff_step 12.4)
-#### Step 12.4: Create PictureService with utils for files
+[{]: <helper> (diff_step 12.3)
+#### Step 12.3: Create PictureService with utils for files
 
 ##### Added src/services/picture.ts
 ```diff
@@ -146,8 +116,8 @@ Before we proceed to the server, we will add the ability to select and upload pi
 
 In order to use the service we will need to import it in the app's `NgModule` as a `provider`:
 
-[{]: <helper> (diff_step 12.5)
-#### Step 12.5: Import PictureService
+[{]: <helper> (diff_step 12.4)
+#### Step 12.4: Import PictureService
 
 ##### Changed src/app/app.module.ts
 ```diff
@@ -176,8 +146,8 @@ In order to use the service we will need to import it in the app's `NgModule` as
 
 Since now we will be sending pictures, we will need to update the message schema to support picture typed messages:
 
-[{]: <helper> (diff_step 12.6)
-#### Step 12.6: Added picture message type
+[{]: <helper> (diff_step 12.5)
+#### Step 12.5: Added picture message type
 
 ##### Changed api/server/models.ts
 ```diff
@@ -196,8 +166,8 @@ Since now we will be sending pictures, we will need to update the message schema
 
 In the attachments menu, we will add a new handler for sending pictures, called `sendPicture`:
 
-[{]: <helper> (diff_step 12.7)
-#### Step 12.7: Implement sendPicture method
+[{]: <helper> (diff_step 12.6)
+#### Step 12.6: Implement sendPicture method
 
 ##### Changed src/pages/messages/messages-attachments.ts
 ```diff
@@ -237,8 +207,8 @@ In the attachments menu, we will add a new handler for sending pictures, called 
 
 And we will bind that handler to the view, so whenever we press the right button, the handler will be invoked with the selected picture:
 
-[{]: <helper> (diff_step 12.8)
-#### Step 12.8: Bind click event for sendPicture
+[{]: <helper> (diff_step 12.7)
+#### Step 12.7: Bind click event for sendPicture
 
 ##### Changed src/pages/messages/messages-attachments.html
 ```diff
@@ -255,8 +225,8 @@ And we will bind that handler to the view, so whenever we press the right button
 
 Now we will be extending the `MessagesPage`, by adding a method which will send the picture selected in the attachments menu:
 
-[{]: <helper> (diff_step 12.9)
-#### Step 12.9: Implement the actual send of picture message
+[{]: <helper> (diff_step 12.8)
+#### Step 12.8: Implement the actual send of picture message
 
 ##### Changed src/pages/messages/messages.ts
 ```diff
@@ -312,8 +282,8 @@ Now we will be extending the `MessagesPage`, by adding a method which will send 
 
 For now, we will add a stub for the `upload` method in the `PictureService` and we will get back to it once we finish implementing the necessary logic in the server for storing a picture:
 
-[{]: <helper> (diff_step 12.10)
-#### Step 12.10: Create stub method for upload method
+[{]: <helper> (diff_step 12.9)
+#### Step 12.9: Create stub method for upload method
 
 ##### Changed src/services/picture.ts
 ```diff
@@ -335,8 +305,8 @@ For now, we will add a stub for the `upload` method in the `PictureService` and 
 
 So as we said, need to handle storage of pictures that were sent by the client. First, we will create a `Picture` model so the compiler can recognize a picture object:
 
-[{]: <helper> (diff_step 12.11)
-#### Step 12.11: Create Picture model
+[{]: <helper> (diff_step 12.10)
+#### Step 12.10: Create Picture model
 
 ##### Changed api/server/models.ts
 ```diff
@@ -371,8 +341,8 @@ If you're familiar with `Whatsapp`, you'll know that sent pictures are compresse
 
 Now we will create a picture store which will compress pictures using `sharp` right before they are inserted into the data-base:
 
-[{]: <helper> (diff_step 12.13)
-#### Step 12.13: Create pictures store
+[{]: <helper> (diff_step 12.12)
+#### Step 12.12: Create pictures store
 
 ##### Added api/server/collections/pictures.ts
 ```diff
@@ -422,8 +392,8 @@ Now we will create a picture store which will compress pictures using `sharp` ri
 
 You can look at a store as some sort of a wrapper for a collection, which will run different kind of a operations before it mutates it or fetches data from it. Note that we used `GridFS` because this way an uploaded file is split into multiple packets, which is more efficient for storage. We also defined a small utility function on that store which will retrieve a profile picture. If the ID was not found, it will return a link for the default picture. To make things convenient, we will also export the store from the `index` file:
 
-[{]: <helper> (diff_step 12.14)
-#### Step 12.14: Export pictures collection
+[{]: <helper> (diff_step 12.13)
+#### Step 12.13: Export pictures collection
 
 ##### Changed api/server/collections/index.ts
 ```diff
@@ -437,8 +407,8 @@ You can look at a store as some sort of a wrapper for a collection, which will r
 
 Now that we have the pictures store, and the server knows how to handle uploaded pictures, we will implement the `upload` stub in the `PictureService`:
 
-[{]: <helper> (diff_step 12.15)
-#### Step 12.15: Implement upload method
+[{]: <helper> (diff_step 12.14)
+#### Step 12.14: Implement upload method
 
 ##### Changed src/services/picture.ts
 ```diff
@@ -484,8 +454,8 @@ Now that we have the pictures store, and the server knows how to handle uploaded
 
 Since `sharp` is a server-only package, and it is not supported by the client, at all, we will replace it with an empty dummy-object so errors won't occur. This requires us to change the `Webpack` config as shown below:
 
-[{]: <helper> (diff_step 12.16)
-#### Step 12.16: Ignore sharp package on client side
+[{]: <helper> (diff_step 12.15)
+#### Step 12.15: Ignore sharp package on client side
 
 ##### Changed webpack.config.js
 ```diff
@@ -505,8 +475,8 @@ Since `sharp` is a server-only package, and it is not supported by the client, a
 
 We will now add the support for picture typed messages in the `MessagesPage`, so whenever we send a picture, we will be able to see them in the messages list like any other message:
 
-[{]: <helper> (diff_step 12.17)
-#### Step 12.17: Added view for picture message
+[{]: <helper> (diff_step 12.16)
+#### Step 12.16: Added view for picture message
 
 ##### Changed src/pages/messages/messages.html
 ```diff
@@ -523,8 +493,8 @@ We will now add the support for picture typed messages in the `MessagesPage`, so
 
 As you can see, we also bound the picture message to the `click` event, which means that whenever we click on it, a picture viewer should be opened with the clicked picture. Let's create the component for that picture viewer:
 
-[{]: <helper> (diff_step 12.18)
-#### Step 12.18: Create show picture component
+[{]: <helper> (diff_step 12.17)
+#### Step 12.17: Create show picture component
 
 ##### Added src/pages/messages/show-picture.ts
 ```diff
@@ -546,8 +516,8 @@ As you can see, we also bound the picture message to the `click` event, which me
 ```
 [}]: #
 
-[{]: <helper> (diff_step 12.19)
-#### Step 12.19: Create show picture template
+[{]: <helper> (diff_step 12.18)
+#### Step 12.18: Create show picture template
 
 ##### Added src/pages/messages/show-picture.html
 ```diff
@@ -568,8 +538,8 @@ As you can see, we also bound the picture message to the `click` event, which me
 ```
 [}]: #
 
-[{]: <helper> (diff_step 12.20)
-#### Step 12.20: Create show pictuer component styles
+[{]: <helper> (diff_step 12.19)
+#### Step 12.19: Create show pictuer component styles
 
 ##### Added src/pages/messages/show-picture.scss
 ```diff
@@ -587,8 +557,8 @@ As you can see, we also bound the picture message to the `click` event, which me
 ```
 [}]: #
 
-[{]: <helper> (diff_step 12.21)
-#### Step 12.21: Import ShowPictureComponent
+[{]: <helper> (diff_step 12.20)
+#### Step 12.20: Import ShowPictureComponent
 
 ##### Changed src/app/app.module.ts
 ```diff
@@ -629,8 +599,8 @@ As you can see, we also bound the picture message to the `click` event, which me
 
 And now that we have that component ready, we will implement the `showPicture` method in the `MessagesPage` component, which will create a new instance of the `ShowPictureComponent`:
 
-[{]: <helper> (diff_step 12.22)
-#### Step 12.22: Implement showPicture method
+[{]: <helper> (diff_step 12.21)
+#### Step 12.21: Implement showPicture method
 
 ##### Changed src/pages/messages/messages.ts
 ```diff
@@ -685,8 +655,8 @@ And now that we have that component ready, we will implement the `showPicture` m
 
 We have the ability to send picture messages. Now we will add the ability to change the user's profile picture using the infrastructure we've just created. To begin with, we will define a new property to our `User` model called `pictureId`, which will be used to determine the belonging profile picture of the current user:
 
-[{]: <helper> (diff_step 12.23)
-#### Step 12.23: Add pictureId property to Profile
+[{]: <helper> (diff_step 12.22)
+#### Step 12.22: Add pictureId property to Profile
 
 ##### Changed api/server/models.ts
 ```diff
@@ -703,8 +673,8 @@ We have the ability to send picture messages. Now we will add the ability to cha
 
 We will bind the editing button in the profile selection page into an event handler:
 
-[{]: <helper> (diff_step 12.24)
-#### Step 12.24: Add event for changing profile picture
+[{]: <helper> (diff_step 12.23)
+#### Step 12.23: Add event for changing profile picture
 
 ##### Changed src/pages/profile/profile.html
 ```diff
@@ -721,8 +691,8 @@ We will bind the editing button in the profile selection page into an event hand
 
 And we will add all the missing logic in the component, so the `pictureId` will be transformed into and actual reference, and so we can have the ability to select a picture from our gallery and upload it:
 
-[{]: <helper> (diff_step 12.25)
-#### Step 12.25: Implement pick, update and set of profile image
+[{]: <helper> (diff_step 12.24)
+#### Step 12.24: Implement pick, update and set of profile image
 
 ##### Changed src/pages/profile/profile.ts
 ```diff
@@ -781,8 +751,8 @@ And we will add all the missing logic in the component, so the `pictureId` will 
 
 We will also define a new hook in the `Meteor.users` collection so whenever we update the profile picture, the previous one will be removed from the data-base. This way we won't have some unnecessary data in our data-base, which will save us some precious storage:
 
-[{]: <helper> (diff_step 12.26)
-#### Step 12.26: Add after hook for user modification
+[{]: <helper> (diff_step 12.25)
+#### Step 12.25: Add after hook for user modification
 
 ##### Changed api/server/collections/users.ts
 ```diff
@@ -805,206 +775,41 @@ We will also define a new hook in the `Meteor.users` collection so whenever we u
 ```
 [}]: #
 
-Since there is no available declarations for collections hook our there, we will need to defined them explicitly:
+Collection hooks are not part of `Meteor`'s official API and are added through a third-party package called `matb33:collection-hooks`. This requires us to install the necessary type definition:
 
-[//]: # Update once PR is approved
-[//]: # https://github.com/DefinitelyTyped/DefinitelyTyped/pull/14254
+    $ npm install --save-dev @types/meteor-collection-hooks
+
+Now we need to import the type definition we've just installed in the `tsconfig.json` file:
 
 [{]: <helper> (diff_step 12.27)
-#### Step 12.27: Add typescript typing for meteor hooks
+#### Step 12.27: Import meteor-collection-hooks typings
 
-##### Changed src/declarations.d.ts
+##### Changed api/tsconfig.json
 ```diff
-@@ -11,4 +11,188 @@
- ┊ 11┊ 11┊  For more info on type definition files, check out the Typescript docs here:
- ┊ 12┊ 12┊  https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html
- ┊ 13┊ 13┊*/
--┊ 14┊   ┊declare module '*';🚫↵
-+┊   ┊ 14┊declare module '*';
-+┊   ┊ 15┊
-+┊   ┊ 16┊/* tslint:disable */
-+┊   ┊ 17┊
-+┊   ┊ 18┊// Type definitions for Meteor package matb33:collection-hooks
-+┊   ┊ 19┊// Project: https://github.com/matb33/meteor-collection-hooks
-+┊   ┊ 20┊// Source: https://github.com/twastvedt/typed-meteor-collection-hooks
-+┊   ┊ 21┊
-+┊   ┊ 22┊module 'meteor/mongo' {
-+┊   ┊ 23┊  module Mongo {
-+┊   ┊ 24┊    interface Collection<T> {
-+┊   ┊ 25┊      before: {
-+┊   ┊ 26┊        find(hook: {(userId: string, selector: Mongo.Selector, options: { multi?: boolean; upsert?: boolean; }): void}): void;
-+┊   ┊ 27┊        findOne(hook: {(userId: string, selector: Mongo.Selector, options: { multi?: boolean; upsert?: boolean; }): void}): void;
-+┊   ┊ 28┊        insert(hook: {(userId: string, doc: T): void}): void;
-+┊   ┊ 29┊        remove(hook: {(userId: string, doc: T): void}): void;
-+┊   ┊ 30┊        update(hook: {(userId: string, doc: T, fieldNames: string[], modifier: Mongo.Modifier, options: { multi?: boolean; upsert?: boolean; }): void}): void;
-+┊   ┊ 31┊        upsert(hook: {(userId: string, doc: T, selector: Mongo.Selector, modifier: Mongo.Modifier, options: { multi?: boolean; upsert?: boolean; }): void}): void;
-+┊   ┊ 32┊      };
-+┊   ┊ 33┊      after: {
-+┊   ┊ 34┊        find(hook: {(userId: string, selector: Mongo.Selector, options: { multi?: boolean; upsert?: boolean; }, cursor: Mongo.Cursor<T>): void}): void;
-+┊   ┊ 35┊        findOne(hook: {(userId: string, selector: Mongo.Selector, options: { multi?: boolean; upsert?: boolean; }, doc: T): void}): void;
-+┊   ┊ 36┊        insert(hook: {(userId: string, doc: T): void}): void;
-+┊   ┊ 37┊        remove(hook: {(userId: string, doc: T): void}): void;
-+┊   ┊ 38┊        update(hook: {(userId: string, doc: T, fieldNames: string[], modifier: Mongo.Modifier, options: { multi?: boolean; upsert?: boolean; }): void}, options?: HookOptions): void;
-+┊   ┊ 39┊        upsert(hook: {(userId: string, doc: T, selector: Mongo.Selector, modifier: Mongo.Modifier, options: { multi?: boolean; upsert?: boolean; }): void}): void;
-+┊   ┊ 40┊      };
-+┊   ┊ 41┊      direct: {
-+┊   ┊ 42┊        find(selector?: Mongo.Selector | Mongo.ObjectID | string, options?: {
-+┊   ┊ 43┊          sort?: Mongo.SortSpecifier;
-+┊   ┊ 44┊          skip?: number;
-+┊   ┊ 45┊          limit?: number;
-+┊   ┊ 46┊          fields?: Mongo.FieldSpecifier;
-+┊   ┊ 47┊          reactive?: boolean;
-+┊   ┊ 48┊          transform?: Function;
-+┊   ┊ 49┊        }): Mongo.Cursor<T>;
-+┊   ┊ 50┊        findOne(selector?: Mongo.Selector | Mongo.ObjectID | string, options?: {
-+┊   ┊ 51┊          sort?: Mongo.SortSpecifier;
-+┊   ┊ 52┊          skip?: number;
-+┊   ┊ 53┊          fields?: Mongo.FieldSpecifier;
-+┊   ┊ 54┊          reactive?: boolean;
-+┊   ┊ 55┊          transform?: Function;
-+┊   ┊ 56┊        }): T;
-+┊   ┊ 57┊        insert(doc: T, callback?: Function): string;
-+┊   ┊ 58┊        remove(selector: Mongo.Selector | Mongo.ObjectID | string, callback?: Function): number;
-+┊   ┊ 59┊        update(selector: Mongo.Selector | Mongo.ObjectID | string, modifier: Mongo.Modifier, options?: {
-+┊   ┊ 60┊          multi?: boolean;
-+┊   ┊ 61┊          upsert?: boolean;
-+┊   ┊ 62┊        }, callback?: Function): number;
-+┊   ┊ 63┊        upsert(selector: Mongo.Selector | Mongo.ObjectID | string, modifier: Mongo.Modifier, options?: {
-+┊   ┊ 64┊          multi?: boolean;
-+┊   ┊ 65┊        }, callback?: Function): {numberAffected?: number; insertedId?: string;};
-+┊   ┊ 66┊      };
-+┊   ┊ 67┊      hookOptions: CollectionOptions;
-+┊   ┊ 68┊    }
-+┊   ┊ 69┊  }
-+┊   ┊ 70┊
-+┊   ┊ 71┊  var CollectionHooks: CollectionHooksStatic;
-+┊   ┊ 72┊
-+┊   ┊ 73┊  interface CollectionHooksStatic {
-+┊   ┊ 74┊    defaults: CollectionOptions;
-+┊   ┊ 75┊  }
-+┊   ┊ 76┊
-+┊   ┊ 77┊  interface HookOptions {
-+┊   ┊ 78┊    fetchPrevious?: boolean;
-+┊   ┊ 79┊  }
-+┊   ┊ 80┊
-+┊   ┊ 81┊  interface CollectionOptions {
-+┊   ┊ 82┊    before: {
-+┊   ┊ 83┊      all: HookOptions;
-+┊   ┊ 84┊      find: HookOptions;
-+┊   ┊ 85┊      findOne: HookOptions;
-+┊   ┊ 86┊      insert: HookOptions;
-+┊   ┊ 87┊      remove: HookOptions;
-+┊   ┊ 88┊      update: HookOptions;
-+┊   ┊ 89┊      upsert: HookOptions;
-+┊   ┊ 90┊    };
-+┊   ┊ 91┊    after: {
-+┊   ┊ 92┊      all: HookOptions;
-+┊   ┊ 93┊      find: HookOptions;
-+┊   ┊ 94┊      findOne: HookOptions;
-+┊   ┊ 95┊      insert: HookOptions;
-+┊   ┊ 96┊      remove: HookOptions;
-+┊   ┊ 97┊      update: HookOptions;
-+┊   ┊ 98┊      upsert: HookOptions;
-+┊   ┊ 99┊    };
-+┊   ┊100┊    all: {
-+┊   ┊101┊      all: HookOptions;
-+┊   ┊102┊      find: HookOptions;
-+┊   ┊103┊      findOne: HookOptions;
-+┊   ┊104┊      insert: HookOptions;
-+┊   ┊105┊      remove: HookOptions;
-+┊   ┊106┊      update: HookOptions;
-+┊   ┊107┊      upsert: HookOptions;
-+┊   ┊108┊    };
-+┊   ┊109┊  }
-+┊   ┊110┊}
-+┊   ┊111┊
-+┊   ┊112┊module Mongo {
-+┊   ┊113┊  interface Collection<T> {
-+┊   ┊114┊    before: {
-+┊   ┊115┊      find(hook: {(userId: string, selector: Mongo.Selector, options: { multi?: boolean; upsert?: boolean; }): void}): void;
-+┊   ┊116┊      findOne(hook: {(userId: string, selector: Mongo.Selector, options: { multi?: boolean; upsert?: boolean; }): void}): void;
-+┊   ┊117┊      insert(hook: {(userId: string, doc: T): void}): void;
-+┊   ┊118┊      remove(hook: {(userId: string, doc: T): void}): void;
-+┊   ┊119┊      update(hook: {(userId: string, doc: T, fieldNames: string[], modifier: Mongo.Modifier, options: { multi?: boolean; upsert?: boolean; }): void}): void;
-+┊   ┊120┊      upsert(hook: {(userId: string, doc: T, selector: Mongo.Selector, modifier: Mongo.Modifier, options: { multi?: boolean; upsert?: boolean; }): void}): void;
-+┊   ┊121┊    };
-+┊   ┊122┊    after: {
-+┊   ┊123┊      find(hook: {(userId: string, selector: Mongo.Selector, options: { multi?: boolean; upsert?: boolean; }, cursor: Mongo.Cursor<T>): void}): void;
-+┊   ┊124┊      findOne(hook: {(userId: string, selector: Mongo.Selector, options: { multi?: boolean; upsert?: boolean; }, doc: T): void}): void;
-+┊   ┊125┊      insert(hook: {(userId: string, doc: T): void}): void;
-+┊   ┊126┊      remove(hook: {(userId: string, doc: T): void}): void;
-+┊   ┊127┊      update(hook: {(userId: string, doc: T, fieldNames: string[], modifier: Mongo.Modifier, options: { multi?: boolean; upsert?: boolean; }): void}, options?: HookOptions): void;
-+┊   ┊128┊      upsert(hook: {(userId: string, doc: T, selector: Mongo.Selector, modifier: Mongo.Modifier, options: { multi?: boolean; upsert?: boolean; }): void}): void;
-+┊   ┊129┊    };
-+┊   ┊130┊    direct: {
-+┊   ┊131┊      find(selector?: Mongo.Selector | Mongo.ObjectID | string, options?: {
-+┊   ┊132┊        sort?: Mongo.SortSpecifier;
-+┊   ┊133┊        skip?: number;
-+┊   ┊134┊        limit?: number;
-+┊   ┊135┊        fields?: Mongo.FieldSpecifier;
-+┊   ┊136┊        reactive?: boolean;
-+┊   ┊137┊        transform?: Function;
-+┊   ┊138┊      }): Mongo.Cursor<T>;
-+┊   ┊139┊      findOne(selector?: Mongo.Selector | Mongo.ObjectID | string, options?: {
-+┊   ┊140┊        sort?: Mongo.SortSpecifier;
-+┊   ┊141┊        skip?: number;
-+┊   ┊142┊        fields?: Mongo.FieldSpecifier;
-+┊   ┊143┊        reactive?: boolean;
-+┊   ┊144┊        transform?: Function;
-+┊   ┊145┊      }): T;
-+┊   ┊146┊      insert(doc: T, callback?: Function): string;
-+┊   ┊147┊      remove(selector: Mongo.Selector | Mongo.ObjectID | string, callback?: Function): number;
-+┊   ┊148┊      update(selector: Mongo.Selector | Mongo.ObjectID | string, modifier: Mongo.Modifier, options?: {
-+┊   ┊149┊        multi?: boolean;
-+┊   ┊150┊        upsert?: boolean;
-+┊   ┊151┊      }, callback?: Function): number;
-+┊   ┊152┊      upsert(selector: Mongo.Selector | Mongo.ObjectID | string, modifier: Mongo.Modifier, options?: {
-+┊   ┊153┊        multi?: boolean;
-+┊   ┊154┊      }, callback?: Function): {numberAffected?: number; insertedId?: string;};
-+┊   ┊155┊    };
-+┊   ┊156┊    hookOptions: CollectionOptions;
-+┊   ┊157┊  }
-+┊   ┊158┊}
-+┊   ┊159┊
-+┊   ┊160┊declare var CollectionHooks: CollectionHooksStatic;
-+┊   ┊161┊
-+┊   ┊162┊interface CollectionHooksStatic {
-+┊   ┊163┊  defaults: CollectionOptions;
-+┊   ┊164┊}
-+┊   ┊165┊
-+┊   ┊166┊interface HookOptions {
-+┊   ┊167┊  fetchPrevious?: boolean;
-+┊   ┊168┊}
-+┊   ┊169┊
-+┊   ┊170┊interface CollectionOptions {
-+┊   ┊171┊  before: {
-+┊   ┊172┊    all: HookOptions;
-+┊   ┊173┊    find: HookOptions;
-+┊   ┊174┊    findOne: HookOptions;
-+┊   ┊175┊    insert: HookOptions;
-+┊   ┊176┊    remove: HookOptions;
-+┊   ┊177┊    update: HookOptions;
-+┊   ┊178┊    upsert: HookOptions;
-+┊   ┊179┊  };
-+┊   ┊180┊  after: {
-+┊   ┊181┊    all: HookOptions;
-+┊   ┊182┊    find: HookOptions;
-+┊   ┊183┊    findOne: HookOptions;
-+┊   ┊184┊    insert: HookOptions;
-+┊   ┊185┊    remove: HookOptions;
-+┊   ┊186┊    update: HookOptions;
-+┊   ┊187┊    upsert: HookOptions;
-+┊   ┊188┊  };
-+┊   ┊189┊  all: {
-+┊   ┊190┊    all: HookOptions;
-+┊   ┊191┊    find: HookOptions;
-+┊   ┊192┊    findOne: HookOptions;
-+┊   ┊193┊    insert: HookOptions;
-+┊   ┊194┊    remove: HookOptions;
-+┊   ┊195┊    update: HookOptions;
-+┊   ┊196┊    upsert: HookOptions;
-+┊   ┊197┊  };
-+┊   ┊198┊}
+@@ -18,7 +18,8 @@
+ ┊18┊18┊    "types": [
+ ┊19┊19┊      "meteor-typings",
+ ┊20┊20┊      "@types/meteor-accounts-phone",
+-┊21┊  ┊      "@types/meteor-publish-composite"
++┊  ┊21┊      "@types/meteor-publish-composite",
++┊  ┊22┊      "@types/meteor-collection-hooks"
+ ┊22┊23┊    ]
+ ┊23┊24┊  },
+ ┊24┊25┊  "exclude": [
+```
+
+##### Changed tsconfig.json
+```diff
+@@ -22,7 +22,8 @@
+ ┊22┊22┊    "types": [
+ ┊23┊23┊      "meteor-typings",
+ ┊24┊24┊      "@types/underscore",
+-┊25┊  ┊      "@types/meteor-accounts-phone"
++┊  ┊25┊      "@types/meteor-accounts-phone",
++┊  ┊26┊      "@types/meteor-collection-hooks"
+ ┊26┊27┊    ]
+ ┊27┊28┊  },
+ ┊28┊29┊  "include": [
 ```
 [}]: #
 
@@ -1080,29 +885,31 @@ We will also modify the `users` and `chats` publication, so each user will conta
 ```
 [}]: #
 
-[{]: <helper> (diff_step 12.30)
-#### Step 12.30: Add images to chats publication
+[{]: <helper> (diff_step 12.10)
+#### Step 12.10: Create Picture model
 
-##### Changed api/server/publications.ts
+##### Changed api/server/models.ts
 ```diff
-@@ -80,7 +80,16 @@
- ┊80┊80┊          }, {
- ┊81┊81┊            fields: { profile: 1 }
- ┊82┊82┊          });
--┊83┊  ┊        }
-+┊  ┊83┊        },
-+┊  ┊84┊        children: [
-+┊  ┊85┊          <PublishCompositeConfig2<Chat, User, Picture>> {
-+┊  ┊86┊            find: (user, chat) => {
-+┊  ┊87┊              return Pictures.collection.find(user.profile.pictureId, {
-+┊  ┊88┊                fields: { url: 1 }
-+┊  ┊89┊              });
-+┊  ┊90┊            }
-+┊  ┊91┊          }
-+┊  ┊92┊        ]
- ┊84┊93┊      }
- ┊85┊94┊    ]
- ┊86┊95┊  };
+@@ -38,3 +38,19 @@
+ ┊38┊38┊  lng: number;
+ ┊39┊39┊  zoom: number;
+ ┊40┊40┊}
++┊  ┊41┊
++┊  ┊42┊export interface Picture {
++┊  ┊43┊  _id?: string;
++┊  ┊44┊  complete?: boolean;
++┊  ┊45┊  extension?: string;
++┊  ┊46┊  name?: string;
++┊  ┊47┊  progress?: number;
++┊  ┊48┊  size?: number;
++┊  ┊49┊  store?: string;
++┊  ┊50┊  token?: string;
++┊  ┊51┊  type?: string;
++┊  ┊52┊  uploadedAt?: Date;
++┊  ┊53┊  uploading?: boolean;
++┊  ┊54┊  url?: string;
++┊  ┊55┊  userId?: string;
++┊  ┊56┊}
 ```
 [}]: #
 

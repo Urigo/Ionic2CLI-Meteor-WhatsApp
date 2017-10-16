@@ -12,47 +12,14 @@ First we will update our Meteor server and add few `Meteor` packages called `acc
     api$ meteor add npm-bcrypt
     api$ meteor add mys:accounts-phone
 
-Now, we need to make sure that `Meteor` accounts package are also available for the client. We will do this by importing and exporting the necessary packages in the `meteor-client` bundling config, so next time we bundle the meteor client, the new packages will be included as well:
-
-[{]: <helper> (diff_step 7.2)
-#### Step 7.2: Updated bundler config
-
-##### Changed meteor-client.config.json
-```diff
-@@ -32,9 +32,22 @@
- ┊32┊32┊      "allow-deny",
- ┊33┊33┊      "reactive-var",
- ┊34┊34┊      "mongo"
-+┊  ┊35┊    ],
-+┊  ┊36┊    "npm-bcrypt": [],
-+┊  ┊37┊    "accounts-base": [
-+┊  ┊38┊      "callback-hook",
-+┊  ┊39┊      "localstorage",
-+┊  ┊40┊      "accounts-base",
-+┊  ┊41┊      "service-configuration"
-+┊  ┊42┊    ],
-+┊  ┊43┊    "mys:accounts-phone": [
-+┊  ┊44┊      "sha",
-+┊  ┊45┊      "srp",
-+┊  ┊46┊      "mys_accounts-phone"
- ┊35┊47┊    ]
- ┊36┊48┊  },
- ┊37┊49┊  "export": {
-+┊  ┊50┊    "accounts-base": ["Accounts"],
- ┊38┊51┊    "ddp": ["DDP"],
- ┊39┊52┊    "meteor": ["Meteor"],
- ┊40┊53┊    "mongo": ["Mongo"],
-```
-[}]: #
-
-And of-course, be sure to keep your actual script updated as well:
+Be sure to keep your `Meteor` client script updated as well by running:
 
     $ npm run meteor-client:bundle
 
 For the sake of debugging we gonna write an authentication settings file (`api/private/settings.json`) which might make our life easier, but once you're in production mode you *shouldn't* use this configuration:
 
-[{]: <helper> (diff_step 7.3)
-#### Step 7.3: Add accounts-phone settings
+[{]: <helper> (diff_step 7.2)
+#### Step 7.2: Add accounts-phone settings
 
 ##### Added api/private/settings.json
 ```diff
@@ -74,8 +41,8 @@ Now anytime we run our app we should provide it with a `settings.json`:
 
 To make it simpler we can add a script called `api` script to the `package.json` which will start the Meteor server:
 
-[{]: <helper> (diff_step 7.4)
-#### Step 7.4: Updated NPM script
+[{]: <helper> (diff_step 7.3)
+#### Step 7.3: Updated NPM script
 
 ##### Changed package.json
 ```diff
@@ -94,8 +61,8 @@ To make it simpler we can add a script called `api` script to the `package.json`
 
 We will now apply the settings file we've just created so it can actually take effect:
 
-[{]: <helper> (diff_step 7.5)
-#### Step 7.5: Added meteor accounts config
+[{]: <helper> (diff_step 7.4)
+#### Step 7.4: Added meteor accounts config
 
 ##### Changed api/server/main.ts
 ```diff
@@ -122,8 +89,8 @@ We also need to make sure we have the necessary declaration files for the packag
 
 And we will reference from the `tsconfig` like so:
 
-[{]: <helper> (diff_step 7.7)
-#### Step 7.7: Updated tsconfig
+[{]: <helper> (diff_step 7.6)
+#### Step 7.6: Updated tsconfig
 
 ##### Changed api/tsconfig.json
 ```diff
@@ -146,8 +113,8 @@ Now, we will use the `Meteor`'s accounts system in the client. Our first use cas
 
 `Meteor`'s accounts API exposes a method called `loggingIn` which indicates if the authentication flow is done, which we gonna use before bootstraping our application, to make sure we provide the client with the necessary views which are right to his current state:
 
-[{]: <helper> (diff_step 7.8)
-#### Step 7.8: Wait for user if logging in
+[{]: <helper> (diff_step 7.7)
+#### Step 7.7: Wait for user if logging in
 
 ##### Changed src/app/main.ts
 ```diff
@@ -177,8 +144,8 @@ Now, we will use the `Meteor`'s accounts system in the client. Our first use cas
 
 To make things easier, we're going to organize all authentication related functions into a single service which we're gonna call `PhoneService`:
 
-[{]: <helper> (diff_step 7.9)
-#### Step 7.9: Added phone service
+[{]: <helper> (diff_step 7.8)
+#### Step 7.8: Added phone service
 
 ##### Added src/services/phone.ts
 ```diff
@@ -235,8 +202,8 @@ To make things easier, we're going to organize all authentication related functi
 
 And we gonna require it in the app's `NgModule` so it can be recognized:
 
-[{]: <helper> (diff_step 7.10)
-#### Step 7.10: Added phone service to NgModule
+[{]: <helper> (diff_step 7.9)
+#### Step 7.9: Added phone service to NgModule
 
 ##### Changed src/app/app.module.ts
 ```diff
@@ -272,8 +239,8 @@ The `PhoneService` is not only packed with whatever functionality we need, but i
 
 Just so the `TypeScript` compiler will know how to digest it, we shall also specify the `accounts-phone` types in the client `tsconfig.json` as well:
 
-[{]: <helper> (diff_step 7.11)
-#### Step 7.11: Added meteor accouts typings to client side
+[{]: <helper> (diff_step 7.10)
+#### Step 7.10: Added meteor accouts typings to client side
 
 ##### Changed tsconfig.json
 ```diff
@@ -300,8 +267,8 @@ For authentication purposes, we gonna create the following flow in our app:
 
 Let's start by creating the `LoginComponent`. In this component we will request an SMS verification right after a phone number has been entered:
 
-[{]: <helper> (diff_step 7.12)
-#### Step 7.12: Add login component
+[{]: <helper> (diff_step 7.11)
+#### Step 7.11: Add login component
 
 ##### Added src/pages/login/login.ts
 ```diff
@@ -379,8 +346,8 @@ In short, once we press the login button, the `login` method is called and shows
 
 Hopefully that the component's logic is clear now, let's move to the template:
 
-[{]: <helper> (diff_step 7.13)
-#### Step 7.13: Add login template
+[{]: <helper> (diff_step 7.12)
+#### Step 7.12: Add login template
 
 ##### Added src/pages/login/login.html
 ```diff
@@ -415,8 +382,8 @@ Hopefully that the component's logic is clear now, let's move to the template:
 
 And add some style into it:
 
-[{]: <helper> (diff_step 7.14)
-#### Step 7.14: Add login component styles
+[{]: <helper> (diff_step 7.13)
+#### Step 7.13: Add login component styles
 
 ##### Added src/pages/login/login.scss
 ```diff
@@ -437,8 +404,8 @@ And add some style into it:
 
 And as usual, newly created components should be imported in the app's module:
 
-[{]: <helper> (diff_step 7.15)
-#### Step 7.15: Import login component
+[{]: <helper> (diff_step 7.14)
+#### Step 7.14: Import login component
 
 ##### Changed src/app/app.module.ts
 ```diff
@@ -479,8 +446,8 @@ And as usual, newly created components should be imported in the app's module:
 
 We will also need to identify if the user is logged in or not once the app is launched; If so - the user will be promoted directly to the `ChatsPage`, and if not, he will have to go through the `LoginPage` first:
 
-[{]: <helper> (diff_step 7.16)
-#### Step 7.16: Add user identification in app's main component
+[{]: <helper> (diff_step 7.15)
+#### Step 7.15: Add user identification in app's main component
 
 ##### Changed src/app/app.component.ts
 ```diff
@@ -509,8 +476,8 @@ We will also need to identify if the user is logged in or not once the app is la
 
 Let's proceed and implement the verification page. We will start by creating its component, called `VerificationPage`. Logic is pretty much the same as in the `LoginComponent`:
 
-[{]: <helper> (diff_step 7.17)
-#### Step 7.17: Added verification component
+[{]: <helper> (diff_step 7.16)
+#### Step 7.16: Added verification component
 
 ##### Added src/pages/verification/verification.ts
 ```diff
@@ -566,8 +533,8 @@ Let's proceed and implement the verification page. We will start by creating its
 ```
 [}]: #
 
-[{]: <helper> (diff_step 7.18)
-#### Step 7.18: Added verification template
+[{]: <helper> (diff_step 7.17)
+#### Step 7.17: Added verification template
 
 ##### Added src/pages/verification/verification.html
 ```diff
@@ -600,8 +567,8 @@ Let's proceed and implement the verification page. We will start by creating its
 ```
 [}]: #
 
-[{]: <helper> (diff_step 7.19)
-#### Step 7.19: Added stylesheet for verification component
+[{]: <helper> (diff_step 7.18)
+#### Step 7.18: Added stylesheet for verification component
 
 ##### Added src/pages/verification/verification.scss
 ```diff
@@ -622,8 +589,8 @@ Let's proceed and implement the verification page. We will start by creating its
 
 And add it to the `NgModule`:
 
-[{]: <helper> (diff_step 7.20)
-#### Step 7.20: Import verification component
+[{]: <helper> (diff_step 7.19)
+#### Step 7.19: Import verification component
 
 ##### Changed src/app/app.module.ts
 ```diff
@@ -664,8 +631,8 @@ And add it to the `NgModule`:
 
 Now we can make sure that anytime we login, we will be promoted to the `VerificationPage` right after:
 
-[{]: <helper> (diff_step 7.21)
-#### Step 7.21: Import and use verfication page from login
+[{]: <helper> (diff_step 7.20)
+#### Step 7.20: Import and use verfication page from login
 
 ##### Changed src/pages/login/login.ts
 ```diff
@@ -696,8 +663,8 @@ Now we can make sure that anytime we login, we will be promoted to the `Verifica
 
 The last step in our authentication pattern is setting our profile. We will create a `Profile` interface so the compiler can recognize profile-data structures:
 
-[{]: <helper> (diff_step 7.22)
-#### Step 7.22: Add profile interface
+[{]: <helper> (diff_step 7.21)
+#### Step 7.21: Add profile interface
 
 ##### Changed api/server/models.ts
 ```diff
@@ -721,8 +688,8 @@ As you can probably notice we also defined a constant for the default profile pi
 
 Now we can safely proceed to implementing the `ProfileComponent`:
 
-[{]: <helper> (diff_step 7.24)
-#### Step 7.24: Add profile component
+[{]: <helper> (diff_step 7.23)
+#### Step 7.23: Add profile component
 
 ##### Added src/pages/profile/profile.ts
 ```diff
@@ -778,8 +745,8 @@ Now we can safely proceed to implementing the `ProfileComponent`:
 ```
 [}]: #
 
-[{]: <helper> (diff_step 7.25)
-#### Step 7.25: Add profile template
+[{]: <helper> (diff_step 7.24)
+#### Step 7.24: Add profile template
 
 ##### Added src/pages/profile/profile.html
 ```diff
@@ -807,8 +774,8 @@ Now we can safely proceed to implementing the `ProfileComponent`:
 ```
 [}]: #
 
-[{]: <helper> (diff_step 7.26)
-#### Step 7.26: Add profile component style
+[{]: <helper> (diff_step 7.25)
+#### Step 7.25: Add profile component style
 
 ##### Added src/pages/profile/profile.scss
 ```diff
@@ -838,8 +805,8 @@ Now we can safely proceed to implementing the `ProfileComponent`:
 
 Let's redirect users who passed the verification stage to the newly created `ProfileComponent` like so:
 
-[{]: <helper> (diff_step 7.27)
-#### Step 7.27: Use profile component in verification page
+[{]: <helper> (diff_step 7.26)
+#### Step 7.26: Use profile component in verification page
 
 ##### Changed src/pages/verification/verification.ts
 ```diff
@@ -871,8 +838,8 @@ Let's redirect users who passed the verification stage to the newly created `Pro
 
 We will also need to import the `ProfileComponent` in the app's `NgModule` so it can be recognized:
 
-[{]: <helper> (diff_step 7.28)
-#### Step 7.28: Import profile component
+[{]: <helper> (diff_step 7.27)
+#### Step 7.27: Import profile component
 
 ##### Changed src/app/app.module.ts
 ```diff
@@ -913,8 +880,8 @@ We will also need to import the `ProfileComponent` in the app's `NgModule` so it
 
 The core logic behind this component actually lies within the invocation of the `updateProfile`, a Meteor method implemented in our API which looks like so:
 
-[{]: <helper> (diff_step 7.29)
-#### Step 7.29: Added updateProfile method
+[{]: <helper> (diff_step 7.28)
+#### Step 7.28: Added updateProfile method
 
 ##### Changed api/server/methods.ts
 ```diff
@@ -954,8 +921,8 @@ The core logic behind this component actually lies within the invocation of the 
 
 Now that our authentication flow is complete, we will need to edit the messages, so each user can be identified by each message sent. We will add a restriction in the `addMessage` method to see if a user is logged in, and we will bind its ID to the created message:
 
-[{]: <helper> (diff_step 7.30)
-#### Step 7.30: Added restriction on new message method
+[{]: <helper> (diff_step 7.29)
+#### Step 7.29: Added restriction on new message method
 
 ##### Changed api/server/methods.ts
 ```diff
@@ -984,8 +951,8 @@ Now that our authentication flow is complete, we will need to edit the messages,
 
 This requires us to update the `Message` model as well so `TypeScript` will recognize the changes:
 
-[{]: <helper> (diff_step 7.31)
-#### Step 7.31: Added senderId property to Message object
+[{]: <helper> (diff_step 7.30)
+#### Step 7.30: Added senderId property to Message object
 
 ##### Changed api/server/models.ts
 ```diff
@@ -1002,8 +969,8 @@ This requires us to update the `Message` model as well so `TypeScript` will reco
 
 Now we can determine if a message is ours or not in the `MessagePage` thanks to the `senderId` field we've just added:
 
-[{]: <helper> (diff_step 7.32)
-#### Step 7.32: Use actual ownership of the message
+[{]: <helper> (diff_step 7.31)
+#### Step 7.31: Use actual ownership of the message
 
 ##### Changed src/pages/messages/messages.ts
 ```diff
@@ -1057,8 +1024,8 @@ Now we're going to add the abilities to log-out and edit our profile as well, wh
 
 A popover, just like a page in our app, consists of a component, view, and style:
 
-[{]: <helper> (diff_step 7.33)
-#### Step 7.33: Add chat options component
+[{]: <helper> (diff_step 7.32)
+#### Step 7.32: Add chat options component
 
 ##### Added src/pages/chats/chats-options.ts
 ```diff
@@ -1141,8 +1108,8 @@ A popover, just like a page in our app, consists of a component, view, and style
 ```
 [}]: #
 
-[{]: <helper> (diff_step 7.34)
-#### Step 7.34: Added chats options template
+[{]: <helper> (diff_step 7.33)
+#### Step 7.33: Added chats options template
 
 ##### Added src/pages/chats/chats-options.html
 ```diff
@@ -1163,8 +1130,8 @@ A popover, just like a page in our app, consists of a component, view, and style
 ```
 [}]: #
 
-[{]: <helper> (diff_step 7.35)
-#### Step 7.35: Added chat options stylesheets
+[{]: <helper> (diff_step 7.34)
+#### Step 7.34: Added chat options stylesheets
 
 ##### Added src/pages/chats/chats-options.scss
 ```diff
@@ -1187,8 +1154,8 @@ A popover, just like a page in our app, consists of a component, view, and style
 
 It requires us to import it in the `NgModule` as well:
 
-[{]: <helper> (diff_step 7.36)
-#### Step 7.36: Import chat options
+[{]: <helper> (diff_step 7.35)
+#### Step 7.35: Import chat options
 
 ##### Changed src/app/app.module.ts
 ```diff
@@ -1229,8 +1196,8 @@ It requires us to import it in the `NgModule` as well:
 
 Now we will implement the method in the `ChatsPage` which will initialize the `ChatsOptionsComponent` using a popover controller:
 
-[{]: <helper> (diff_step 7.37)
-#### Step 7.37: Added showOptions method
+[{]: <helper> (diff_step 7.36)
+#### Step 7.36: Added showOptions method
 
 ##### Changed src/pages/chats/chats.ts
 ```diff
@@ -1279,8 +1246,8 @@ Now we will implement the method in the `ChatsPage` which will initialize the `C
 
 The method is invoked thanks to the following binding in the chats view:
 
-[{]: <helper> (diff_step 7.38)
-#### Step 7.38: Bind click event to showOptions method
+[{]: <helper> (diff_step 7.37)
+#### Step 7.37: Bind click event to showOptions method
 
 ##### Changed src/pages/chats/chats.html
 ```diff
@@ -1298,8 +1265,8 @@ The method is invoked thanks to the following binding in the chats view:
 
 As for now, once you click on the options icon in the chats view, the popover should appear in the middle of the screen. To fix it, we gonna add the extend our app's main stylesheet, since it can be potentially used as a component not just in the `ChatsPage`, but also in other pages as well:
 
-[{]: <helper> (diff_step 7.39)
-#### Step 7.39: Added chat options popover stylesheet
+[{]: <helper> (diff_step 7.38)
+#### Step 7.38: Added chat options popover stylesheet
 
 ##### Changed src/app/app.scss
 ```diff
