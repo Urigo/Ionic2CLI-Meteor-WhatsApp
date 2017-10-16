@@ -15,7 +15,7 @@ Then let's add it to `app.module.ts`:
 
 [{]: <helper> (diffStep "14.2")
 
-#### [Step 14.2: Add Sim to app.module.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/61d70f41)
+#### [Step 14.2: Add Sim to app.module.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ab72bf1d)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -47,7 +47,7 @@ Let's add the appropriate handler in the `PhoneService`, we will use it inside t
 
 [{]: <helper> (diffStep "14.3")
 
-#### [Step 14.3: Use getNumber native method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f52922c2)
+#### [Step 14.3: Use getNumber native method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f2f2ec67)
 
 ##### Changed src&#x2F;pages&#x2F;login&#x2F;login.ts
 ```diff
@@ -89,7 +89,7 @@ Let's add the appropriate handler in the `PhoneService`, we will use it inside t
 
 [{]: <helper> (diffStep "14.4")
 
-#### [Step 14.4: Implement getNumber with native ionic](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7a017df5)
+#### [Step 14.4: Implement getNumber with native ionic](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/fff95242)
 
 ##### Changed src&#x2F;services&#x2F;phone.ts
 ```diff
@@ -142,7 +142,7 @@ Then we must create the corresponding `ionic-native` plugin, since no one create
 
 [{]: <helper> (diffStep "14.6")
 
-#### [Step 14.6: Added ionic-native plugin for reading SMS OTP](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/07c874e7)
+#### [Step 14.6: Added ionic-native plugin for reading SMS OTP](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/69a7ca21)
 
 ##### Added src&#x2F;ionic&#x2F;sms-receiver&#x2F;index.ts
 ```diff
@@ -233,7 +233,7 @@ Last but not the least we must import it into `app.module.ts` as usual:
 
 [{]: <helper> (diffStep "14.7")
 
-#### [Step 14.7: Add SmsReceiver to app.module.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c5c0569f)
+#### [Step 14.7: Add SmsReceiver to app.module.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/be2a408a)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -265,7 +265,7 @@ Let's start by using the yet-to-be-created method in the `verification` page:
 
 [{]: <helper> (diffStep "14.8")
 
-#### [Step 14.8: Use getSMS method in verification.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/8d866c2f)
+#### [Step 14.8: Use getSMS method in verification.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ddac9c6b)
 
 ##### Changed src&#x2F;pages&#x2F;verification&#x2F;verification.ts
 ```diff
@@ -321,7 +321,7 @@ We will need to add support for `es2016` in Typescript, because we will use `Arr
 
 [{]: <helper> (diffStep "14.10")
 
-#### [Step 14.10: Added support for es2016 in Typescript](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5bfacffb)
+#### [Step 14.10: Added support for es2016 in Typescript](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7e8c0619)
 
 ##### Changed tsconfig.json
 ```diff
@@ -343,7 +343,7 @@ Now we can implement the method in the `phone` service:
 
 [{]: <helper> (diffStep "14.11")
 
-#### [Step 14.11: Add getSMS method to phone.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/fa0c05f9)
+#### [Step 14.11: Add getSMS method to phone.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/405ae503)
 
 ##### Changed api&#x2F;server&#x2F;models.ts
 ```diff
@@ -438,7 +438,7 @@ Then let's add them to `app.module.ts`:
 
 [{]: <helper> (diffStep "14.13")
 
-#### [Step 14.13: Add Camera and Crop to app.module.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ced77414)
+#### [Step 14.13: Add Camera and Crop to app.module.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/6eb7d0e4)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -472,7 +472,7 @@ We will bind the `click` event in the view:
 
 [{]: <helper> (diffStep "14.14")
 
-#### [Step 14.14: Use the new sendPicture method in the template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f9c30f9b)
+#### [Step 14.14: Use the new sendPicture method in the template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/12fb8b75)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.html
 ```diff
@@ -498,7 +498,7 @@ And we will create the event handler in `MessagesAttachmentsComponent`:
 
 [{]: <helper> (diffStep "14.15")
 
-#### [Step 14.15: Use the getPicture method into messages-attachment.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f7cd71f3)
+#### [Step 14.15: Use the getPicture method into messages-attachment.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ea9cd551)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.ts
 ```diff
@@ -572,7 +572,7 @@ Finally we can create a new method in the `PictureService` to take some pictures
 
 [{]: <helper> (diffStep "14.16")
 
-#### [Step 14.16: Implement getPicture method in picture service](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/71e5652c)
+#### [Step 14.16: Implement getPicture method in picture service](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5f47563f)
 
 ##### Changed src&#x2F;services&#x2F;picture.ts
 ```diff
@@ -653,7 +653,7 @@ We will also have to update `selectProfilePicture` in the profile `Page` to use 
 
 [{]: <helper> (diffStep "14.17")
 
-#### [Step 14.17: Update selectProfilePicture in profile.ts to use getPicture](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c21c48e3)
+#### [Step 14.17: Update selectProfilePicture in profile.ts to use getPicture](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/3ee7305c)
 
 ##### Changed src&#x2F;pages&#x2F;profile&#x2F;profile.ts
 ```diff

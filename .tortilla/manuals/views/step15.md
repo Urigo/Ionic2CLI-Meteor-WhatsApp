@@ -13,7 +13,7 @@ Then let's add it to `app.module.ts`:
 
 [{]: <helper> (diffStep "15.2")
 
-#### [Step 15.2: Add Contacts to app.module.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/4f6ae793)
+#### [Step 15.2: Add Contacts to app.module.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/cd5bc153)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -45,7 +45,7 @@ Since we're going to use `Sets` in our code, we will have to set the `Typescript
 
 [{]: <helper> (diffStep "15.3")
 
-#### [Step 15.3: We need to set downlevelIteration or target es6 in order to use Sets](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/364c8646)
+#### [Step 15.3: We need to set downlevelIteration or target es6 in order to use Sets](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/a953d706)
 
 ##### Changed tsconfig.json
 ```diff
@@ -65,7 +65,7 @@ Now we can create the appropriate handler in the `PhoneService`, we will use it 
 
 [{]: <helper> (diffStep "15.4")
 
-#### [Step 15.4: Implement getContactsFromAddressbook in the phone service](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/55e66f92)
+#### [Step 15.4: Implement getContactsFromAddressbook in the phone service](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/eae8c9a5)
 
 ##### Changed src&#x2F;services&#x2F;phone.ts
 ```diff
@@ -160,7 +160,7 @@ Now we can create the appropriate handler in the `PhoneService`, we will use it 
 
 [{]: <helper> (diffStep "15.5")
 
-#### [Step 15.5: Use getContactsFromAddressbook in new-chat.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/91a9dfc1)
+#### [Step 15.5: Use getContactsFromAddressbook in new-chat.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/46857408)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;new-chat.ts
 ```diff
@@ -238,7 +238,7 @@ We will have to update the `users` publication to filter our results:
 
 [{]: <helper> (diffStep "15.6")
 
-#### [Step 15.6: Update users publication to handle addressbook contacts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1aed5169)
+#### [Step 15.6: Update users publication to handle addressbook contacts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/3c6d0222)
 
 ##### Changed api&#x2F;server&#x2F;publications.ts
 ```diff
@@ -275,7 +275,7 @@ Since they are now useless, we can finally remove our fake users from the db ini
 
 [{]: <helper> (diffStep "15.7")
 
-#### [Step 15.7: Removing db initialization in main.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/2ea13438)
+#### [Step 15.7: Removing db initialization in main.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/794c94cd)
 
 ##### Changed api&#x2F;server&#x2F;main.ts
 ```diff
@@ -380,7 +380,7 @@ Let's re-add our fake users and whitelist them in the `users` publication for th
 
 [{]: <helper> (diffStep "15.8")
 
-#### [Step 15.8: Re-add fake users and whitelist them in the publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/346ab5c8)
+#### [Step 15.8: Re-add fake users and whitelist them in the publication](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c2dceafe)
 
 ##### Changed api&#x2F;server&#x2F;main.ts
 ```diff

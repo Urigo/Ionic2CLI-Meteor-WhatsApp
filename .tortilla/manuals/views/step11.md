@@ -36,7 +36,7 @@ We will have to fix the failed-to-restore-cordova-plugin-statusbar issue:
 
 [{]: <helper> (diffStep "11.2")
 
-#### [Step 11.2: Fix failed-to-restore-cordova-plugin-statusbar issue](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b50cb175)
+#### [Step 11.2: Fix failed-to-restore-cordova-plugin-statusbar issue](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/033887b9)
 
 ##### Changed package.json
 ```diff
@@ -84,7 +84,7 @@ Since our `DDP` server doesn't run on the smartphone we will have to tell the `M
 
 [{]: <helper> (diffStep "11.3")
 
-#### [Step 11.3: Add meteor-client config](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1c7d1c54)
+#### [Step 11.3: Add meteor-client config](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7e4b7d0e)
 
 ##### Added meteor-client.config.json
 ```diff
@@ -105,7 +105,7 @@ Since our `DDP` server doesn't run on the smartphone we will have to tell the `M
 
 [{]: <helper> (diffStep "11.4")
 
-#### [Step 11.4: Update meteor-client:bundle script](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/09ce2371)
+#### [Step 11.4: Update meteor-client:bundle script](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f090eb08)
 
 ##### Changed package.json
 ```diff

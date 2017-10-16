@@ -23,7 +23,7 @@ Before you import the installed package to the app's `NgModule` be sure to gener
 
 [{]: <helper> (diffStep "12.3")
 
-#### [Step 12.3: Import google maps module](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/6b770a10)
+#### [Step 12.3: Import google maps module](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/3a13fb1f)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -59,7 +59,7 @@ Before we proceed any further, we will add a new message type to our schema, so 
 
 [{]: <helper> (diffStep "12.4")
 
-#### [Step 12.4: Added location message type](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/419f5ce6)
+#### [Step 12.4: Added location message type](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/a94d788e)
 
 ##### Changed api&#x2F;server&#x2F;models.ts
 ```diff
@@ -81,7 +81,7 @@ We want the user to be able to send a location message through an attachments me
 
 [{]: <helper> (diffStep "12.5")
 
-#### [Step 12.5: Added stub for messages attachment menu](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1d5bf5ae)
+#### [Step 12.5: Added stub for messages attachment menu](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1d1505e9)
 
 ##### Added src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.ts
 ```diff
@@ -105,7 +105,7 @@ We want the user to be able to send a location message through an attachments me
 
 [{]: <helper> (diffStep "12.6")
 
-#### [Step 12.6: Added messages attachment menu template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/d7e0a188)
+#### [Step 12.6: Added messages attachment menu template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/17531daa)
 
 ##### Added src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.html
 ```diff
@@ -134,7 +134,7 @@ We want the user to be able to send a location message through an attachments me
 
 [{]: <helper> (diffStep "12.7")
 
-#### [Step 12.7: Added styles for messages attachment](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/baa1b1fb)
+#### [Step 12.7: Added styles for messages attachment](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b7705037)
 
 ##### Added src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.scss
 ```diff
@@ -191,7 +191,7 @@ We want the user to be able to send a location message through an attachments me
 
 [{]: <helper> (diffStep "12.8")
 
-#### [Step 12.8: Import MessagesAttachmentsComponent](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/359cf154)
+#### [Step 12.8: Import MessagesAttachmentsComponent](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/8c55e1fe)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -235,7 +235,7 @@ We will add a generic style-sheet for the attachments menu since it can also use
 
 [{]: <helper> (diffStep "12.9")
 
-#### [Step 12.9: Added styles for the popover container](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ee6595b2)
+#### [Step 12.9: Added styles for the popover container](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7f3694f0)
 
 ##### Changed src&#x2F;app&#x2F;app.scss
 ```diff
@@ -263,7 +263,7 @@ Now we will add a handler in the `MessagesPage` which will open the newly create
 
 [{]: <helper> (diffStep "12.10")
 
-#### [Step 12.10: Add showAttachments method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/61d25be0)
+#### [Step 12.10: Add showAttachments method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/3194ac2e)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 ```diff
@@ -302,7 +302,7 @@ Now we will add a handler in the `MessagesPage` which will open the newly create
 
 [{]: <helper> (diffStep "12.11")
 
-#### [Step 12.11: Bind click event to showAttachments](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/02809601)
+#### [Step 12.11: Bind click event to showAttachments](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/967e0b24)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.html
 ```diff
@@ -325,7 +325,7 @@ A location is a composition of longitude, latitude and an altitude, or in short:
 
 [{]: <helper> (diffStep "12.12")
 
-#### [Step 12.12: Added location model](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/eb8337be)
+#### [Step 12.12: Added location model](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/88b5fb0b)
 
 ##### Changed api&#x2F;server&#x2F;models.ts
 ```diff
@@ -347,7 +347,7 @@ Up next, would be implementing the actual component which will handle geo-locati
 
 [{]: <helper> (diffStep "12.13")
 
-#### [Step 12.13: Implement location message component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/a0faaaa1)
+#### [Step 12.13: Implement location message component](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/15f02f3b)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -458,7 +458,7 @@ Basically, what this component does is refreshing the current geo-location at a 
 
 [{]: <helper> (diffStep "12.14")
 
-#### [Step 12.14: Added location message template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/4582312a)
+#### [Step 12.14: Added location message template](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/142b54d3)
 
 ##### Added src&#x2F;pages&#x2F;messages&#x2F;location-message.html
 ```diff
@@ -496,7 +496,7 @@ Now we will add some `CSS` to make sure the map is visible:
 
 [{]: <helper> (diffStep "12.15")
 
-#### [Step 12.15: Added location message stylesheet](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b76baeb3)
+#### [Step 12.15: Added location message stylesheet](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f2a93e7f)
 
 ##### Added src&#x2F;pages&#x2F;messages&#x2F;location-message.scss
 ```diff
@@ -523,7 +523,7 @@ And we will import the component:
 
 [{]: <helper> (diffStep "12.16")
 
-#### [Step 12.16: Import NewLocationMessageComponent](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/4508dc00)
+#### [Step 12.16: Import NewLocationMessageComponent](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/a292b787)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -567,7 +567,7 @@ The component is ready. The only thing left to do would be revealing it. So we w
 
 [{]: <helper> (diffStep "12.17")
 
-#### [Step 12.17: Implement the sendLocation message to display the new location modal](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/079f595d)
+#### [Step 12.17: Implement the sendLocation message to display the new location modal](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/dcb6be80)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.ts
 ```diff
@@ -612,7 +612,7 @@ And we will bind it to its view:
 
 [{]: <helper> (diffStep "12.18")
 
-#### [Step 12.18: Bind click event to sendLocation](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/d09d11f0)
+#### [Step 12.18: Bind click event to sendLocation](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c2c0d32d)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages-attachments.html
 ```diff
@@ -633,7 +633,7 @@ Now we will implement a new method in the `MessagesPage`, called `sendLocationMe
 
 [{]: <helper> (diffStep "12.19")
 
-#### [Step 12.19: Implement send location message](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/54350e13)
+#### [Step 12.19: Implement send location message](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/a337c835)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 ```diff
@@ -688,7 +688,7 @@ This requires us to update the `addMessage` method in the server so it can suppo
 
 [{]: <helper> (diffStep "12.20")
 
-#### [Step 12.20: Allow location message type on server side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/6e9d881d)
+#### [Step 12.20: Allow location message type on server side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0172a8a5)
 
 ##### Changed api&#x2F;server&#x2F;methods.ts
 ```diff
@@ -710,7 +710,7 @@ The infrastructure is ready, but we can't yet see the message, therefore, we wil
 
 [{]: <helper> (diffStep "12.21")
 
-#### [Step 12.21: Implement location message view](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/91fd349a)
+#### [Step 12.21: Implement location message view](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/8d3c5e3f)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.html
 ```diff
@@ -737,7 +737,7 @@ We will now add a method which can parse a string representation of the location
 
 [{]: <helper> (diffStep "12.22")
 
-#### [Step 12.22: Implement getLocation for parsing the location](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0e58dbaf)
+#### [Step 12.22: Implement getLocation for parsing the location](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1ff2fec4)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.ts
 ```diff
@@ -764,7 +764,7 @@ And we will make some final adjustments for the view so the map can be presented
 
 [{]: <helper> (diffStep "12.23")
 
-#### [Step 12.23: Added map styles](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ba72675b)
+#### [Step 12.23: Added map styles](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/272e10e7)
 
 ##### Changed src&#x2F;pages&#x2F;messages&#x2F;messages.scss
 ```diff

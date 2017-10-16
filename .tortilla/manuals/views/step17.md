@@ -9,13 +9,13 @@ First we will have to install a couple of Meteor packages:
 
 Then we will need to add the `Cordova` plugin `cordova-plugin-facebook4`:
 
-    $ ionic cordova plugin add git+https://github.com/darkbasic/cordova-plugin-facebook4.git --variable APP_ID="1800004730327605" --variable APP_NAME="Meteor - Test1" --save
+    $ ionic cordova plugin add cordova-plugin-facebook4 --variable APP_ID="1800004730327605" --variable APP_NAME="Meteor - Test1" --save
 
 Now we need to configure `oauth` services using `service-configuration`:
 
 [{]: <helper> (diffStep 17.3)
 
-#### [Step 17.3: Configure oauth services using service-configuration](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/0371ce16)
+#### [Step 17.3: Configure oauth services using service-configuration](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ae5a2810)
 
 ##### Changed api&#x2F;server&#x2F;main.ts
 ```diff
@@ -55,7 +55,7 @@ And store credentials in `settings.json`:
 
 [{]: <helper> (diffStep 17.4)
 
-#### [Step 17.4: Store credentials in settings.json](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1bc09e61)
+#### [Step 17.4: Store credentials in settings.json](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7a500245)
 
 ##### Changed api&#x2F;private&#x2F;settings.json
 ```diff
@@ -97,7 +97,7 @@ Since `accounts-facebook-cordova` pollutes our user `profile` on `Cordova`, let'
 
 [{]: <helper> (diffStep 17.5)
 
-#### [Step 17.5: Filter user profile](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/cdb1b3f9)
+#### [Step 17.5: Filter user profile](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e6fa60b3)
 
 ##### Changed src&#x2F;pages&#x2F;profile&#x2F;profile.ts
 ```diff
@@ -123,7 +123,7 @@ Now we can create a test login method to check if everything works so far:
 
 [{]: <helper> (diffStep 17.6)
 
-#### [Step 17.6: Create a test login method and bind it to the user interface](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/4d437a9e)
+#### [Step 17.6: Create a test login method and bind it to the user interface](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c2b04361)
 
 ##### Changed src&#x2F;pages&#x2F;login&#x2F;login.html
 ```diff
@@ -172,7 +172,7 @@ Facebook callbacks will be handled by the Meteor server, which runs on a differe
 
 [{]: <helper> (diffStep 17.7)
 
-#### [Step 17.7: Let every connection pass through Nginx](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/11077fd1)
+#### [Step 17.7: Let every connection pass through Nginx](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/dbf7f00f)
 
 ##### Changed meteor-client.config.json
 ```diff
@@ -246,7 +246,7 @@ Now that we know that everything works we can remove our login test code:
 
 [{]: <helper> (diffStep 17.8)
 
-#### [Step 17.8: Remove the login test code](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/3d318a3b)
+#### [Step 17.8: Remove the login test code](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/38a0b007)
 
 ##### Changed src&#x2F;pages&#x2F;login&#x2F;login.html
 ```diff
@@ -299,7 +299,7 @@ Now we create the `linkFacebook` method in the `phone` service:
 
 [{]: <helper> (diffStep "17.10")
 
-#### [Step 17.10: Create linkFacebook method in phone service](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/6f54b569)
+#### [Step 17.10: Create linkFacebook method in phone service](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f402102a)
 
 ##### Changed src&#x2F;services&#x2F;phone.ts
 ```diff
@@ -335,7 +335,7 @@ And `FacebookPage` with its view and style sheet:
 
 [{]: <helper> (diffStep 17.11)
 
-#### [Step 17.11: Create FacebookPage](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/8a77b857)
+#### [Step 17.11: Create FacebookPage](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/2c578691)
 
 ##### Added src&#x2F;pages&#x2F;login&#x2F;facebook.ts
 ```diff
@@ -420,7 +420,7 @@ And `FacebookPage` with its view and style sheet:
 
 [{]: <helper> (diffStep 17.12)
 
-#### [Step 17.12: Create FacebookPage View](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/3d4ca233)
+#### [Step 17.12: Create FacebookPage View](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/13baaf98)
 
 ##### Added src&#x2F;pages&#x2F;login&#x2F;facebook.html
 ```diff
@@ -454,7 +454,7 @@ And `FacebookPage` with its view and style sheet:
 
 [{]: <helper> (diffStep 17.13)
 
-#### [Step 17.13: Create FacebookPage style sheet](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/b5313e05)
+#### [Step 17.13: Create FacebookPage style sheet](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/c61eeb3e)
 
 ##### Added src&#x2F;pages&#x2F;login&#x2F;facebook.scss
 ```diff
@@ -478,7 +478,7 @@ Let's add it to `app.module.ts`:
 
 [{]: <helper> (diffStep 17.14)
 
-#### [Step 17.14: Add FacebookPage to app.module.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/97ffbfd9)
+#### [Step 17.14: Add FacebookPage to app.module.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/443616bd)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -518,7 +518,7 @@ Now we can finally redirect to `FacebookPage` from `VerificationPage` and the `F
 
 [{]: <helper> (diffStep 17.15)
 
-#### [Step 17.15: Redirect to FacebookPage from the VerificationPage](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/ded3b01d)
+#### [Step 17.15: Redirect to FacebookPage from the VerificationPage](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/d06f3426)
 
 ##### Changed src&#x2F;pages&#x2F;verification&#x2F;verification.ts
 ```diff
@@ -556,7 +556,7 @@ Now we can create our server side `Facebook` service:
 
 [{]: <helper> (diffStep 17.17)
 
-#### [Step 17.17: Create facebook Meteor service](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/1a7b4d84)
+#### [Step 17.17: Create facebook Meteor service](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/81d8474e)
 
 ##### Added api&#x2F;server&#x2F;services&#x2F;facebook.ts
 ```diff
@@ -673,7 +673,7 @@ And the `getFbProfile` `Meteor` method:
 
 [{]: <helper> (diffStep 17.18)
 
-#### [Step 17.18: Create getFbProfile Meteor method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/9bd4afcf)
+#### [Step 17.18: Create getFbProfile Meteor method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/aead5f75)
 
 ##### Changed api&#x2F;server&#x2F;methods.ts
 ```diff
@@ -713,7 +713,7 @@ Finally we can update the `FacebookPage` to set the name and the picture from `F
 
 [{]: <helper> (diffStep 17.19)
 
-#### [Step 17.19: Update facebook.ts to set name and picture from Facebook](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7cadb4b3)
+#### [Step 17.19: Update facebook.ts to set name and picture from Facebook](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f21341d3)
 
 ##### Changed src&#x2F;pages&#x2F;login&#x2F;facebook.ts
 ```diff
@@ -773,7 +773,7 @@ Now we can update the `users` publication to also publish `Facebook` friends:
 
 [{]: <helper> (diffStep 17.21)
 
-#### [Step 17.21: Update users publication to publish Facebook friends](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/12651cbe)
+#### [Step 17.21: Update users publication to publish Facebook friends](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e81cef1a)
 
 ##### Changed api&#x2F;server&#x2F;publications.ts
 ```diff

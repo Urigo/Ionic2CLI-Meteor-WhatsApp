@@ -38,7 +38,7 @@ We will also need to add a configuration file for the `TypeScript` compiler in t
 
 [{]: <helper> (diffStep "4.6")
 
-#### [Step 4.6: Add server&#x27;s tsconfig file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e1ef14ab)
+#### [Step 4.6: Add server&#x27;s tsconfig file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/a0519f57)
 
 ##### Added api&#x2F;tsconfig.json
 ```diff
@@ -97,7 +97,7 @@ This requires us to update its reference in the declarations file as well:
 
 [{]: <helper> (diffStep "4.11")
 
-#### [Step 4.11: Update the models import path](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/fc56da25)
+#### [Step 4.11: Update the models import path](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7a9cf502)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 ```diff
@@ -126,7 +126,7 @@ Our initial collections are gonna be the chats and messages collection, the one 
 
 [{]: <helper> (diffStep "4.13")
 
-#### [Step 4.13: Create chats collection](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/cb876e01)
+#### [Step 4.13: Create chats collection](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/05095f8b)
 
 ##### Added api&#x2F;server&#x2F;collections&#x2F;chats.ts
 ```diff
@@ -141,7 +141,7 @@ Our initial collections are gonna be the chats and messages collection, the one 
 
 [{]: <helper> (diffStep "4.14")
 
-#### [Step 4.14: Added messages collection](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/d2d9183f)
+#### [Step 4.14: Added messages collection](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f2b51578)
 
 ##### Added api&#x2F;server&#x2F;collections&#x2F;messages.ts
 ```diff
@@ -158,7 +158,7 @@ We chose to create a dedicated module for each collection, because in the near f
 
 [{]: <helper> (diffStep "4.15")
 
-#### [Step 4.15: Added main export file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/53cf7be8)
+#### [Step 4.15: Added main export file](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/70c1007c)
 
 ##### Added api&#x2F;server&#x2F;collections&#x2F;index.ts
 ```diff
@@ -177,7 +177,7 @@ Since we have real collections now, and not dummy ones, we will need to fill the
 
 [{]: <helper> (diffStep "4.16")
 
-#### [Step 4.16: Move stubs data to the server side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/004c6192)
+#### [Step 4.16: Move stubs data to the server side](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/dceee802)
 
 ##### Changed api&#x2F;server&#x2F;main.ts
 ```diff
@@ -272,7 +272,7 @@ Now we'll add a bundling script to the `package.json` as followed:
 
 [{]: <helper> (diffStep "4.17")
 
-#### [Step 4.17: Created a script for generating the Meteor client bundle](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/edfddfda)
+#### [Step 4.17: Created a script for generating the Meteor client bundle](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/5c416dd3)
 
 ##### Changed package.json
 ```diff
@@ -302,7 +302,7 @@ This will generate a file called `meteor-client.js` under the `node_modules` dir
 
 [{]: <helper> (diffStep "4.19")
 
-#### [Step 4.19: Import meteor client bundle](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/bc95b5aa)
+#### [Step 4.19: Import meteor client bundle](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/246c3dda)
 
 ##### Changed src&#x2F;app&#x2F;main.ts
 ```diff
@@ -322,7 +322,7 @@ The client we've just imported gives us the ability to interact with the server.
 
 [{]: <helper> (diffStep "4.20")
 
-#### [Step 4.20: Use server side data](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/aebc08f2)
+#### [Step 4.20: Use server side data](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/9e52e879)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 ```diff
@@ -427,7 +427,7 @@ And re-implement the `removeChat` method using the actual `Meteor` collection:
 
 [{]: <helper> (diffStep "4.21")
 
-#### [Step 4.21: Implement remove chat with the Collection](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/326f7c5c)
+#### [Step 4.21: Implement remove chat with the Collection](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/81f47204)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 ```diff

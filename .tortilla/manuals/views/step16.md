@@ -6,7 +6,7 @@ First we will have to create `google-services.json` in our project's root direct
 
 [{]: <helper> (diffStep 16.1)
 
-#### [Step 16.1: Add google-services.json FCM config](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7f5a011b)
+#### [Step 16.1: Add google-services.json FCM config](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/f2c9f021)
 
 ##### Added google-services.json
 ```diff
@@ -59,14 +59,14 @@ First we will have to create `google-services.json` in our project's root direct
 
 Then we need to install the `FCM` `Cordova` plug-in:
 
-    $ ionic cordova plugin add git+https://github.com/darkbasic/cordova-plugin-fcm.git --save
+    $ ionic cordova plugin add cordova-plugin-fcm --save
     $ npm install --save @ionic-native/fcm
 
 Then let's add it to `app.module.ts`:
 
 [{]: <helper> (diffStep 16.3)
 
-#### [Step 16.3: Add FCM to app.module.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/42f88b15)
+#### [Step 16.3: Add FCM to app.module.ts](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/d7b4a34f)
 
 ##### Changed src&#x2F;app&#x2F;app.module.ts
 ```diff
@@ -98,7 +98,7 @@ Now we can start adding some `FCM` logic into `ChatsPage`:
 
 [{]: <helper> (diffStep 16.4)
 
-#### [Step 16.4: Add FCM logic to ChatsPage](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/fb52acd2)
+#### [Step 16.4: Add FCM logic to ChatsPage](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/8927c7d7)
 
 ##### Changed src&#x2F;pages&#x2F;chats&#x2F;chats.ts
 ```diff
@@ -168,7 +168,7 @@ We used the `saveFcmToken` `Meteor` method, so we need to create it first:
 
 [{]: <helper> (diffStep 16.5)
 
-#### [Step 16.5: Create the saveFcmToken Meteor method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/7b4a05f2)
+#### [Step 16.5: Create the saveFcmToken Meteor method](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e0e72145)
 
 ##### Changed api&#x2F;server&#x2F;methods.ts
 ```diff
@@ -208,7 +208,7 @@ Let's implement our server side service which will actually send the notificatio
 
 [{]: <helper> (diffStep 16.7)
 
-#### [Step 16.7: Store credentials in settings.json](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/430b4dee)
+#### [Step 16.7: Store credentials in settings.json](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/17e7fa8b)
 
 ##### Changed api&#x2F;private&#x2F;settings.json
 ```diff
@@ -231,7 +231,7 @@ Now we should edit the `AddMessage` `Meteor` method to use our just-created serv
 
 [{]: <helper> (diffStep 16.8)
 
-#### [Step 16.8: Create server side fcm service](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/a17f63fc)
+#### [Step 16.8: Create server side fcm service](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/e4b66ad6)
 
 ##### Added api&#x2F;server&#x2F;services&#x2F;fcm.ts
 ```diff
@@ -274,7 +274,7 @@ Before the `Typescript` compiler complains, let's update our `models`:
 
 [{]: <helper> (diffStep 16.9)
 
-#### [Step 16.9: Update addMessage Meteor method to send fcm notifications](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/71c58858)
+#### [Step 16.9: Update addMessage Meteor method to send fcm notifications](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp/commit/529f6acb)
 
 ##### Changed api&#x2F;server&#x2F;methods.ts
 ```diff
