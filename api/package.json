@@ -1,1 +1,117 @@
-../package.json
+{
+  "name": "whatsapp",
+  "version": "0.0.1",
+  "author": "Ionic Framework",
+  "homepage": "http://ionicframework.com/",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp.git"
+  },
+  "scripts": {
+    "api": "cd api && export ROOT_URL=http://meteor.linuxsystems.it && meteor run --settings private/settings.json",
+    "api:reset": "cd api && meteor reset",
+    "clean": "ionic-app-scripts clean",
+    "build": "ionic-app-scripts build",
+    "lint": "ionic-app-scripts lint",
+    "ionic:build": "ionic-app-scripts build",
+    "ionic:serve": "ionic-app-scripts serve",
+    "meteor-client:bundle": "meteor-client bundle -s api -c meteor-client.config.json"
+  },
+  "dependencies": {
+    "@agm/core": "^1.0.0-beta.1",
+    "@angular/common": "4.4.3",
+    "@angular/compiler": "4.4.3",
+    "@angular/compiler-cli": "4.4.3",
+    "@angular/core": "4.4.3",
+    "@angular/forms": "4.4.3",
+    "@angular/http": "4.4.3",
+    "@angular/platform-browser": "4.4.3",
+    "@angular/platform-browser-dynamic": "4.4.6",
+    "@ionic-native/camera": "^4.3.1",
+    "@ionic-native/contacts": "^4.3.1",
+    "@ionic-native/core": "4.3.0",
+    "@ionic-native/crop": "^4.3.1",
+    "@ionic-native/fcm": "^4.3.1",
+    "@ionic-native/geolocation": "^4.3.1",
+    "@ionic-native/image-picker": "^4.3.1",
+    "@ionic-native/sim": "^4.3.1",
+    "@ionic-native/splash-screen": "4.3.0",
+    "@ionic-native/status-bar": "4.3.0",
+    "@ionic/storage": "2.0.1",
+    "ImagePicker": "git+https://github.com/dhavalsoni2001/ImagePicker.git",
+    "angular2-moment": "^1.7.0",
+    "babel-runtime": "^6.26.0",
+    "bluebird": "^3.5.1",
+    "cordova-android": "^6.3.0",
+    "cordova-plugin-camera": "^2.4.1",
+    "cordova-plugin-compat": "^1.2.0",
+    "cordova-plugin-contacts": "^2.3.1",
+    "cordova-plugin-crop": "^0.4.0",
+    "cordova-plugin-device": "^1.1.4",
+    "cordova-plugin-facebook4": "^1.9.1",
+    "cordova-plugin-fcm": "^2.1.2",
+    "cordova-plugin-geolocation": "^2.4.3",
+    "cordova-plugin-ionic-webview": "^1.1.15",
+    "cordova-plugin-sim": "^1.3.3",
+    "cordova-plugin-sms-receiver": "^0.1.6",
+    "cordova-plugin-splashscreen": "^4.0.3",
+    "cordova-plugin-statusbar": "https://github.com/apache/cordova-plugin-statusbar.git",
+    "cordova-plugin-whitelist": "^1.3.1",
+    "fb": "^2.0.0",
+    "ionic-angular": "3.7.1",
+    "ionic-plugin-keyboard": "^2.2.1",
+    "ionicons": "3.0.0",
+    "lodash": "^4.17.4",
+    "meteor-node-stubs": "^0.2.11",
+    "meteor-rxjs": "^0.4.8",
+    "moment": "^2.19.0",
+    "node-fetch": "^1.7.3",
+    "rxjs": "5.4.3",
+    "sharp": "^0.18.4",
+    "sw-toolbox": "3.6.0",
+    "zone.js": "0.8.18"
+  },
+  "devDependencies": {
+    "@ionic/app-scripts": "3.0.0",
+    "@types/bluebird": "^3.5.15",
+    "@types/lodash": "^4.14.77",
+    "@types/meteor": "^1.4.8",
+    "@types/meteor-accounts-phone": "0.0.5",
+    "@types/meteor-collection-hooks": "^0.8.1",
+    "@types/meteor-publish-composite": "0.0.32",
+    "@types/node-fetch": "^1.6.7",
+    "tmp": "0.0.33",
+    "typescript": "^2.4.2",
+    "typescript-extends": "^1.0.1"
+  },
+  "description": "whatsapp: An Ionic project",
+  "config": {
+    "ionic_webpack": "./webpack.config.js"
+  },
+  "cordova": {
+    "plugins": {
+      "ionic-plugin-keyboard": {},
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-ionic-webview": {},
+      "cordova-plugin-geolocation": {},
+      "com.synconset.imagepicker": {},
+      "cordova-plugin-sim": {},
+      "cordova-plugin-sms-receiver": {},
+      "cordova-plugin-camera": {},
+      "cordova-plugin-crop": {},
+      "cordova-plugin-contacts": {},
+      "cordova-plugin-fcm": {},
+      "cordova-plugin-facebook4": {
+        "APP_ID": "1800004730327605",
+        "APP_NAME": "Meteor - Test1"
+      }
+    },
+    "platforms": [
+      "android"
+    ]
+  }
+}
