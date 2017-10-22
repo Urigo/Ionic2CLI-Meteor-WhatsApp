@@ -19,7 +19,8 @@
     "meteor-client:bundle": "meteor-client bundle -s api -c meteor-client.config.json",
     "tsc-compiler": "tsc",
     "cordova-run": "ionic cordova run",
-    "mobile": "cd api/server && npm run tsc-compiler && cd ../.. && npm run cordova-run"
+    "android": "cd api/server && npm run tsc-compiler && cd ../.. && npm run cordova-run android -- ",
+    "ios": "cd api/server && npm run tsc-compiler && cd ../.. && npm run cordova-run ios -- "
   },
   "dependencies": {
     "@agm/core": "^1.0.0-beta.1",
