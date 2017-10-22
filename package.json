@@ -16,7 +16,10 @@
     "lint": "ionic-app-scripts lint",
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve",
-    "meteor-client:bundle": "meteor-client bundle -s api -c meteor-client.config.json"
+    "meteor-client:bundle": "meteor-client bundle -s api -c meteor-client.config.json",
+    "tsc-compiler": "tsc",
+    "cordova-run": "ionic cordova run",
+    "mobile": "cd api/server && npm run tsc-compiler && cd ../.. && npm run cordova-run"
   },
   "dependencies": {
     "@agm/core": "^1.0.0-beta.1",
