@@ -182,4 +182,4 @@ function resolveMeteor(request, callback) {
 module.exports = {
   dev: devConfig,
   prod: prodConfig
-}
+};
