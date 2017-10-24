@@ -73,7 +73,7 @@
     "zone.js": "0.8.18"
   },
   "devDependencies": {
-    "@ionic/app-scripts": "3.0.0",
+    "@ionic/app-scripts": "3.0.1",
     "@types/bluebird": "^3.5.15",
     "@types/lodash": "^4.14.77",
     "@types/meteor": "^1.4.8",
