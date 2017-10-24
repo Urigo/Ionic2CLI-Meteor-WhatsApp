@@ -30,7 +30,7 @@
     "@angular/platform-browser-dynamic": "4.4.3",
     "@ionic-native/camera": "^4.3.1",
     "@ionic-native/contacts": "^4.3.1",
-    "@ionic-native/core": "4.3.0",
+    "@ionic-native/core": "4.3.2",
     "@ionic-native/crop": "^4.3.1",
     "@ionic-native/fcm": "^4.3.1",
     "@ionic-native/geolocation": "^4.3.1",
