@@ -21,7 +21,7 @@
   "dependencies": {
     "@agm/core": "^1.0.0-beta.1",
     "@angular/common": "4.4.3",
-    "@angular/compiler": "4.4.3",
+    "@angular/compiler": "4.4.6",
     "@angular/compiler-cli": "4.4.3",
     "@angular/core": "4.4.3",
     "@angular/forms": "4.4.3",
