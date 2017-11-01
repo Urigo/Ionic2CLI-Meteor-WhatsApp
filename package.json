@@ -23,7 +23,7 @@
     "@angular/common": "4.4.3",
     "@angular/compiler": "4.4.3",
     "@angular/compiler-cli": "4.4.3",
-    "@angular/core": "4.4.3",
+    "@angular/core": "5.0.0",
     "@angular/forms": "4.4.3",
     "@angular/http": "4.4.3",
     "@angular/platform-browser": "4.4.3",
