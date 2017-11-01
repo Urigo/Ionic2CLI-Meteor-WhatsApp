@@ -37,7 +37,7 @@
     "@ionic-native/image-picker": "^4.3.1",
     "@ionic-native/sim": "^4.3.1",
     "@ionic-native/splash-screen": "4.3.0",
-    "@ionic-native/status-bar": "4.3.0",
+    "@ionic-native/status-bar": "4.3.3",
     "@ionic/storage": "2.0.1",
     "ImagePicker": "git+https://github.com/dhavalsoni2001/ImagePicker.git",
     "angular2-moment": "^1.7.0",
