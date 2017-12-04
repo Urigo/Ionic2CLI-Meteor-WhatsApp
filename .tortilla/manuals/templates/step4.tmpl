@@ -111,6 +111,10 @@ This will generate a file called `meteor-client.js` under the `node_modules` dir
 
 > By default, the client will assume that the server is running at `localhost:3000`. If you'd like to change that, you can simply specify a `--url` option in the `NPM` script. Further information can be found [here](https://github.com/Urigo/meteor-client-bundler).
 
+You will need to start the Meteor server in order for the client to communicate.  From the /api directory type meteor
+
+    api$ meteor
+
 The client we've just imported gives us the ability to interact with the server. Let's replace the local chats-data with a data which is fetched from the `Meteor` server:
 
 {{{diffStep "4.20"}}}
