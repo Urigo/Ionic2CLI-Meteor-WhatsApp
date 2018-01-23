@@ -778,7 +778,7 @@ We can group our messages right after being fetched by the `Observable` using th
  ┊14┊15┊  title: string;
  ┊15┊16┊  picture: string;
 -┊16┊  ┊  messages: Observable<Message[]>;
-+┊  ┊17┊  messagesDayGroups;
++┊  ┊17┊  messages: messagesDayGroups;
  ┊17┊18┊  message: string = '';
  ┊18┊19┊  autoScroller: MutationObserver;
  ┊19┊20┊  scrollOffset = 0;
