@@ -303,52 +303,6 @@ To achieve these abilities, this is how our extension should look like:
 -┊103┊   ┊    tls: 'empty'
 +┊   ┊113┊    tls: 'empty',
 +┊   ┊114┊    __dirname: true
- ┊104┊115┊  }
- ┊105┊116┊};
- ┊106┊117┊
-```
-```diff
-@@ -116,9 +127,16 @@
- ┊116┊127┊
- ┊117┊128┊  resolve: {
- ┊118┊129┊    extensions: ['.ts', '.js', '.json'],
--┊119┊   ┊    modules: [path.resolve('node_modules')]
-+┊   ┊130┊    modules: [path.resolve('node_modules')],
-+┊   ┊131┊    alias: {
-+┊   ┊132┊      'api': path.resolve(__dirname, 'api/server')
-+┊   ┊133┊    }
- ┊120┊134┊  },
- ┊121┊135┊
-+┊   ┊136┊  externals: [
-+┊   ┊137┊    resolveExternals
-+┊   ┊138┊  ],
-+┊   ┊139┊
- ┊122┊140┊  module: {
- ┊123┊141┊    loaders: getProdLoaders()
- ┊124┊142┊  },
-```
-```diff
-@@ -127,7 +145,10 @@
- ┊127┊145┊    ionicWebpackFactory.getIonicEnvironmentPlugin(),
- ┊128┊146┊    ionicWebpackFactory.getCommonChunksPlugin(),
- ┊129┊147┊    new ModuleConcatPlugin(),
--┊130┊   ┊    new PurifyPlugin()
-+┊   ┊148┊    new PurifyPlugin(),
-+┊   ┊149┊    new webpack.ProvidePlugin({
-+┊   ┊150┊      __extends: 'typescript-extends'
-+┊   ┊151┊    })
- ┊131┊152┊  ],
- ┊132┊153┊
- ┊133┊154┊  // Some libraries import Node modules but don't use them in the browser.
-```
-```diff
-@@ -135,13 +156,27 @@
- ┊135┊156┊  node: {
- ┊136┊157┊    fs: 'empty',
- ┊137┊158┊    net: 'empty',
--┊138┊   ┊    tls: 'empty'
-+┊   ┊159┊    tls: 'empty',
-+┊   ┊160┊    __dirname: true
  ┊139┊161┊  }
  ┊140┊162┊};
  ┊141┊163┊
