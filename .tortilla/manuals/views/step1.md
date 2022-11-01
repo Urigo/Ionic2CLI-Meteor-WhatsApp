@@ -45,10 +45,6 @@ To start our app, simply type:
 
     $ ionic serve
 
-To prevent [ionic-app-scripts bug #1052](https://github.com/ionic-team/ionic-app-scripts/issues/1052) let's upgrade Typescript to 2.4:
-
-    $ npm install --save typescript@~2.4
-
 > For more information on how to run an Ionic-app on a mobile device, see the following link: https://ionicframework.com/docs/v2/getting-started/installation/.
 
 `Ionic 2` apps are written using [Angular 2](https://angular.io). Although `Angular 2` apps can be created using plain JavaScript, it is recommended to write them using [Typescript](https://typescriptlang.org), for 2 reasons:
